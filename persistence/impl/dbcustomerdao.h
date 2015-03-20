@@ -1,8 +1,9 @@
 #ifndef DBCUSTOMERDAO_H
 #define DBCUSTOMERDAO_H
 
+#include "persistence/customerdao.h"
 
-class DBCustomerDAO
+class DBCustomerDAO : public CustomerDAO
 {
 public:
     DBCustomerDAO();

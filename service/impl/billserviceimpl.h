@@ -1,6 +1,7 @@
 #ifndef BILLSERVICEIMPL_H
 #define BILLSERVICEIMPL_H
 
+#include "service/billservice.h"
 
 class BillServiceImpl : public BillService
 {

@@ -1,8 +1,9 @@
 #ifndef DBBILLDAO_H
 #define DBBILLDAO_H
 
+#include "persistence/billdao.h"
 
-class DBBillDAO
+class DBBillDAO : public BillDAO
 {
 public:
     DBBillDAO();

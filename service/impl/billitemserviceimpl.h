@@ -1,6 +1,7 @@
 #ifndef BILLITEMSERVICEIMPL_H
 #define BILLITEMSERVICEIMPL_H
 
+#include "service/billitemservice.h"
 
 class BillItemServiceImpl : public BillItemService
 {
