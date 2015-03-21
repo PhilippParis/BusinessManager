@@ -78,6 +78,16 @@ void BillItem::setPrice(double price)
 {
     m_price = price;
 }
+double BillItem::quantity() const
+{
+    return m_quantity;
+}
+
+void BillItem::setQuantity(double quantity)
+{
+    m_quantity = quantity;
+}
+
 
 
 

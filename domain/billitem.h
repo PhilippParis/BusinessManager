@@ -33,12 +33,16 @@ public:
     double price() const;
     void setPrice(double price);
 
+    double quantity() const;
+    void setQuantity(double quantity);
+
 private:
     int m_id = -1;
     double m_workingHours = 0.0;
     double m_materialCost = 0.0;
     double m_price = 0.0;
     double m_wagePerHour = 0.0;
+    double m_quantity = 0.0;
     QString m_description;
     QString m_unit;
 };

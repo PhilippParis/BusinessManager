@@ -69,6 +69,16 @@ void Bill::removeBillItem(const BillItem::Ptr &item)
 {
     m_items.removeOne(item);
 }
+int Bill::id() const
+{
+    return m_id;
+}
+
+void Bill::setId(int id)
+{
+    m_id = id;
+}
+
 
 
 
