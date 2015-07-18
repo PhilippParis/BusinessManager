@@ -1,30 +1,89 @@
 #include "dbbillitemdao.h"
 
-DBBillItemDAO::DBBillItemDAO(QSqlDatabase db)
- : m_database(db)
+DBBillItemDAO::DBBillItemDAO(QSqlDatabase db, Validator<BillItem::Ptr>::Ptr validator)
+ : m_database(db),
+   m_validator(validator)
 {
-    m_insertQuery.prepare("INSERT INTO BILL_ITEM VALUES(NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
+}
 
-    m_updateQuery.prepare("UPDATE BILL_ITEM SET DESCRIPTION = ?,  \
+DBBillItemDAO::~DBBillItemDAO()
+{
+}
+
+bool DBBillItemDAO::write(BillItem::Ptr item, int billID)
+{
+    if(!m_validator->validateForCreate(item)) {
+        return false;
+    }
+
+    QSqlQuery insertQuery(m_database);
+    insertQuery.prepare("INSERT INTO BILL_ITEM VALUES(NULL, ?, ?, ?, ?, ?, ?, ?, ?, 0);");
+
+    insertQuery.addBindValue(item->description());
+    insertQuery.addBindValue(item->workingHours());
+    insertQuery.addBindValue(item->wagePerHour());
+    insertQuery.addBindValue(item->materialCost());
+    insertQuery.addBindValue(item->price());
+    insertQuery.addBindValue(item->unit());
+    insertQuery.addBindValue(item->quantity());
+    insertQuery.addBindValue(billID);
+
+    bool result = insertQuery.exec();
+    if(!result) {
+        qDebug() << insertQuery.lastError();
+    }
+
+    // TODO: logging!
+    return result;
+}
+
+bool DBBillItemDAO::update(BillItem::Ptr item)
+{
+    if(!m_validator->validateForUpdate(item)) {
+        return false;
+    }
+
+    QSqlQuery updateQuery(m_database);
+    updateQuery.prepare("UPDATE BILL_ITEM SET DESCRIPTION = ?,  \
                            UNIT = ?, QUANTITY = ?,  \
                            PRICE = ?,  COST = ?,  \
                            WORKING_HOURS = ?, WAGE = ? \
                            WHERE ID = ?;");
 
-    m_removeQuery.prepare("REMOVE FROM BILL_ITEM WHERE ID = ?;");
+    updateQuery.addBindValue(item->description());
+    updateQuery.addBindValue(item->unit());
+    updateQuery.addBindValue(item->quantity());
+    updateQuery.addBindValue(item->price());
+    updateQuery.addBindValue(item->materialCost());
+    updateQuery.addBindValue(item->workingHours());
+    updateQuery.addBindValue(item->wagePerHour());
+    updateQuery.addBindValue(item->id());
+
+    bool result = updateQuery.exec();
+    // TODO Logging!
+    return result;
 }
 
-DBBillItemDAO::~DBBillItemDAO()
+bool DBBillItemDAO::remove(BillItem::Ptr item)
 {
-    m_insertQuery.clear();
-    m_updateQuery.clear();
-    m_removeQuery.clear();
+    if(!m_validator->validateIdentity(item)) {
+        return false;
+    }
+
+    QSqlQuery removeQuery(m_database);
+    removeQuery.prepare("UPDATE BILL_ITEM SET DELETED = true WHERE ID = ?;");
+
+    removeQuery.addBindValue(item->id());
+    bool result = removeQuery.exec();
+    // TODO Logging!
+    return result;
 }
 
-BillItem::Ptr DBBillItemDAO::getFromDataSource(int id)
+BillItem::Ptr DBBillItemDAO::get(int id)
 {
     QSqlQuery query;
-    query.exec("SELECT FROM BILL_ITEM WHERE ID = " + QString::number(id));
+    query.prepare("SELECT * FROM BILL_ITEM WHERE ID = ?");
+    query.addBindValue(id);
 
     if(!query.exec() || !query.next()) {
         // TODO Logging
@@ -32,46 +91,6 @@ BillItem::Ptr DBBillItemDAO::getFromDataSource(int id)
     }
 
     return parseBillItem(query.record());
-}
-
-bool DBBillItemDAO::writeToDataSource(BillItem::Ptr item, int billID)
-{
-    m_insertQuery.addBindValue(item->description());
-    m_insertQuery.addBindValue(item->unit());
-    m_insertQuery.addBindValue(item->quantity());
-    m_insertQuery.addBindValue(item->price());
-    m_insertQuery.addBindValue(item->materialCost());
-    m_insertQuery.addBindValue(billID);
-    m_insertQuery.addBindValue(item->workingHours());
-    m_insertQuery.addBindValue(item->wagePerHour());
-
-    bool result = m_insertQuery.exec();
-    // TODO: logging!
-    return result;
-}
-
-bool DBBillItemDAO::updateInDataSource(BillItem::Ptr item)
-{
-    m_updateQuery.addBindValue(item->description());
-    m_updateQuery.addBindValue(item->unit());
-    m_updateQuery.addBindValue(item->quantity());
-    m_updateQuery.addBindValue(item->price());
-    m_updateQuery.addBindValue(item->materialCost());
-    m_updateQuery.addBindValue(item->workingHours());
-    m_updateQuery.addBindValue(item->wagePerHour());
-    m_updateQuery.addBindValue(item->id());
-
-    bool result = m_updateQuery.exec();
-    // TODO Logging!
-    return result;
-}
-
-bool DBBillItemDAO::removeFromDataSource(BillItem::Ptr item)
-{
-    m_removeQuery.addBindValue(item->id());
-    bool result = m_removeQuery.exec();
-    // TODO Logging!
-    return result;
 }
 
 BillItem::Ptr DBBillItemDAO::parseBillItem(QSqlRecord record)

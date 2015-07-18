@@ -6,6 +6,7 @@
 
 QT       += core gui
 QT       += sql printsupport
+QT       += testlib
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -13,7 +14,6 @@ QMAKE_CXXFLAGS += -std=c++0x
 
 TARGET = BusinessManager2
 TEMPLATE = app
-
 
 SOURCES += main.cpp\
         ui/mainwindow.cpp \
@@ -45,7 +45,10 @@ SOURCES += main.cpp\
     service/impl/productserviceimpl.cpp \
     service/impl/customerserviceimpl.cpp \
     service/impl/billitemserviceimpl.cpp \
-    service/impl/templateserviceimpl.cpp
+    service/impl/templateserviceimpl.cpp \
+    tests/billitemdaotest.cpp \
+    persistence/databasesingleton.cpp \
+    persistence/validation/impl/billitemvalidator.cpp
 
 HEADERS  += ui/mainwindow.h \
     domain/bill.h \
@@ -76,6 +79,10 @@ HEADERS  += ui/mainwindow.h \
     service/impl/productserviceimpl.h \
     service/impl/customerserviceimpl.h \
     service/impl/billitemserviceimpl.h \
-    service/impl/templateserviceimpl.h
+    service/impl/templateserviceimpl.h \
+    tests/billitemdaotest.h \
+    persistence/databasesingleton.h \
+    persistence/validation/validator.h \
+    persistence/validation/impl/billitemvalidator.h
 
 FORMS    += ui/mainwindow.ui
