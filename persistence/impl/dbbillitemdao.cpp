@@ -1,8 +1,9 @@
 #include "dbbillitemdao.h"
 
-DBBillItemDAO::DBBillItemDAO(QSqlDatabase db, Validator<BillItem::Ptr>::Ptr validator)
+DBBillItemDAO::DBBillItemDAO(QSqlDatabase db, Validator<BillItem::Ptr>::Ptr validator, BillDAO::Ptr billDAO)
  : m_database(db),
-   m_validator(validator)
+   m_validator(validator),
+   m_billDAO(billDAO)
 {
 }
 
@@ -44,11 +45,12 @@ bool DBBillItemDAO::update(BillItem::Ptr item)
     }
 
     QSqlQuery updateQuery(m_database);
-    updateQuery.prepare("UPDATE BILL_ITEM SET DESCRIPTION = ?,  \
-                           UNIT = ?, QUANTITY = ?,  \
-                           PRICE = ?,  COST = ?,  \
-                           WORKING_HOURS = ?, WAGE = ? \
-                           WHERE ID = ?;");
+    updateQuery.prepare("UPDATE BILL_ITEM SET DESC = ?, "
+                           "UNIT = ?, QUANTITY = ?, "
+                           "PRICE = ?,  COST = ?, "
+                           "WORK_HOURS = ?, WAGE = ?, "
+                           "BILL = ? "
+                           "WHERE ID = ?;");
 
     updateQuery.addBindValue(item->description());
     updateQuery.addBindValue(item->unit());
@@ -57,10 +59,16 @@ bool DBBillItemDAO::update(BillItem::Ptr item)
     updateQuery.addBindValue(item->materialCost());
     updateQuery.addBindValue(item->workingHours());
     updateQuery.addBindValue(item->wagePerHour());
+    updateQuery.addBindValue(item->bill()->id());
     updateQuery.addBindValue(item->id());
 
     if (!updateQuery.exec()) {
         qCCritical(lcPersistence) << "DBBillItemDAO::update failed:" + updateQuery.lastError().text();
+        return false;
+    }
+
+    if (updateQuery.numRowsAffected() == 0) {
+        qCDebug(lcPersistence) << "DBBillItemDAO::update failed: dataset not found";
         return false;
     }
 
@@ -81,6 +89,11 @@ bool DBBillItemDAO::remove(BillItem::Ptr item)
 
     if (!removeQuery.exec()) {
         qCCritical(lcPersistence) << "DBBillItemDAO::remove failed:" + removeQuery.lastError().text();
+        return false;
+    }
+
+    if (removeQuery.numRowsAffected() == 0) {
+        qCDebug(lcPersistence) << "DBBillItemDAO::remove failed: dataset not found";
         return false;
     }
 
@@ -140,6 +153,7 @@ BillItem::Ptr DBBillItemDAO::parseBillItem(QSqlRecord record)
     item->setUnit(record.value("UNIT").toString());
     item->setWagePerHour(record.value("WAGE").toDouble());
     item->setWorkingHours(record.value("WORK_HOURS").toDouble());
+    item->setBill(m_billDAO->get(record.value("BILL").toInt()));
 
     return item;
 }

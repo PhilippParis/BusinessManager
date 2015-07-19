@@ -42,6 +42,7 @@ public:
     void setBill(const Bill::Ptr bill);
 
     QString toString() const;
+    bool equals(const BillItem::Ptr item) const;
 
 private:
     int m_id = -1;

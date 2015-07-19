@@ -104,11 +104,44 @@ QString BillItem::toString() const
            ", cost=" + QString::number(m_materialCost) +
            ", price=" + QString::number(m_price) +
            ", unit=" + m_unit +
-           ", quantity=" + m_quantity +
+           ", quantity=" + QString::number(m_quantity) +
            ", workingHours=" + QString::number(m_workingHours) +
            ", wage=" + QString::number(m_wagePerHour) +
            ", bill=" + (m_bill == nullptr? "null" : m_bill->toString()) +
-           "}";
+            "}";
+}
+
+bool BillItem::equals(const BillItem::Ptr item) const
+{
+    if(item == nullptr) {
+        return false;
+    }
+    if (m_id != item->m_id) {
+        return false;
+    }
+    if (m_description.compare(item->m_description) != 0) {
+        return false;
+    }
+    if (m_materialCost != item->m_materialCost) {
+        return false;
+    }
+    if (m_price != item->m_price) {
+        return false;
+    }
+    if (m_unit.compare(item->m_unit) != 0) {
+        return false;
+    }
+    if (m_quantity != item->m_quantity) {
+        return false;
+    }
+    if (m_workingHours != item->m_workingHours) {
+        return false;
+    }
+    if (m_wagePerHour != item->m_wagePerHour) {
+        return false;
+    }
+
+    return m_bill == nullptr? item->m_bill == nullptr : m_bill->equals(item->m_bill);
 }
 
 

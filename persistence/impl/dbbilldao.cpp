@@ -101,7 +101,7 @@ bool DBBillDAO::update(Bill::Ptr item)
     }
 
     if (updateQuery.numRowsAffected() == 0) {
-        qCDebug(lcPersistence) << "DBBillDAO::update dataset not found";
+        qCDebug(lcPersistence) << "DBBillDAO::update failed: dataset not found";
         return false;
     }
 
@@ -126,7 +126,7 @@ bool DBBillDAO::remove(Bill::Ptr item)
     }
 
     if (removeQuery.numRowsAffected() == 0) {
-        qCDebug(lcPersistence) << "DBBillDAO::remove dataset not found";
+        qCDebug(lcPersistence) << "DBBillDAO::remove failed: dataset not found";
         return false;
     }
 

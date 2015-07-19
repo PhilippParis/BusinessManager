@@ -22,14 +22,22 @@ private slots:
 
     void insertTest_data();
     void insertTest();
+
+    void updateTest_data();
     void updateTest();
-    void removeTest();
-    void getTest();
+    void updateWithInvalidIDTest();
+
+    void removeTestWithValidIDShouldPass();
+    void removeTestWithInValidIDShouldFail();
+
+    void getAllTest();
 
 private:
     BillItemDAO::Ptr m_billItemDAO;
     BillDAO::Ptr m_billDAO;
     CustomerDAO::Ptr m_customerDAO;
+
+    Bill::Ptr m_validBill;
 };
 
 #endif // BILLITEMDAOTEST_H

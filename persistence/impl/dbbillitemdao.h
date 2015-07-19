@@ -6,11 +6,12 @@
 #include "logging.h"
 #include "persistence/billitemdao.h"
 #include "persistence/validation/validator.h"
+#include "persistence/billdao.h"
 
 class DBBillItemDAO : public BillItemDAO
 {
 public:
-    DBBillItemDAO(QSqlDatabase db, Validator<BillItem::Ptr>::Ptr validator);
+    DBBillItemDAO(QSqlDatabase db, Validator<BillItem::Ptr>::Ptr validator, BillDAO::Ptr billDAO);
 
 public:
     BillItem::Ptr get(int id) override;
@@ -25,6 +26,7 @@ private:
 private:
     QSqlDatabase m_database;
     Validator<BillItem::Ptr>::Ptr m_validator;
+    BillDAO::Ptr m_billDAO;
 };
 
 #endif // DBBILLITEMDAO_H

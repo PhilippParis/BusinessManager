@@ -68,6 +68,9 @@ void Bill::setDate(const QDate &date)
 
 bool Bill::equals(const Bill::Ptr bill) const
 {
+    if(bill == nullptr) {
+        return false;
+    }
     if(m_billNumber != bill->m_billNumber) {
         return false;
     }
@@ -81,7 +84,7 @@ bool Bill::equals(const Bill::Ptr bill) const
         return false;
     }
 
-    return m_customer == nullptr ? bill->customer() == nullptr : m_customer->equals(bill->m_customer);
+    return m_customer == nullptr ? bill->m_customer == nullptr : m_customer->equals(bill->m_customer);
 }
 
 

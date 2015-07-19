@@ -98,6 +98,9 @@ QString Customer::toString() const
 
 bool Customer::equals(Customer::Ptr customer) const
 {
+    if(customer == nullptr) {
+        return false;
+    }
     if (m_title.compare(customer->m_title) != 0) {
         return false;
     }
