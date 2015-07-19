@@ -2,6 +2,7 @@
 #define CUSTOMER_H
 
 #include <QString>
+#include <QMetaType>
 #include <memory>
 
 class Customer
@@ -54,5 +55,6 @@ private:
 
     QString m_mail;
 };
+Q_DECLARE_METATYPE(Customer::Ptr)
 
 #endif // CUSTOMER_H

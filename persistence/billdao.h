@@ -6,6 +6,8 @@
 class BillDAO
 {
 public:
+    typedef std::shared_ptr<BillDAO> Ptr;
+
     BillDAO();
 
     /**

@@ -6,6 +6,8 @@
 class CustomerDAO
 {
 public:
+    typedef std::shared_ptr<CustomerDAO> Ptr;
+
     CustomerDAO();
     ~CustomerDAO();
 

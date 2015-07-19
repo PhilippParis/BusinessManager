@@ -52,7 +52,8 @@ SOURCES += main.cpp\
     persistence/validation/impl/billvalidator.cpp \
     logging.cpp \
     persistence/validation/impl/customervalidator.cpp \
-    tests/customerdaotest.cpp
+    tests/customerdaotest.cpp \
+    tests/billdaotest.cpp
 
 HEADERS  += ui/mainwindow.h \
     domain/bill.h \
@@ -91,6 +92,7 @@ HEADERS  += ui/mainwindow.h \
     persistence/validation/impl/billvalidator.h \
     logging.h \
     persistence/validation/impl/customervalidator.h \
-    tests/customerdaotest.h
+    tests/customerdaotest.h \
+    tests/billdaotest.h
 
 FORMS    += ui/mainwindow.ui

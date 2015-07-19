@@ -4,9 +4,9 @@ void BillItemDAOTest::initTestCase()
 {
     QSqlDatabase testDB = DatabaseSingleton::get()->getTestDatabase();
 
-    m_billItemDAO = new DBBillItemDAO(testDB, std::make_shared<BillItemValidator>());
-    m_billDAO = new DBBillDAO(testDB, std::make_shared<BillValidator>());
-    m_customerDAO = new DBCustomerDAO(testDB, std::make_shared<CustomerValidator>());
+    m_billItemDAO = std::make_shared<DBBillItemDAO>(testDB, std::make_shared<BillItemValidator>());
+    m_customerDAO = std::make_shared<DBCustomerDAO>(testDB, std::make_shared<CustomerValidator>());
+    m_billDAO = std::make_shared<DBBillDAO>(testDB, std::make_shared<BillValidator>(), m_customerDAO);
 }
 
 void BillItemDAOTest::insertTest_data()
@@ -37,6 +37,7 @@ void BillItemDAOTest::insertTest_data()
     valid_bill->setBillNumber(1);
     valid_bill->setCustomer(customer);
     valid_bill->setPayed(false);
+    valid_bill->setDate(QDate::currentDate());
     QVERIFY(m_billDAO->create(valid_bill));
 
     // create dummy invalid bills

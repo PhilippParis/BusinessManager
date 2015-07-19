@@ -3,6 +3,7 @@
 
 #include "tests/billitemdaotest.h"
 #include "tests/customerdaotest.h"
+#include "tests/billdaotest.h"
 
 bool execUnitTests();
 
@@ -27,9 +28,11 @@ bool execUnitTests()
 
     BillItemDAOTest billItemDAOTest;
     CustomerDAOTest customerDAOTest;
+    BillDAOTest billDAOTest;
 
     success &= QTest::qExec(&billItemDAOTest) == 0;
     success &= QTest::qExec(&customerDAOTest) == 0;
+    success &= QTest::qExec(&billDAOTest) == 0;
 
     return success;
 }

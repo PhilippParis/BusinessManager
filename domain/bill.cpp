@@ -56,6 +56,34 @@ QString Bill::toString() const
            ", customer=" + (m_customer == nullptr? "null" : m_customer->toString()) +
            "}";
 }
+QDate Bill::date() const
+{
+    return m_date;
+}
+
+void Bill::setDate(const QDate &date)
+{
+    m_date = date;
+}
+
+bool Bill::equals(const Bill::Ptr bill) const
+{
+    if(m_billNumber != bill->m_billNumber) {
+        return false;
+    }
+    if(m_date != bill->m_date) {
+        return false;
+    }
+    if(m_payed != bill->m_payed) {
+        return false;
+    }
+    if(m_id != bill->m_id) {
+        return false;
+    }
+
+    return m_customer == nullptr ? bill->customer() == nullptr : m_customer->equals(bill->m_customer);
+}
+
 
 
 

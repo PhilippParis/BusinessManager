@@ -141,11 +141,8 @@ void CustomerDAOTest::updateWithInvalidIDTest()
     customer->setStreet("street");
     customer->setMail("mail");
 
-    QCOMPARE(m_customerDAO->create(customer), true);
-    QVERIFY(customer->id() >= 0);
-
     // get not used id
-    int id = customer->id() + 1;
+    int id = 0;
     while(m_customerDAO->get(id) != nullptr) {
         id++;
     }
@@ -188,11 +185,8 @@ void CustomerDAOTest::removeTestWithInValidIDShouldFail()
     customer->setStreet("street");
     customer->setMail("mail");
 
-    QCOMPARE(m_customerDAO->create(customer), true);
-    QVERIFY(customer->id() >= 0);
-
     // get not used id
-    int id = customer->id() + 1;
+    int id = 0;
     while(m_customerDAO->get(id) != nullptr) {
         id++;
     }

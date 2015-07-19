@@ -30,6 +30,11 @@ public:
 
     QString toString() const;
 
+    QDate date() const;
+    void setDate(const QDate &date);
+
+    bool equals(const Bill::Ptr) const;
+
 private:
     int m_id = -1;
     Customer::Ptr m_customer;
@@ -37,6 +42,6 @@ private:
     QDate m_date;
     bool m_payed;
 };
-
 Q_DECLARE_METATYPE(Bill::Ptr)
+
 #endif // BILL_H
