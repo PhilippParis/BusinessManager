@@ -16,7 +16,7 @@ public:
      * @param item item to write
      * @return true if the data was written succesfully
      */
-    virtual bool write(BillItem::Ptr item) = 0;
+    virtual bool create(BillItem::Ptr item) = 0;
 
     /**
      * @brief updates the item data in the underlying data source
@@ -35,9 +35,14 @@ public:
     /**
      * @param id id of the item to retrieve
      * @return returns a billitem from the underlying data source, or
-     * null if the item does not exist
+     * null if the item does not exist / an error occurred
      */
     virtual BillItem::Ptr get(int id) = 0;
+
+    /**
+     * @return returns all items from the underlying datasource
+     */
+    virtual QList<BillItem::Ptr> getAll() = 0;
 };
 
 #endif // BILLITEMDAO_H

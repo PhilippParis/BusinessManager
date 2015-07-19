@@ -54,7 +54,7 @@ void BillItemDAOTest::insertTest()
     item->setUnit(unit);
     item->setBill(bill);
 
-    QCOMPARE(m_billItemDao->write(item), result);
+    QCOMPARE(m_billItemDao->create(item), result);
 }
 
 void BillItemDAOTest::updateTest()
@@ -70,9 +70,4 @@ void BillItemDAOTest::removeTest()
 void BillItemDAOTest::getTest()
 {
 
-}
-
-bool BillItemDAOTest::compareWithDatabase(BillItem::Ptr item, int billID)
-{
-    return false;
 }

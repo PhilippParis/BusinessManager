@@ -47,6 +47,16 @@ void Bill::setId(int id)
     m_id = id;
 }
 
+QString Bill::toString() const
+{
+    return "Bill{id=" + QString::number(m_id) +
+           ", number=" + QString::number(m_billNumber) +
+           ", date=" + m_date.toString() +
+           ", payed=" + (m_payed? "true" : "false") +
+           ", customer=" + (m_customer == nullptr? "null" : m_customer->toString()) +
+           "}";
+}
+
 
 
 

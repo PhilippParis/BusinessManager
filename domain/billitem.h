@@ -41,6 +41,8 @@ public:
     Bill::Ptr bill() const;
     void setBill(const Bill::Ptr bill);
 
+    QString toString() const;
+
 private:
     int m_id = -1;
     double m_workingHours = 0.0;

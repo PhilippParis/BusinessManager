@@ -3,6 +3,7 @@
 
 #include <QtSql>
 
+#include "logging.h"
 #include "persistence/billitemdao.h"
 #include "persistence/validation/validator.h"
 
@@ -14,7 +15,8 @@ public:
 
 public:
     BillItem::Ptr get(int id) override;
-    bool write(BillItem::Ptr item) override;
+    QList<BillItem::Ptr> getAll() override;
+    bool create(BillItem::Ptr item) override;
     bool update(BillItem::Ptr item) override;
     bool remove(BillItem::Ptr item) override;
 

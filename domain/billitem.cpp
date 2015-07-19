@@ -97,6 +97,20 @@ void BillItem::setBill(const Bill::Ptr bill)
     m_bill = bill;
 }
 
+QString BillItem::toString() const
+{
+    return "BillItem{id=" + QString::number(m_id) +
+           ", desc=" + m_description +
+           ", cost=" + QString::number(m_materialCost) +
+           ", price=" + QString::number(m_price) +
+           ", unit=" + m_unit +
+           ", quantity=" + m_quantity +
+           ", workingHours=" + QString::number(m_workingHours) +
+           ", wage=" + QString::number(m_wagePerHour) +
+           ", bill=" + (m_bill == nullptr? "null" : m_bill->toString()) +
+           "}";
+}
+
 
 
 

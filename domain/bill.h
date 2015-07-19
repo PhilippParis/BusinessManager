@@ -4,6 +4,7 @@
 #include <QList>
 #include <memory>
 #include <QMetaType>
+#include <QDate>
 
 #include "domain/customer.h"
 
@@ -27,10 +28,13 @@ public:
     int id() const;
     void setId(int id);
 
+    QString toString() const;
+
 private:
     int m_id = -1;
     Customer::Ptr m_customer;
     int m_billNumber;
+    QDate m_date;
     bool m_payed;
 };
 

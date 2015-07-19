@@ -83,6 +83,19 @@ void Customer::setId(int id)
     m_id = id;
 }
 
+QString Customer::toString() const
+{
+    return "Customer{id=" + QString::number(m_id) +
+           ", title=" + m_title +
+           ", name=" + m_name +
+           ", surname=" + m_surname +
+           ", org=" + m_organisation +
+           ", street=" + m_street +
+           ", city=" + m_city +
+           ", mail=" + m_mail +
+           "}";
+}
+
 
 
 

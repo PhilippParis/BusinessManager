@@ -10,9 +10,11 @@ DBBillItemDAO::~DBBillItemDAO()
 {
 }
 
-bool DBBillItemDAO::write(BillItem::Ptr item)
+bool DBBillItemDAO::create(BillItem::Ptr item)
 {
-    if(!m_validator->validateForCreate(item)) {
+    qCDebug(lcPersistence) << "Entering DBBillItemDAO::create with param " + item->toString();
+
+    if (!m_validator->validateForCreate(item)) {
         return false;
     }
 
@@ -28,18 +30,19 @@ bool DBBillItemDAO::write(BillItem::Ptr item)
     insertQuery.addBindValue(item->quantity());
     insertQuery.addBindValue(item->bill()->id());
 
-    bool result = insertQuery.exec();
-    if(!result) {
-        qDebug() << insertQuery.lastError();
+    if (!insertQuery.exec()) {
+        qCCritical(lcPersistence) << "DBBillItemDAO::create failed: " + insertQuery.lastError().text();
+        return false;
     }
 
-    // TODO: logging!
-    return result;
+    return true;
 }
 
 bool DBBillItemDAO::update(BillItem::Ptr item)
 {
-    if(!m_validator->validateForUpdate(item)) {
+    qCDebug(lcPersistence) << "Entering DBBillItemDAO::update with param " + item->toString();
+
+    if (!m_validator->validateForUpdate(item)) {
         return false;
     }
 
@@ -59,38 +62,73 @@ bool DBBillItemDAO::update(BillItem::Ptr item)
     updateQuery.addBindValue(item->wagePerHour());
     updateQuery.addBindValue(item->id());
 
-    bool result = updateQuery.exec();
-    // TODO Logging!
-    return result;
+    if (!updateQuery.exec()) {
+        qCCritical(lcPersistence) << "DBBillItemDAO::update failed:" + updateQuery.lastError().text();
+        return false;
+    }
+
+    return true;
 }
 
 bool DBBillItemDAO::remove(BillItem::Ptr item)
 {
-    if(!m_validator->validateIdentity(item)) {
+    qCDebug(lcPersistence) << "Entering DBBillItemDAO::remove with param " + item->toString();
+
+    if (!m_validator->validateIdentity(item)) {
         return false;
     }
 
     QSqlQuery removeQuery(m_database);
     removeQuery.prepare("UPDATE BILL_ITEM SET DELETED = true WHERE ID = ?;");
-
     removeQuery.addBindValue(item->id());
-    bool result = removeQuery.exec();
-    // TODO Logging!
-    return result;
+
+    if (!removeQuery.exec()) {
+        qCCritical(lcPersistence) << "DBBillItemDAO::remove failed:" + removeQuery.lastError().text();
+        return false;
+    }
+
+    return true;
 }
 
 BillItem::Ptr DBBillItemDAO::get(int id)
 {
+    qCDebug(lcPersistence) << "Entering DBBillItemDAO::get with id " + QString::number(id);
+
     QSqlQuery query;
     query.prepare("SELECT * FROM BILL_ITEM WHERE ID = ?");
     query.addBindValue(id);
 
-    if(!query.exec() || !query.next()) {
-        // TODO Logging
+    if (!query.exec()) {
+        qCCritical(lcPersistence) << "retrieving billItem failed" + query.lastError().text();
+        return nullptr;
+    }
+
+    if (!query.next()) {
+        qCDebug(lcPersistence) << "no billItem with id'" + QString::number(id) + "' found";
         return nullptr;
     }
 
     return parseBillItem(query.record());
+}
+
+QList<BillItem::Ptr> DBBillItemDAO::getAll()
+{
+    qCDebug(lcPersistence) << "Entering DBBillItemDAO::getAll";
+
+    QList<BillItem::Ptr> items;
+    QSqlQuery query;
+    query.prepare("SELECT * FROM BILL_ITEM WHERE DELETED = 0");
+
+    if (!query.exec()) {
+        qCCritical(lcPersistence) << "retrieving billItems failed" + query.lastError().text();
+        return items;
+    }
+
+    while(query.next()) {
+        items.append(parseBillItem(query.record()));
+    }
+
+    return items;
 }
 
 BillItem::Ptr DBBillItemDAO::parseBillItem(QSqlRecord record)
@@ -98,13 +136,13 @@ BillItem::Ptr DBBillItemDAO::parseBillItem(QSqlRecord record)
     BillItem::Ptr item = std::make_shared<BillItem>();
 
     item->setId(record.value("ID").toInt());
-    item->setDescription(record.value("DESCRIPTION").toString());
+    item->setDescription(record.value("DESC").toString());
     item->setMaterialCost(record.value("COST").toDouble());
     item->setPrice(record.value("PRICE").toDouble());
     item->setQuantity(record.value("QUANTITY").toDouble());
     item->setUnit(record.value("UNIT").toString());
     item->setWagePerHour(record.value("WAGE").toDouble());
-    item->setWorkingHours(record.value("WORKING_HOURS").toDouble());
+    item->setWorkingHours(record.value("WORK_HOURS").toDouble());
 
     return item;
 }

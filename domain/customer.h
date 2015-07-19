@@ -36,6 +36,8 @@ public:
     int id() const;
     void setId(int id);
 
+    QString toString() const;
+
 private:
     int m_id = -1;
 
