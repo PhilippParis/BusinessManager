@@ -4,9 +4,3 @@ BillDAO::BillDAO()
 {
 
 }
-
-BillDAO::~BillDAO()
-{
-
-}
-

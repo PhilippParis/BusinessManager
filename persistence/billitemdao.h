@@ -1,8 +1,6 @@
 #ifndef BILLITEMDAO_H
 #define BILLITEMDAO_H
 
-#include <QMap>
-
 #include "domain/billitem.h"
 
 class BillItemDAO

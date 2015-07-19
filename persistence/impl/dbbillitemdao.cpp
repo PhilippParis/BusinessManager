@@ -6,10 +6,6 @@ DBBillItemDAO::DBBillItemDAO(QSqlDatabase db, Validator<BillItem::Ptr>::Ptr vali
 {
 }
 
-DBBillItemDAO::~DBBillItemDAO()
-{
-}
-
 bool DBBillItemDAO::create(BillItem::Ptr item)
 {
     qCDebug(lcPersistence) << "Entering DBBillItemDAO::create with param " + item->toString();
@@ -35,6 +31,7 @@ bool DBBillItemDAO::create(BillItem::Ptr item)
         return false;
     }
 
+    item->setId(insertQuery.lastInsertId().toInt());
     return true;
 }
 
@@ -79,7 +76,7 @@ bool DBBillItemDAO::remove(BillItem::Ptr item)
     }
 
     QSqlQuery removeQuery(m_database);
-    removeQuery.prepare("UPDATE BILL_ITEM SET DELETED = true WHERE ID = ?;");
+    removeQuery.prepare("UPDATE BILL_ITEM SET DELETED = 1 WHERE ID = ?;");
     removeQuery.addBindValue(item->id());
 
     if (!removeQuery.exec()) {
@@ -94,7 +91,7 @@ BillItem::Ptr DBBillItemDAO::get(int id)
 {
     qCDebug(lcPersistence) << "Entering DBBillItemDAO::get with id " + QString::number(id);
 
-    QSqlQuery query;
+    QSqlQuery query(m_database);
     query.prepare("SELECT * FROM BILL_ITEM WHERE ID = ?");
     query.addBindValue(id);
 
@@ -116,7 +113,7 @@ QList<BillItem::Ptr> DBBillItemDAO::getAll()
     qCDebug(lcPersistence) << "Entering DBBillItemDAO::getAll";
 
     QList<BillItem::Ptr> items;
-    QSqlQuery query;
+    QSqlQuery query(m_database);
     query.prepare("SELECT * FROM BILL_ITEM WHERE DELETED = 0");
 
     if (!query.exec()) {

@@ -11,7 +11,6 @@ class DBBillItemDAO : public BillItemDAO
 {
 public:
     DBBillItemDAO(QSqlDatabase db, Validator<BillItem::Ptr>::Ptr validator);
-    ~DBBillItemDAO();
 
 public:
     BillItem::Ptr get(int id) override;

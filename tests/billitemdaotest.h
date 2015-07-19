@@ -6,10 +6,13 @@
 
 #include "persistence/impl/dbbillitemdao.h"
 #include "persistence/impl/dbbilldao.h"
+#include "persistence/impl/dbcustomerdao.h"
+
 #include "persistence/databasesingleton.h"
 
 #include "persistence/validation/impl/billitemvalidator.h"
 #include "persistence/validation/impl/billvalidator.h"
+#include "persistence/validation/impl/customervalidator.h"
 
 class BillItemDAOTest : public QObject
 {
@@ -24,13 +27,9 @@ private slots:
     void getTest();
 
 private:
-    bool compareWithDatabase(BillItem::Ptr item, int billID);
-    void prepareTestData();
-
-private:
-    BillItemDAO *m_billItemDao;
-    BillDAO *m_billDao;
-    QSqlDatabase m_database;
+    BillItemDAO *m_billItemDAO;
+    BillDAO *m_billDAO;
+    CustomerDAO *m_customerDAO;
 };
 
 #endif // BILLITEMDAOTEST_H

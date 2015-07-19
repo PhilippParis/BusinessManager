@@ -1,13 +1,32 @@
 #ifndef DBCUSTOMERDAO_H
 #define DBCUSTOMERDAO_H
 
+#include <memory>
+#include <QtSql>
+
+#include "logging.h"
+
+#include "domain/customer.h"
+#include "persistence/validation/validator.h"
 #include "persistence/customerdao.h"
 
 class DBCustomerDAO : public CustomerDAO
 {
 public:
-    DBCustomerDAO();
-    ~DBCustomerDAO();
+    DBCustomerDAO(QSqlDatabase database, Validator<Customer::Ptr>::Ptr validator);
+
+    Customer::Ptr get(int id) override;
+    QList<Customer::Ptr> getAll() override;
+    bool create(Customer::Ptr item) override;
+    bool update(Customer::Ptr item) override;
+    bool remove(Customer::Ptr item) override;
+
+private:
+    Customer::Ptr parseCustomer(QSqlRecord record);
+
+private:
+    QSqlDatabase m_database;
+    Validator<Customer::Ptr>::Ptr m_validator;
 };
 
 #endif // DBCUSTOMERDAO_H

@@ -37,6 +37,7 @@ public:
     void setId(int id);
 
     QString toString() const;
+    bool equals(Customer::Ptr customer) const;
 
 private:
     int m_id = -1;

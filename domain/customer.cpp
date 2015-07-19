@@ -93,7 +93,34 @@ QString Customer::toString() const
            ", street=" + m_street +
            ", city=" + m_city +
            ", mail=" + m_mail +
-           "}";
+            "}";
+}
+
+bool Customer::equals(Customer::Ptr customer) const
+{
+    if (m_title.compare(customer->m_title) != 0) {
+        return false;
+    }
+    if (m_name.compare(customer->m_name) != 0) {
+        return false;
+    }
+    if (m_surname.compare(customer->m_surname) != 0) {
+        return false;
+    }
+    if (m_organisation.compare(customer->m_organisation) != 0) {
+        return false;
+    }
+    if (m_street.compare(customer->m_street) != 0) {
+        return false;
+    }
+    if (m_city.compare(customer->m_city) != 0) {
+        return false;
+    }
+    if (m_mail.compare(customer->m_mail) != 0) {
+        return false;
+    }
+
+    return true;
 }
 
 
