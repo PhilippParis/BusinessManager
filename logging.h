@@ -1,0 +1,11 @@
+#ifndef LOGGING_H
+#define LOGGING_H
+
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(lcPersistence)
+Q_DECLARE_LOGGING_CATEGORY(lcValidation)
+Q_DECLARE_LOGGING_CATEGORY(lcService)
+Q_DECLARE_LOGGING_CATEGORY(lcGUI)
+
+#endif // LOGGING_H

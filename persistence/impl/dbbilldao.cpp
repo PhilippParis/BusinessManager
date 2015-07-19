@@ -1,6 +1,6 @@
 #include "dbbilldao.h"
 
-DBBillDAO::DBBillDAO()
+DBBillDAO::DBBillDAO(QSqlDatabase database, Validator<Bill::Ptr>::Ptr validator)
 {
 
 }

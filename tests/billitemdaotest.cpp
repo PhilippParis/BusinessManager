@@ -2,7 +2,8 @@
 
 void BillItemDAOTest::initTestCase()
 {
-    m_dao = new DBBillItemDAO(DatabaseSingleton::get()->getTestDatabase(), std::make_shared<BillItemValidator>());
+    m_billItemDao = new DBBillItemDAO(DatabaseSingleton::get()->getTestDatabase(), std::make_shared<BillItemValidator>());
+    m_billDao = new DBBillDAO(DatabaseSingleton::get()->getTestDatabase(), std::make_shared<BillValidator>());
 }
 
 void BillItemDAOTest::insertTest_data()
@@ -14,13 +15,20 @@ void BillItemDAOTest::insertTest_data()
     QTest::addColumn<double>("hours");
     QTest::addColumn<double>("wage");
     QTest::addColumn<double>("quantity");
-    QTest::addColumn<int>("billID");
+    QTest::addColumn<Bill::Ptr>("bill");
     QTest::addColumn<bool>("result");
 
-    QTest::newRow("valid") << "desc1" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << 0 << true;
-    QTest::newRow("no_desc") << "" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << 0 << false;
-    QTest::newRow("no_unit") << "desc1" << "" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << 0 << false;
-    QTest::newRow("invalid_bill") << "desc1" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << -2 << false;
+    Bill::Ptr valid_bill = std::make_shared<Bill>();
+
+
+    Bill::Ptr invalid_bill = std::make_shared<Bill>();
+    Bill::Ptr no_bill = nullptr;
+
+    QTest::newRow("valid") << "desc1" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << valid_bill << true;
+    QTest::newRow("no_desc") << "" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << valid_bill << false;
+    QTest::newRow("no_unit") << "desc1" << "" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << valid_bill << false;
+    QTest::newRow("invalid_bill") << "desc1" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << invalid_bill << false;
+    QTest::newRow("no_bill") << "desc1" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << no_bill << false;
 }
 
 void BillItemDAOTest::insertTest()
@@ -32,7 +40,7 @@ void BillItemDAOTest::insertTest()
     QFETCH(double, hours);
     QFETCH(double, wage);
     QFETCH(double, quantity);
-    QFETCH(int, billID);
+    QFETCH(Bill::Ptr, bill);
     QFETCH(bool, result);
 
     BillItem::Ptr item = std::make_shared<BillItem>();
@@ -44,9 +52,9 @@ void BillItemDAOTest::insertTest()
     item->setWagePerHour(wage);
     item->setQuantity(quantity);
     item->setUnit(unit);
+    item->setBill(bill);
 
-    QCOMPARE(m_dao->write(item, billID), result);
-    QCOMPARE(compareWithDatabase(item, billID), result);
+    QCOMPARE(m_billItemDao->write(item), result);
 }
 
 void BillItemDAOTest::updateTest()

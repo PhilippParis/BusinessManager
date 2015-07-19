@@ -33,6 +33,9 @@ public:
     QString mail() const;
     void setMail(const QString &mail);
 
+    int id() const;
+    void setId(int id);
+
 private:
     int m_id = -1;
 

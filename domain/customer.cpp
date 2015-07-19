@@ -73,6 +73,16 @@ void Customer::setMail(const QString &mail)
 {
     m_mail = mail;
 }
+int Customer::id() const
+{
+    return m_id;
+}
+
+void Customer::setId(int id)
+{
+    m_id = id;
+}
+
 
 
 

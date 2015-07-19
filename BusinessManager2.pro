@@ -48,7 +48,10 @@ SOURCES += main.cpp\
     service/impl/templateserviceimpl.cpp \
     tests/billitemdaotest.cpp \
     persistence/databasesingleton.cpp \
-    persistence/validation/impl/billitemvalidator.cpp
+    persistence/validation/impl/billitemvalidator.cpp \
+    persistence/validation/impl/billvalidator.cpp \
+    logging.cpp \
+    persistence/validation/impl/customervalidator.cpp
 
 HEADERS  += ui/mainwindow.h \
     domain/bill.h \
@@ -83,6 +86,9 @@ HEADERS  += ui/mainwindow.h \
     tests/billitemdaotest.h \
     persistence/databasesingleton.h \
     persistence/validation/validator.h \
-    persistence/validation/impl/billitemvalidator.h
+    persistence/validation/impl/billitemvalidator.h \
+    persistence/validation/impl/billvalidator.h \
+    logging.h \
+    persistence/validation/impl/customervalidator.h
 
 FORMS    += ui/mainwindow.ui

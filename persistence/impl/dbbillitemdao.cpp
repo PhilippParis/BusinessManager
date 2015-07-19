@@ -10,7 +10,7 @@ DBBillItemDAO::~DBBillItemDAO()
 {
 }
 
-bool DBBillItemDAO::write(BillItem::Ptr item, int billID)
+bool DBBillItemDAO::write(BillItem::Ptr item)
 {
     if(!m_validator->validateForCreate(item)) {
         return false;
@@ -26,7 +26,7 @@ bool DBBillItemDAO::write(BillItem::Ptr item, int billID)
     insertQuery.addBindValue(item->price());
     insertQuery.addBindValue(item->unit());
     insertQuery.addBindValue(item->quantity());
-    insertQuery.addBindValue(billID);
+    insertQuery.addBindValue(item->bill()->id());
 
     bool result = insertQuery.exec();
     if(!result) {

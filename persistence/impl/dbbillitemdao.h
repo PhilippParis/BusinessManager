@@ -14,7 +14,7 @@ public:
 
 public:
     BillItem::Ptr get(int id) override;
-    bool write(BillItem::Ptr item, int billID) override;
+    bool write(BillItem::Ptr item) override;
     bool update(BillItem::Ptr item) override;
     bool remove(BillItem::Ptr item) override;
 

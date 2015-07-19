@@ -5,9 +5,11 @@
 #include <QtTest/QtTest>
 
 #include "persistence/impl/dbbillitemdao.h"
+#include "persistence/impl/dbbilldao.h"
 #include "persistence/databasesingleton.h"
 
 #include "persistence/validation/impl/billitemvalidator.h"
+#include "persistence/validation/impl/billvalidator.h"
 
 class BillItemDAOTest : public QObject
 {
@@ -26,7 +28,8 @@ private:
     void prepareTestData();
 
 private:
-    BillItemDAO *m_dao;
+    BillItemDAO *m_billItemDao;
+    BillDAO *m_billDao;
     QSqlDatabase m_database;
 };
 

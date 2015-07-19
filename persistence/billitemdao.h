@@ -16,7 +16,7 @@ public:
      * @param item item to write
      * @return true if the data was written succesfully
      */
-    virtual bool write(BillItem::Ptr item, int billID) = 0;
+    virtual bool write(BillItem::Ptr item) = 0;
 
     /**
      * @brief updates the item data in the underlying data source

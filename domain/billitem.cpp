@@ -87,6 +87,16 @@ void BillItem::setQuantity(double quantity)
 {
     m_quantity = quantity;
 }
+Bill::Ptr BillItem::bill() const
+{
+    return m_bill;
+}
+
+void BillItem::setBill(const Bill::Ptr bill)
+{
+    m_bill = bill;
+}
+
 
 
 

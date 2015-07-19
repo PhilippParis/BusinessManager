@@ -2,8 +2,10 @@
 #define BILLITEMVALIDATOR_H
 
 #include <QDebug>
+#include "logging.h"
 
 #include "persistence/validation/validator.h"
+#include "persistence/validation/impl/billvalidator.h"
 #include "domain/billitem.h"
 
 class BillItemValidator : public Validator<BillItem::Ptr>
@@ -17,6 +19,9 @@ public:
 
 private:
     bool validateMandatoryFields(BillItem::Ptr item);
+
+private:
+    Validator<Bill::Ptr>::Ptr m_billValidator;
 };
 
 #endif // BILLITEMVALIDATOR_H

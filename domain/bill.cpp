@@ -36,39 +36,7 @@ void Bill::setPayed(bool payed)
 {
     m_payed = payed;
 }
-double Bill::discount() const
-{
-    return m_discount;
-}
 
-void Bill::setDiscount(double discount)
-{
-    m_discount = discount;
-}
-QString Bill::discountText() const
-{
-    return m_discountText;
-}
-
-void Bill::setDiscountText(const QString &discountText)
-{
-    m_discountText = discountText;
-}
-
-QList<BillItem::Ptr> Bill::billItems() const
-{
-    return m_items;
-}
-
-void Bill::addBillItem(const BillItem::Ptr &item)
-{
-    m_items.append(item);
-}
-
-void Bill::removeBillItem(const BillItem::Ptr &item)
-{
-    m_items.removeOne(item);
-}
 int Bill::id() const
 {
     return m_id;
