@@ -1,18 +1,16 @@
-#ifndef BILLDAOTEST_H
-#define BILLDAOTEST_H
+#ifndef PRODUCTDAOTEST_H
+#define PRODUCTDAOTEST_H
 
 #include <QObject>
+#include <QString>
 #include <QtTest/QtTest>
 
-#include "persistence/impl/dbbilldao.h"
-#include "persistence/impl/dbcustomerdao.h"
-
+#include "persistence/impl/dbproductdao.h"
 #include "persistence/databasesingleton.h"
+#include "persistence/validation/impl/productvalidator.h"
 
-#include "persistence/validation/impl/billvalidator.h"
-#include "persistence/validation/impl/customervalidator.h"
 
-class BillDAOTest : public QObject
+class ProductDAOTest : public QObject
 {
     Q_OBJECT
 private slots:
@@ -31,9 +29,7 @@ private slots:
     void getAllTest();
 
 private:
-    BillDAO::Ptr m_billDAO;
-    CustomerDAO::Ptr m_customerDAO;
-    Customer::Ptr m_validCustomer;
+    ProductDAO::Ptr m_productDAO;
 };
 
-#endif // BILLDAOTEST_H
+#endif // PRODUCTDAOTEST_H

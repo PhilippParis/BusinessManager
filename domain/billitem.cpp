@@ -144,6 +144,16 @@ bool BillItem::equals(const BillItem::Ptr item) const
     return m_bill == nullptr? item->m_bill == nullptr : m_bill->equals(item->m_bill);
 }
 
+void BillItem::addMaterial(const Product::Ptr product, double quantity)
+{
+    m_material.insert(product, quantity);
+}
+
+void BillItem::removeMaterial(const Product::Ptr product)
+{
+    m_material.remove(product);
+}
+
 
 
 

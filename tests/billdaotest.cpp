@@ -155,10 +155,6 @@ void BillDAOTest::removeTestWithInValidIDShouldFail()
 {
     // PREPARE
     Bill::Ptr bill = std::make_shared<Bill>();
-    bill->setCustomer(m_validCustomer);
-    bill->setBillNumber(1);
-    bill->setDate(QDate::currentDate());
-    bill->setPayed(true);
 
     // get not used id
     int id = 0;

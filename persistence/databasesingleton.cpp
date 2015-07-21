@@ -105,7 +105,7 @@ void DatabaseSingleton::createTables(QSqlDatabase db)
                     "DESC VARCHAR(200) NOT NULL, "
                     "COST REAL NOT NULL, "
                     "PRICE REAL NOT NULL, "
-                    "SIZE VARCHAR(20) NOT NULL, "
+                    "TYPE VARCHAR(20) NOT NULL, "
                     "UNIT VARCHAR(20) NOT NULL, "
                     "STOCK REAL NOT NULL, "
                     "DELETED INTEGER NOT NULL DEFAULT 0);");

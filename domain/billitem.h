@@ -3,8 +3,10 @@
 
 #include <memory>
 #include <QString>
+#include <QMap>
 
 #include "domain/bill.h"
+#include "domain/product.h"
 
 class BillItem
 {
@@ -44,6 +46,9 @@ public:
     QString toString() const;
     bool equals(const BillItem::Ptr item) const;
 
+    void addMaterial(const Product::Ptr product, double quantity);
+    void removeMaterial(const Product::Ptr product);
+
 private:
     int m_id = -1;
     double m_workingHours = 0.0;
@@ -54,6 +59,7 @@ private:
     Bill::Ptr m_bill;
     QString m_description;
     QString m_unit;
+    QMap<Product::Ptr, double> m_material;
 };
 
 #endif // BILLITEM_H

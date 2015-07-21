@@ -22,7 +22,6 @@ SOURCES += main.cpp\
     domain/billitem.cpp \
     domain/template.cpp \
     domain/customer.cpp \
-    domain/printable.cpp \
     domain/document.cpp \
     domain/offer.cpp \
     domain/letter.cpp \
@@ -53,7 +52,9 @@ SOURCES += main.cpp\
     logging.cpp \
     persistence/validation/impl/customervalidator.cpp \
     tests/customerdaotest.cpp \
-    tests/billdaotest.cpp
+    tests/billdaotest.cpp \
+    tests/productdaotest.cpp \
+    persistence/validation/impl/productvalidator.cpp
 
 HEADERS  += ui/mainwindow.h \
     domain/bill.h \
@@ -61,7 +62,6 @@ HEADERS  += ui/mainwindow.h \
     domain/billitem.h \
     domain/template.h \
     domain/customer.h \
-    domain/printable.h \
     domain/document.h \
     domain/offer.h \
     domain/letter.h \
@@ -93,6 +93,8 @@ HEADERS  += ui/mainwindow.h \
     logging.h \
     persistence/validation/impl/customervalidator.h \
     tests/customerdaotest.h \
-    tests/billdaotest.h
+    tests/billdaotest.h \
+    tests/productdaotest.h \
+    persistence/validation/impl/productvalidator.h
 
 FORMS    += ui/mainwindow.ui
