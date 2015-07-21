@@ -5,8 +5,4 @@ ProductService::ProductService()
 
 }
 
-ProductService::~ProductService()
-{
-
-}
 

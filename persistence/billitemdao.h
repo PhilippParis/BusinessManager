@@ -44,6 +44,12 @@ public:
      * @return returns all items from the underlying datasource
      */
     virtual QList<BillItem::Ptr> getAll() = 0;
+
+    /**
+     * @param billID id of the bill
+     * @return returns all items of a bill
+     */
+    virtual QList<BillItem::Ptr> getItemsOfBill(int billID) = 0;
 };
 
 #endif // BILLITEMDAO_H

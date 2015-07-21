@@ -5,8 +5,4 @@ CustomerService::CustomerService()
 
 }
 
-CustomerService::~CustomerService()
-{
-
-}
 

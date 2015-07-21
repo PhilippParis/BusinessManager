@@ -36,14 +36,12 @@ SOURCES += main.cpp\
     persistence/impl/dbcustomerdao.cpp \
     persistence/impl/dbtemplatedao.cpp \
     service/billservice.cpp \
-    service/billitemservice.cpp \
     service/customerservice.cpp \
     service/templateservice.cpp \
     service/productservice.cpp \
     service/impl/billserviceimpl.cpp \
     service/impl/productserviceimpl.cpp \
     service/impl/customerserviceimpl.cpp \
-    service/impl/billitemserviceimpl.cpp \
     service/impl/templateserviceimpl.cpp \
     tests/billitemdaotest.cpp \
     persistence/databasesingleton.cpp \
@@ -57,7 +55,8 @@ SOURCES += main.cpp\
     persistence/validation/impl/productvalidator.cpp \
     exception.cpp \
     persistence/validation/validationexception.cpp \
-    persistence/persistenceexception.cpp
+    persistence/persistenceexception.cpp \
+    service/serviceexception.cpp
 
 HEADERS  += ui/mainwindow.h \
     domain/bill.h \
@@ -79,14 +78,12 @@ HEADERS  += ui/mainwindow.h \
     persistence/impl/dbcustomerdao.h \
     persistence/impl/dbtemplatedao.h \
     service/billservice.h \
-    service/billitemservice.h \
     service/customerservice.h \
     service/templateservice.h \
     service/productservice.h \
     service/impl/billserviceimpl.h \
     service/impl/productserviceimpl.h \
     service/impl/customerserviceimpl.h \
-    service/impl/billitemserviceimpl.h \
     service/impl/templateserviceimpl.h \
     tests/billitemdaotest.h \
     persistence/databasesingleton.h \
@@ -101,6 +98,7 @@ HEADERS  += ui/mainwindow.h \
     persistence/validation/impl/productvalidator.h \
     persistence/persistenceexception.h \
     persistence/validation/validationexception.h \
-    exception.h
+    exception.h \
+    service/serviceexception.h
 
 FORMS    += ui/mainwindow.ui

@@ -5,8 +5,4 @@ BillService::BillService()
 
 }
 
-BillService::~BillService()
-{
-
-}
 

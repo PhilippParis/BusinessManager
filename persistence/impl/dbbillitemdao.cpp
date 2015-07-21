@@ -147,6 +147,27 @@ QList<BillItem::Ptr> DBBillItemDAO::getAll()
     return items;
 }
 
+QList<BillItem::Ptr> DBBillItemDAO::getItemsOfBill(int billID)
+{
+    qCDebug(lcPersistence) << "Entering DBBillItemDAO::getItemsOfBill";
+
+    QList<BillItem::Ptr> items;
+    QSqlQuery query(m_database);
+    query.prepare("SELECT * FROM BILL_ITEM WHERE DELETED = 0 AND BILL = ?");
+    query.addBindValue(billID);
+
+    if (!query.exec()) {
+        qCCritical(lcPersistence) << "retrieving billItems failed" + query.lastError().text();
+        throw new PersistenceException("retrieving billItems failed" + query.lastError().text());
+    }
+
+    while(query.next()) {
+        items.append(parseBillItem(query.record()));
+    }
+
+    return items;
+}
+
 BillItem::Ptr DBBillItemDAO::parseBillItem(QSqlRecord record)
 {
     BillItem::Ptr item = std::make_shared<BillItem>();

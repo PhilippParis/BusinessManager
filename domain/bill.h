@@ -38,7 +38,7 @@ public:
 private:
     int m_id = -1;
     Customer::Ptr m_customer;
-    int m_billNumber;
+    int m_billNumber = -1;
     QDate m_date;
     bool m_payed;
 };

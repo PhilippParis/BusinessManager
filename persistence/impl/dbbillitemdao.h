@@ -18,6 +18,7 @@ public:
 public:
     BillItem::Ptr get(int id) override;
     QList<BillItem::Ptr> getAll() override;
+    QList<BillItem::Ptr> getItemsOfBill(int billID) override;
     void create(BillItem::Ptr item) override;
     void update(BillItem::Ptr item) override;
     void remove(BillItem::Ptr item) override;
