@@ -1,9 +1,10 @@
 #include "dbbillitemdao.h"
 
-DBBillItemDAO::DBBillItemDAO(QSqlDatabase db, Validator<BillItem::Ptr>::Ptr validator, BillDAO::Ptr billDAO)
+DBBillItemDAO::DBBillItemDAO(QSqlDatabase db, Validator<BillItem::Ptr>::Ptr validator, BillDAO::Ptr billDAO, ProductDAO::Ptr productDAO)
  : m_database(db),
    m_validator(validator),
-   m_billDAO(billDAO)
+   m_billDAO(billDAO),
+   m_productDAO(productDAO)
 {
 }
 
@@ -33,7 +34,8 @@ bool DBBillItemDAO::create(BillItem::Ptr item)
     }
 
     item->setId(insertQuery.lastInsertId().toInt());
-    return true;
+
+    return updateAssocTable(item);
 }
 
 bool DBBillItemDAO::update(BillItem::Ptr item)
@@ -72,7 +74,7 @@ bool DBBillItemDAO::update(BillItem::Ptr item)
         return false;
     }
 
-    return true;
+    return updateAssocTable(item);
 }
 
 bool DBBillItemDAO::remove(BillItem::Ptr item)
@@ -155,6 +157,55 @@ BillItem::Ptr DBBillItemDAO::parseBillItem(QSqlRecord record)
     item->setWorkingHours(record.value("WORK_HOURS").toDouble());
     item->setBill(m_billDAO->get(record.value("BILL").toInt()));
 
+    // get materials
+    QSqlQuery query(m_database);
+    query.prepare("SELECT * FROM PRODUCT_ITEM_ASSOC WHERE ITEM_ID = ?");
+    query.addBindValue(item->id());
+
+    if (!query.exec()) {
+        qCCritical(lcPersistence) << "retrieving product-item assocs failed" + query.lastError().text();
+        return false;
+    }
+
+    while(query.next()) {
+        item->addMaterial(m_productDAO->get(query.value("PRODUCT_ID").toInt()),
+                          query.value("QUANTITY").toDouble());
+    }
+
     return item;
+}
+
+bool DBBillItemDAO::updateAssocTable(BillItem::Ptr item)
+{
+    qCDebug(lcPersistence) << "Entering DBBillItemDAO::updateAssocTable with param " + item->toString();
+
+    QSqlQuery query(m_database);
+    // remove all old entries
+    query.prepare("DELETE FROM PRODUCT_ITEM_ASSOC WHERE ITEM_ID = ?");
+    query.addBindValue(item->id());
+
+    if (!query.exec()) {
+        qCCritical(lcPersistence) << "removing old product-item assocs failed" + query.lastError().text();
+        return false;
+    }
+
+    QSqlQuery insertQuery(m_database);
+    insertQuery.prepare("INSERT INTO PRODUCT_ITEM_ASSOC VALUES (?,?,?);");
+
+    QMap<Product::Ptr, double> material = item->material();
+
+    QMap<Product::Ptr, double>::iterator it;
+    for (it = material.begin(); it != material.end(); ++it) {
+        insertQuery.addBindValue(it.key()->id());
+        insertQuery.addBindValue(item->id());
+        insertQuery.addBindValue(it.value());
+
+        if (!insertQuery.exec()) {
+            qCCritical(lcPersistence) << "adding product-item assoc failed" + insertQuery.lastError().text();
+            return false;
+        }
+    }
+
+    return true;
 }
 

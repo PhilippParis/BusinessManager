@@ -6,6 +6,7 @@
 
 #include "persistence/validation/validator.h"
 #include "persistence/validation/impl/billvalidator.h"
+#include "persistence/validation/impl/productvalidator.h"
 #include "domain/billitem.h"
 
 class BillItemValidator : public Validator<BillItem::Ptr>
@@ -22,6 +23,7 @@ private:
 
 private:
     Validator<Bill::Ptr>::Ptr m_billValidator;
+    Validator<Product::Ptr>::Ptr m_productValidator;
 };
 
 #endif // BILLITEMVALIDATOR_H

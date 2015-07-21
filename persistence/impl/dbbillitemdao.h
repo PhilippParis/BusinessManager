@@ -5,13 +5,15 @@
 
 #include "logging.h"
 #include "persistence/billitemdao.h"
+
 #include "persistence/validation/validator.h"
 #include "persistence/billdao.h"
+#include "persistence/productdao.h"
 
 class DBBillItemDAO : public BillItemDAO
 {
 public:
-    DBBillItemDAO(QSqlDatabase db, Validator<BillItem::Ptr>::Ptr validator, BillDAO::Ptr billDAO);
+    DBBillItemDAO(QSqlDatabase db, Validator<BillItem::Ptr>::Ptr validator, BillDAO::Ptr billDAO, ProductDAO::Ptr productDAO);
 
 public:
     BillItem::Ptr get(int id) override;
@@ -22,11 +24,13 @@ public:
 
 private:
     BillItem::Ptr parseBillItem(QSqlRecord record);
+    bool updateAssocTable(BillItem::Ptr item);
 
 private:
     QSqlDatabase m_database;
     Validator<BillItem::Ptr>::Ptr m_validator;
     BillDAO::Ptr m_billDAO;
+    ProductDAO::Ptr m_productDAO;
 };
 
 #endif // DBBILLITEMDAO_H

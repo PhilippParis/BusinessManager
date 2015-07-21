@@ -3,6 +3,7 @@
 BillItemValidator::BillItemValidator()
 {
     m_billValidator = std::make_shared<BillValidator>();
+    m_productValidator = std::make_shared<ProductValidator>();
 }
 
 bool BillItemValidator::validateForCreate(BillItem::Ptr item)
@@ -53,6 +54,16 @@ bool BillItemValidator::validateMandatoryFields(BillItem::Ptr item)
     if (!m_billValidator->validateIdentity(item->bill())) {
         qCDebug(lcValidation()) << "bill id must be valid";
         return false;
+    }
+
+    QMap<Product::Ptr, double> material = item->material();
+    QMap<Product::Ptr, double>::iterator it;
+
+    for (it = material.begin(); it != material.end(); ++it) {
+        if (!m_productValidator->validateIdentity(it.key()) || it.value() < 0) {
+            qCDebug(lcValidation()) << "materials must be valid";
+            return false;
+        }
     }
 
     return true;

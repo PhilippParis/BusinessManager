@@ -153,6 +153,11 @@ void BillItem::removeMaterial(const Product::Ptr product)
 {
     m_material.remove(product);
 }
+QMap<Product::Ptr, double> BillItem::material() const
+{
+    return m_material;
+}
+
 
 
 

@@ -49,6 +49,8 @@ public:
     void addMaterial(const Product::Ptr product, double quantity);
     void removeMaterial(const Product::Ptr product);
 
+    QMap<Product::Ptr, double> material() const;
+
 private:
     int m_id = -1;
     double m_workingHours = 0.0;

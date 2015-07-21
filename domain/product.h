@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <QString>
+#include <QMetaType>
 
 class Product
 {
@@ -39,13 +40,14 @@ public:
 
 private:
     int m_id = -1;
-    int m_stock;
-    double m_costPerUnit;
-    double m_pricePerUnit;
+    int m_stock = 0;
+    double m_costPerUnit = 0.0;
+    double m_pricePerUnit = 0.0;
     QString m_name;
-    QString m_type;
+    QString m_type = "";
     QString m_unit;
-    QString m_desc;
+    QString m_desc = "";
 };
+Q_DECLARE_METATYPE(Product::Ptr)
 
 #endif // PRODUCT_H
