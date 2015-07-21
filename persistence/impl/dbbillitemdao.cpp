@@ -8,12 +8,14 @@ DBBillItemDAO::DBBillItemDAO(QSqlDatabase db, Validator<BillItem::Ptr>::Ptr vali
 {
 }
 
-bool DBBillItemDAO::create(BillItem::Ptr item)
+void DBBillItemDAO::create(BillItem::Ptr item)
 {
     qCDebug(lcPersistence) << "Entering DBBillItemDAO::create with param " + item->toString();
 
-    if (!m_validator->validateForCreate(item)) {
-        return false;
+    try {
+        m_validator->validateForCreate(item);
+    } catch (ValidationException *e) {
+        throw new PersistenceException(e);
     }
 
     QSqlQuery insertQuery(m_database);
@@ -30,20 +32,22 @@ bool DBBillItemDAO::create(BillItem::Ptr item)
 
     if (!insertQuery.exec()) {
         qCCritical(lcPersistence) << "DBBillItemDAO::create failed: " + insertQuery.lastError().text();
-        return false;
+        throw new PersistenceException("DBBillItemDAO::create failed: " + insertQuery.lastError().text());
     }
 
     item->setId(insertQuery.lastInsertId().toInt());
 
-    return updateAssocTable(item);
+    updateAssocTable(item);
 }
 
-bool DBBillItemDAO::update(BillItem::Ptr item)
+void DBBillItemDAO::update(BillItem::Ptr item)
 {
     qCDebug(lcPersistence) << "Entering DBBillItemDAO::update with param " + item->toString();
 
-    if (!m_validator->validateForUpdate(item)) {
-        return false;
+    try {
+        m_validator->validateForUpdate(item);
+    } catch (ValidationException *e) {
+        throw new PersistenceException(e);
     }
 
     QSqlQuery updateQuery(m_database);
@@ -66,23 +70,25 @@ bool DBBillItemDAO::update(BillItem::Ptr item)
 
     if (!updateQuery.exec()) {
         qCCritical(lcPersistence) << "DBBillItemDAO::update failed:" + updateQuery.lastError().text();
-        return false;
+        throw new PersistenceException("DBBillItemDAO::update failed:" + updateQuery.lastError().text());
     }
 
     if (updateQuery.numRowsAffected() == 0) {
         qCDebug(lcPersistence) << "DBBillItemDAO::update failed: dataset not found";
-        return false;
+        throw new PersistenceException("DBBillItemDAO::update failed: dataset not found");
     }
 
-    return updateAssocTable(item);
+    updateAssocTable(item);
 }
 
-bool DBBillItemDAO::remove(BillItem::Ptr item)
+void DBBillItemDAO::remove(BillItem::Ptr item)
 {
     qCDebug(lcPersistence) << "Entering DBBillItemDAO::remove with param " + item->toString();
 
-    if (!m_validator->validateIdentity(item)) {
-        return false;
+    try {
+        m_validator->validateIdentity(item);
+    } catch (ValidationException *e) {
+        throw new PersistenceException(e);
     }
 
     QSqlQuery removeQuery(m_database);
@@ -91,15 +97,13 @@ bool DBBillItemDAO::remove(BillItem::Ptr item)
 
     if (!removeQuery.exec()) {
         qCCritical(lcPersistence) << "DBBillItemDAO::remove failed:" + removeQuery.lastError().text();
-        return false;
+        throw new PersistenceException("DBBillItemDAO::remove failed:" + removeQuery.lastError().text());
     }
 
     if (removeQuery.numRowsAffected() == 0) {
         qCDebug(lcPersistence) << "DBBillItemDAO::remove failed: dataset not found";
-        return false;
+        throw new PersistenceException("DBBillItemDAO::remove failed: dataset not found");
     }
-
-    return true;
 }
 
 BillItem::Ptr DBBillItemDAO::get(int id)
@@ -112,12 +116,12 @@ BillItem::Ptr DBBillItemDAO::get(int id)
 
     if (!query.exec()) {
         qCCritical(lcPersistence) << "retrieving billItem failed" + query.lastError().text();
-        return nullptr;
+        throw new PersistenceException("retrieving billItem failed" + query.lastError().text());
     }
 
     if (!query.next()) {
         qCDebug(lcPersistence) << "no billItem with id'" + QString::number(id) + "' found";
-        return nullptr;
+        throw new PersistenceException("no billItem with id'" + QString::number(id) + "' found");
     }
 
     return parseBillItem(query.record());
@@ -133,7 +137,7 @@ QList<BillItem::Ptr> DBBillItemDAO::getAll()
 
     if (!query.exec()) {
         qCCritical(lcPersistence) << "retrieving billItems failed" + query.lastError().text();
-        return items;
+        throw new PersistenceException("retrieving billItems failed" + query.lastError().text());
     }
 
     while(query.next()) {
@@ -164,7 +168,7 @@ BillItem::Ptr DBBillItemDAO::parseBillItem(QSqlRecord record)
 
     if (!query.exec()) {
         qCCritical(lcPersistence) << "retrieving product-item assocs failed" + query.lastError().text();
-        return false;
+        throw new PersistenceException("retrieving product-item assocs failed" + query.lastError().text());
     }
 
     while(query.next()) {
@@ -175,7 +179,7 @@ BillItem::Ptr DBBillItemDAO::parseBillItem(QSqlRecord record)
     return item;
 }
 
-bool DBBillItemDAO::updateAssocTable(BillItem::Ptr item)
+void DBBillItemDAO::updateAssocTable(BillItem::Ptr item)
 {
     qCDebug(lcPersistence) << "Entering DBBillItemDAO::updateAssocTable with param " + item->toString();
 
@@ -186,7 +190,7 @@ bool DBBillItemDAO::updateAssocTable(BillItem::Ptr item)
 
     if (!query.exec()) {
         qCCritical(lcPersistence) << "removing old product-item assocs failed" + query.lastError().text();
-        return false;
+        throw new PersistenceException("removing old product-item assocs failed" + query.lastError().text());
     }
 
     QSqlQuery insertQuery(m_database);
@@ -202,10 +206,8 @@ bool DBBillItemDAO::updateAssocTable(BillItem::Ptr item)
 
         if (!insertQuery.exec()) {
             qCCritical(lcPersistence) << "adding product-item assoc failed" + insertQuery.lastError().text();
-            return false;
+            throw new PersistenceException("adding product-item assocs failed" + insertQuery.lastError().text());
         }
     }
-
-    return true;
 }
 

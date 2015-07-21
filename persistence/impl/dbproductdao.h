@@ -16,9 +16,9 @@ public:
 
     Product::Ptr get(int id) override;
     QList<Product::Ptr> getAll() override;
-    bool create(Product::Ptr item) override;
-    bool update(Product::Ptr item) override;
-    bool remove(Product::Ptr item) override;
+    void create(Product::Ptr item) override;
+    void update(Product::Ptr item) override;
+    void remove(Product::Ptr item) override;
 
 private:
     Product::Ptr parseProduct(QSqlRecord record);

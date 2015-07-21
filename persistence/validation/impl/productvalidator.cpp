@@ -5,38 +5,48 @@ ProductValidator::ProductValidator()
 
 }
 
-bool ProductValidator::validateForCreate(Product::Ptr item)
+void ProductValidator::validateForCreate(Product::Ptr item)
 {
-    return item != nullptr && validateMandatoryFields(item);
+    if (item == nullptr) {
+        throw new ValidationException("customer must not be null");
+    }
+
+    validateMandatoryFields(item);
 }
 
-bool ProductValidator::validateForUpdate(Product::Ptr item)
+void ProductValidator::validateForUpdate(Product::Ptr item)
 {
-    return item != nullptr && validateMandatoryFields(item) && validateIdentity(item);
+    if (item == nullptr) {
+        throw new ValidationException("customer must not be null");
+    }
+
+    validateMandatoryFields(item);
+    validateIdentity(item);
 }
 
-bool ProductValidator::validateIdentity(Product::Ptr item)
+void ProductValidator::validateIdentity(Product::Ptr item)
 {
-    return item != nullptr && item->id() >= 0;
+    if (item == nullptr) {
+        throw new ValidationException("customer must not be null");
+    }
+
+    if (item->id() < 0) {
+        throw new ValidationException("customer must have a valid id");
+    }
 }
 
-bool ProductValidator::validateMandatoryFields(Product::Ptr item)
+void ProductValidator::validateMandatoryFields(Product::Ptr item)
 {
     if (item->name().isEmpty()) {
-        qCDebug(lcValidation()) << "name must not be emtpy";
-        return false;
+        throw new ValidationException("name must not be empty");
     }
     if (item->costPerUnit() < 0) {
-        qCDebug(lcValidation()) << "cost must not be negative";
-        return false;
+        throw new ValidationException("cost must not be negative");
     }
     if (item->pricePerUnit() < 0) {
-        qCDebug(lcValidation()) << "price must not be negative";
-        return false;
+        throw new ValidationException("price must not be negative");
     }
     if (item->unit().isEmpty()) {
-        qCDebug(lcValidation()) << "unit must not be empty";
-        return false;
+        throw new ValidationException("unit must not be empty");
     }
-    return true;
 }

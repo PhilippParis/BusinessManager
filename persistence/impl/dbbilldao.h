@@ -18,9 +18,9 @@ public:
 
     Bill::Ptr get(int id) override;
     QList<Bill::Ptr> getAll() override;
-    bool create(Bill::Ptr item) override;
-    bool update(Bill::Ptr item) override;
-    bool remove(Bill::Ptr item) override;
+    void create(Bill::Ptr item) override;
+    void update(Bill::Ptr item) override;
+    void remove(Bill::Ptr item) override;
 
 private:
     Bill::Ptr parseBill(QSqlRecord record);

@@ -14,12 +14,12 @@ class BillItemValidator : public Validator<BillItem::Ptr>
 public:
     BillItemValidator();
 
-    bool validateForCreate(BillItem::Ptr item) override;
-    bool validateForUpdate(BillItem::Ptr item) override;
-    bool validateIdentity(BillItem::Ptr item) override;
+    void validateForCreate(BillItem::Ptr item) override;
+    void validateForUpdate(BillItem::Ptr item) override;
+    void validateIdentity(BillItem::Ptr item) override;
 
 private:
-    bool validateMandatoryFields(BillItem::Ptr item);
+    void validateMandatoryFields(BillItem::Ptr item);
 
 private:
     Validator<Bill::Ptr>::Ptr m_billValidator;

@@ -45,13 +45,17 @@ void ProductDAOTest::insertTest()
     product->setUnit(unit);
     product->setDesc(desc);
 
-    QCOMPARE(m_productDAO->create(product), result);
-
-    if(result) {
+    try {
+        m_productDAO->create(product);
         QVERIFY(product->id() >= 0);
 
         Product::Ptr productFromData = m_productDAO->get(product->id());
         QVERIFY(product->equals(productFromData));
+    } catch (PersistenceException *e) {
+        delete e;
+        if(result) {
+            QFAIL("should not throw exception");
+        }
     }
 }
 
@@ -93,7 +97,7 @@ void ProductDAOTest::updateTest()
     product->setUnit("unit");
     product->setDesc("desc");
 
-    QVERIFY(m_productDAO->create(product));
+    m_productDAO->create(product);
     QVERIFY(product->id() >= 0);
     Product::Ptr productFromData = m_productDAO->get(product->id());
     QVERIFY(product->equals(productFromData));
@@ -106,11 +110,15 @@ void ProductDAOTest::updateTest()
     product->setUnit(unit);
     product->setDesc(desc);
 
-    QCOMPARE(m_productDAO->update(product), result);
-
-    if(result) {
+    try {
+        m_productDAO->update(product);
         productFromData = m_productDAO->get(product->id());
         QVERIFY(product->equals(productFromData));
+    } catch (PersistenceException *e) {
+        delete e;
+        if(result) {
+            QFAIL("should not throw exception");
+        }
     }
 }
 
@@ -128,12 +136,21 @@ void ProductDAOTest::updateWithInvalidIDTest()
 
     // get not used id
     int id = 0;
-    while(m_productDAO->get(id) != nullptr) {
-        id++;
+    try {
+        while(true) {
+            m_productDAO->get(++id);
+        }
+    } catch (PersistenceException *e) {
+        delete e;
     }
     product->setId(id);
 
-    QCOMPARE(m_productDAO->update(product), false);
+    try {
+        m_productDAO->update(product);
+        QFAIL("should throw exception");
+    } catch (PersistenceException *e) {
+        delete e;
+    }
 }
 
 void ProductDAOTest::removeTestWithValidIDShouldPass()
@@ -148,13 +165,13 @@ void ProductDAOTest::removeTestWithValidIDShouldPass()
     product->setUnit("unit");
     product->setDesc("desc");
 
-    QVERIFY(m_productDAO->create(product));
+    m_productDAO->create(product);
     QVERIFY(product->id() >= 0);
 
     int prevDataSetCount = m_productDAO->getAll().size();
 
     // WHEN / THEN
-    QCOMPARE(m_productDAO->remove(product), true);
+    m_productDAO->remove(product);
     QCOMPARE(m_productDAO->getAll().size(), prevDataSetCount - 1);
 }
 
@@ -165,13 +182,22 @@ void ProductDAOTest::removeTestWithInValidIDShouldFail()
 
     // get not used id
     int id = 0;
-    while(m_productDAO->get(id) != nullptr) {
-        id++;
+    try {
+        while(true) {
+            m_productDAO->get(++id);
+        }
+    } catch (PersistenceException *e) {
+        delete e;
     }
     product->setId(id);
 
     // WHEN / THEN
-    QCOMPARE(m_productDAO->remove(product), false);
+    try {
+        m_productDAO->remove(product);
+        QFAIL("should throw exception");
+    } catch (PersistenceException *e) {
+        delete e;
+    }
 }
 
 void ProductDAOTest::getAllTest()
@@ -189,7 +215,7 @@ void ProductDAOTest::getAllTest()
     product->setDesc("desc");
 
     // WHEN / THEN
-    QVERIFY(m_productDAO->create(product));
+    m_productDAO->create(product);
     QVERIFY(product->id() >= 0);
 
     QCOMPARE(m_productDAO->getAll().size(), prevDataSetCount + 1);

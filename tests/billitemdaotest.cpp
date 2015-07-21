@@ -18,7 +18,7 @@ void BillItemDAOTest::initTestCase()
     customer->setSurname("surname");
     customer->setTitle("title");
     customer->setOrganisation("org");
-    QVERIFY(m_customerDAO->create(customer));
+    m_customerDAO->create(customer);
     QVERIFY(customer->id() >= 0);
 
     // create dummy products
@@ -29,7 +29,7 @@ void BillItemDAOTest::initTestCase()
     m_validProduct->setName("product");
     m_validProduct->setUnit("unit");
 
-    QVERIFY(m_productDAO->create(m_validProduct));
+    m_productDAO->create(m_validProduct);
     QVERIFY(m_validProduct->id() >= 0);
 
     // create dummy bill
@@ -38,7 +38,7 @@ void BillItemDAOTest::initTestCase()
     m_validBill->setCustomer(customer);
     m_validBill->setPayed(false);
     m_validBill->setDate(QDate::currentDate());
-    QVERIFY(m_billDAO->create(m_validBill));
+    m_billDAO->create(m_validBill);
     QVERIFY(m_validBill->id() >= 0);
 }
 
@@ -115,13 +115,17 @@ void BillItemDAOTest::insertTest()
         item->addMaterial(it.key(), it.value());
     }
 
-    QCOMPARE(m_billItemDAO->create(item), result);
-
-    if(result) {
+    try {
+        m_billItemDAO->create(item);
         QVERIFY(item->id() >= 0);
         BillItem::Ptr itemFromData = m_billItemDAO->get(item->id());
 
         QVERIFY(item->equals(itemFromData));
+    } catch (PersistenceException *e) {
+        delete e;
+        if(result) {
+            QFAIL("should not throw exception");
+        }
     }
 }
 
@@ -189,14 +193,14 @@ void BillItemDAOTest::updateTest()
     product1->setName("product1");
     product1->setUnit("unit1");
 
-    QVERIFY(m_productDAO->create(product1));
+    m_productDAO->create(product1);
     QVERIFY(product1->id() >= 0);
 
     Product::Ptr product2 = std::make_shared<Product>();
     product2->setName("product2");
     product2->setUnit("unit2");
 
-    QVERIFY(m_productDAO->create(product2));
+    m_productDAO->create(product2);
     QVERIFY(product2->id() >= 0);
 
     // create bill item
@@ -212,7 +216,7 @@ void BillItemDAOTest::updateTest()
     item->addMaterial(product1, 1.2);
     item->addMaterial(product2, 2.4);
 
-    QVERIFY(m_billItemDAO->create(item));
+    m_billItemDAO->create(item);
     QVERIFY(item->id() >= 0);
 
     // WHEN / THEN
@@ -230,11 +234,15 @@ void BillItemDAOTest::updateTest()
         item->addMaterial(it.key(), it.value());
     }
 
-    QCOMPARE(m_billItemDAO->update(item), result);
-
-    if(result) {
+    try {
+        m_billItemDAO->update(item);
         BillItem::Ptr itemFromData = m_billItemDAO->get(item->id());
         QVERIFY(item->equals(itemFromData));
+    } catch (PersistenceException *e) {
+        delete e;
+        if(result) {
+            QFAIL("should not throw exception");
+        }
     }
 }
 
@@ -252,12 +260,21 @@ void BillItemDAOTest::updateWithInvalidIDTest()
 
     // get not used id
     int id = 0;
-    while(m_billItemDAO->get(id) != nullptr) {
-        id++;
+    try {
+        while(true) {
+            m_billItemDAO->get(++id);
+        }
+    } catch (PersistenceException *e) {
+        delete e;
     }
     item->setId(id);
 
-    QCOMPARE(m_billItemDAO->update(item), false);
+    try {
+        m_billItemDAO->update(item);
+        QFAIL("should throw exception");
+    } catch (PersistenceException *e) {
+        delete e;
+    }
 }
 
 void BillItemDAOTest::removeTestWithValidIDShouldPass()
@@ -273,13 +290,13 @@ void BillItemDAOTest::removeTestWithValidIDShouldPass()
     item->setUnit("unit");
     item->setBill(m_validBill);
 
-    QVERIFY(m_billItemDAO->create(item));
+    m_billItemDAO->create(item);
     QVERIFY(item->id() >= 0);
 
     int prevDataSetCount = m_billItemDAO->getAll().size();
 
     // WHEN / THEN
-    QCOMPARE(m_billItemDAO->remove(item), true);
+    m_billItemDAO->remove(item);
     QCOMPARE(m_billItemDAO->getAll().size(), prevDataSetCount - 1);
 }
 
@@ -289,13 +306,22 @@ void BillItemDAOTest::removeTestWithInValidIDShouldFail()
     BillItem::Ptr item = std::make_shared<BillItem>();
     // get not used id
     int id = 0;
-    while(m_billItemDAO->get(id) != nullptr) {
-        id++;
+    try {
+        while(true) {
+            m_billItemDAO->get(++id);
+        }
+    } catch (PersistenceException *e) {
+        delete e;
     }
     item->setId(id);
 
     // WHEN / THEN
-    QCOMPARE(m_billItemDAO->remove(item), false);
+    try {
+        m_billItemDAO->remove(item);
+        QFAIL("should throw exception");
+    } catch (PersistenceException *e) {
+        delete e;
+    }
 }
 
 void BillItemDAOTest::getAllTest()
@@ -313,7 +339,7 @@ void BillItemDAOTest::getAllTest()
     item->setUnit("unit");
     item->setBill(m_validBill);
 
-    QVERIFY(m_billItemDAO->create(item));
+    m_billItemDAO->create(item);
     QVERIFY(item->id() >= 0);
 
     QCOMPARE(m_billItemDAO->getAll().size(), prevDataSetCount + 1);

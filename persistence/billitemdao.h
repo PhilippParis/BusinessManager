@@ -2,6 +2,7 @@
 #define BILLITEMDAO_H
 
 #include "domain/billitem.h"
+#include "persistence/persistenceexception.h"
 
 class BillItemDAO
 {
@@ -16,21 +17,21 @@ public:
      * @param item item to write
      * @return true if the data was written succesfully
      */
-    virtual bool create(BillItem::Ptr item) = 0;
+    virtual void create(BillItem::Ptr item) = 0;
 
     /**
      * @brief updates the item data in the underlying data source
      * @param item data to update
      * @return true if the data was updated successfully
      */
-    virtual bool update(BillItem::Ptr item) = 0;
+    virtual void update(BillItem::Ptr item) = 0;
 
     /**
      * @brief removes the item from the underlying data source
      * @param item item to remove
      * @return true if the data was removed successfully
      */
-    virtual bool remove(BillItem::Ptr item) = 0;
+    virtual void remove(BillItem::Ptr item) = 0;
 
     /**
      * @param id id of the item to retrieve

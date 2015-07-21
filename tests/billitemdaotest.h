@@ -2,7 +2,7 @@
 #define BILLITEMDAOTEST_H
 
 #include <QObject>
-#include <QtTest/QtTest>
+#include <QTest>
 
 #include "persistence/impl/dbbillitemdao.h"
 #include "persistence/impl/dbbilldao.h"

@@ -13,12 +13,12 @@ class CustomerValidator : public Validator<Customer::Ptr>
 public:
     CustomerValidator();
 
-    bool validateForCreate(Customer::Ptr item) override;
-    bool validateForUpdate(Customer::Ptr item) override;
-    bool validateIdentity(Customer::Ptr item) override;
+    void validateForCreate(Customer::Ptr item) override;
+    void validateForUpdate(Customer::Ptr item) override;
+    void validateIdentity(Customer::Ptr item) override;
 
 private:
-    bool validateMandatoryFields(Customer::Ptr item);
+    void validateMandatoryFields(Customer::Ptr item);
 };
 
 #endif // CUSTOMERVALIDATOR_H

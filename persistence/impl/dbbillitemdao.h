@@ -18,13 +18,13 @@ public:
 public:
     BillItem::Ptr get(int id) override;
     QList<BillItem::Ptr> getAll() override;
-    bool create(BillItem::Ptr item) override;
-    bool update(BillItem::Ptr item) override;
-    bool remove(BillItem::Ptr item) override;
+    void create(BillItem::Ptr item) override;
+    void update(BillItem::Ptr item) override;
+    void remove(BillItem::Ptr item) override;
 
 private:
     BillItem::Ptr parseBillItem(QSqlRecord record);
-    bool updateAssocTable(BillItem::Ptr item);
+    void updateAssocTable(BillItem::Ptr item);
 
 private:
     QSqlDatabase m_database;

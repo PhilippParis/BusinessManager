@@ -17,9 +17,9 @@ public:
 
     Customer::Ptr get(int id) override;
     QList<Customer::Ptr> getAll() override;
-    bool create(Customer::Ptr item) override;
-    bool update(Customer::Ptr item) override;
-    bool remove(Customer::Ptr item) override;
+    void create(Customer::Ptr item) override;
+    void update(Customer::Ptr item) override;
+    void remove(Customer::Ptr item) override;
 
 private:
     Customer::Ptr parseCustomer(QSqlRecord record);

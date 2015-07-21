@@ -4,8 +4,9 @@
 #include <memory>
 #include <QObject>
 #include <QSqlDatabase>
-#include <QtTest/QtTest>
+#include <QTest>
 
+#include "persistence/persistenceexception.h"
 #include "persistence/databasesingleton.h"
 #include "persistence/validation/impl/customervalidator.h"
 #include "persistence/impl/dbcustomerdao.h"

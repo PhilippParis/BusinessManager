@@ -17,12 +17,12 @@ Customer::Ptr DBCustomerDAO::get(int id)
 
     if (!query.exec()) {
         qCCritical(lcPersistence) << "retrieving customer failed" + query.lastError().text();
-        return nullptr;
+        throw new PersistenceException("retrieving customer failed" + query.lastError().text());
     }
 
     if (!query.next()) {
         qCDebug(lcPersistence) << "no customer with id'" + QString::number(id) + "' found";
-        return nullptr;
+        throw new PersistenceException("no customer with id'" + QString::number(id) + "' found");
     }
 
     return parseCustomer(query.record());
@@ -38,7 +38,7 @@ QList<Customer::Ptr> DBCustomerDAO::getAll()
 
     if (!query.exec()) {
         qCCritical(lcPersistence) << "retrieving customers failed" + query.lastError().text();
-        return items;
+        throw new PersistenceException("retrieving customer failed" + query.lastError().text());
     }
 
     while(query.next()) {
@@ -48,12 +48,14 @@ QList<Customer::Ptr> DBCustomerDAO::getAll()
     return items;
 }
 
-bool DBCustomerDAO::create(Customer::Ptr item)
+void DBCustomerDAO::create(Customer::Ptr item)
 {
     qCDebug(lcPersistence) << "Entering DBCustomerDAO::create with param " + item->toString();
 
-    if (!m_validator->validateForCreate(item)) {
-        return false;
+    try {
+        m_validator->validateForCreate(item);
+    } catch (ValidationException *e) {
+        throw new PersistenceException(e);
     }
 
     QSqlQuery insertQuery(m_database);
@@ -69,19 +71,20 @@ bool DBCustomerDAO::create(Customer::Ptr item)
 
     if (!insertQuery.exec()) {
         qCCritical(lcPersistence) << "DBCustomerDAO::create failed: " + insertQuery.lastError().text();
-        return false;
+        throw new PersistenceException("DBCustomerDAO::create failed: " + insertQuery.lastError().text());
     }
 
     item->setId(insertQuery.lastInsertId().toInt());
-    return true;
 }
 
-bool DBCustomerDAO::update(Customer::Ptr item)
+void DBCustomerDAO::update(Customer::Ptr item)
 {
     qCDebug(lcPersistence) << "Entering DBCustomerDAO::update with param " + item->toString();
 
-    if (!m_validator->validateForUpdate(item)) {
-        return false;
+    try {
+        m_validator->validateForUpdate(item);
+    } catch (ValidationException *e) {
+        throw new PersistenceException(e);
     }
 
     QSqlQuery updateQuery(m_database);
@@ -106,23 +109,23 @@ bool DBCustomerDAO::update(Customer::Ptr item)
 
     if (!updateQuery.exec()) {
         qCCritical(lcPersistence) << "DBCustomerDAO::update failed:" + updateQuery.lastError().text();
-        return false;
+        throw new PersistenceException("DBCustomerDAO::update failed:" + updateQuery.lastError().text());
     }
 
     if (updateQuery.numRowsAffected() == 0) {
         qCDebug(lcPersistence) << "DBCustomerDAO::update dataset not found";
-        return false;
+        throw new PersistenceException("DBCustomerDAO::update dataset not found");
     }
-
-    return true;
 }
 
-bool DBCustomerDAO::remove(Customer::Ptr item)
+void DBCustomerDAO::remove(Customer::Ptr item)
 {
     qCDebug(lcPersistence) << "Entering DBCustomerDAO::remove with param " + item->toString();
 
-    if (!m_validator->validateIdentity(item)) {
-        return false;
+    try {
+        m_validator->validateIdentity(item);
+    } catch (ValidationException *e) {
+        throw new PersistenceException(e);
     }
 
     QSqlQuery removeQuery(m_database);
@@ -131,15 +134,13 @@ bool DBCustomerDAO::remove(Customer::Ptr item)
 
     if (!removeQuery.exec()) {
         qCCritical(lcPersistence) << "DBCustomerDAO::remove failed:" + removeQuery.lastError().text();
-        return false;
+        throw new PersistenceException("DBCustomerDAO::remove failed:" + removeQuery.lastError().text());
     }
 
     if (removeQuery.numRowsAffected() == 0) {
         qCDebug(lcPersistence) << "DBCustomerDAO::remove dataset not found";
-        return false;
+        throw new PersistenceException("DBCustomerDAO::remove dataset not found");
     }
-
-    return true;
 }
 
 Customer::Ptr DBCustomerDAO::parseCustomer(QSqlRecord record)

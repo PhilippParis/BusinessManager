@@ -4,6 +4,7 @@
 #include <QList>
 
 #include "domain/product.h"
+#include "persistence/persistenceexception.h"
 
 class ProductDAO
 {
@@ -18,21 +19,21 @@ public:
      * @param item item to write
      * @return true if the data was written succesfully
      */
-    virtual bool create(Product::Ptr item) = 0;
+    virtual void create(Product::Ptr item) = 0;
 
     /**
      * @brief updates the item data in the underlying data source
      * @param item data to update
      * @return true if the data was updated successfully
      */
-    virtual bool update(Product::Ptr item) = 0;
+    virtual void update(Product::Ptr item) = 0;
 
     /**
      * @brief removes the item from the underlying data source
      * @param item item to remove
      * @return true if the data was removed successfully
      */
-    virtual bool remove(Product::Ptr item) = 0;
+    virtual void remove(Product::Ptr item) = 0;
 
     /**
      * @param id id of the item to retrieve

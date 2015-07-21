@@ -16,7 +16,7 @@ void BillDAOTest::initTestCase()
     m_validCustomer->setStreet("street");
     m_validCustomer->setMail("mail");
 
-    QCOMPARE(m_customerDAO->create(m_validCustomer), true);
+    m_customerDAO->create(m_validCustomer);
     QVERIFY(m_validCustomer->id() >= 0);
 }
 
@@ -52,13 +52,17 @@ void BillDAOTest::insertTest()
     bill->setDate(date);
     bill->setPayed(payed);
 
-    QCOMPARE(m_billDAO->create(bill), result);
-
-    if(result) {
+    try {
+        m_billDAO->create(bill);
         QVERIFY(bill->id() >= 0);
 
         Bill::Ptr billFromData = m_billDAO->get(bill->id());
         QVERIFY(bill->equals(billFromData));
+    } catch (PersistenceException *e) {
+        delete e;
+        if(result) {
+            QFAIL("should not throw exception");
+        }
     }
 }
 
@@ -96,7 +100,7 @@ void BillDAOTest::updateTest()
     bill->setDate(QDate::currentDate());
     bill->setPayed(true);
 
-    QVERIFY(m_billDAO->create(bill));
+    m_billDAO->create(bill);
     QVERIFY(bill->id() >= 0);
 
     // WHEN / THEN
@@ -105,11 +109,15 @@ void BillDAOTest::updateTest()
     bill->setDate(newDate);
     bill->setPayed(newPayed);
 
-    QCOMPARE(m_billDAO->update(bill), result);
-
-    if(result) {
+    try {
+        m_billDAO->update(bill);
         Bill::Ptr billFromData = m_billDAO->get(bill->id());
         QVERIFY(bill->equals(billFromData));
+    } catch (PersistenceException *e) {
+        delete e;
+        if(result) {
+            QFAIL("should not throw exception");
+        }
     }
 }
 
@@ -124,12 +132,22 @@ void BillDAOTest::updateWithInvalidIDTest()
 
     // get not used id
     int id = 0;
-    while(m_billDAO->get(id) != nullptr) {
-        id++;
+    try {
+        while(true) {
+            m_billDAO->get(++id);
+        }
+    } catch (PersistenceException *e) {
+        delete e;
     }
+
     bill->setId(id);
 
-    QCOMPARE(m_billDAO->update(bill), false);
+    try {
+        m_billDAO->update(bill);
+        QFAIL("should throw exception");
+    } catch (PersistenceException *e) {
+        delete e;
+    }
 }
 
 void BillDAOTest::removeTestWithValidIDShouldPass()
@@ -141,13 +159,13 @@ void BillDAOTest::removeTestWithValidIDShouldPass()
     bill->setDate(QDate::currentDate());
     bill->setPayed(true);
 
-    QVERIFY(m_billDAO->create(bill));
+    m_billDAO->create(bill);
     QVERIFY(bill->id() >= 0);
 
     int prevDataSetCount = m_billDAO->getAll().size();
 
     // WHEN / THEN
-    QCOMPARE(m_billDAO->remove(bill), true);
+    m_billDAO->remove(bill);
     QCOMPARE(m_billDAO->getAll().size(), prevDataSetCount - 1);
 }
 
@@ -158,13 +176,22 @@ void BillDAOTest::removeTestWithInValidIDShouldFail()
 
     // get not used id
     int id = 0;
-    while(m_billDAO->get(id) != nullptr) {
-        id++;
+    try {
+        while(true) {
+            m_billDAO->get(++id);
+        }
+    } catch (PersistenceException *e) {
+        delete e;
     }
     bill->setId(id);
 
     // WHEN / THEN
-    QCOMPARE(m_billDAO->remove(bill), false);
+    try {
+        m_billDAO->remove(bill);
+        QFAIL("should throw exception");
+    } catch (PersistenceException *e) {
+        delete e;
+    }
 }
 
 void BillDAOTest::getAllTest()
@@ -179,7 +206,7 @@ void BillDAOTest::getAllTest()
     bill->setPayed(true);
 
     // WHEN / THEN
-    QVERIFY(m_billDAO->create(bill));
+    m_billDAO->create(bill);
     QVERIFY(bill->id() >= 0);
 
     QCOMPARE(m_billDAO->getAll().size(), prevDataSetCount + 1);

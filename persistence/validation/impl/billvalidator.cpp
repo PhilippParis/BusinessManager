@@ -5,32 +5,42 @@ BillValidator::BillValidator()
     m_customerValidator = std::make_shared<CustomerValidator>();
 }
 
-bool BillValidator::validateForCreate(Bill::Ptr item)
+void BillValidator::validateForCreate(Bill::Ptr item)
 {
-    return item != nullptr && validateMandatoryFields(item);
+    if (item == nullptr) {
+        throw new ValidationException("bill must not be null");
+    }
+
+    validateMandatoryFields(item);
 }
 
-bool BillValidator::validateForUpdate(Bill::Ptr item)
+void BillValidator::validateForUpdate(Bill::Ptr item)
 {
-    return item != nullptr && validateMandatoryFields(item) && validateIdentity(item);
+    if (item == nullptr) {
+        throw new ValidationException("bill must not be null");
+    }
+
+    validateMandatoryFields(item);
+    validateIdentity(item);
 }
 
-bool BillValidator::validateIdentity(Bill::Ptr item)
+void BillValidator::validateIdentity(Bill::Ptr item)
 {
-    return item != nullptr && item->id() >= 0;
+    if (item == nullptr) {
+        throw new ValidationException("bill must not be null");
+    }
+
+    if (item->id() < 0) {
+        throw new ValidationException("bill must have a valid id");
+    }
 }
 
-bool BillValidator::validateMandatoryFields(Bill::Ptr item)
+void BillValidator::validateMandatoryFields(Bill::Ptr item)
 {
     if (item->billNumber() <= 0) {
-        qCDebug(lcValidation) << "bill number must be > 0";
-        return false;
+        throw new ValidationException("bill number must not be negative");
     }
 
-    if (!m_customerValidator->validateIdentity(item->customer())) {
-        qCDebug(lcValidation()) << "customer must have a valid id";
-        return false;
-    }
-    return true;
+    m_customerValidator->validateIdentity(item->customer());
 }
 

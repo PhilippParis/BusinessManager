@@ -54,7 +54,10 @@ SOURCES += main.cpp\
     tests/customerdaotest.cpp \
     tests/billdaotest.cpp \
     tests/productdaotest.cpp \
-    persistence/validation/impl/productvalidator.cpp
+    persistence/validation/impl/productvalidator.cpp \
+    exception.cpp \
+    persistence/validation/validationexception.cpp \
+    persistence/persistenceexception.cpp
 
 HEADERS  += ui/mainwindow.h \
     domain/bill.h \
@@ -95,6 +98,9 @@ HEADERS  += ui/mainwindow.h \
     tests/customerdaotest.h \
     tests/billdaotest.h \
     tests/productdaotest.h \
-    persistence/validation/impl/productvalidator.h
+    persistence/validation/impl/productvalidator.h \
+    persistence/persistenceexception.h \
+    persistence/validation/validationexception.h \
+    exception.h
 
 FORMS    += ui/mainwindow.ui

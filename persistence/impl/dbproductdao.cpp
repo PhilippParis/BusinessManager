@@ -17,12 +17,12 @@ Product::Ptr DBProductDAO::get(int id)
 
     if (!query.exec()) {
         qCCritical(lcPersistence) << "retrieving product failed" + query.lastError().text();
-        return nullptr;
+        throw new PersistenceException("retrieving product failed" + query.lastError().text());
     }
 
     if (!query.next()) {
         qCDebug(lcPersistence) << "no product with id'" + QString::number(id) + "' found";
-        return nullptr;
+        throw new PersistenceException("no product with id'" + QString::number(id) + "' found");
     }
 
     return parseProduct(query.record());
@@ -38,7 +38,7 @@ QList<Product::Ptr> DBProductDAO::getAll()
 
     if (!query.exec()) {
         qCCritical(lcPersistence) << "retrieving product failed" + query.lastError().text();
-        return items;
+        throw new PersistenceException("retrieving product failed" + query.lastError().text());
     }
 
     while(query.next()) {
@@ -48,12 +48,14 @@ QList<Product::Ptr> DBProductDAO::getAll()
     return items;
 }
 
-bool DBProductDAO::create(Product::Ptr item)
+void DBProductDAO::create(Product::Ptr item)
 {
     qCDebug(lcPersistence) << "Entering DBProductDAO::create with param " + item->toString();
 
-    if (!m_validator->validateForCreate(item)) {
-        return false;
+    try {
+        m_validator->validateForCreate(item);
+    } catch (ValidationException *e) {
+        throw new PersistenceException(e);
     }
 
     QSqlQuery insertQuery(m_database);
@@ -69,19 +71,20 @@ bool DBProductDAO::create(Product::Ptr item)
 
     if (!insertQuery.exec()) {
         qCCritical(lcPersistence) << "DBProductDAO::create failed: " + insertQuery.lastError().text();
-        return false;
+        throw new PersistenceException("DBProductDAO::create failed: " + insertQuery.lastError().text());
     }
 
     item->setId(insertQuery.lastInsertId().toInt());
-    return true;
 }
 
-bool DBProductDAO::update(Product::Ptr item)
+void DBProductDAO::update(Product::Ptr item)
 {
     qCDebug(lcPersistence) << "Entering DBProductDAO::update with param " + item->toString();
 
-    if (!m_validator->validateForUpdate(item)) {
-        return false;
+    try {
+        m_validator->validateForUpdate(item);
+    } catch (ValidationException *e) {
+        throw new PersistenceException(e);
     }
 
     QSqlQuery updateQuery(m_database);
@@ -106,23 +109,23 @@ bool DBProductDAO::update(Product::Ptr item)
 
     if (!updateQuery.exec()) {
         qCCritical(lcPersistence) << "DBProductDAO::update failed:" + updateQuery.lastError().text();
-        return false;
+        throw new PersistenceException("DBProductDAO::update failed: " + updateQuery.lastError().text());
     }
 
     if (updateQuery.numRowsAffected() == 0) {
         qCDebug(lcPersistence) << "DBProductDAO::update failed: dataset not found";
-        return false;
+        throw new PersistenceException("DBProductDAO::update failed: dataset not found");
     }
-
-    return true;
 }
 
-bool DBProductDAO::remove(Product::Ptr item)
+void DBProductDAO::remove(Product::Ptr item)
 {
     qCDebug(lcPersistence) << "Entering DBProductDAO::remove with param " + item->toString();
 
-    if (!m_validator->validateIdentity(item)) {
-        return false;
+    try {
+        m_validator->validateIdentity(item);
+    } catch (ValidationException *e) {
+        throw new PersistenceException(e);
     }
 
     QSqlQuery removeQuery(m_database);
@@ -131,15 +134,13 @@ bool DBProductDAO::remove(Product::Ptr item)
 
     if (!removeQuery.exec()) {
         qCCritical(lcPersistence) << "DBProductDAO::remove failed:" + removeQuery.lastError().text();
-        return false;
+        throw new PersistenceException("DBProductDAO::remove failed: dataset not found");
     }
 
     if (removeQuery.numRowsAffected() == 0) {
         qCDebug(lcPersistence) << "DBProductDAO::remove failed: dataset not found";
-        return false;
+        throw new PersistenceException("DBProductDAO::remove failed: dataset not found");
     }
-
-    return true;
 }
 
 Product::Ptr DBProductDAO::parseProduct(QSqlRecord record)

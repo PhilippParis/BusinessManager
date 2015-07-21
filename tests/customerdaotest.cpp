@@ -52,14 +52,18 @@ void CustomerDAOTest::insertTest()
     customer->setMail(mail);
 
     // WHEN / THEN
-    QCOMPARE(m_customerDAO->create(customer), result);
-
-    if(result) {
-        // if inserting succeeded, check inserted data
+    try {
+        m_customerDAO->create(customer);
         QVERIFY(customer->id() >= 0);
 
         Customer::Ptr customerFromData = m_customerDAO->get(customer->id());
         QVERIFY(customer->equals(customerFromData));
+
+    } catch (PersistenceException *e) {
+        delete e;
+        if(result) {
+            QFAIL("should not throw exception");
+        }
     }
 }
 
@@ -108,7 +112,7 @@ void CustomerDAOTest::updateTest()
     customer->setStreet("street");
     customer->setMail("mail");
 
-    QCOMPARE(m_customerDAO->create(customer), true);
+    m_customerDAO->create(customer);
 
     QVERIFY(customer->id() >= 0);
 
@@ -121,11 +125,15 @@ void CustomerDAOTest::updateTest()
     customer->setStreet(newStreet);
     customer->setMail(newMail);
 
-    QCOMPARE(m_customerDAO->update(customer), result);
-
-    if(result) {
+    try {
+        m_customerDAO->update(customer);
         Customer::Ptr customerFromData = m_customerDAO->get(customer->id());
         QVERIFY(customer->equals(customerFromData));
+    } catch (PersistenceException *e) {
+        delete e;
+        if(result) {
+            QFAIL("should not throw exception");
+        }
     }
 }
 
@@ -143,12 +151,21 @@ void CustomerDAOTest::updateWithInvalidIDTest()
 
     // get not used id
     int id = 0;
-    while(m_customerDAO->get(id) != nullptr) {
-        id++;
+    try {
+        while(true) {
+            m_customerDAO->get(++id);
+        }
+    } catch (PersistenceException *e) {
+        delete e;
     }
     customer->setId(id);
 
-    QCOMPARE(m_customerDAO->update(customer), false);
+    try {
+        m_customerDAO->update(customer);
+        QFAIL("should throw exception");
+    } catch (PersistenceException *e) {
+        delete e;
+    }
 }
 
 void CustomerDAOTest::removeTestWithValidIDShouldPass()
@@ -163,13 +180,13 @@ void CustomerDAOTest::removeTestWithValidIDShouldPass()
     customer->setStreet("street");
     customer->setMail("mail");
 
-    QCOMPARE(m_customerDAO->create(customer), true);
+    m_customerDAO->create(customer);
     QVERIFY(customer->id() >= 0);
 
     int prevDataSetCount = m_customerDAO->getAll().size();
 
     // WHEN / THEN
-    QCOMPARE(m_customerDAO->remove(customer), true);
+    m_customerDAO->remove(customer);
     QCOMPARE(m_customerDAO->getAll().size(), prevDataSetCount - 1);
 }
 
@@ -187,13 +204,22 @@ void CustomerDAOTest::removeTestWithInValidIDShouldFail()
 
     // get not used id
     int id = 0;
-    while(m_customerDAO->get(id) != nullptr) {
-        id++;
+    try {
+        while(true) {
+            m_customerDAO->get(++id);
+        }
+    } catch (PersistenceException *e) {
+        delete e;
     }
     customer->setId(id);
 
     // WHEN / THEN
-    QCOMPARE(m_customerDAO->remove(customer), false);
+    try {
+        m_customerDAO->remove(customer);
+        QFAIL("should throw exception");
+    } catch (PersistenceException *e) {
+        delete e;
+    }
 }
 
 void CustomerDAOTest::getAllTest()
@@ -211,7 +237,7 @@ void CustomerDAOTest::getAllTest()
     customer->setMail("mail");
 
     // WHEN / THEN
-    QCOMPARE(m_customerDAO->create(customer), true);
+    m_customerDAO->create(customer);
     QVERIFY(customer->id() >= 0);
 
     QCOMPARE(m_customerDAO->getAll().size(), prevDataSetCount + 1);

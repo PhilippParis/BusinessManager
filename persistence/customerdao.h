@@ -2,6 +2,7 @@
 #define CUSTOMERDAO_H
 
 #include "domain/customer.h"
+#include "persistence/persistenceexception.h"
 
 class CustomerDAO
 {
@@ -14,23 +15,25 @@ public:
     /**
      * @brief writes \p item to the underlying data source
      * @param item item to write
-     * @return true if the data was written succesfully
+     * @throws PersistenceException if an error occurred
      */
-    virtual bool create(Customer::Ptr item) = 0;
+    virtual void create(Customer::Ptr item) = 0;
 
     /**
      * @brief updates the item data in the underlying data source
      * @param item data to update
-     * @return true if the data was updated successfully
+     * @throws PersistenceException if an error occurred or the dataset
+     *         to update was not found
      */
-    virtual bool update(Customer::Ptr item) = 0;
+    virtual void update(Customer::Ptr item) = 0;
 
     /**
      * @brief removes the item from the underlying data source
      * @param item item to remove
-     * @return true if the data was removed successfully
+     * @throws PersistenceException if an error occurred or the dataset
+     *         to remove was not found
      */
-    virtual bool remove(Customer::Ptr item) = 0;
+    virtual void remove(Customer::Ptr item) = 0;
 
     /**
      * @param id id of the item to retrieve
