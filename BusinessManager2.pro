@@ -56,7 +56,10 @@ SOURCES += main.cpp\
     exception.cpp \
     persistence/validation/validationexception.cpp \
     persistence/persistenceexception.cpp \
-    service/serviceexception.cpp
+    service/serviceexception.cpp \
+    ui/widgets/customerswidget.cpp \
+    ui/models/customermodel.cpp \
+    ui/dialogs/customerdialog.cpp
 
 HEADERS  += ui/mainwindow.h \
     domain/bill.h \
@@ -99,6 +102,11 @@ HEADERS  += ui/mainwindow.h \
     persistence/persistenceexception.h \
     persistence/validation/validationexception.h \
     exception.h \
-    service/serviceexception.h
+    service/serviceexception.h \
+    ui/widgets/customerswidget.h \
+    ui/models/customermodel.h \
+    ui/dialogs/customerdialog.h
 
-FORMS    += ui/mainwindow.ui
+FORMS    += ui/mainwindow.ui \
+    ui/widgets/customerswidget.ui \
+    ui/dialogs/customerdialog.ui

@@ -7,6 +7,7 @@
 class CustomerService
 {
 public:
+    typedef std::shared_ptr<CustomerService> Ptr;
     CustomerService();
 
     virtual void add(Customer::Ptr) = 0;

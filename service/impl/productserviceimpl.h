@@ -11,11 +11,11 @@ class ProductServiceImpl : public ProductService
 public:
     ProductServiceImpl(ProductDAO::Ptr productDAO, Validator<Product::Ptr>::Ptr productValidator);
 
-    virtual void add(Product::Ptr product) = 0;
-    virtual void update(Product::Ptr product) = 0;
-    virtual void remove(Product::Ptr product) = 0;
-    virtual Product::Ptr get(int id) = 0;
-    virtual QList<Product::Ptr> getAll() = 0;
+    void add(Product::Ptr product);
+    void update(Product::Ptr product);
+    void remove(Product::Ptr product);
+    Product::Ptr get(int id);
+    QList<Product::Ptr> getAll();
 
 private:
     ProductDAO::Ptr m_productDAO;

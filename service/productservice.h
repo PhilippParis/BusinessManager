@@ -7,6 +7,8 @@
 class ProductService
 {
 public:
+    typedef std::shared_ptr<ProductService> Ptr;
+
     ProductService();
 
     virtual void add(Product::Ptr product) = 0;
