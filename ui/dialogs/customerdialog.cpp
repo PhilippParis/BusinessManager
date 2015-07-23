@@ -1,10 +1,10 @@
 #include "customerdialog.h"
 #include "ui_customerdialog.h"
 
-CustomerDialog::CustomerDialog(QWidget *parent, Validator<Customer::Ptr>::Ptr validator) :
+CustomerDialog::CustomerDialog(QWidget *parent, CustomerService::Ptr customerService) :
     QDialog(parent),
     ui(new Ui::CustomerDialog),
-    m_validator(validator)
+    m_customerService(customerService)
 {
     ui->setupUi(this);
 }
@@ -60,14 +60,14 @@ void CustomerDialog::accept()
     Customer::Ptr customer = toDomainObject();
     try {
         if(m_openMode == Create) {
-            m_validator->validateForCreate(customer);
+            m_customerService->add(customer);
+            m_id = customer->id();
         } else {
-            m_validator->validateForUpdate(customer);
+            m_customerService->update(customer);
         }
-    } catch (ValidationException *e) {
+        QDialog::accept();
+    } catch (ServiceException *e) {
         QMessageBox::warning(this, "Invalid Data", e->what());
-        return;
+        delete e;
     }
-
-    QDialog::accept();
 }

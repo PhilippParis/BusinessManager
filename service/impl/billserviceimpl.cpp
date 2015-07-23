@@ -12,33 +12,30 @@ BillServiceImpl::BillServiceImpl(BillDAO::Ptr billDAO, BillItemDAO::Ptr billItem
 
 void BillServiceImpl::addBill(Bill::Ptr bill)
 {
-    m_billValidator->validateForCreate(bill);
-
     try {
+        m_billValidator->validateForCreate(bill);
         m_billDAO->create(bill);
-    } catch (PersistenceException *e) {
+    } catch (Exception *e) {
         throw new ServiceException(e);
     }
 }
 
 void BillServiceImpl::updateBill(Bill::Ptr bill)
 {
-    m_billValidator->validateForUpdate(bill);
-
     try {
+        m_billValidator->validateForUpdate(bill);
         m_billDAO->update(bill);
-    } catch (PersistenceException *e) {
+    } catch (Exception *e) {
         throw new ServiceException(e);
     }
 }
 
 void BillServiceImpl::removeBill(Bill::Ptr bill)
 {
-    m_billValidator->validateIdentity(bill);
-
     try {
-        m_billDAO->update(bill);
-    } catch (PersistenceException *e) {
+        m_billValidator->validateIdentity(bill);
+        m_billDAO->remove(bill);
+    } catch (Exception *e) {
         throw new ServiceException(e);
     }
 }
@@ -63,33 +60,30 @@ QList<Bill::Ptr> BillServiceImpl::getAllBills()
 
 void BillServiceImpl::addItem(BillItem::Ptr item)
 {
-    m_billItemValidator->validateForCreate(item);
-
     try {
+        m_billItemValidator->validateForCreate(item);
         m_billItemDAO->create(item);
-    } catch (PersistenceException *e) {
+    } catch (Exception *e) {
         throw new ServiceException(e);
     }
 }
 
 void BillServiceImpl::updateItem(BillItem::Ptr item)
 {
-    m_billItemValidator->validateForUpdate(item);
-
     try {
+        m_billItemValidator->validateForUpdate(item);
         m_billItemDAO->update(item);
-    } catch (PersistenceException *e) {
+    } catch (Exception *e) {
         throw new ServiceException(e);
     }
 }
 
 void BillServiceImpl::removeItem(BillItem::Ptr item)
 {
-    m_billItemValidator->validateIdentity(item);
-
     try {
+        m_billItemValidator->validateIdentity(item);
         m_billItemDAO->remove(item);
-    } catch (PersistenceException *e) {
+    } catch (Exception *e) {
         throw new ServiceException(e);
     }
 }

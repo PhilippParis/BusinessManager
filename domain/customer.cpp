@@ -10,6 +10,14 @@ Customer::~Customer()
 
 }
 
+QString Customer::fullName() const
+{
+    if(!m_title.isEmpty()) {
+        return m_title + " " + m_surname + " " + m_name;
+    }
+    return m_surname + " " + m_name;
+}
+
 QString Customer::title() const
 {
     return m_title;

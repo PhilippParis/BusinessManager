@@ -14,10 +14,14 @@
 #include "persistence/impl/dbproductdao.h"
 #include "persistence/impl/dbbillitemdao.h"
 #include "persistence/impl/dbbilldao.h"
+#include "persistence/impl/dbtemplatedao.h"
 
 #include "service/impl/customerserviceimpl.h"
 #include "service/impl/billserviceimpl.h"
 #include "service/impl/productserviceimpl.h"
+#include "service/impl/templateserviceimpl.h"
+
+#include "ui/dialogs/billdialog.h"
 
 namespace Ui {
 class MainWindow;
@@ -33,14 +37,18 @@ public:
 
 private slots:
 
+    void on_actionNewBill_triggered();
+
 private:
     void initWidgets();
 
 private:
     Ui::MainWindow *ui;
+
     CustomerService::Ptr m_customerService;
     BillService::Ptr m_billService;
     ProductService::Ptr m_productService;
+    TemplateService::Ptr m_templateService;
 
     Validator<Customer::Ptr>::Ptr m_customerValidator;
     Validator<Bill::Ptr>::Ptr m_billValidator;

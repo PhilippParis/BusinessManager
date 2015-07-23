@@ -13,6 +13,8 @@ public:
     Customer();
     ~Customer();
 
+    QString fullName() const;
+
     QString title() const;
     void setTitle(const QString &title);
 

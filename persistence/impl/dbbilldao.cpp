@@ -62,7 +62,7 @@ void DBBillDAO::create(Bill::Ptr item)
     insertQuery.prepare("INSERT INTO BILL VALUES(NULL, ?, ?, ?, ?, 0);");
 
     insertQuery.addBindValue(item->billNumber());
-    insertQuery.addBindValue(item->date().toJulianDay());
+    insertQuery.addBindValue(item->date().toString("dd.MM.yyyy"));
     insertQuery.addBindValue(item->payed());
     insertQuery.addBindValue(item->customer()->id());
 
@@ -93,7 +93,7 @@ void DBBillDAO::update(Bill::Ptr item)
                         "WHERE ID = ?;");
 
     updateQuery.addBindValue(item->billNumber());
-    updateQuery.addBindValue(item->date().toJulianDay());
+    updateQuery.addBindValue(item->date().toString("dd.MM.yyyy"));
     updateQuery.addBindValue(item->payed());
     updateQuery.addBindValue(item->customer()->id());
     updateQuery.addBindValue(item->id());
@@ -141,7 +141,7 @@ Bill::Ptr DBBillDAO::parseBill(QSqlRecord record)
     bill->setId(record.value("ID").toInt());
     bill->setBillNumber(record.value("NR").toInt());
     bill->setPayed(record.value("PAYED").toBool());
-    bill->setDate(QDate::fromJulianDay(record.value("DATE").toDouble()));
+    bill->setDate(QDate::fromString(record.value("DATE").toString(), "dd.MM.yyyy"));
     bill->setCustomer(m_customerDAO->get(record.value("CUSTOMER").toInt()));
 
     return bill;

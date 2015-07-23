@@ -5,7 +5,7 @@
 #include <QMessageBox>
 
 #include "domain/customer.h"
-#include "persistence/validation/validator.h"
+#include "service/customerservice.h"
 
 namespace Ui {
 class CustomerDialog;
@@ -16,7 +16,7 @@ class CustomerDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit CustomerDialog(QWidget *parent, Validator<Customer::Ptr>::Ptr validator);
+    explicit CustomerDialog(QWidget *parent, CustomerService::Ptr customerService);
     ~CustomerDialog();
 
     void prepareForCreate();
@@ -34,7 +34,7 @@ private:
 
     Ui::CustomerDialog *ui;
     int m_id = -1;
-    Validator<Customer::Ptr>::Ptr m_validator;
+    CustomerService::Ptr m_customerService;
     OpenMode m_openMode;
 };
 

@@ -63,7 +63,7 @@ void DatabaseSingleton::createTables(QSqlDatabase db)
    res = query.exec("CREATE TABLE IF NOT EXISTS BILL ( "
                     "ID INTEGER PRIMARY KEY NOT NULL, "
                     "NR INTEGER NOT NULL, "
-                    "DATE REAL NOT NULL, "
+                    "DATE VARCHAR(20) NOT NULL, "
                     "PAYED INTEGER NOT NULL, "
                     "CUSTOMER INTEGER NOT NULL REFERENCES CUSTOMER(ID), "
                     "DELETED INTEGER NOT NULL DEFAULT 0);");

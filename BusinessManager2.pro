@@ -58,8 +58,15 @@ SOURCES += main.cpp\
     persistence/persistenceexception.cpp \
     service/serviceexception.cpp \
     ui/widgets/customerswidget.cpp \
-    ui/models/customermodel.cpp \
-    ui/dialogs/customerdialog.cpp
+    ui/dialogs/customerdialog.cpp \
+    ui/widgets/billwidget.cpp \
+    ui/models/customertablemodel.cpp \
+    ui/models/billtablemodel.cpp \
+    ui/models/billsortfilterproxymodel.cpp \
+    ui/models/customerlistmodel.cpp \
+    ui/dialogs/billdialog.cpp \
+    ui/models/billitemtablemodel.cpp \
+    ui/wizards/billitemwizard.cpp
 
 HEADERS  += ui/mainwindow.h \
     domain/bill.h \
@@ -104,9 +111,20 @@ HEADERS  += ui/mainwindow.h \
     exception.h \
     service/serviceexception.h \
     ui/widgets/customerswidget.h \
-    ui/models/customermodel.h \
-    ui/dialogs/customerdialog.h
+    ui/dialogs/customerdialog.h \
+    ui/widgets/billwidget.h \
+    ui/models/customertablemodel.h \
+    ui/models/billtablemodel.h \
+    ui/models/billsortfilterproxymodel.h \
+    ui/models/customerlistmodel.h \
+    ui/dialogs/billdialog.h \
+    ui/models/billitemtablemodel.h \
+    ui/models/domainitemmodel.h \
+    ui/wizards/billitemwizard.h
 
 FORMS    += ui/mainwindow.ui \
     ui/widgets/customerswidget.ui \
-    ui/dialogs/customerdialog.ui
+    ui/dialogs/customerdialog.ui \
+    ui/widgets/billwidget.ui \
+    ui/dialogs/billdialog.ui \
+    ui/wizards/billitemwizard.ui

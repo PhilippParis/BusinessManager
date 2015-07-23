@@ -9,33 +9,30 @@ ProductServiceImpl::ProductServiceImpl(ProductDAO::Ptr productDAO, Validator<Pro
 
 void ProductServiceImpl::add(Product::Ptr product)
 {
-    m_productValidator->validateForCreate(product);
-
     try {
+        m_productValidator->validateForCreate(product);
         m_productDAO->create(product);
-    } catch (PersistenceException *e) {
+    } catch (Exception *e) {
         throw new ServiceException(e);
     }
 }
 
 void ProductServiceImpl::update(Product::Ptr product)
 {
-    m_productValidator->validateForUpdate(product);
-
     try {
+        m_productValidator->validateForUpdate(product);
         m_productDAO->update(product);
-    } catch (PersistenceException *e) {
+    } catch (Exception *e) {
         throw new ServiceException(e);
     }
 }
 
 void ProductServiceImpl::remove(Product::Ptr product)
 {
-    m_productValidator->validateIdentity(product);
-
     try {
+        m_productValidator->validateIdentity(product);
         m_productDAO->remove(product);
-    } catch (PersistenceException *e) {
+    } catch (Exception *e) {
         throw new ServiceException(e);
     }
 }

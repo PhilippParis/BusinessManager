@@ -10,22 +10,30 @@ CustomersWidget::CustomersWidget(QWidget *parent) :
     ui->setupUi(this);
     ui->tblData->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
-    m_model = new CustomerModel();
+    m_model = new CustomerTableModel();
     m_sortFilterModel = new QSortFilterProxyModel();
     m_sortFilterModel->setSourceModel(m_model);
 
     connect(ui->leSearch, SIGNAL(textChanged(QString)), m_sortFilterModel, SLOT(setFilterWildcard(QString)));
-    m_sortFilterModel->setFilterKeyColumn(1);
+    m_sortFilterModel->setFilterKeyColumn(0);
     m_sortFilterModel->setFilterCaseSensitivity(Qt::CaseInsensitive);
 
     ui->tblData->setModel(m_sortFilterModel);
     ui->tblData->setSortingEnabled(true);
     ui->tblData->sortByColumn(0, Qt::AscendingOrder);
+
+    ui->tblData->setColumnWidth(0, 300);
+    ui->tblData->setColumnWidth(1, 200);
+
+    connect(ui->tblData->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
+                                                  this, SLOT(selectionChanged(QModelIndex,QModelIndex)));
 }
 
 CustomersWidget::~CustomersWidget()
 {
     delete ui;
+    delete m_model;
+    delete m_sortFilterModel;
 }
 
 void CustomersWidget::setValidator(Validator<Customer::Ptr>::Ptr validator)
@@ -45,36 +53,34 @@ void CustomersWidget::update()
     m_model->addAll(m_service->getAll());
 }
 
+void CustomersWidget::selectionChanged(QModelIndex newIndex, QModelIndex prevIndex)
+{
+    ui->btnAddCustomer->setEnabled(newIndex.isValid());
+    ui->btnEditCustomer->setEnabled(newIndex.isValid());
+    ui->btnSendMail->setEnabled(newIndex.isValid());
+    ui->btnDeleteCustomer->setEnabled(newIndex.isValid());
+}
+
 void CustomersWidget::on_btnAddCustomer_clicked()
 {
-    CustomerDialog *dialog = new CustomerDialog(this, m_validator);
+    CustomerDialog *dialog = new CustomerDialog(this, m_service);
     dialog->prepareForCreate();
 
     if(dialog->exec() == QDialog::Accepted) {
         Customer::Ptr customer = dialog->toDomainObject();
-        try {
-            m_service->add(customer);
-            m_model->add(customer);
-        } catch (ServiceException *e) {
-            showErrorMessage(e->what());
-        }
+        m_model->add(customer);
     }
 }
 
 void CustomersWidget::on_btnEditCustomer_clicked()
 {
-    Customer::Ptr selectedCustomer = m_model->get(ui->tblData->selectionModel()->selectedIndexes().first());
-    CustomerDialog *dialog = new CustomerDialog(this, m_validator);
-    dialog->prepareForUpdate(selectedCustomer);
+    Customer::Ptr selected = selectedCustomer();
+    CustomerDialog *dialog = new CustomerDialog(this, m_service);
+    dialog->prepareForUpdate(selected);
 
     if(dialog->exec() == QDialog::Accepted) {
         Customer::Ptr editedCustomer = dialog->toDomainObject();
-        try {
-            m_service->update(editedCustomer);
-            m_model->replace(selectedCustomer, editedCustomer);
-        } catch (ServiceException *e) {
-            showErrorMessage(e->what());
-        }
+        m_model->replace(selected, editedCustomer);
     }
 }
 
@@ -91,10 +97,10 @@ void CustomersWidget::on_btnDeleteCustomer_clicked()
                                     QMessageBox::Yes|QMessageBox::No);
 
     if (reply == QMessageBox::Yes) {
-        Customer::Ptr selectedCustomer = m_model->get(ui->tblData->selectionModel()->selectedIndexes().first());
+        Customer::Ptr selected = selectedCustomer();
         try {
-            m_service->remove(selectedCustomer);
-            m_model->remove(selectedCustomer);
+            m_service->remove(selected);
+            m_model->remove(selected);
         } catch (ServiceException *e) {
             showErrorMessage(e->what());
         }
@@ -104,4 +110,10 @@ void CustomersWidget::on_btnDeleteCustomer_clicked()
 void CustomersWidget::showErrorMessage(QString msg)
 {
     QMessageBox::information(this, "Error", msg);
+}
+
+Customer::Ptr CustomersWidget::selectedCustomer()
+{
+    QModelIndex index = m_sortFilterModel->mapToSource(ui->tblData->currentIndex());
+    return m_model->get(index);
 }

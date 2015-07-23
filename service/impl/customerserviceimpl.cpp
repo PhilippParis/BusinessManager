@@ -9,33 +9,30 @@ CustomerServiceImpl::CustomerServiceImpl(CustomerDAO::Ptr customerDAO, Validator
 
 void CustomerServiceImpl::add(Customer::Ptr customer)
 {
-    m_customerValidator->validateForCreate(customer);
-
     try {
+        m_customerValidator->validateForCreate(customer);
         m_customerDAO->create(customer);
-    } catch (PersistenceException *e) {
+    } catch (Exception *e) {
         throw new ServiceException(e);
     }
 }
 
 void CustomerServiceImpl::update(Customer::Ptr customer)
 {
-    m_customerValidator->validateForUpdate(customer);
-
     try {
+        m_customerValidator->validateForUpdate(customer);
         m_customerDAO->update(customer);
-    } catch (PersistenceException *e) {
+    } catch (Exception *e) {
         throw new ServiceException(e);
     }
 }
 
 void CustomerServiceImpl::remove(Customer::Ptr customer)
 {
-    m_customerValidator->validateIdentity(customer);
-
     try {
+        m_customerValidator->validateIdentity(customer);
         m_customerDAO->remove(customer);
-    } catch (PersistenceException *e) {
+    } catch (Exception *e) {
         throw new ServiceException(e);
     }
 }

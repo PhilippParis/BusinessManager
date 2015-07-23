@@ -4,12 +4,10 @@
 #include <QWidget>
 #include <QDebug>
 #include <QSortFilterProxyModel>
-#include <QSqlTableModel>
 
 #include "persistence/databasesingleton.h"
 
-#include "ui/models/customermodel.h"
-#include "ui/delegates/customeritemdelegate.h"
+#include "ui/models/customertablemodel.h"
 #include "ui/dialogs/customerdialog.h"
 
 #include "persistence/validation/validator.h"
@@ -32,6 +30,7 @@ public:
 
 private slots:
     void update();
+    void selectionChanged(QModelIndex,QModelIndex);
 
     void on_btnAddCustomer_clicked();
     void on_btnEditCustomer_clicked();
@@ -40,13 +39,15 @@ private slots:
 
 private:
     void showErrorMessage(QString msg);
+    Customer::Ptr selectedCustomer();
 
 private:
     Ui::CustomersWidget *ui;
 
     CustomerService::Ptr m_service;
     Validator<Customer::Ptr>::Ptr m_validator;
-    CustomerModel *m_model;
+
+    CustomerTableModel *m_model;
     QSortFilterProxyModel *m_sortFilterModel;
 };
 
