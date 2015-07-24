@@ -4,8 +4,8 @@
 #include <memory>
 #include <QString>
 #include <QMap>
+#include <QMetaType>
 
-#include "domain/bill.h"
 #include "domain/product.h"
 
 class BillItem
@@ -40,9 +40,6 @@ public:
     double quantity() const;
     void setQuantity(double quantity);
 
-    Bill::Ptr bill() const;
-    void setBill(const Bill::Ptr bill);
-
     QString toString() const;
     bool equals(const BillItem::Ptr item) const;
 
@@ -58,10 +55,10 @@ private:
     double m_price = 0.0;
     double m_wagePerHour = 0.0;
     double m_quantity = 0.0;
-    Bill::Ptr m_bill;
     QString m_description;
     QString m_unit;
     QMap<Product::Ptr, double> m_material;
 };
+Q_DECLARE_METATYPE(BillItem::Ptr)
 
 #endif // BILLITEM_H

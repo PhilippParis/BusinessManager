@@ -27,6 +27,9 @@ public:
     virtual BillItem::Ptr getItem(int id) = 0;
     virtual QList<BillItem::Ptr> getItemsOfBill(int billID) = 0;
 
+    virtual int nextBillNumber(QDate date) = 0;
+    virtual QPair<QDate, QDate> billDateRange() = 0;
+
 };
 
 #endif // BILLSERVICE_H

@@ -3,6 +3,7 @@
 BillValidator::BillValidator()
 {
     m_customerValidator = std::make_shared<CustomerValidator>();
+    m_billItemValidator = std::make_shared<BillItemValidator>();
 }
 
 void BillValidator::validateForCreate(Bill::Ptr item)
@@ -39,6 +40,10 @@ void BillValidator::validateMandatoryFields(Bill::Ptr item)
 {
     if (item->billNumber() <= 0) {
         throw new ValidationException("bill number must not be negative");
+    }
+
+    for(BillItem::Ptr billItem : item->items()) {
+        m_billItemValidator->validateIdentity(billItem);
     }
 
     m_customerValidator->validateIdentity(item->customer());

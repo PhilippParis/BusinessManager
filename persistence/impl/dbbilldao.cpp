@@ -1,9 +1,10 @@
 #include "dbbilldao.h"
 
-DBBillDAO::DBBillDAO(QSqlDatabase database, Validator<Bill::Ptr>::Ptr validator, CustomerDAO::Ptr customerDAO)
+DBBillDAO::DBBillDAO(QSqlDatabase database, Validator<Bill::Ptr>::Ptr validator, CustomerDAO::Ptr customerDAO, BillItemDAO::Ptr billItemDAO)
  : m_database(database),
    m_validator(validator),
-   m_customerDAO(customerDAO)
+   m_customerDAO(customerDAO),
+   m_billItemDAO(billItemDAO)
 {
 }
 
@@ -62,7 +63,7 @@ void DBBillDAO::create(Bill::Ptr item)
     insertQuery.prepare("INSERT INTO BILL VALUES(NULL, ?, ?, ?, ?, 0);");
 
     insertQuery.addBindValue(item->billNumber());
-    insertQuery.addBindValue(item->date().toString("dd.MM.yyyy"));
+    insertQuery.addBindValue(item->date().toString("yyyy-MM-dd"));
     insertQuery.addBindValue(item->payed());
     insertQuery.addBindValue(item->customer()->id());
 
@@ -72,6 +73,7 @@ void DBBillDAO::create(Bill::Ptr item)
     }
 
     item->setId(insertQuery.lastInsertId().toInt());
+    updateBillItems(item);
 }
 
 void DBBillDAO::update(Bill::Ptr item)
@@ -93,7 +95,7 @@ void DBBillDAO::update(Bill::Ptr item)
                         "WHERE ID = ?;");
 
     updateQuery.addBindValue(item->billNumber());
-    updateQuery.addBindValue(item->date().toString("dd.MM.yyyy"));
+    updateQuery.addBindValue(item->date().toString("yyyy-MM-dd"));
     updateQuery.addBindValue(item->payed());
     updateQuery.addBindValue(item->customer()->id());
     updateQuery.addBindValue(item->id());
@@ -107,6 +109,8 @@ void DBBillDAO::update(Bill::Ptr item)
         qCDebug(lcPersistence) << "DBBillDAO::update failed: dataset not found";
         throw new PersistenceException("DBBillDAO::update failed: dataset not found");
     }
+
+    updateBillItems(item);
 }
 
 void DBBillDAO::remove(Bill::Ptr item)
@@ -134,6 +138,38 @@ void DBBillDAO::remove(Bill::Ptr item)
     }
 }
 
+int DBBillDAO::nextBillNumber(QDate date)
+{
+    qCDebug(lcPersistence) << "Entering DBBillDAO::nextBillNumber with param QDate: " + date.toString("yyyy-MM-dd");
+
+    QSqlQuery query(m_database);
+    query.prepare("SELECT COALESCE (MAX(NR) + 1, 1) AS NEXT FROM BILL WHERE STRFTIME('%Y', DATE) = ?;");
+    query.addBindValue(QString::number(date.year()));
+
+    if (!query.exec() || !query.next()) {
+        qCCritical(lcPersistence) << "DBBillDAO::nextBillNumber failed:" + query.lastError().text();
+        throw new PersistenceException("DBBillDAO::nextBillNumber failed:" + query.lastError().text());
+    }
+
+    return query.value("NEXT").toInt();
+}
+
+QPair<QDate, QDate> DBBillDAO::billDateRange()
+{
+    qCDebug(lcPersistence) << "Entering DBBillDAO::billDateRange ";
+
+    QSqlQuery query(m_database);
+    query.prepare("SELECT MIN(JULIANDAY(DATE)) AS MINT, MAX(JULIANDAY(DATE)) AS MAXT FROM BILL;");
+
+    if (!query.exec() || !query.next()) {
+        qCCritical(lcPersistence) << "DBBillDAO::billDateRange failed:" + query.lastError().text();
+        throw new PersistenceException("DBBillDAO::billDateRange failed:" + query.lastError().text());
+    }
+
+    return QPair<QDate,QDate>(QDate::fromJulianDay(query.value("MINT").toInt()),
+                              QDate::fromJulianDay(query.value("MAXT").toInt()));
+}
+
 Bill::Ptr DBBillDAO::parseBill(QSqlRecord record)
 {
     Bill::Ptr bill = std::make_shared<Bill>();
@@ -141,10 +177,59 @@ Bill::Ptr DBBillDAO::parseBill(QSqlRecord record)
     bill->setId(record.value("ID").toInt());
     bill->setBillNumber(record.value("NR").toInt());
     bill->setPayed(record.value("PAYED").toBool());
-    bill->setDate(QDate::fromString(record.value("DATE").toString(), "dd.MM.yyyy"));
+    bill->setDate(QDate::fromString(record.value("DATE").toString(), "yyyy-MM-dd"));
     bill->setCustomer(m_customerDAO->get(record.value("CUSTOMER").toInt()));
 
+    // get items
+    QSqlQuery query(m_database);
+    query.prepare("SELECT ID FROM BILL_ITEM WHERE BILL = ?;");
+    query.addBindValue(bill->id());
+
+    if (!query.exec()) {
+        qCCritical(lcPersistence) << "DBBillDAO::parseBill failed:" + query.lastError().text();
+        throw new PersistenceException("DBBillDAO::parseBill failed:" + query.lastError().text());
+    }
+
+    QList<BillItem::Ptr> items;
+    while(query.next()) {
+        items.append(m_billItemDAO->get(query.value("ID").toInt()));
+    }
+
+    bill->setItems(items);
     return bill;
+}
+
+void DBBillDAO::updateBillItems(Bill::Ptr bill)
+{
+    qCDebug(lcPersistence) << "Entering DBBillDAO::updateBillItems with param " + bill->toString();
+    QList<BillItem::Ptr> items = bill->items();
+
+    // set all already stored items as deleted
+    QSqlQuery query(m_database);
+    query.prepare("UPDATE BILL_ITEM SET DELETED = 1 WHERE BILL = ?;");
+    query.addBindValue(bill->id());
+
+    if (!query.exec()) {
+        qCCritical(lcPersistence) << "DBBillDAO::updateBillItems failed:" + query.lastError().text();
+        throw new PersistenceException("DBBillDAO::updateBillItems failed:" + query.lastError().text());
+    }
+
+    QStringList placeholders;
+    for (int i = 0; i < items.size(); ++i) {
+         placeholders << "?";
+    }
+
+    // enable items and set bill id
+    query.prepare("UPDATE BILL_ITEM SET BILL = ?, DELETED = 0 WHERE ID IN (" + placeholders.join(", ") + ")");
+    query.addBindValue(bill->id());
+    for (int i = 0; i < items.size(); ++i) {
+         query.addBindValue(items.at(i)->id());
+    }
+
+    if (!query.exec()) {
+        qCCritical(lcPersistence) << "DBBillDAO::updateBillItems failed:" + query.lastError().text();
+        throw new PersistenceException("DBBillDAO::updateBillItems failed:" + query.lastError().text());
+    }
 }
 
 

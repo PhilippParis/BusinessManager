@@ -105,3 +105,21 @@ QList<BillItem::Ptr> BillServiceImpl::getItemsOfBill(int billID)
         throw new ServiceException(e);
     }
 }
+
+int BillServiceImpl::nextBillNumber(QDate date)
+{
+    try {
+        return m_billDAO->nextBillNumber(date);
+    } catch (PersistenceException *e) {
+        throw new ServiceException(e);
+    }
+}
+
+QPair<QDate, QDate> BillServiceImpl::billDateRange()
+{
+    try {
+        return m_billDAO->billDateRange();
+    } catch (PersistenceException *e) {
+        throw new ServiceException(e);
+    }
+}

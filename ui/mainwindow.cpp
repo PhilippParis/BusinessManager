@@ -16,8 +16,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     CustomerDAO::Ptr customerDAO = std::make_shared<DBCustomerDAO>(db, m_customerValidator);
     ProductDAO::Ptr productDAO = std::make_shared<DBProductDAO>(db, m_productValidator);
-    BillDAO::Ptr billDAO = std::make_shared<DBBillDAO>(db, m_billValidator, customerDAO);
-    BillItemDAO::Ptr billItemDAO = std::make_shared<DBBillItemDAO>(db, m_billItemValidator, billDAO, productDAO);
+    BillItemDAO::Ptr billItemDAO = std::make_shared<DBBillItemDAO>(db, m_billItemValidator, productDAO);
+    BillDAO::Ptr billDAO = std::make_shared<DBBillDAO>(db, m_billValidator, customerDAO, billItemDAO);
     TemplateDAO::Ptr templateDAO = std::make_shared<DBTemplateDAO>();// TODO
 
     m_customerService = std::make_shared<CustomerServiceImpl>(customerDAO, m_customerValidator);

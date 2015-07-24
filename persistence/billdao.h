@@ -43,6 +43,17 @@ public:
      * @return returns all items from the underlying datasource
      */
     virtual QList<Bill::Ptr> getAll() = 0;
+
+    /**
+     * @param date date of the bill
+     * @return returns the next bill number
+     */
+    virtual int nextBillNumber(QDate date) = 0;
+
+    /**
+     * @return returns the date of the first and the last bill
+     */
+    virtual QPair<QDate, QDate> billDateRange() = 0;
 };
 
 #endif // BILLDAO_H

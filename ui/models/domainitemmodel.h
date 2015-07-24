@@ -71,6 +71,11 @@ public:
         endRemoveRows();
     }
 
+    QList<T> items()
+    {
+        return m_data;
+    }
+
 protected:
     QList<T> m_data;
 };

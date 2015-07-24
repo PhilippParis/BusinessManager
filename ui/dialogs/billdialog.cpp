@@ -34,6 +34,7 @@ void BillDialog::prepareForCreate()
     m_openMode = Create;
     m_payed = false;
     ui->dateEdit->setDate(QDate::currentDate());
+    ui->sbNr->setValue(m_billService->nextBillNumber(QDate::currentDate()));
 }
 
 void BillDialog::prepareForUpdate(Bill::Ptr bill)
@@ -77,6 +78,7 @@ Bill::Ptr BillDialog::toDomainObject()
     bill->setId(m_id);
     bill->setCustomer(m_customerModel->get(m_customerModel->index(ui->cbRecipient->currentIndex(), 0)));
     bill->setPayed(m_payed);
+    bill->setItems(m_billItemModel->items());
     return bill;
 }
 
@@ -114,10 +116,11 @@ void BillDialog::on_btnEditCustomer_clicked()
 void BillDialog::on_btnAddArticle_clicked()
 {
     BillItemWizard *wizard = new BillItemWizard(this, m_billService, m_productService, m_templateService);
-    wizard->prepareForCreate(toDomainObject()); //TODO!!
+    wizard->prepareForCreate();
 
     if(wizard->exec() == QWizard::Accepted) {
-        m_billItemModel->add(wizard->toDomainObject());
+        BillItem::Ptr item = wizard->toDomainObject();
+        m_billItemModel->add(item);
     }
 
     delete wizard;
@@ -142,4 +145,14 @@ void BillDialog::selectionChanged(QModelIndex newIndex, QModelIndex prevIndex)
     Q_UNUSED(prevIndex)
     ui->btnEditArticle->setEnabled(newIndex.isValid());
     ui->btnDeleteArticle->setEnabled(newIndex.isValid());
+}
+
+void BillDialog::on_btnDeleteArticle_clicked()
+{
+    m_billItemModel->remove(selectedBillItem());
+}
+
+void BillDialog::on_dateEdit_dateChanged(const QDate &date)
+{
+    ui->sbNr->setValue(m_billService->nextBillNumber(date));
 }

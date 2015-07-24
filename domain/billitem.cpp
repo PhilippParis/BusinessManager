@@ -87,15 +87,6 @@ void BillItem::setQuantity(double quantity)
 {
     m_quantity = quantity;
 }
-Bill::Ptr BillItem::bill() const
-{
-    return m_bill;
-}
-
-void BillItem::setBill(const Bill::Ptr bill)
-{
-    m_bill = bill;
-}
 
 QString BillItem::toString() const
 {
@@ -107,7 +98,6 @@ QString BillItem::toString() const
            ", quantity=" + QString::number(m_quantity) +
            ", workingHours=" + QString::number(m_workingHours) +
            ", wage=" + QString::number(m_wagePerHour) +
-           ", bill=" + (m_bill == nullptr? "null" : m_bill->toString()) +
             "}";
 }
 
@@ -141,7 +131,7 @@ bool BillItem::equals(const BillItem::Ptr item) const
         return false;
     }
 
-    return m_bill == nullptr? item->m_bill == nullptr : m_bill->equals(item->m_bill);
+    return true;
 }
 
 void BillItem::addMaterial(const Product::Ptr product, double quantity)

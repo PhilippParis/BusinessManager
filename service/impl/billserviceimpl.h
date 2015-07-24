@@ -25,6 +25,8 @@ public:
     BillItem::Ptr getItem(int id) override;
     QList<BillItem::Ptr> getItemsOfBill(int billID) override;
 
+    int nextBillNumber(QDate date) override;
+    QPair<QDate, QDate> billDateRange() override;
 
 private:
     BillDAO::Ptr m_billDAO;

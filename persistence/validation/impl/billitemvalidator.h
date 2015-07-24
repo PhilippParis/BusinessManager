@@ -22,7 +22,6 @@ private:
     void validateMandatoryFields(BillItem::Ptr item);
 
 private:
-    Validator<Bill::Ptr>::Ptr m_billValidator;
     Validator<Product::Ptr>::Ptr m_productValidator;
 };
 

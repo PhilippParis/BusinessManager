@@ -1,9 +1,8 @@
 #include "dbbillitemdao.h"
 
-DBBillItemDAO::DBBillItemDAO(QSqlDatabase db, Validator<BillItem::Ptr>::Ptr validator, BillDAO::Ptr billDAO, ProductDAO::Ptr productDAO)
+DBBillItemDAO::DBBillItemDAO(QSqlDatabase db, Validator<BillItem::Ptr>::Ptr validator, ProductDAO::Ptr productDAO)
  : m_database(db),
    m_validator(validator),
-   m_billDAO(billDAO),
    m_productDAO(productDAO)
 {
 }
@@ -19,7 +18,7 @@ void DBBillItemDAO::create(BillItem::Ptr item)
     }
 
     QSqlQuery insertQuery(m_database);
-    insertQuery.prepare("INSERT INTO BILL_ITEM VALUES(NULL, ?, ?, ?, ?, ?, ?, ?, ?, 0);");
+    insertQuery.prepare("INSERT INTO BILL_ITEM VALUES(NULL, ?, ?, ?, ?, ?, ?, ?, NULL, 0);");
 
     insertQuery.addBindValue(item->description());
     insertQuery.addBindValue(item->workingHours());
@@ -28,7 +27,6 @@ void DBBillItemDAO::create(BillItem::Ptr item)
     insertQuery.addBindValue(item->price());
     insertQuery.addBindValue(item->unit());
     insertQuery.addBindValue(item->quantity());
-    insertQuery.addBindValue(item->bill()->id());
 
     if (!insertQuery.exec()) {
         qCCritical(lcPersistence) << "DBBillItemDAO::create failed: " + insertQuery.lastError().text();
@@ -54,8 +52,7 @@ void DBBillItemDAO::update(BillItem::Ptr item)
     updateQuery.prepare("UPDATE BILL_ITEM SET DESC = ?, "
                            "UNIT = ?, QUANTITY = ?, "
                            "PRICE = ?,  COST = ?, "
-                           "WORK_HOURS = ?, WAGE = ?, "
-                           "BILL = ? "
+                           "WORK_HOURS = ?, WAGE = ? "
                            "WHERE ID = ?;");
 
     updateQuery.addBindValue(item->description());
@@ -65,7 +62,6 @@ void DBBillItemDAO::update(BillItem::Ptr item)
     updateQuery.addBindValue(item->materialCost());
     updateQuery.addBindValue(item->workingHours());
     updateQuery.addBindValue(item->wagePerHour());
-    updateQuery.addBindValue(item->bill()->id());
     updateQuery.addBindValue(item->id());
 
     if (!updateQuery.exec()) {
@@ -180,7 +176,6 @@ BillItem::Ptr DBBillItemDAO::parseBillItem(QSqlRecord record)
     item->setUnit(record.value("UNIT").toString());
     item->setWagePerHour(record.value("WAGE").toDouble());
     item->setWorkingHours(record.value("WORK_HOURS").toDouble());
-    item->setBill(m_billDAO->get(record.value("BILL").toInt()));
 
     // get materials
     QSqlQuery query(m_database);

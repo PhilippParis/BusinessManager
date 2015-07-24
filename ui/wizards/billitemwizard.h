@@ -3,6 +3,7 @@
 
 #include <QWizard>
 #include <QTextBlock>
+#include <QMessageBox>
 
 #include "domain/billitem.h"
 
@@ -23,24 +24,29 @@ public:
                             ProductService::Ptr productService, TemplateService::Ptr templateService);
     ~BillItemWizard();
 
-    void prepareForCreate(Bill::Ptr bill);
+    void prepareForCreate();
     void prepareForUpdate(BillItem::Ptr item);
 
     BillItem::Ptr toDomainObject();
 
 private slots:
     void on_textEditArticleDesc_textChanged();
+    void accept() override;
 
 private:
     double materialCosts();
 
 private:
+    enum OpenMode {
+        Create, Update
+    };
+
     Ui::BillItemWizard *ui;
     int m_id = -1;
-    Bill::Ptr m_bill;
     BillService::Ptr m_billService;
     ProductService::Ptr m_productService;
     TemplateService::Ptr m_templateService;
+    OpenMode m_openMode;
 };
 
 #endif // BILLITEMWIZARD_H

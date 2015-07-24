@@ -6,9 +6,12 @@
 
 #include "persistence/impl/dbbilldao.h"
 #include "persistence/impl/dbcustomerdao.h"
+#include "persistence/impl/dbbillitemdao.h"
+#include "persistence/impl/dbproductdao.h"
 
 #include "persistence/databasesingleton.h"
 
+#include "persistence/validation/impl/billitemvalidator.h"
 #include "persistence/validation/impl/billvalidator.h"
 #include "persistence/validation/impl/customervalidator.h"
 
@@ -32,7 +35,11 @@ private slots:
 
 private:
     BillDAO::Ptr m_billDAO;
+    BillItemDAO::Ptr m_billItemDAO;
     CustomerDAO::Ptr m_customerDAO;
+    ProductDAO::Ptr m_productDAO;
+
+    BillItem::Ptr m_validBillItem;
     Customer::Ptr m_validCustomer;
 };
 

@@ -7,6 +7,7 @@
 #include <QDate>
 
 #include "domain/customer.h"
+#include "domain/billitem.h"
 
 class Bill
 {
@@ -35,12 +36,16 @@ public:
 
     bool equals(const Bill::Ptr) const;
 
+    QList<BillItem::Ptr> items() const;
+    void setItems(const QList<BillItem::Ptr> &items);
+
 private:
     int m_id = -1;
     Customer::Ptr m_customer;
     int m_billNumber = -1;
     QDate m_date;
     bool m_payed;
+    QList<BillItem::Ptr> m_items;
 };
 Q_DECLARE_METATYPE(Bill::Ptr)
 

@@ -45,8 +45,8 @@ bool BillSortFilterProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex
 
 bool BillSortFilterProxyModel::dateInRange(const QDate &date) const
 {
-    return (!m_minDate.isValid() || date > m_minDate)
-               && (!m_maxDate.isValid() || date < m_maxDate);
+    return (!m_minDate.isValid() || date >= m_minDate)
+               && (!m_maxDate.isValid() || date <= m_maxDate);
 }
 bool BillSortFilterProxyModel::onlyOpen() const
 {

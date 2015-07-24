@@ -17,9 +17,9 @@ BillItemWizard::~BillItemWizard()
     delete ui;
 }
 
-void BillItemWizard::prepareForCreate(Bill::Ptr bill)
+void BillItemWizard::prepareForCreate()
 {
-    m_bill = bill;
+    m_openMode = Create;
     ui->sbPricePerUnit->setValue(0.0);
     ui->lblCostPerArticle->setText("0.00€");
     ui->leSearchTemplate->clear();
@@ -33,13 +33,12 @@ void BillItemWizard::prepareForCreate(Bill::Ptr bill)
 
 void BillItemWizard::prepareForUpdate(BillItem::Ptr item)
 {
+    m_openMode = Update;
     double cost = item->materialCost() + item->workingHours() * item->wagePerHour();
 
     m_id = item->id();
-    m_bill = item->bill();
 
     ui->sbPricePerUnit->setValue(item->price());
-    ui->lblCostPerArticle->setText(QString::number(cost) + QString::fromUtf8("€"));
     ui->leSearchTemplate->clear();
     ui->leTemplateName->clear();
     ui->leTemplateOrg->clear();
@@ -47,6 +46,7 @@ void BillItemWizard::prepareForUpdate(BillItem::Ptr item)
     ui->leUnit->setText(item->unit());
     ui->sbQuantity->setValue(item->quantity());
     ui->sbWorkingHours->setValue(item->workingHours());
+    ui->lblCostPerArticle->setText(QString::number(cost) + QString::fromUtf8("€"));
     // TODO display wage
 }
 
@@ -54,7 +54,6 @@ BillItem::Ptr BillItemWizard::toDomainObject()
 {
     BillItem::Ptr item = std::make_shared<BillItem>();
 
-    item->setBill(m_bill);
     item->setId(m_id);
     item->setDescription(ui->textEditArticleDesc->toPlainText());
     item->setMaterialCost(materialCosts());
@@ -62,7 +61,7 @@ BillItem::Ptr BillItemWizard::toDomainObject()
     item->setQuantity(ui->sbQuantity->value());
     item->setUnit(ui->leUnit->text());
     item->setWorkingHours(ui->sbWorkingHours->value());
-    // TODO set working hours
+    // TODO set wage
 
     return item;
 }
@@ -86,6 +85,23 @@ void BillItemWizard::on_textEditArticleDesc_textChanged()
             cursor.insertText("\n");
             cursor.movePosition(QTextCursor::End);
         }
+    }
+}
+
+void BillItemWizard::accept()
+{
+    BillItem::Ptr item = toDomainObject();
+    try {
+        if(m_openMode == Create) {
+            m_billService->addItem(item);
+        } else {
+            m_billService->updateItem(item);
+        }
+        m_id = item->id();
+        QWizard::accept();
+    } catch (ServiceException *e) {
+        QMessageBox::warning(this, "Invalid Data", e->what());
+        delete e;
     }
 }
 

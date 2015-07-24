@@ -13,7 +13,7 @@
 class DBBillItemDAO : public BillItemDAO
 {
 public:
-    DBBillItemDAO(QSqlDatabase db, Validator<BillItem::Ptr>::Ptr validator, BillDAO::Ptr billDAO, ProductDAO::Ptr productDAO);
+    DBBillItemDAO(QSqlDatabase db, Validator<BillItem::Ptr>::Ptr validator, ProductDAO::Ptr productDAO);
 
 public:
     BillItem::Ptr get(int id) override;
@@ -30,7 +30,6 @@ private:
 private:
     QSqlDatabase m_database;
     Validator<BillItem::Ptr>::Ptr m_validator;
-    BillDAO::Ptr m_billDAO;
     ProductDAO::Ptr m_productDAO;
 };
 

@@ -40,6 +40,10 @@ private slots:
     void on_btnEditArticle_clicked();
     void selectionChanged(QModelIndex newIndex, QModelIndex prevIndex);
 
+    void on_btnDeleteArticle_clicked();
+
+    void on_dateEdit_dateChanged(const QDate &date);
+
 private:
     Bill::Ptr toDomainObject();
     BillItem::Ptr selectedBillItem();

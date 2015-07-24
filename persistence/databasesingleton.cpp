@@ -92,7 +92,7 @@ void DatabaseSingleton::createTables(QSqlDatabase db)
                     "PRICE REAL NOT NULL, "
                     "UNIT VARCHAR(20) NOT NULL, "
                     "QUANTITY INTEGER NOT NULL, "
-                    "BILL INTEGER NOT NULL REFERENCES BILL(ID), "
+                    "BILL INTEGER REFERENCES BILL(ID), "
                     "DELETED INTEGER NOT NULL DEFAULT 0);");
 
    if(!res) {

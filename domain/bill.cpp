@@ -68,7 +68,7 @@ void Bill::setDate(const QDate &date)
 
 bool Bill::equals(const Bill::Ptr bill) const
 {
-    if(bill == nullptr) {
+    if (bill == nullptr) {
         return false;
     }
     if(m_billNumber != bill->m_billNumber) {
@@ -83,9 +83,27 @@ bool Bill::equals(const Bill::Ptr bill) const
     if(m_id != bill->m_id) {
         return false;
     }
+    if (m_items.size() != bill->m_items.size()) {
+        return false;
+    }
+    for (int i = 0; i < m_items.size(); ++i) {
+        if (!m_items.at(i)->equals(bill->m_items.at(i))) {
+            return false;
+        }
+    }
 
     return m_customer == nullptr ? bill->m_customer == nullptr : m_customer->equals(bill->m_customer);
 }
+QList<BillItem::Ptr> Bill::items() const
+{
+    return m_items;
+}
+
+void Bill::setItems(const QList<BillItem::Ptr> &items)
+{
+    m_items = items;
+}
+
 
 
 

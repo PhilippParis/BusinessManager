@@ -58,7 +58,7 @@
         <string>New</string>
        </property>
        <property name="icon">
-        <iconset resource="../../../BusinessManager/res.qrc">
+        <iconset>
          <normaloff>:/icon/images/plus.png</normaloff>:/icon/images/plus.png</iconset>
        </property>
       </widget>
@@ -88,7 +88,7 @@
         <string>Edit</string>
        </property>
        <property name="icon">
-        <iconset resource="../../../BusinessManager/res.qrc">
+        <iconset>
          <normaloff>:/icon/images/edit-icon.png</normaloff>:/icon/images/edit-icon.png</iconset>
        </property>
       </widget>
@@ -119,7 +119,7 @@
         <string>Add Article</string>
        </property>
        <property name="icon">
-        <iconset resource="../../../BusinessManager/res.qrc">
+        <iconset>
          <normaloff>:/icon/images/plus.png</normaloff>:/icon/images/plus.png</iconset>
        </property>
       </widget>
@@ -157,7 +157,17 @@
     </layout>
    </item>
    <item>
-    <widget class="QTableView" name="tblBillItems"/>
+    <widget class="QTableView" name="tblBillItems">
+     <property name="selectionMode">
+      <enum>QAbstractItemView::SingleSelection</enum>
+     </property>
+     <property name="selectionBehavior">
+      <enum>QAbstractItemView::SelectRows</enum>
+     </property>
+     <attribute name="horizontalHeaderStretchLastSection">
+      <bool>true</bool>
+     </attribute>
+    </widget>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_4">
@@ -170,7 +180,7 @@
         <string>Edit Article</string>
        </property>
        <property name="icon">
-        <iconset resource="../../../BusinessManager/res.qrc">
+        <iconset>
          <normaloff>:/icon/images/edit-icon.png</normaloff>:/icon/images/edit-icon.png</iconset>
        </property>
       </widget>
@@ -190,7 +200,7 @@
         <string>Delete Article</string>
        </property>
        <property name="icon">
-        <iconset resource="../../../BusinessManager/res.qrc">
+        <iconset>
          <normaloff>:/icon/images/Delete-icon.png</normaloff>:/icon/images/Delete-icon.png</iconset>
        </property>
       </widget>
@@ -299,7 +309,7 @@
         <string>Preview / Print</string>
        </property>
        <property name="icon">
-        <iconset resource="../../../BusinessManager/res.qrc">
+        <iconset>
          <normaloff>:/icon/images/print.png</normaloff>:/icon/images/print.png</iconset>
        </property>
       </widget>
@@ -318,9 +328,7 @@
    </item>
   </layout>
  </widget>
- <resources>
-  <include location="../../../BusinessManager/res.qrc"/>
- </resources>
+ <resources/>
  <connections>
   <connection>
    <sender>buttonBox_2</sender>

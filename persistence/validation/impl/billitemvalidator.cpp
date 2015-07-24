@@ -2,7 +2,6 @@
 
 BillItemValidator::BillItemValidator()
 {
-    m_billValidator = std::make_shared<BillValidator>();
     m_productValidator = std::make_shared<ProductValidator>();
 }
 
@@ -58,8 +57,6 @@ void BillItemValidator::validateMandatoryFields(BillItem::Ptr item)
     if (item->quantity() <= 0) {
         throw new ValidationException("quantity must not be negative");
     }
-
-    m_billValidator->validateIdentity(item->bill());
 
     QMap<Product::Ptr, double> material = item->material();
     QMap<Product::Ptr, double>::iterator it;
