@@ -9,7 +9,7 @@ void ProductDAOTest::initTestCase()
 
 void ProductDAOTest::insertTest_data()
 {
-    QTest::addColumn<int>("stock");
+    QTest::addColumn<QString>("nr");
     QTest::addColumn<double>("cost");
     QTest::addColumn<double>("price");
     QTest::addColumn<QString>("name");
@@ -18,16 +18,16 @@ void ProductDAOTest::insertTest_data()
     QTest::addColumn<QString>("desc");
     QTest::addColumn<bool>("result");
 
-    QTest::newRow("validData_shouldPass") << 1 << 1.0 << 2.0 << "name" << "type" << "unit" << "desc" << true;
-    QTest::newRow("negativeCost_shouldFail") << 1 << -1.0 << 2.0 << "name" << "type" << "unit" << "desc" << false;
-    QTest::newRow("negativePrice_shouldFail") << 1 << 1.0 << -2.0 << "name" << "type" << "unit" << "desc" << false;
-    QTest::newRow("emptyName_shouldFail") << 1 << 1.0 << 2.0 << "" << "type" << "unit" << "desc" << false;
-    QTest::newRow("emptyUnit_shouldFail") << 1 << 1.0 << 2.0 << "name" << "type" << "" << "desc" << false;
+    QTest::newRow("validData_shouldPass") << "Z1" << 1.0 << 2.0 << "name" << "type" << "unit" << "desc" << true;
+    QTest::newRow("negativeCost_shouldFail") << "1" << -1.0 << 2.0 << "name" << "type" << "unit" << "desc" << false;
+    QTest::newRow("negativePrice_shouldFail") << "1" << 1.0 << -2.0 << "name" << "type" << "unit" << "desc" << false;
+    QTest::newRow("emptyName_shouldFail") << "1" << 1.0 << 2.0 << "" << "type" << "unit" << "desc" << false;
+    QTest::newRow("emptyUnit_shouldFail") << "1" << 1.0 << 2.0 << "name" << "type" << "" << "desc" << false;
 }
 
 void ProductDAOTest::insertTest()
 {
-    QFETCH(int, stock);
+    QFETCH(QString, nr);
     QFETCH(double, cost);
     QFETCH(double, price);
     QFETCH(QString, name);
@@ -43,7 +43,8 @@ void ProductDAOTest::insertTest()
     product->setName(name);
     product->setType(type);
     product->setUnit(unit);
-    product->setDesc(desc);
+    product->setManufactor(desc);
+    product->setArticleNumber(nr);
 
     try {
         m_productDAO->create(product);
@@ -61,7 +62,7 @@ void ProductDAOTest::insertTest()
 
 void ProductDAOTest::updateTest_data()
 {
-    QTest::addColumn<int>("stock");
+    QTest::addColumn<QString>("nr");
     QTest::addColumn<double>("cost");
     QTest::addColumn<double>("price");
     QTest::addColumn<QString>("name");
@@ -70,16 +71,16 @@ void ProductDAOTest::updateTest_data()
     QTest::addColumn<QString>("desc");
     QTest::addColumn<bool>("result");
 
-    QTest::newRow("validData_shouldPass") << 1 << 1.0 << 2.0 << "name" << "type" << "unit" << "desc" << true;
-    QTest::newRow("negativeCost_shouldFail") << 1 << -1.0 << 2.0 << "name" << "type" << "unit" << "desc" << false;
-    QTest::newRow("negativePrice_shouldFail") << 1 << 1.0 << -2.0 << "name" << "type" << "unit" << "desc" << false;
-    QTest::newRow("emptyName_shouldFail") << 1 << 1.0 << 2.0 << "" << "type" << "unit" << "desc" << false;
-    QTest::newRow("emptyUnit_shouldFail") << 1 << 1.0 << 2.0 << "name" << "type" << "" << "desc" << false;
+    QTest::newRow("validData_shouldPass") << "Z1" << 1.0 << 2.0 << "name" << "type" << "unit" << "desc" << true;
+    QTest::newRow("negativeCost_shouldFail") << "1" << -1.0 << 2.0 << "name" << "type" << "unit" << "desc" << false;
+    QTest::newRow("negativePrice_shouldFail") << "1" << 1.0 << -2.0 << "name" << "type" << "unit" << "desc" << false;
+    QTest::newRow("emptyName_shouldFail") << "1" << 1.0 << 2.0 << "" << "type" << "unit" << "desc" << false;
+    QTest::newRow("emptyUnit_shouldFail") << "1" << 1.0 << 2.0 << "name" << "type" << "" << "desc" << false;
 }
 
 void ProductDAOTest::updateTest()
 {
-    QFETCH(int, stock);
+    QFETCH(QString, nr);
     QFETCH(double, cost);
     QFETCH(double, price);
     QFETCH(QString, name);
@@ -95,7 +96,8 @@ void ProductDAOTest::updateTest()
     product->setName("name");
     product->setType("type");
     product->setUnit("unit");
-    product->setDesc("desc");
+    product->setManufactor("desc");
+    product->setArticleNumber(nr);
 
     m_productDAO->create(product);
     QVERIFY(product->id() >= 0);
@@ -108,7 +110,7 @@ void ProductDAOTest::updateTest()
     product->setName(name);
     product->setType(type);
     product->setUnit(unit);
-    product->setDesc(desc);
+    product->setManufactor(desc);
 
     try {
         m_productDAO->update(product);
@@ -132,7 +134,7 @@ void ProductDAOTest::updateWithInvalidIDTest()
     product->setName("name");
     product->setType("type");
     product->setUnit("unit");
-    product->setDesc("desc");
+    product->setManufactor("desc");
 
     // get not used id
     int id = 0;
@@ -163,7 +165,7 @@ void ProductDAOTest::removeTestWithValidIDShouldPass()
     product->setName("name");
     product->setType("type");
     product->setUnit("unit");
-    product->setDesc("desc");
+    product->setManufactor("desc");
 
     m_productDAO->create(product);
     QVERIFY(product->id() >= 0);
@@ -212,7 +214,7 @@ void ProductDAOTest::getAllTest()
     product->setName("name");
     product->setType("type");
     product->setUnit("unit");
-    product->setDesc("desc");
+    product->setManufactor("desc");
 
     // WHEN / THEN
     m_productDAO->create(product);

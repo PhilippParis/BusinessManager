@@ -12,20 +12,21 @@ public:
 
     }
 
-    int rowCount(const QModelIndex &parent) const override
+    virtual int rowCount(const QModelIndex &parent) const override
     {
         Q_UNUSED(parent)
         return m_data.size();
     }
 
-    void addAll(QList<T> items)
+    virtual void addAll(QList<T> items)
     {
+        clear();
         beginInsertRows(QModelIndex(), 0, items.size() - 1);
         m_data = items;
         endInsertRows();
     }
 
-    QModelIndex add(T item)
+    virtual QModelIndex add(T item)
     {
         beginInsertRows(QModelIndex(), m_data.size(), m_data.size());
         m_data.append(item);
@@ -34,7 +35,7 @@ public:
         return index(m_data.size() - 1, 0);
     }
 
-    void remove(T item)
+    virtual void remove(T item)
     {
         int row = m_data.indexOf(item);
         beginRemoveRows(QModelIndex(), row, row);
@@ -42,19 +43,19 @@ public:
         endRemoveRows();
     }
 
-    void replace(T old, T updated)
+    virtual void replace(T old, T updated)
     {
         int row = m_data.indexOf(old);
         m_data.replace(row, updated);
         emit dataChanged(index(0, row), index(4, row));
     }
 
-    T get(QModelIndex index)
+    virtual T get(QModelIndex index)
     {
         return m_data.at(index.row());
     }
 
-    int indexOf(T item)
+    virtual int indexOf(T item)
     {
         for(int i = 0; i < m_data.size(); ++i) {
             if(m_data.at(i)->id() == item->id()) {
@@ -64,14 +65,14 @@ public:
         return -1;
     }
 
-    void clear()
+    virtual void clear()
     {
         beginRemoveRows(QModelIndex(), 0, m_data.size() - 1);
         m_data.clear();
         endRemoveRows();
     }
 
-    QList<T> items()
+    virtual QList<T> items()
     {
         return m_data;
     }

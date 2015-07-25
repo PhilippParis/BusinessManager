@@ -39,6 +39,8 @@ public:
     QList<BillItem::Ptr> items() const;
     void setItems(const QList<BillItem::Ptr> &items);
 
+    double totalPrice() const;
+
 private:
     int m_id = -1;
     Customer::Ptr m_customer;

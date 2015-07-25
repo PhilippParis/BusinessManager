@@ -62,12 +62,12 @@ void DBProductDAO::create(Product::Ptr item)
     insertQuery.prepare("INSERT INTO PRODUCT VALUES(NULL, ?, ?, ?, ?, ?, ?, ?, 0);");
 
     insertQuery.addBindValue(item->name());
-    insertQuery.addBindValue(item->desc());
+    insertQuery.addBindValue(item->manufactor());
     insertQuery.addBindValue(item->costPerUnit());
     insertQuery.addBindValue(item->pricePerUnit());
     insertQuery.addBindValue(item->type());
     insertQuery.addBindValue(item->unit());
-    insertQuery.addBindValue(item->stock());
+    insertQuery.addBindValue(item->articleNumber());
 
     if (!insertQuery.exec()) {
         qCCritical(lcPersistence) << "DBProductDAO::create failed: " + insertQuery.lastError().text();
@@ -90,21 +90,21 @@ void DBProductDAO::update(Product::Ptr item)
     QSqlQuery updateQuery(m_database);
     updateQuery.prepare("UPDATE PRODUCT SET "
                         "NAME = ?, "
-                        "DESC = ?, "
+                        "MANUFACTOR = ?, "
                         "COST = ?, "
                         "PRICE = ?, "
                         "TYPE = ?, "
                         "UNIT = ?, "
-                        "STOCK = ? "
+                        "NR = ? "
                         "WHERE ID = ?;");
 
     updateQuery.addBindValue(item->name());
-    updateQuery.addBindValue(item->desc());
+    updateQuery.addBindValue(item->manufactor());
     updateQuery.addBindValue(item->costPerUnit());
     updateQuery.addBindValue(item->pricePerUnit());
     updateQuery.addBindValue(item->type());
     updateQuery.addBindValue(item->unit());
-    updateQuery.addBindValue(item->stock());
+    updateQuery.addBindValue(item->articleNumber());
     updateQuery.addBindValue(item->id());
 
     if (!updateQuery.exec()) {
@@ -149,12 +149,12 @@ Product::Ptr DBProductDAO::parseProduct(QSqlRecord record)
 
     product->setId(record.value("ID").toInt());
     product->setName(record.value("NAME").toString());
-    product->setDesc(record.value("DESC").toString());
+    product->setManufactor(record.value("MANUFACTOR").toString());
     product->setCostPerUnit(record.value("COST").toDouble());
     product->setPricePerUnit(record.value("PRICE").toDouble());
     product->setType(record.value("TYPE").toString());
     product->setUnit(record.value("UNIT").toString());
-    product->setStock(record.value("STOCK").toInt());
+    product->setArticleNumber(record.value("NR").toString());
 
     return product;
 }

@@ -13,15 +13,7 @@ void Product::setId(int id)
 {
     m_id = id;
 }
-int Product::stock() const
-{
-    return m_stock;
-}
 
-void Product::setStock(int stock)
-{
-    m_stock = stock;
-}
 double Product::costPerUnit() const
 {
     return m_costPerUnit;
@@ -58,14 +50,14 @@ void Product::setUnit(const QString &unit)
 {
     m_unit = unit;
 }
-QString Product::desc() const
+QString Product::manufactor() const
 {
-    return m_desc;
+    return m_manufactor;
 }
 
-void Product::setDesc(const QString &desc)
+void Product::setManufactor(const QString &desc)
 {
-    m_desc = desc;
+    m_manufactor = desc;
 }
 double Product::pricePerUnit() const
 {
@@ -112,9 +104,22 @@ bool Product::equals(const Product::Ptr product) const
     if (m_unit.compare(product->m_unit) != 0) {
         return false;
     }
-    if (m_desc.compare(product->m_desc) != 0) {
+    if (m_manufactor.compare(product->m_manufactor) != 0) {
+        return false;
+    }
+    if (m_articleNumber.compare(product->m_articleNumber) != 0) {
         return false;
     }
 
     return true;
 }
+QString Product::articleNumber() const
+{
+    return m_articleNumber;
+}
+
+void Product::setArticleNumber(const QString &articleNumber)
+{
+    m_articleNumber = articleNumber;
+}
+

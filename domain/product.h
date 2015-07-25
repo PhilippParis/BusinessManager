@@ -14,9 +14,6 @@ public:
     int id() const;
     void setId(int id);
 
-    int stock() const;
-    void setStock(int stock);
-
     double costPerUnit() const;
     void setCostPerUnit(double costPerUnit);
 
@@ -29,8 +26,8 @@ public:
     QString unit() const;
     void setUnit(const QString &unit);
 
-    QString desc() const;
-    void setDesc(const QString &desc);
+    QString manufactor() const;
+    void setManufactor(const QString &manufactor);
 
     double pricePerUnit() const;
     void setPricePerUnit(double pricePerUnit);
@@ -38,15 +35,18 @@ public:
     QString toString() const;
     bool equals(const Product::Ptr product) const;
 
+    QString articleNumber() const;
+    void setArticleNumber(const QString &articleNumber);
+
 private:
     int m_id = -1;
-    int m_stock = 0;
     double m_costPerUnit = 0.0;
     double m_pricePerUnit = 0.0;
     QString m_name;
     QString m_type = "";
     QString m_unit;
-    QString m_desc = "";
+    QString m_manufactor = "";
+    QString m_articleNumber = "";
 };
 Q_DECLARE_METATYPE(Product::Ptr)
 

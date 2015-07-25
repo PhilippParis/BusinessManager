@@ -10,6 +10,11 @@ BillItemWizard::BillItemWizard(QWidget *parent, BillService::Ptr billService,
     m_templateService(templateService)
 {
     ui->setupUi(this);
+
+    m_productModel = new ProductTableModel();
+    SpinBoxDelegate* delegate = new SpinBoxDelegate(ui->tblMaterial);
+    ui->tblMaterial->setModel(m_productModel);
+    ui->tblMaterial->setItemDelegateForColumn(4, delegate);
 }
 
 BillItemWizard::~BillItemWizard()
@@ -108,4 +113,14 @@ void BillItemWizard::accept()
 double BillItemWizard::materialCosts()
 {
     return 0.0; // TODO
+}
+
+void BillItemWizard::on_btnAddMaterial_clicked()
+{
+
+}
+
+void BillItemWizard::on_btnDeleteMaterial_clicked()
+{
+
 }

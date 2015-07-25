@@ -104,6 +104,14 @@ void Bill::setItems(const QList<BillItem::Ptr> &items)
     m_items = items;
 }
 
+double Bill::totalPrice() const
+{
+    double total = 0.0;
+    for(BillItem::Ptr item : m_items) {
+        total += item->price() * item->quantity();
+    }
+}
+
 
 
 

@@ -102,12 +102,12 @@ void DatabaseSingleton::createTables(QSqlDatabase db)
    res = query.exec("CREATE TABLE IF NOT EXISTS PRODUCT ( "
                     "ID INTEGER PRIMARY KEY NOT NULL, "
                     "NAME VARCHAR(200) NOT NULL, "
-                    "DESC VARCHAR(200) NOT NULL, "
+                    "MANUFACTOR VARCHAR(200) NOT NULL, "
                     "COST REAL NOT NULL, "
                     "PRICE REAL NOT NULL, "
                     "TYPE VARCHAR(20) NOT NULL, "
                     "UNIT VARCHAR(20) NOT NULL, "
-                    "STOCK REAL NOT NULL, "
+                    "NR VARCHAR(20) NOT NULL, "
                     "DELETED INTEGER NOT NULL DEFAULT 0);");
 
    if(!res) {

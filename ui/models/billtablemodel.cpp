@@ -34,7 +34,7 @@ QVariant BillTableModel::data(const QModelIndex &index, int role) const
         case Customer:
             return customer->fullName();
         case Value:
-            return 0.0;
+            return QString::number(bill->totalPrice()) + QString::fromUtf8("€");
         case Payed:
             return bill->payed();
     }

@@ -11,6 +11,9 @@
 #include "service/productservice.h"
 #include "service/templateservice.h"
 
+#include "ui/models/producttablemodel.h"
+#include "ui/delegates/spinboxdelegate.h"
+
 namespace Ui {
 class BillItemWizard;
 }
@@ -33,6 +36,10 @@ private slots:
     void on_textEditArticleDesc_textChanged();
     void accept() override;
 
+    void on_btnAddMaterial_clicked();
+
+    void on_btnDeleteMaterial_clicked();
+
 private:
     double materialCosts();
 
@@ -47,6 +54,8 @@ private:
     ProductService::Ptr m_productService;
     TemplateService::Ptr m_templateService;
     OpenMode m_openMode;
+
+    ProductTableModel *m_productModel;
 };
 
 #endif // BILLITEMWIZARD_H

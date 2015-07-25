@@ -66,7 +66,9 @@ SOURCES += main.cpp\
     ui/models/customerlistmodel.cpp \
     ui/dialogs/billdialog.cpp \
     ui/models/billitemtablemodel.cpp \
-    ui/wizards/billitemwizard.cpp
+    ui/wizards/billitemwizard.cpp \
+    ui/models/producttablemodel.cpp \
+    ui/delegates/spinboxdelegate.cpp
 
 HEADERS  += ui/mainwindow.h \
     domain/bill.h \
@@ -120,7 +122,9 @@ HEADERS  += ui/mainwindow.h \
     ui/dialogs/billdialog.h \
     ui/models/billitemtablemodel.h \
     ui/models/domainitemmodel.h \
-    ui/wizards/billitemwizard.h
+    ui/wizards/billitemwizard.h \
+    ui/models/producttablemodel.h \
+    ui/delegates/spinboxdelegate.h
 
 FORMS    += ui/mainwindow.ui \
     ui/widgets/customerswidget.ui \
