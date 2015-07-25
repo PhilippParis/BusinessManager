@@ -4,6 +4,7 @@ BillValidator::BillValidator()
 {
     m_customerValidator = std::make_shared<CustomerValidator>();
     m_billItemValidator = std::make_shared<BillItemValidator>();
+    m_discountValidator = std::make_shared<DiscountValidator>();
 }
 
 void BillValidator::validateForCreate(Bill::Ptr item)
@@ -43,7 +44,13 @@ void BillValidator::validateMandatoryFields(Bill::Ptr item)
     }
 
     for(BillItem::Ptr billItem : item->items()) {
-        m_billItemValidator->validateIdentity(billItem);
+        // validate for create -> id of billitem must not be set
+        m_billItemValidator->validateForCreate(billItem);
+    }
+
+    for(Discount::Ptr discount : item->discounts()) {
+        // validate for create -> id of discount must not be set
+        m_discountValidator->validateForCreate(discount);
     }
 
     m_customerValidator->validateIdentity(item->customer());

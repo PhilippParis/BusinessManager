@@ -33,8 +33,11 @@ public:
     void setCustomerService(const CustomerService::Ptr &customerService);
     void setBillService(const BillService::Ptr &billService);
 
+    void setDiscountValidator(const Validator<Discount::Ptr>::Ptr &discountValidator);
+
 public slots:
     void update();
+    void actionNewBill();
 
 private slots:
     void on_btnEdit_clicked();
@@ -57,7 +60,7 @@ private:
     ProductService::Ptr m_productService;
     TemplateService::Ptr m_templateService;
 
-    Validator<Bill::Ptr>::Ptr m_validator;
+    Validator<Discount::Ptr>::Ptr m_discountValidator;
 
     BillTableModel *m_billModel;
     CustomerTableModel *m_customerModel;

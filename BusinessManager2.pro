@@ -70,7 +70,12 @@ SOURCES += main.cpp\
     ui/models/producttablemodel.cpp \
     ui/delegates/spinboxdelegate.cpp \
     ui/dialogs/productselectiondialog.cpp \
-    ui/models/productsortfilterproxymodel.cpp
+    ui/models/productsortfilterproxymodel.cpp \
+    domain/discount.cpp \
+    persistence/discountdao.cpp \
+    persistence/impl/dbdiscountdao.cpp \
+    persistence/validation/impl/discountvalidator.cpp \
+    ui/dialogs/discountdialog.cpp
 
 HEADERS  += ui/mainwindow.h \
     domain/bill.h \
@@ -128,7 +133,12 @@ HEADERS  += ui/mainwindow.h \
     ui/models/producttablemodel.h \
     ui/delegates/spinboxdelegate.h \
     ui/dialogs/productselectiondialog.h \
-    ui/models/productsortfilterproxymodel.h
+    ui/models/productsortfilterproxymodel.h \
+    domain/discount.h \
+    persistence/discountdao.h \
+    persistence/impl/dbdiscountdao.h \
+    persistence/validation/impl/discountvalidator.h \
+    ui/dialogs/discountdialog.h
 
 FORMS    += ui/mainwindow.ui \
     ui/widgets/customerswidget.ui \
@@ -136,4 +146,5 @@ FORMS    += ui/mainwindow.ui \
     ui/widgets/billwidget.ui \
     ui/dialogs/billdialog.ui \
     ui/wizards/billitemwizard.ui \
-    ui/dialogs/productselectiondialog.ui
+    ui/dialogs/productselectiondialog.ui \
+    ui/dialogs/discountdialog.ui

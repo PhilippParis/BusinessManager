@@ -9,12 +9,14 @@
 #include "persistence/validation/impl/billvalidator.h"
 #include "persistence/validation/impl/billitemvalidator.h"
 #include "persistence/validation/impl/productvalidator.h"
+#include "persistence/validation/impl/discountvalidator.h"
 
 #include "persistence/impl/dbcustomerdao.h"
 #include "persistence/impl/dbproductdao.h"
 #include "persistence/impl/dbbillitemdao.h"
 #include "persistence/impl/dbbilldao.h"
 #include "persistence/impl/dbtemplatedao.h"
+#include "persistence/impl/dbdiscountdao.h"
 
 #include "service/impl/customerserviceimpl.h"
 #include "service/impl/billserviceimpl.h"
@@ -35,9 +37,8 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-private slots:
-
-    void on_actionNewBill_triggered();
+signals:
+    void dataChanged();
 
 private:
     void initWidgets();
@@ -54,6 +55,7 @@ private:
     Validator<Bill::Ptr>::Ptr m_billValidator;
     Validator<BillItem::Ptr>::Ptr m_billItemValidator;
     Validator<Product::Ptr>::Ptr m_productValidator;
+    Validator<Discount::Ptr>::Ptr m_discountValidator;
 
 };
 

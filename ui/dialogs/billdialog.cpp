@@ -21,12 +21,18 @@ BillDialog::BillDialog(QWidget *parent, BillService::Ptr billService, CustomerSe
 
     connect(ui->tblBillItems->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
             this, SLOT(selectionChanged(QModelIndex,QModelIndex)));
+
 }
 
 BillDialog::~BillDialog()
 {
     delete ui;
     delete m_customerModel;
+}
+
+void BillDialog::setDiscountValidator(Validator<Discount::Ptr>::Ptr validator)
+{
+    m_discountValidator = validator;
 }
 
 void BillDialog::prepareForCreate()
@@ -46,6 +52,10 @@ void BillDialog::prepareForUpdate(Bill::Ptr bill)
     ui->sbNr->setValue(bill->billNumber());
     m_billItemModel->addAll(m_billService->getItemsOfBill(bill->id()));
 
+    if (!bill->discounts().isEmpty()) {
+        m_discount = bill->discounts().first();
+    }
+
     int index = m_customerModel->indexOf(bill->customer());
     if(index < 0) {
         // customer deleted -> add customer to combobox
@@ -59,9 +69,9 @@ void BillDialog::accept()
     Bill::Ptr bill = toDomainObject();
     try {
         if(m_openMode == Create) {
-            m_billService->addBill(bill);
+            m_billService->billValidator()->validateForCreate(bill);
         } else {
-            m_billService->updateBill(bill);
+            m_billService->billValidator()->validateForUpdate(bill);
         }
         QDialog::accept();
     } catch (ServiceException *e) {
@@ -79,6 +89,10 @@ Bill::Ptr BillDialog::toDomainObject()
     bill->setCustomer(m_customerModel->get(m_customerModel->index(ui->cbRecipient->currentIndex(), 0)));
     bill->setPayed(m_payed);
     bill->setItems(m_billItemModel->items());
+
+    if(m_discount != nullptr) {
+        bill->setDiscounts(QList<Discount::Ptr>() << m_discount);
+    }
     return bill;
 }
 
@@ -155,4 +169,23 @@ void BillDialog::on_btnDeleteArticle_clicked()
 void BillDialog::on_dateEdit_dateChanged(const QDate &date)
 {
     ui->sbNr->setValue(m_billService->nextBillNumber(date));
+}
+
+void BillDialog::on_btnAddDiscount_clicked()
+{
+    DiscountDialog *dialog = new DiscountDialog(this, m_discountValidator);
+    int idBuffer = -1;
+
+    if (m_discount == nullptr) {
+        dialog->prepareForCreate();
+    } else {
+        idBuffer = m_discount->id();
+        m_discount->setId(1);
+        dialog->prepareForUpdate(m_discount);
+    }
+
+    if (dialog->exec() == QDialog::Accepted) {
+        m_discount = dialog->toDomainObject();
+        m_discount->setId(idBuffer);
+    }
 }

@@ -1,10 +1,12 @@
 #include "dbbilldao.h"
 
-DBBillDAO::DBBillDAO(QSqlDatabase database, Validator<Bill::Ptr>::Ptr validator, CustomerDAO::Ptr customerDAO, BillItemDAO::Ptr billItemDAO)
+DBBillDAO::DBBillDAO(QSqlDatabase database, Validator<Bill::Ptr>::Ptr validator, CustomerDAO::Ptr customerDAO,
+                     BillItemDAO::Ptr billItemDAO, DiscountDAO::Ptr discountDAO)
  : m_database(database),
    m_validator(validator),
    m_customerDAO(customerDAO),
-   m_billItemDAO(billItemDAO)
+   m_billItemDAO(billItemDAO),
+   m_discountDAO(discountDAO)
 {
 }
 
@@ -74,6 +76,7 @@ void DBBillDAO::create(Bill::Ptr item)
 
     item->setId(insertQuery.lastInsertId().toInt());
     updateBillItems(item);
+    updateDiscounts(item);
 }
 
 void DBBillDAO::update(Bill::Ptr item)
@@ -111,6 +114,7 @@ void DBBillDAO::update(Bill::Ptr item)
     }
 
     updateBillItems(item);
+    updateDiscounts(item);
 }
 
 void DBBillDAO::remove(Bill::Ptr item)
@@ -143,7 +147,7 @@ int DBBillDAO::nextBillNumber(QDate date)
     qCDebug(lcPersistence) << "Entering DBBillDAO::nextBillNumber with param QDate: " + date.toString("yyyy-MM-dd");
 
     QSqlQuery query(m_database);
-    query.prepare("SELECT COALESCE (MAX(NR) + 1, 1) AS NEXT FROM BILL WHERE STRFTIME('%Y', DATE) = ?;");
+    query.prepare("SELECT COALESCE (MAX(NR) + 1, 1) AS NEXT FROM BILL WHERE STRFTIME('%Y', DATE) = ? AND DELETED = 0;");
     query.addBindValue(QString::number(date.year()));
 
     if (!query.exec() || !query.next()) {
@@ -159,7 +163,7 @@ QPair<QDate, QDate> DBBillDAO::billDateRange()
     qCDebug(lcPersistence) << "Entering DBBillDAO::billDateRange ";
 
     QSqlQuery query(m_database);
-    query.prepare("SELECT MIN(JULIANDAY(DATE)) AS MINT, MAX(JULIANDAY(DATE)) AS MAXT FROM BILL;");
+    query.prepare("SELECT MIN(JULIANDAY(DATE)) AS MINT, MAX(JULIANDAY(DATE)) AS MAXT FROM BILL WHERE DELETED = 0;");
 
     if (!query.exec() || !query.next()) {
         qCCritical(lcPersistence) << "DBBillDAO::billDateRange failed:" + query.lastError().text();
@@ -194,8 +198,23 @@ Bill::Ptr DBBillDAO::parseBill(QSqlRecord record)
     while(query.next()) {
         items.append(m_billItemDAO->get(query.value("ID").toInt()));
     }
-
     bill->setItems(items);
+
+    // get discounts
+    query.prepare("SELECT ID FROM DISCOUNT WHERE BILL = ?;");
+    query.addBindValue(bill->id());
+
+    if (!query.exec()) {
+        qCCritical(lcPersistence) << "DBBillDAO::parseBill failed:" + query.lastError().text();
+        throw new PersistenceException("DBBillDAO::parseBill failed:" + query.lastError().text());
+    }
+
+    QList<Discount::Ptr> discounts;
+    while(query.next()) {
+        discounts.append(m_discountDAO->get(query.value("ID").toInt()));
+    }
+    bill->setDiscounts(discounts);
+
     return bill;
 }
 
@@ -229,6 +248,39 @@ void DBBillDAO::updateBillItems(Bill::Ptr bill)
     if (!query.exec()) {
         qCCritical(lcPersistence) << "DBBillDAO::updateBillItems failed:" + query.lastError().text();
         throw new PersistenceException("DBBillDAO::updateBillItems failed:" + query.lastError().text());
+    }
+}
+
+void DBBillDAO::updateDiscounts(Bill::Ptr bill)
+{
+    qCDebug(lcPersistence) << "Entering DBBillDAO::updateDiscounts with param " + bill->toString();
+    QList<Discount::Ptr> discounts = bill->discounts();
+
+    // set all already stored items as deleted
+    QSqlQuery query(m_database);
+    query.prepare("UPDATE DISCOUNT SET DELETED = 1 WHERE BILL = ?;");
+    query.addBindValue(bill->id());
+
+    if (!query.exec()) {
+        qCCritical(lcPersistence) << "DBBillDAO::updateDiscounts failed:" + query.lastError().text();
+        throw new PersistenceException("DBBillDAO::updateDiscounts failed:" + query.lastError().text());
+    }
+
+    QStringList placeholders;
+    for (int i = 0; i < discounts.size(); ++i) {
+         placeholders << "?";
+    }
+
+    // enable items and set bill id
+    query.prepare("UPDATE DISCOUNT SET BILL = ?, DELETED = 0 WHERE ID IN (" + placeholders.join(", ") + ")");
+    query.addBindValue(bill->id());
+    for (int i = 0; i < discounts.size(); ++i) {
+         query.addBindValue(discounts.at(i)->id());
+    }
+
+    if (!query.exec()) {
+        qCCritical(lcPersistence) << "DBBillDAO::updateDiscounts failed:" + query.lastError().text();
+        throw new PersistenceException("DBBillDAO::updateDiscounts failed:" + query.lastError().text());
     }
 }
 

@@ -13,7 +13,7 @@ BillWidget::BillWidget(QWidget *parent) :
 
     ui->tblData->setModel(m_sortFilterModel);
     ui->tblData->setSortingEnabled(true);
-    ui->tblData->sortByColumn(1, Qt::AscendingOrder);
+    ui->tblData->sortByColumn(1, Qt::DescendingOrder);
 
     ui->tblData->setColumnWidth(2, 200);
     ui->tblData->setColumnWidth(3, 200);
@@ -75,6 +75,52 @@ Bill::Ptr BillWidget::selectedBill()
     QModelIndex index = m_sortFilterModel->mapToSource(ui->tblData->currentIndex());
     return m_billModel->get(index);
 }
+void BillWidget::setDiscountValidator(const Validator<Discount::Ptr>::Ptr &discountValidator)
+{
+    m_discountValidator = discountValidator;
+}
+
+void BillWidget::actionNewBill()
+{
+    BillDialog *dialog = new BillDialog(this, m_billService, m_customerService, m_productService, m_templateService);
+    dialog->setDiscountValidator(m_discountValidator);
+    dialog->prepareForCreate();
+
+    if(dialog->exec() == QDialog::Accepted) {
+        Bill::Ptr bill = dialog->toDomainObject();
+        try {
+            m_billService->addBill(bill);
+            m_billModel->add(bill);
+        } catch (ServiceException *e) {
+            QMessageBox::information(this, "error", e->what());
+            delete e;
+        }
+    }
+
+    delete dialog;
+}
+
+void BillWidget::on_btnEdit_clicked()
+{
+    Bill::Ptr selected = selectedBill();
+    BillDialog *dialog = new BillDialog(this, m_billService, m_customerService, m_productService, m_templateService);
+    dialog->setDiscountValidator(m_discountValidator);
+    dialog->prepareForUpdate(selected);
+
+
+    if(dialog->exec() == QDialog::Accepted) {
+        Bill::Ptr bill = dialog->toDomainObject();
+        try {
+            m_billService->updateBill(bill);
+            m_billModel->replace(selected, bill);
+        } catch (ServiceException *e) {
+            QMessageBox::information(this, "error", e->what());
+            delete e;
+        }
+    }
+
+    delete dialog;
+}
 
 void BillWidget::setBillService(const BillService::Ptr &billService)
 {
@@ -95,15 +141,6 @@ void BillWidget::setProductService(const ProductService::Ptr &productService)
 void BillWidget::setTemplateService(const TemplateService::Ptr &templateService)
 {
     m_templateService = templateService;
-}
-
-void BillWidget::on_btnEdit_clicked()
-{
-    BillDialog *dialog = new BillDialog(this, m_billService, m_customerService, m_productService, m_templateService);
-    dialog->prepareForUpdate(selectedBill());
-    dialog->exec();
-
-    delete dialog;
 }
 
 void BillWidget::on_btnPrint_clicked()

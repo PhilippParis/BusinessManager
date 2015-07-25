@@ -7,6 +7,7 @@
 #include "domain/billitem.h"
 
 #include "service/serviceexception.h"
+#include "persistence/validation/validator.h"
 
 class BillService
 {
@@ -29,6 +30,9 @@ public:
 
     virtual int nextBillNumber(QDate date) = 0;
     virtual QPair<QDate, QDate> billDateRange() = 0;
+
+    virtual Validator<BillItem::Ptr>::Ptr billItemValidator() = 0;
+    virtual Validator<Bill::Ptr>::Ptr billValidator() = 0;
 
 };
 

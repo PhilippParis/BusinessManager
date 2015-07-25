@@ -59,6 +59,26 @@ void BillSortFilterProxyModel::setOnlyOpen(bool onlyOpen)
     invalidateFilter();
 }
 
+bool BillSortFilterProxyModel::lessThan(const QModelIndex &left, const QModelIndex &right) const
+{
+    QModelIndex leftNrIndex = sourceModel()->index(left.row(), 0);
+    QModelIndex rightNrIndex = sourceModel()->index(right.row(), 0);
+
+    QModelIndex leftDateIndex = sourceModel()->index(left.row(), 1);
+    QModelIndex rightDateIndex = sourceModel()->index(right.row(), 1);
+
+    QDate leftDate = sourceModel()->data(leftDateIndex).toDate();
+    QDate rightDate = sourceModel()->data(rightDateIndex).toDate();
+
+    int leftNr = sourceModel()->data(leftNrIndex).toInt();
+    int rightNr = sourceModel()->data(rightNrIndex).toInt();
+
+    if(leftDate == rightDate) {
+        return leftNr < rightNr;
+    }
+    return leftDate < rightDate;
+}
+
 Customer::Ptr BillSortFilterProxyModel::customer() const
 {
     return m_customer;

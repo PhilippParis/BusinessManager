@@ -3,6 +3,7 @@
 
 #include "domain/billitem.h"
 #include "persistence/persistenceexception.h"
+#include "persistence/validation/validator.h"
 
 class BillItemDAO
 {

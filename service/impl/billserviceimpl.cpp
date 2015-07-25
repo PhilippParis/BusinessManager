@@ -1,9 +1,10 @@
 #include "billserviceimpl.h"
 
-BillServiceImpl::BillServiceImpl(BillDAO::Ptr billDAO, BillItemDAO::Ptr billItemDAO,
+BillServiceImpl::BillServiceImpl(BillDAO::Ptr billDAO, BillItemDAO::Ptr billItemDAO, DiscountDAO::Ptr discountDAO,
                          Validator<Bill::Ptr>::Ptr billValidator, Validator<BillItem::Ptr>::Ptr billItemValidator)
  : m_billDAO(billDAO),
    m_billItemDAO(billItemDAO),
+   m_discountDAO(discountDAO),
    m_billValidator(billValidator),
    m_billItemValidator(billItemValidator)
 {
@@ -13,6 +14,14 @@ BillServiceImpl::BillServiceImpl(BillDAO::Ptr billDAO, BillItemDAO::Ptr billItem
 void BillServiceImpl::addBill(Bill::Ptr bill)
 {
     try {
+        for(BillItem::Ptr item : bill->items()) {
+            addItem(item);
+        }
+
+        for(Discount::Ptr discount : bill->discounts()) {
+            m_discountDAO->create(discount);
+        }
+
         m_billValidator->validateForCreate(bill);
         m_billDAO->create(bill);
     } catch (Exception *e) {
@@ -23,6 +32,22 @@ void BillServiceImpl::addBill(Bill::Ptr bill)
 void BillServiceImpl::updateBill(Bill::Ptr bill)
 {
     try {
+        for(BillItem::Ptr item : bill->items()) {
+            if(item->id() < 0) {
+                addItem(item);
+            } else {
+                updateItem(item);
+            }
+        }
+
+        for(Discount::Ptr discount : bill->discounts()) {
+            if(discount->id() < 0) {
+                m_discountDAO->create(discount);
+            } else {
+                m_discountDAO->update(discount);
+            }
+        }
+
         m_billValidator->validateForUpdate(bill);
         m_billDAO->update(bill);
     } catch (Exception *e) {
@@ -123,3 +148,14 @@ QPair<QDate, QDate> BillServiceImpl::billDateRange()
         throw new ServiceException(e);
     }
 }
+
+Validator<BillItem::Ptr>::Ptr BillServiceImpl::billItemValidator()
+{
+    return m_billItemValidator;
+}
+
+Validator<Bill::Ptr>::Ptr BillServiceImpl::billValidator()
+{
+    return m_billValidator;
+}
+

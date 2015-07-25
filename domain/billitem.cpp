@@ -134,19 +134,16 @@ bool BillItem::equals(const BillItem::Ptr item) const
     return true;
 }
 
-void BillItem::addMaterial(const Product::Ptr product, double quantity)
-{
-    m_material.insert(product, quantity);
-}
-
-void BillItem::removeMaterial(const Product::Ptr product)
-{
-    m_material.remove(product);
-}
 QMap<Product::Ptr, double> BillItem::material() const
 {
     return m_material;
 }
+
+void BillItem::setMaterial(const QMap<Product::Ptr, double> &material)
+{
+    m_material = material;
+}
+
 
 
 

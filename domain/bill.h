@@ -8,6 +8,7 @@
 
 #include "domain/customer.h"
 #include "domain/billitem.h"
+#include "domain/discount.h"
 
 class Bill
 {
@@ -39,6 +40,9 @@ public:
     QList<BillItem::Ptr> items() const;
     void setItems(const QList<BillItem::Ptr> &items);
 
+    QList<Discount::Ptr> discounts() const;
+    void setDiscounts(const QList<Discount::Ptr> &discounts);
+
     double totalPrice() const;
 
 private:
@@ -48,6 +52,8 @@ private:
     QDate m_date;
     bool m_payed;
     QList<BillItem::Ptr> m_items;
+    QList<Discount::Ptr> m_discounts;
+
 };
 Q_DECLARE_METATYPE(Bill::Ptr)
 

@@ -52,7 +52,8 @@ void BillItemWizard::prepareForUpdate(BillItem::Ptr item)
     ui->sbQuantity->setValue(item->quantity());
     ui->sbWorkingHours->setValue(item->workingHours());
     ui->lblCostPerArticle->setText(QString::number(cost) + QString::fromUtf8("€"));
-    // TODO display wage
+    ui->sbWage->setValue(item->wagePerHour());
+    m_productModel->addAllWithQuantity(item->material());
 }
 
 BillItem::Ptr BillItemWizard::toDomainObject()
@@ -66,7 +67,8 @@ BillItem::Ptr BillItemWizard::toDomainObject()
     item->setQuantity(ui->sbQuantity->value());
     item->setUnit(ui->leUnit->text());
     item->setWorkingHours(ui->sbWorkingHours->value());
-    // TODO set wage
+    item->setWagePerHour(ui->sbWage->value());
+    item->setMaterial(m_productModel->itemsWithQuantity());
 
     return item;
 }
@@ -98,13 +100,12 @@ void BillItemWizard::accept()
     BillItem::Ptr item = toDomainObject();
     try {
         if(m_openMode == Create) {
-            m_billService->addItem(item);
+            m_billService->billItemValidator()->validateForCreate(item);
         } else {
-            m_billService->updateItem(item);
+            m_billService->billItemValidator()->validateForUpdate(item);
         }
-        m_id = item->id();
         QWizard::accept();
-    } catch (ServiceException *e) {
+    } catch (ValidationException *e) {
         QMessageBox::warning(this, "Invalid Data", e->what());
         delete e;
     }
@@ -112,7 +113,20 @@ void BillItemWizard::accept()
 
 double BillItemWizard::materialCosts()
 {
-    return 0.0; // TODO
+    QMap<Product::Ptr, double> items = m_productModel->itemsWithQuantity();
+    double materialCosts = 0.0;
+
+    QMap<Product::Ptr, double>::iterator it;
+    for(it = items.begin(); it != items.end(); ++it) {
+        materialCosts += it.key()->costPerUnit() * it.value();
+    }
+
+    return materialCosts;
+}
+
+double BillItemWizard::totalCostsPerUnit()
+{
+    return materialCosts() + ui->sbWorkingHours->value() * ui->sbWage->value();
 }
 
 void BillItemWizard::on_btnAddMaterial_clicked()
@@ -126,4 +140,11 @@ void BillItemWizard::on_btnAddMaterial_clicked()
 void BillItemWizard::on_btnDeleteMaterial_clicked()
 {
     m_productModel->remove(m_productModel->get(ui->tblMaterial->currentIndex()));
+}
+
+void BillItemWizard::on_BillItemWizard_currentIdChanged(int id)
+{
+    if (id == ItemDetailsPage) {
+        ui->lblCostPerArticle->setText(QString::number(totalCostsPerUnit(), 'f', 2) + QString::fromUtf8("€"));
+    }
 }

@@ -76,7 +76,7 @@ void DatabaseSingleton::createTables(QSqlDatabase db)
                     "ID INTEGER PRIMARY KEY NOT NULL, "
                     "TEXT VARCHAR(200) NOT NULL, "
                     "VALUE REAL NOT NULL, "
-                    "BILL_ID INTEGER NOT NULL REFERENCES BILL, "
+                    "BILL INTEGER REFERENCES BILL, "
                     "DELETED INTEGER NOT NULL DEFAULT 0);");
 
    if(!res) {

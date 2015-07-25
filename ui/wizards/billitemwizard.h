@@ -4,6 +4,7 @@
 #include <QWizard>
 #include <QTextBlock>
 #include <QMessageBox>
+#include <QDebug>
 
 #include "domain/billitem.h"
 
@@ -39,13 +40,19 @@ private slots:
 
     void on_btnAddMaterial_clicked();
     void on_btnDeleteMaterial_clicked();
+    void on_BillItemWizard_currentIdChanged(int id);
 
 private:
     double materialCosts();
+    double totalCostsPerUnit();
 
 private:
     enum OpenMode {
         Create, Update
+    };
+
+    enum Pages {
+        MaterialsPage, ItemDetailsPage
     };
 
     Ui::BillItemWizard *ui;

@@ -74,6 +74,12 @@ Qt::ItemFlags ProductTableModel::flags(const QModelIndex & index) const
     return QAbstractTableModel::flags(index);
 }
 
+void ProductTableModel::addAllWithQuantity(QMap<Product::Ptr, double> products)
+{
+    DomainItemModel::addAll(products.keys());
+    m_quantities = products;
+}
+
 void ProductTableModel::add(Product::Ptr product, double quantity)
 {
     m_quantities.insert(product, quantity);
@@ -99,7 +105,7 @@ void ProductTableModel::clear()
     m_quantities.clear();
 }
 
-QMap<Product::Ptr, double> ProductTableModel::getItemsWithQuantity() const
+QMap<Product::Ptr, double> ProductTableModel::itemsWithQuantity() const
 {
     return m_quantities;
 }

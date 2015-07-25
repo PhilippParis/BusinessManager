@@ -43,10 +43,8 @@ public:
     QString toString() const;
     bool equals(const BillItem::Ptr item) const;
 
-    void addMaterial(const Product::Ptr product, double quantity);
-    void removeMaterial(const Product::Ptr product);
-
     QMap<Product::Ptr, double> material() const;
+    void setMaterial(const QMap<Product::Ptr, double> &material);
 
 private:
     int m_id = -1;

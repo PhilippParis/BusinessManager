@@ -16,13 +16,14 @@ public:
     QVariant headerData(int section, Qt::Orientation orientation, int role) const override;
     Qt::ItemFlags flags(const QModelIndex &) const override;
 
+    void addAllWithQuantity(QMap<Product::Ptr, double> products);
     void add(Product::Ptr product, double quantity);
 
     void remove(Product::Ptr item) override;
     void replace(Product::Ptr old, Product::Ptr updated) override;
     void clear() override;
 
-    QMap<Product::Ptr, double> getItemsWithQuantity() const;
+    QMap<Product::Ptr, double> itemsWithQuantity() const;
 
 private:
     enum Column {

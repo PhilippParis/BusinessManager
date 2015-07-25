@@ -8,12 +8,14 @@
 #include "persistence/impl/dbcustomerdao.h"
 #include "persistence/impl/dbbillitemdao.h"
 #include "persistence/impl/dbproductdao.h"
+#include "persistence/impl/dbdiscountdao.h"
 
 #include "persistence/databasesingleton.h"
 
 #include "persistence/validation/impl/billitemvalidator.h"
 #include "persistence/validation/impl/billvalidator.h"
 #include "persistence/validation/impl/customervalidator.h"
+#include "persistence/validation/impl/discountvalidator.h"
 
 class BillDAOTest : public QObject
 {

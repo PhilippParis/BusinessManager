@@ -4,10 +4,12 @@ void BillDAOTest::initTestCase()
 {
     QSqlDatabase testDB = DatabaseSingleton::get()->getTestDatabase();
 
+    DiscountDAO::Ptr discountDAO = std::make_shared<DBDiscountDAO>(testDB, std::make_shared<DiscountValidator>());
+
     m_productDAO = std::make_shared<DBProductDAO>(testDB, std::make_shared<ProductValidator>());
     m_billItemDAO = std::make_shared<DBBillItemDAO>(testDB, std::make_shared<BillItemValidator>(), m_productDAO);
     m_customerDAO = std::make_shared<DBCustomerDAO>(testDB, std::make_shared<CustomerValidator>());
-    m_billDAO = std::make_shared<DBBillDAO>(testDB, std::make_shared<BillValidator>(), m_customerDAO, m_billItemDAO);
+    m_billDAO = std::make_shared<DBBillDAO>(testDB, std::make_shared<BillValidator>(), m_customerDAO, m_billItemDAO, discountDAO);
 
     // create dummy valid customer
     m_validCustomer = std::make_shared<Customer>();

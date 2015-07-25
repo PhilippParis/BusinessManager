@@ -13,6 +13,7 @@
 #include "ui/models/billitemtablemodel.h"
 
 #include "ui/dialogs/customerdialog.h"
+#include "ui/dialogs/discountdialog.h"
 #include "ui/wizards/billitemwizard.h"
 
 namespace Ui {
@@ -28,8 +29,12 @@ public:
                         ProductService::Ptr productService, TemplateService::Ptr templateService);
     ~BillDialog();
 
+    void setDiscountValidator(Validator<Discount::Ptr>::Ptr validator);
+
     void prepareForCreate();
     void prepareForUpdate(Bill::Ptr bill);
+
+    Bill::Ptr toDomainObject();
 
 private slots:
     void accept() override;
@@ -41,11 +46,10 @@ private slots:
     void selectionChanged(QModelIndex newIndex, QModelIndex prevIndex);
 
     void on_btnDeleteArticle_clicked();
-
     void on_dateEdit_dateChanged(const QDate &date);
+    void on_btnAddDiscount_clicked();
 
 private:
-    Bill::Ptr toDomainObject();
     BillItem::Ptr selectedBillItem();
 
 private:
@@ -54,8 +58,12 @@ private:
     };
 
     Ui::BillDialog *ui;
+
     int m_id = -1;
     bool m_payed = false;
+    Discount::Ptr m_discount;
+
+    Validator<Discount::Ptr>::Ptr m_discountValidator;
 
     BillService::Ptr m_billService;
     CustomerService::Ptr m_customerService;

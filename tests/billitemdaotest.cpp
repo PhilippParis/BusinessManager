@@ -93,10 +93,7 @@ void BillItemDAOTest::insertTest()
     item->setQuantity(quantity);
     item->setUnit(unit);
 
-    QMap<Product::Ptr, double>::iterator it;
-    for(it = material.begin(); it != material.end(); ++it) {
-        item->addMaterial(it.key(), it.value());
-    }
+    item->setMaterial(material);
 
     try {
         m_billItemDAO->create(item);
@@ -193,8 +190,11 @@ void BillItemDAOTest::updateTest()
     item->setWagePerHour(1.3);
     item->setQuantity(5);
     item->setUnit("unit");
-    item->addMaterial(product1, 1.2);
-    item->addMaterial(product2, 2.4);
+
+    QMap<Product::Ptr, double> m;
+    m.insert(product1, 1.2);
+    m.insert(product2, 2.4);
+    item->setMaterial(m);
 
     m_billItemDAO->create(item);
     QVERIFY(item->id() >= 0);
@@ -208,10 +208,7 @@ void BillItemDAOTest::updateTest()
     item->setQuantity(quantity);
     item->setUnit(unit);
 
-    QMap<Product::Ptr, double>::iterator it;
-    for(it = material.begin(); it != material.end(); ++it) {
-        item->addMaterial(it.key(), it.value());
-    }
+    item->setMaterial(material);
 
     try {
         m_billItemDAO->update(item);

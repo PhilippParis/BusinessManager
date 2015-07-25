@@ -187,11 +187,13 @@ BillItem::Ptr DBBillItemDAO::parseBillItem(QSqlRecord record)
         throw new PersistenceException("retrieving product-item assocs failed" + query.lastError().text());
     }
 
+    QMap<Product::Ptr, double> material;
     while(query.next()) {
-        item->addMaterial(m_productDAO->get(query.value("PRODUCT_ID").toInt()),
-                          query.value("QUANTITY").toDouble());
+        material.insert(m_productDAO->get(query.value("PRODUCT_ID").toInt()),
+                        query.value("QUANTITY").toDouble());
     }
 
+    item->setMaterial(material);
     return item;
 }
 
@@ -226,4 +228,5 @@ void DBBillItemDAO::updateAssocTable(BillItem::Ptr item)
         }
     }
 }
+
 

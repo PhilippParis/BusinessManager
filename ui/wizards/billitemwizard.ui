@@ -53,6 +53,20 @@
         </property>
        </spacer>
       </item>
+      <item>
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>wage per hour:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QDoubleSpinBox" name="sbWage">
+        <property name="suffix">
+         <string>€</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </item>
     <item>
@@ -198,6 +212,9 @@
         <property name="text">
          <string>Price per Unit</string>
         </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
        </widget>
       </item>
       <item row="2" column="6">
@@ -230,6 +247,9 @@
         <property name="text">
          <string>Unit</string>
         </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
        </widget>
       </item>
       <item row="2" column="7">
@@ -247,6 +267,9 @@
         <property name="text">
          <string>Cost per Unit</string>
         </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
        </widget>
       </item>
       <item row="2" column="3">
@@ -260,6 +283,9 @@
        <widget class="QLabel" name="label_10">
         <property name="text">
          <string>Quantity</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
         </property>
        </widget>
       </item>

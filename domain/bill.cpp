@@ -111,6 +111,16 @@ double Bill::totalPrice() const
         total += item->price() * item->quantity();
     }
 }
+QList<Discount::Ptr> Bill::discounts() const
+{
+    return m_discounts;
+}
+
+void Bill::setDiscounts(const QList<Discount::Ptr> &discounts)
+{
+    m_discounts = discounts;
+}
+
 
 
 
