@@ -13,6 +13,7 @@
 
 #include "ui/models/producttablemodel.h"
 #include "ui/delegates/spinboxdelegate.h"
+#include "ui/dialogs/productselectiondialog.h"
 
 namespace Ui {
 class BillItemWizard;
@@ -37,7 +38,6 @@ private slots:
     void accept() override;
 
     void on_btnAddMaterial_clicked();
-
     void on_btnDeleteMaterial_clicked();
 
 private:

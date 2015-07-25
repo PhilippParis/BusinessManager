@@ -74,6 +74,12 @@ Qt::ItemFlags ProductTableModel::flags(const QModelIndex & index) const
     return QAbstractTableModel::flags(index);
 }
 
+void ProductTableModel::add(Product::Ptr product, double quantity)
+{
+    m_quantities.insert(product, quantity);
+    DomainItemModel::add(product);
+}
+
 void ProductTableModel::remove(Product::Ptr item)
 {
     DomainItemModel::remove(item);

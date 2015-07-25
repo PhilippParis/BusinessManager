@@ -117,10 +117,13 @@ double BillItemWizard::materialCosts()
 
 void BillItemWizard::on_btnAddMaterial_clicked()
 {
-
+    ProductSelectionDialog *dialog = new ProductSelectionDialog(this, m_productService);
+    if(dialog->exec() == QDialog::Accepted) {
+        m_productModel->add(dialog->selectedProduct(), dialog->quantity());
+    }
 }
 
 void BillItemWizard::on_btnDeleteMaterial_clicked()
 {
-
+    m_productModel->remove(m_productModel->get(ui->tblMaterial->currentIndex()));
 }
