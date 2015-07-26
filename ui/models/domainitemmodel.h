@@ -52,6 +52,9 @@ public:
 
     virtual T get(QModelIndex index)
     {
+        if (!index.isValid()) {
+            return nullptr;
+        }
         return m_data.at(index.row());
     }
 

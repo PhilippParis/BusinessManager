@@ -48,6 +48,8 @@ void MainWindow::initWidgets()
     ui->widgetBills->setProductService(m_productService);
     ui->widgetBills->setTemplateService(m_templateService);
 
+    ui->productsWidget->setProductService(m_productService);
+
     connect(this, SIGNAL(dataChanged()), ui->widgetBills, SLOT(update()));
     connect(this, SIGNAL(dataChanged()), ui->widgetCustomers, SLOT(update()));
 }

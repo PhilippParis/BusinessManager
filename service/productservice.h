@@ -4,6 +4,8 @@
 #include "serviceexception.h"
 #include "domain/product.h"
 
+#include "persistence/validation/validator.h"
+
 class ProductService
 {
 public:
@@ -16,6 +18,8 @@ public:
     virtual void remove(Product::Ptr product) = 0;
     virtual Product::Ptr get(int id) = 0;
     virtual QList<Product::Ptr> getAll() = 0;
+
+    virtual Validator<Product::Ptr>::Ptr validator() = 0;
 };
 
 #endif // PRODUCTSERVICE_H

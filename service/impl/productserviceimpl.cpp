@@ -54,3 +54,8 @@ QList<Product::Ptr> ProductServiceImpl::getAll()
         throw new ServiceException(e);
     }
 }
+
+Validator<Product::Ptr>::Ptr ProductServiceImpl::validator()
+{
+    return m_productValidator;
+}

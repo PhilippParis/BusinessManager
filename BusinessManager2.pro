@@ -75,7 +75,9 @@ SOURCES += main.cpp\
     persistence/discountdao.cpp \
     persistence/impl/dbdiscountdao.cpp \
     persistence/validation/impl/discountvalidator.cpp \
-    ui/dialogs/discountdialog.cpp
+    ui/dialogs/discountdialog.cpp \
+    ui/widgets/productswidget.cpp \
+    ui/dialogs/productdialog.cpp
 
 HEADERS  += ui/mainwindow.h \
     domain/bill.h \
@@ -138,7 +140,9 @@ HEADERS  += ui/mainwindow.h \
     persistence/discountdao.h \
     persistence/impl/dbdiscountdao.h \
     persistence/validation/impl/discountvalidator.h \
-    ui/dialogs/discountdialog.h
+    ui/dialogs/discountdialog.h \
+    ui/widgets/productswidget.h \
+    ui/dialogs/productdialog.h
 
 FORMS    += ui/mainwindow.ui \
     ui/widgets/customerswidget.ui \
@@ -147,4 +151,6 @@ FORMS    += ui/mainwindow.ui \
     ui/dialogs/billdialog.ui \
     ui/wizards/billitemwizard.ui \
     ui/dialogs/productselectiondialog.ui \
-    ui/dialogs/discountdialog.ui
+    ui/dialogs/discountdialog.ui \
+    ui/widgets/productswidget.ui \
+    ui/dialogs/productdialog.ui

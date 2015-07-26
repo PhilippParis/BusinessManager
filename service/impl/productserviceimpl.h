@@ -17,6 +17,8 @@ public:
     Product::Ptr get(int id);
     QList<Product::Ptr> getAll();
 
+    Validator<Product::Ptr>::Ptr validator();
+
 private:
     ProductDAO::Ptr m_productDAO;
     Validator<Product::Ptr>::Ptr m_productValidator;
