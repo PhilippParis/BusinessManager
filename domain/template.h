@@ -50,9 +50,9 @@ public:
 private:
     int m_id = -1;
     QString m_name;
-    QString m_organisation;
-    QString m_type;
-    QString m_desc;
+    QString m_organisation = "";
+    QString m_type = "";
+    QString m_desc = "";
 
     QString m_itemDesc;
     QString m_unit;

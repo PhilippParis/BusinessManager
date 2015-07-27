@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QTest>
 #include <QString>
+#include <QTest>
 #include <QMap>
 
 #include "persistence/impl/dbtemplatedao.h"
@@ -17,7 +18,7 @@
 class TemplateDAOTest : public QObject
 {
     Q_OBJECT
-public:
+private slots:
     void initTestCase();
 
     void insertTest_data();

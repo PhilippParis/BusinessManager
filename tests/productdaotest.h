@@ -9,7 +9,6 @@
 #include "persistence/databasesingleton.h"
 #include "persistence/validation/impl/productvalidator.h"
 
-
 class ProductDAOTest : public QObject
 {
     Q_OBJECT

@@ -18,7 +18,7 @@
     <item>
      <widget class="QTabWidget" name="tab_3">
       <property name="currentIndex">
-       <number>2</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="tab_1">
        <attribute name="title">
@@ -56,89 +56,7 @@
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_12">
         <item>
-         <widget class="QTableWidget" name="tblBoughtProducts_2">
-          <property name="editTriggers">
-           <set>QAbstractItemView::NoEditTriggers</set>
-          </property>
-          <property name="selectionBehavior">
-           <enum>QAbstractItemView::SelectRows</enum>
-          </property>
-          <attribute name="horizontalHeaderStretchLastSection">
-           <bool>true</bool>
-          </attribute>
-          <attribute name="verticalHeaderVisible">
-           <bool>false</bool>
-          </attribute>
-          <row>
-           <property name="text">
-            <string>1</string>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string>2</string>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string>3</string>
-           </property>
-          </row>
-          <column>
-           <property name="text">
-            <string>Name</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Bruttoeinkaufspreis</string>
-           </property>
-          </column>
-          <item row="0" column="0">
-           <property name="text">
-            <string>Stoff1</string>
-           </property>
-          </item>
-          <item row="0" column="1">
-           <property name="text">
-            <string>2€</string>
-           </property>
-          </item>
-          <item row="1" column="0">
-           <property name="text">
-            <string>Stoff2</string>
-           </property>
-          </item>
-          <item row="1" column="1">
-           <property name="text">
-            <string>3€</string>
-           </property>
-          </item>
-          <item row="2" column="0">
-           <property name="text">
-            <string>Tasche Model A</string>
-           </property>
-          </item>
-          <item row="2" column="1">
-           <property name="text">
-            <string>25€</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="pushButton_7">
-          <property name="text">
-           <string>neue Ware hinzufügen</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="pushButton_8">
-          <property name="text">
-           <string>export</string>
-          </property>
-         </widget>
+         <widget class="TemplatesWidget" name="templatesWidget" native="true"/>
         </item>
        </layout>
       </widget>
@@ -195,6 +113,12 @@
    <class>ProductsWidget</class>
    <extends>QWidget</extends>
    <header>ui/widgets/productswidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>TemplatesWidget</class>
+   <extends>QWidget</extends>
+   <header>ui/widgets/templateswidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

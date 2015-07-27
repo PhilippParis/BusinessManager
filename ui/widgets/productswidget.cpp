@@ -100,7 +100,6 @@ void ProductsWidget::on_btnDelete_clicked()
 
 void ProductsWidget::on_tblProducts_clicked(const QModelIndex &index)
 {
-    ui->btnAdd->setEnabled(index.isValid());
     ui->btnEdit->setEnabled(index.isValid());
     ui->btnDelete->setEnabled(index.isValid());
 }

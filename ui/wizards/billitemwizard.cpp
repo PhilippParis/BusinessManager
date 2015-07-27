@@ -1,27 +1,14 @@
 #include "billitemwizard.h"
-#include "ui_billitemwizard.h"
+#include "ui_abstractbillitemwizard.h"
 
 BillItemWizard::BillItemWizard(QWidget *parent, BillService::Ptr billService,
                                ProductService::Ptr productService, TemplateService::Ptr templateService) :
-    QWizard(parent),
-    ui(new Ui::BillItemWizard),
-    m_billService(billService),
-    m_productService(productService),
-    m_templateService(templateService)
+    AbstractBillItemWizard(parent, productService, templateService),
+    m_billService(billService)
 {
-    ui->setupUi(this);
-
-    m_productModel = new ProductTableModel();
-    SpinBoxDelegate* delegate = new SpinBoxDelegate(ui->tblMaterial);
-    ui->tblMaterial->setModel(m_productModel);
-    ui->tblMaterial->setItemDelegateForColumn(4, delegate);
 }
 
-BillItemWizard::~BillItemWizard()
-{
-    delete ui;
-}
-
+/*
 void BillItemWizard::prepareForCreate()
 {
     m_openMode = Create;
@@ -35,6 +22,7 @@ void BillItemWizard::prepareForCreate()
     ui->sbQuantity->setValue(0.0);
     ui->sbWorkingHours->setValue(0.0);
 }
+*/
 
 void BillItemWizard::prepareForUpdate(BillItem::Ptr item)
 {
@@ -73,6 +61,33 @@ BillItem::Ptr BillItemWizard::toDomainObject()
     return item;
 }
 
+bool BillItemWizard::onUpdate()
+{
+    BillItem::Ptr item = toDomainObject();
+    try {
+        m_billService->billItemValidator()->validateForUpdate(item);
+    } catch (ValidationException *e) {
+        QMessageBox::warning(this, "Invalid Data", e->what());
+        delete e;
+        return false;
+    }
+    return true;
+}
+
+bool BillItemWizard::onCreate()
+{
+    BillItem::Ptr item = toDomainObject();
+    try {
+        m_billService->billItemValidator()->validateForCreate(item);
+    } catch (ValidationException *e) {
+        QMessageBox::warning(this, "Invalid Data", e->what());
+        delete e;
+        return false;
+    }
+    return true;
+}
+
+/*
 void BillItemWizard::on_textEditArticleDesc_textChanged()
 {
     QFont tmp;
@@ -148,3 +163,4 @@ void BillItemWizard::on_BillItemWizard_currentIdChanged(int id)
         ui->lblCostPerArticle->setText(QString::number(totalCostsPerUnit(), 'f', 2) + QString::fromUtf8("€"));
     }
 }
+*/

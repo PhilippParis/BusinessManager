@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>BillItemWizard</class>
- <widget class="QWizard" name="BillItemWizard">
+ <class>AbstractBillItemWizard</class>
+ <widget class="QWizard" name="AbstractBillItemWizard">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -54,7 +54,7 @@
        </spacer>
       </item>
       <item>
-       <widget class="QLabel" name="label_2">
+       <widget class="QLabel" name="lblWage">
         <property name="text">
          <string>wage per hour:</string>
         </property>
@@ -280,7 +280,7 @@
        </widget>
       </item>
       <item row="1" column="3">
-       <widget class="QLabel" name="label_10">
+       <widget class="QLabel" name="lblQuantity">
         <property name="text">
          <string>Quantity</string>
         </property>

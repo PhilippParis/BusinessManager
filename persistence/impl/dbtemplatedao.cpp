@@ -70,6 +70,7 @@ void DBTemplateDAO::update(Template::Ptr item)
     updateQuery.addBindValue(item->unit());
     updateQuery.addBindValue(item->workingHours());
     updateQuery.addBindValue(item->price());
+    updateQuery.addBindValue(item->id());
 
     if (!updateQuery.exec()) {
         qCCritical(lcPersistence) << "DBTemplateDAO::update failed:" + updateQuery.lastError().text();

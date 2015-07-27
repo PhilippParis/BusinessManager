@@ -138,16 +138,6 @@
   <tabstop>leUnit</tabstop>
   <tabstop>sbCost</tabstop>
   <tabstop>sbPrice</tabstop>
-  <tabstop>arbeitsstundenDoubleSpinBox</tabstop>
-  <tabstop>tableWidget</tabstop>
-  <tabstop>pushButton</tabstop>
-  <tabstop>pushButton_2</tabstop>
-  <tabstop>nameLineEdit</tabstop>
-  <tabstop>einheitLineEdit</tabstop>
-  <tabstop>textEdit</tabstop>
-  <tabstop>lagerstandSpinBox</tabstop>
-  <tabstop>cost_sb</tabstop>
-  <tabstop>price_sb</tabstop>
  </tabstops>
  <resources/>
  <connections>

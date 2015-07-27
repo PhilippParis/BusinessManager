@@ -79,7 +79,12 @@ SOURCES += main.cpp\
     ui/widgets/productswidget.cpp \
     ui/dialogs/productdialog.cpp \
     persistence/validation/impl/templatevalidator.cpp \
-    tests/templatedaotest.cpp
+    tests/templatedaotest.cpp \
+    ui/widgets/templateswidget.cpp \
+    ui/models/templatetablemodel.cpp \
+    ui/models/templatesortfilterproxymodel.cpp \
+    ui/wizards/abstractbillitemwizard.cpp \
+    ui/wizards/templatewizard.cpp
 
 HEADERS  += ui/mainwindow.h \
     domain/bill.h \
@@ -146,15 +151,21 @@ HEADERS  += ui/mainwindow.h \
     ui/widgets/productswidget.h \
     ui/dialogs/productdialog.h \
     persistence/validation/impl/templatevalidator.h \
-    tests/templatedaotest.h
+    tests/templatedaotest.h \
+    ui/widgets/templateswidget.h \
+    ui/models/templatetablemodel.h \
+    ui/models/templatesortfilterproxymodel.h \
+    ui/wizards/abstractbillitemwizard.h \
+    ui/wizards/templatewizard.h
 
 FORMS    += ui/mainwindow.ui \
     ui/widgets/customerswidget.ui \
     ui/dialogs/customerdialog.ui \
     ui/widgets/billwidget.ui \
     ui/dialogs/billdialog.ui \
-    ui/wizards/billitemwizard.ui \
     ui/dialogs/productselectiondialog.ui \
     ui/dialogs/discountdialog.ui \
     ui/widgets/productswidget.ui \
-    ui/dialogs/productdialog.ui
+    ui/dialogs/productdialog.ui \
+    ui/widgets/templateswidget.ui \
+    ui/wizards/abstractbillitemwizard.ui

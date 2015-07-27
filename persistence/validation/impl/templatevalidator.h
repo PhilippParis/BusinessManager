@@ -3,6 +3,7 @@
 
 #include "domain/template.h"
 #include "persistence/validation/validator.h"
+#include "persistence/validation/impl/productvalidator.h"
 
 class TemplateValidator : public Validator<Template::Ptr>
 {
@@ -15,6 +16,9 @@ public:
 
 private:
     void validateMandatoryFields(Template::Ptr item);
+
+private:
+    Validator<Product::Ptr>::Ptr m_productValidator;
 };
 
 #endif // TEMPLATEVALIDATOR_H
