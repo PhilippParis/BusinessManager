@@ -10,6 +10,7 @@
 #include "persistence/validation/impl/billitemvalidator.h"
 #include "persistence/validation/impl/productvalidator.h"
 #include "persistence/validation/impl/discountvalidator.h"
+#include "persistence/validation/impl/templatevalidator.h"
 
 #include "persistence/impl/dbcustomerdao.h"
 #include "persistence/impl/dbproductdao.h"
@@ -56,6 +57,7 @@ private:
     Validator<BillItem::Ptr>::Ptr m_billItemValidator;
     Validator<Product::Ptr>::Ptr m_productValidator;
     Validator<Discount::Ptr>::Ptr m_discountValidator;
+    Validator<Template::Ptr>::Ptr m_templateValidator;
 
 };
 

@@ -33,6 +33,8 @@ private slots:
 
     void on_btnDelete_clicked();
 
+    void on_tblProducts_clicked(const QModelIndex &index);
+
 private:
     Ui::ProductsWidget *ui;
 

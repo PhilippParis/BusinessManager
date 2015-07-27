@@ -1,21 +1,23 @@
-#ifndef BILLITEMDAOTEST_H
-#define BILLITEMDAOTEST_H
+#ifndef TEMPLATEDAOTEST_H
+#define TEMPLATEDAOTEST_H
 
 #include <QObject>
 #include <QTest>
+#include <QString>
+#include <QMap>
 
-#include "persistence/impl/dbbillitemdao.h"
+#include "persistence/impl/dbtemplatedao.h"
 #include "persistence/impl/dbproductdao.h"
 
 #include "persistence/databasesingleton.h"
 
-#include "persistence/validation/impl/billitemvalidator.h"
+#include "persistence/validation/impl/templatevalidator.h"
 #include "persistence/validation/impl/productvalidator.h"
 
-class BillItemDAOTest : public QObject
+class TemplateDAOTest : public QObject
 {
     Q_OBJECT
-private slots:
+public:
     void initTestCase();
 
     void insertTest_data();
@@ -31,7 +33,7 @@ private slots:
     void getAllTest();
 
 private:
-    BillItemDAO::Ptr m_billItemDAO;
+    TemplateDAO::Ptr m_templateDAO;
     ProductDAO::Ptr m_productDAO;
 
     Product::Ptr m_validProduct;
@@ -39,5 +41,4 @@ private:
     Product::Ptr m_nullProduct;
 
 };
-
-#endif // BILLITEMDAOTEST_H
+#endif // TEMPLATEDAOTEST_H

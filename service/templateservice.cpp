@@ -5,8 +5,3 @@ TemplateService::TemplateService()
 
 }
 
-TemplateService::~TemplateService()
-{
-
-}
-

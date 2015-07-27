@@ -124,6 +124,32 @@ void DatabaseSingleton::createTables(QSqlDatabase db)
        qDebug() << query.lastError();
    }
 
+   res = query.exec("CREATE TABLE IF NOT EXISTS TEMPLATE ( "
+                    "ID INTEGER PRIMARY KEY NOT NULL, "
+                    "NAME VARCHAR(200) NOT NULL, "
+                    "ORG VARCHAR(200), "
+                    "TYPE VARCHAR(200), "
+                    "DESC VARCHAR(200), "
+                    "ITEM_DESC VARCHAR(200) NOT NULL,"
+                    "UNIT VARCHAR(20) NOT NULL, "
+                    "WORK_HOURS REAL NOT NULL, "
+                    "PRICE REAL NOT NULL, "
+                    "DELETED INTEGER NOT NULL DEFAULT 0);");
+
+   if(!res) {
+       qDebug() << query.lastError();
+   }
+
+   res = query.exec("CREATE TABLE IF NOT EXISTS PRODUCT_TEMPLATE_ASSOC ( "
+                    "PRODUCT_ID INTEGER NOT NULL REFERENCES PRODUCT(ID), "
+                    "TEMPLATE_ID INTEGER NOT NULL REFERENCES TEMPLATE(ID), "
+                    "QUANTITY INTEGER NOT NULL, "
+                    "PRIMARY KEY(PRODUCT_ID, TEMPLATE_ID));");
+
+   if(!res) {
+       qDebug() << query.lastError();
+   }
+
 }
 
 DatabaseSingleton::DatabaseSingleton()

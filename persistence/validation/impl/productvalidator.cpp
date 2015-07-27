@@ -8,7 +8,7 @@ ProductValidator::ProductValidator()
 void ProductValidator::validateForCreate(Product::Ptr item)
 {
     if (item == nullptr) {
-        throw new ValidationException("customer must not be null");
+        throw new ValidationException("product must not be null");
     }
 
     validateMandatoryFields(item);
@@ -17,7 +17,7 @@ void ProductValidator::validateForCreate(Product::Ptr item)
 void ProductValidator::validateForUpdate(Product::Ptr item)
 {
     if (item == nullptr) {
-        throw new ValidationException("customer must not be null");
+        throw new ValidationException("product must not be null");
     }
 
     validateMandatoryFields(item);
@@ -27,11 +27,11 @@ void ProductValidator::validateForUpdate(Product::Ptr item)
 void ProductValidator::validateIdentity(Product::Ptr item)
 {
     if (item == nullptr) {
-        throw new ValidationException("customer must not be null");
+        throw new ValidationException("product must not be null");
     }
 
     if (item->id() < 0) {
-        throw new ValidationException("customer must have a valid id");
+        throw new ValidationException("product must have a valid id");
     }
 }
 

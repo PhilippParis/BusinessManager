@@ -137,23 +137,6 @@
        </property>
       </spacer>
      </item>
-     <item>
-      <widget class="QLabel" name="label_2">
-       <property name="text">
-        <string>Wage Per Hour</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QDoubleSpinBox" name="sbWage">
-       <property name="suffix">
-        <string>€</string>
-       </property>
-       <property name="maximum">
-        <double>999.990000000000009</double>
-       </property>
-      </widget>
-     </item>
     </layout>
    </item>
    <item>

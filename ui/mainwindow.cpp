@@ -14,18 +14,19 @@ MainWindow::MainWindow(QWidget *parent) :
     m_billItemValidator = std::make_shared<BillItemValidator>();
     m_productValidator = std::make_shared<ProductValidator>();
     m_discountValidator = std::make_shared<DiscountValidator>();
+    m_templateValidator = std::make_shared<TemplateValidator>();
 
     DiscountDAO::Ptr discountDAO = std::make_shared<DBDiscountDAO>(db, m_discountValidator);
     CustomerDAO::Ptr customerDAO = std::make_shared<DBCustomerDAO>(db, m_customerValidator);
     ProductDAO::Ptr productDAO = std::make_shared<DBProductDAO>(db, m_productValidator);
     BillItemDAO::Ptr billItemDAO = std::make_shared<DBBillItemDAO>(db, m_billItemValidator, productDAO);
     BillDAO::Ptr billDAO = std::make_shared<DBBillDAO>(db, m_billValidator, customerDAO, billItemDAO, discountDAO);
-    TemplateDAO::Ptr templateDAO = std::make_shared<DBTemplateDAO>();// TODO
+    TemplateDAO::Ptr templateDAO = std::make_shared<DBTemplateDAO>(db, m_templateValidator, productDAO);
 
     m_customerService = std::make_shared<CustomerServiceImpl>(customerDAO, m_customerValidator);
     m_billService = std::make_shared<BillServiceImpl>(billDAO, billItemDAO, discountDAO, m_billValidator, m_billItemValidator);
     m_productService = std::make_shared<ProductServiceImpl>(productDAO, m_productValidator);
-    m_templateService = std::make_shared<TemplateServiceImpl>(); // TODO
+    m_templateService = std::make_shared<TemplateServiceImpl>(templateDAO, m_templateValidator);
 
     connect(ui->actionNewBill, SIGNAL(triggered(bool)), ui->widgetBills, SLOT(actionNewBill()));
 
