@@ -133,7 +133,7 @@ void BillDialog::on_btnAddArticle_clicked()
     wizard->prepareForCreate();
 
     if(wizard->exec() == QWizard::Accepted) {
-        BillItem::Ptr item = wizard->toDomainObject();
+        BillItem::Ptr item = wizard->getBillItemDomainObject();
         m_billItemModel->add(item);
     }
 
@@ -148,7 +148,7 @@ void BillDialog::on_btnEditArticle_clicked()
     wizard->prepareForUpdate(selected);
 
     if(wizard->exec() == QWizard::Accepted) {
-        m_billItemModel->replace(selected, wizard->toDomainObject());
+        m_billItemModel->replace(selected, wizard->getBillItemDomainObject());
     }
 
     delete wizard;

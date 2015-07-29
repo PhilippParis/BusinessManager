@@ -53,20 +53,6 @@
         </property>
        </spacer>
       </item>
-      <item>
-       <widget class="QLabel" name="lblWage">
-        <property name="text">
-         <string>wage per hour:</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QDoubleSpinBox" name="sbWage">
-        <property name="suffix">
-         <string>€</string>
-        </property>
-       </widget>
-      </item>
      </layout>
     </item>
     <item>
@@ -337,6 +323,26 @@
          </item>
          <item row="1" column="1">
           <widget class="QLineEdit" name="leTemplateOrg"/>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="additionalDescriptionLabel">
+           <property name="text">
+            <string>Additional Description:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="QLineEdit" name="leDesc"/>
+         </item>
+         <item row="2" column="1">
+          <widget class="QLineEdit" name="leType"/>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="typeLabel">
+           <property name="text">
+            <string>Type:</string>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>

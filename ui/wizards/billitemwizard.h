@@ -25,13 +25,13 @@ public:
     explicit BillItemWizard(QWidget *parent, BillService::Ptr billService,
                             ProductService::Ptr productService, TemplateService::Ptr templateService);
 
-
     void prepareForUpdate(BillItem::Ptr item);
-    BillItem::Ptr toDomainObject();
+    BillItem::Ptr getBillItemDomainObject();
+    Template::Ptr getTemplateDomainObject();
 
 private:
-    bool onUpdate();
-    bool onCreate();
+    bool onUpdate() override;
+    bool onCreate() override;
 
 private:
     BillService::Ptr m_billService;

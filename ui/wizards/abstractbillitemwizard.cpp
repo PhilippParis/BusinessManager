@@ -29,6 +29,8 @@ AbstractBillItemWizard::~AbstractBillItemWizard()
 
 void AbstractBillItemWizard::prepareForCreate()
 {
+    m_openMode = Create;
+
     ui->sbPricePerUnit->setValue(0.0);
     ui->lblCostPerArticle->setText("0.00€");
     ui->leSearchTemplate->clear();
@@ -104,14 +106,14 @@ double AbstractBillItemWizard::materialCosts()
 
 double AbstractBillItemWizard::totalCostsPerUnit()
 {
-    return materialCosts() + ui->sbWorkingHours->value() * ui->sbWage->value();
+    return materialCosts() + ui->sbWorkingHours->value() * m_wagePerHour;
 }
 
 void AbstractBillItemWizard::on_tblTemplates_activated(const QModelIndex &index)
 {
-    m_productModel->clear();
-    Template::Ptr templ = selectedTemplate();
-    m_productModel->addAllWithQuantity(templ->material());
+    if(index.isValid()) {
+        displayTemplateData(selectedTemplate());
+    }
 }
 
 Template::Ptr AbstractBillItemWizard::selectedTemplate()
@@ -119,3 +121,41 @@ Template::Ptr AbstractBillItemWizard::selectedTemplate()
     QModelIndex index = ui->tblTemplates->currentIndex();
     return m_templateModel->get(m_templateSortFilterProxyModel->mapToSource(index));
 }
+
+void AbstractBillItemWizard::displayTemplateData(Template::Ptr item)
+{
+    m_productModel->clear();
+    m_productModel->addAllWithQuantity(item->material());
+
+    ui->sbWorkingHours->setValue(item->workingHours());
+    ui->sbPricePerUnit->setValue(item->price());
+    ui->textEditArticleDesc->setText(item->itemDesc());
+    ui->leTemplateName->setText(item->name());
+    ui->leTemplateOrg->setText(item->organisation());
+    ui->leDesc->setText(item->desc());
+    ui->leType->setText(item->type());
+    ui->leUnit->setText(item->unit());
+}
+
+Template::Ptr AbstractBillItemWizard::toTemplate()
+{
+    Template::Ptr templ = std::make_shared<Template>();
+
+    templ->setName(ui->leTemplateName->text());
+    templ->setOrganisation(ui->leTemplateOrg->text());
+    templ->setItemDesc(ui->textEditArticleDesc->toPlainText());
+    templ->setUnit(ui->leUnit->text());
+    templ->setPrice(ui->sbPricePerUnit->value());
+    templ->setWorkingHours(ui->sbWorkingHours->value());
+    templ->setMaterial(m_productModel->itemsWithQuantity());
+    templ->setDesc(ui->leDesc->text());
+    templ->setType(ui->leType->text());
+
+    return templ;
+}
+
+void AbstractBillItemWizard::setWagePerHour(double wagePerHour)
+{
+    m_wagePerHour = wagePerHour;
+}
+

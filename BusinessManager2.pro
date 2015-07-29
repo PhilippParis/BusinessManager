@@ -84,7 +84,8 @@ SOURCES += main.cpp\
     ui/models/templatetablemodel.cpp \
     ui/models/templatesortfilterproxymodel.cpp \
     ui/wizards/abstractbillitemwizard.cpp \
-    ui/wizards/templatewizard.cpp
+    ui/wizards/templatewizard.cpp \
+    ui/dialogs/settingsdialog.cpp
 
 HEADERS  += ui/mainwindow.h \
     domain/bill.h \
@@ -156,7 +157,8 @@ HEADERS  += ui/mainwindow.h \
     ui/models/templatetablemodel.h \
     ui/models/templatesortfilterproxymodel.h \
     ui/wizards/abstractbillitemwizard.h \
-    ui/wizards/templatewizard.h
+    ui/wizards/templatewizard.h \
+    ui/dialogs/settingsdialog.h
 
 FORMS    += ui/mainwindow.ui \
     ui/widgets/customerswidget.ui \
@@ -168,4 +170,5 @@ FORMS    += ui/mainwindow.ui \
     ui/widgets/productswidget.ui \
     ui/dialogs/productdialog.ui \
     ui/widgets/templateswidget.ui \
-    ui/wizards/abstractbillitemwizard.ui
+    ui/wizards/abstractbillitemwizard.ui \
+    ui/dialogs/settingsdialog.ui
