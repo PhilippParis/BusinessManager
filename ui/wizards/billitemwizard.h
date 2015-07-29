@@ -20,7 +20,6 @@
 class BillItemWizard : public AbstractBillItemWizard
 {
     Q_OBJECT
-
 public:
     explicit BillItemWizard(QWidget *parent, BillService::Ptr billService,
                             ProductService::Ptr productService, TemplateService::Ptr templateService);
