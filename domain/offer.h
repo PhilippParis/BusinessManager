@@ -18,9 +18,12 @@ public:
     QList<BillItem::Ptr> items() const;
     void setItems(const QList<BillItem::Ptr> &items);
 
+    double totalPrice() const;
+
 private:
     Customer::Ptr m_customer;
     QList<BillItem::Ptr> m_items;
 };
+Q_DECLARE_METATYPE(Offer::Ptr)
 
 #endif // OFFER_H

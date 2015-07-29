@@ -45,7 +45,23 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::print(Bill::Ptr bill)
+void MainWindow::printOffer(Offer::Ptr offer)
+{
+    QPrinter *printer = new QPrinter(QPrinter::HighResolution);
+    printer->setPageSize(QPrinter::A4);
+    printer->setPageMargins(0.14, 0.14, 0.14, 0.14, QPrinter::Inch);
+
+    QPrintPreviewDialog *dialog = new QPrintPreviewDialog(printer, this);
+
+    connect(dialog, &QPrintPreviewDialog::paintRequested, [=](QPrinter *printer) {
+        m_printService->printOffer(printer, offer);
+    });
+
+    dialog->exec();
+    delete dialog;
+}
+
+void MainWindow::printBill(Bill::Ptr bill)
 {
     QPrinter *printer = new QPrinter(QPrinter::HighResolution);
     printer->setPageSize(QPrinter::A4);
@@ -77,7 +93,7 @@ void MainWindow::initWidgets()
     ui->templatesWidget->setProductService(m_productService);
     ui->templatesWidget->setTemplateService(m_templateService);
 
-    connect(ui->widgetBills, SIGNAL(print(Bill::Ptr)), this, SLOT(print(Bill::Ptr)));
+    connect(ui->widgetBills, SIGNAL(print(Bill::Ptr)), this, SLOT(printBill(Bill::Ptr)));
 
     connect(this, SIGNAL(dataChanged()), ui->widgetBills, SLOT(update()));
     connect(this, SIGNAL(dataChanged()), ui->widgetCustomers, SLOT(update()));
@@ -117,4 +133,13 @@ void MainWindow::on_actionImprintedPaper_triggered()
     settings.setValue("print/emptyPaper", false);
 
     ui->actionEmptyPaper->setChecked(false);
+}
+
+void MainWindow::on_actionNewOffer_triggered()
+{
+    OfferDialog *dialog = new OfferDialog(this, m_billService, m_customerService, m_productService, m_templateService);
+    connect(dialog, SIGNAL(print(Offer::Ptr)), SLOT(printOffer(Offer::Ptr)));
+    dialog->exec();
+
+    delete dialog;
 }

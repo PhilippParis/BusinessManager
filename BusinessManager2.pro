@@ -93,7 +93,9 @@ SOURCES += main.cpp\
     ui/widgets/financialsettingswidget.cpp \
     ui/widgets/settingswidget.cpp \
     service/printservice.cpp \
-    service/impl/printserviceimpl.cpp
+    service/impl/printserviceimpl.cpp \
+    ui/dialogs/abstractbilldialog.cpp \
+    ui/dialogs/offerdialog.cpp
 
 HEADERS  += ui/mainwindow.h \
     domain/bill.h \
@@ -172,7 +174,9 @@ HEADERS  += ui/mainwindow.h \
     ui/widgets/financialsettingswidget.h \
     ui/widgets/settingswidget.h \
     service/printservice.h \
-    service/impl/printserviceimpl.h
+    service/impl/printserviceimpl.h \
+    ui/dialogs/abstractbilldialog.h \
+    ui/dialogs/offerdialog.h
 
 FORMS    += ui/mainwindow.ui \
     ui/widgets/customerswidget.ui \

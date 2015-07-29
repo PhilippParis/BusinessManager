@@ -110,6 +110,7 @@ double Bill::totalPrice() const
     for(BillItem::Ptr item : m_items) {
         total += item->price() * item->quantity();
     }
+    return total;
 }
 
 QList<Discount::Ptr> Bill::discounts() const

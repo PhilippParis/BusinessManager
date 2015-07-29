@@ -3,31 +3,11 @@
 
 BillDialog::BillDialog(QWidget *parent, BillService::Ptr billService, CustomerService::Ptr customerService,
                        ProductService::Ptr productService, TemplateService::Ptr templateService) :
-    QDialog(parent),
-    ui(new Ui::BillDialog),
-    m_billService(billService),
-    m_customerService(customerService),
-    m_productService(productService),
-    m_templateService(templateService)
+    AbstractBillDialog(parent, billService, customerService, productService, templateService)
 {
-    ui->setupUi(this);
-
-    m_customerModel = new CustomerTableModel();
-    m_customerModel->addAll(customerService->getAll());
-    ui->cbRecipient->setModel(m_customerModel);
-
-    m_billItemModel = new BillItemTableModel();
-    ui->tblBillItems->setModel(m_billItemModel);
-
-    connect(ui->tblBillItems->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
-            this, SLOT(selectionChanged(QModelIndex,QModelIndex)));
-
-}
-
-BillDialog::~BillDialog()
-{
-    delete ui;
-    delete m_customerModel;
+    connect(ui->dateEdit, SIGNAL(dateChanged(QDate)), SLOT(on_dateEdit_dateChanged(QDate)));
+    connect(ui->btnAddDiscount, SIGNAL(clicked(bool)), SLOT(on_btnAddDiscount_clicked()));
+    connect(ui->btnPreview, SIGNAL(clicked(bool)), SLOT(on_btnPreview_clicked()));
 }
 
 void BillDialog::setDiscountValidator(Validator<Discount::Ptr>::Ptr validator)
@@ -86,7 +66,7 @@ Bill::Ptr BillDialog::toDomainObject()
     bill->setBillNumber(ui->sbNr->value());
     bill->setDate(ui->dateEdit->date());
     bill->setId(m_id);
-    bill->setCustomer(m_customerModel->get(m_customerModel->index(ui->cbRecipient->currentIndex(), 0)));
+    bill->setCustomer(selectedCustomer());
     bill->setPayed(m_payed);
     bill->setItems(m_billItemModel->items());
 
@@ -96,87 +76,9 @@ Bill::Ptr BillDialog::toDomainObject()
     return bill;
 }
 
-BillItem::Ptr BillDialog::selectedBillItem()
+void BillDialog::on_btnPreview_clicked()
 {
-    return m_billItemModel->get(ui->tblBillItems->currentIndex());
-}
-
-void BillDialog::on_btnAddCustomer_clicked()
-{
-    CustomerDialog *dialog = new CustomerDialog(this, m_customerService);
-    dialog->prepareForCreate();
-
-    if(dialog->exec() == QDialog::Accepted) {
-        QModelIndex index = m_customerModel->add(dialog->toDomainObject());
-        ui->cbRecipient->setCurrentIndex(index.row());
-    }
-
-    delete dialog;
-}
-
-void BillDialog::on_btnEditCustomer_clicked()
-{
-    CustomerDialog *dialog = new CustomerDialog(this, m_customerService);
-    Customer::Ptr selected = m_customerModel->get(m_customerModel->index(ui->cbRecipient->currentIndex(), 0));
-    dialog->prepareForUpdate(selected);
-
-    if(dialog->exec() == QDialog::Accepted) {
-        m_customerModel->replace(selected, dialog->toDomainObject());
-    }
-
-    delete dialog;
-}
-
-void BillDialog::on_btnAddArticle_clicked()
-{
-    QSettings settings;
-    BillItemWizard *wizard = new BillItemWizard(this, m_billService, m_productService, m_templateService);
-    wizard->setWagePerHour(settings.value("financial/wage").toDouble());
-    wizard->prepareForCreate();
-
-    if(wizard->exec() == QWizard::Accepted) {
-        BillItem::Ptr item = wizard->getBillItemDomainObject();
-        m_billItemModel->add(item);
-    }
-
-    delete wizard;
-}
-
-void BillDialog::on_btnEditArticle_clicked()
-{
-    QSettings settings;
-    BillItem::Ptr selected = selectedBillItem();
-
-    if (selected == nullptr) {
-        return;
-    }
-
-    BillItemWizard *wizard = new BillItemWizard(this, m_billService, m_productService, m_templateService);
-    wizard->setWagePerHour(settings.value("financial/wage").toDouble());
-    wizard->prepareForUpdate(selected);
-
-    if(wizard->exec() == QWizard::Accepted) {
-        m_billItemModel->replace(selected, wizard->getBillItemDomainObject());
-    }
-
-    delete wizard;
-}
-
-void BillDialog::selectionChanged(QModelIndex newIndex, QModelIndex prevIndex)
-{
-    Q_UNUSED(prevIndex)
-    ui->btnEditArticle->setEnabled(newIndex.isValid());
-    ui->btnDeleteArticle->setEnabled(newIndex.isValid());
-}
-
-void BillDialog::on_btnDeleteArticle_clicked()
-{
-    m_billItemModel->remove(selectedBillItem());
-}
-
-void BillDialog::on_dateEdit_dateChanged(const QDate &date)
-{
-    ui->sbNr->setValue(m_billService->nextBillNumber(date));
+    emit print(toDomainObject());
 }
 
 void BillDialog::on_btnAddDiscount_clicked()
@@ -198,7 +100,7 @@ void BillDialog::on_btnAddDiscount_clicked()
     }
 }
 
-void BillDialog::on_btnPreview_clicked()
+void BillDialog::on_dateEdit_dateChanged(const QDate &date)
 {
-    emit print(toDomainObject());
+    ui->sbNr->setValue(m_billService->nextBillNumber(date));
 }

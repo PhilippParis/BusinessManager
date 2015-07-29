@@ -27,6 +27,7 @@
 #include "service/impl/printserviceimpl.h"
 
 #include "ui/dialogs/settingsdialog.h"
+#include "ui/dialogs/offerdialog.h"
 
 namespace Ui {
 class MainWindow;
@@ -41,7 +42,8 @@ public:
     ~MainWindow();
 
 public slots:
-    void print(Bill::Ptr bill);
+    void printBill(Bill::Ptr bill);
+    void printOffer(Offer::Ptr offer);
 
 signals:
     void dataChanged();
@@ -50,6 +52,7 @@ private slots:
     void on_actionSettings_triggered();
     void on_actionEmptyPaper_triggered();
     void on_actionImprintedPaper_triggered();
+    void on_actionNewOffer_triggered();
 
 private:
     void initWidgets();

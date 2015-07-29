@@ -16,20 +16,56 @@ void PrintServiceImpl::printBill(QPrinter *printer, Bill::Ptr bill)
     // print header
     printHeader(painter, bill->customer(), bill->date());
 
-    // subject
-    painter->drawText(LEFT_MARGIN, 2600, tr("Invoice") + " " +
-                      QString::number(bill->billNumber()) + " / " +
-                      QString::number(bill->date().year()));
+    // subject and text
+    printSubject(painter,
+                 tr("Invoice") + " " + QString::number(bill->billNumber()) + " / " + QString::number(bill->date().year()),
+                 m_settings.value("docs/billText").toString().split('\n'));
 
-    // bill text (below subject)
-    QStringList txt = m_settings.value("docs/billText").toString().split('\n');
-    printTextBlock(painter, txt, LEFT_MARGIN, 2800, Qt::AlignLeft);
+    // bill items
+    int currentYPos = printBillItems(printer, painter, bill->items());
 
+    //discount
+    currentYPos = printDiscounts(painter, bill->discounts(), currentYPos);
+
+    // total price
+    currentYPos = printTotalPrice(painter, bill->totalPrice(), currentYPos);
+
+    // footer
+    printFooter(printer, painter, currentYPos);
+    painter->end();
+}
+
+void PrintServiceImpl::printOffer(QPrinter *printer, Offer::Ptr offer)
+{
+    QPainter *painter = getPainter(printer);
+
+    // draw decoration bar
+    printBar(painter);
+
+    // print header
+    printHeader(painter, offer->customer(), QDate::currentDate());
+
+    // subject and text
+    printSubject(painter, tr("Offer"), m_settings.value("docs/offerText").toString().split('\n'));
+
+    // items
+    int currentYPos = printBillItems(printer, painter, offer->items());
+
+    // total price
+    currentYPos = printTotalPrice(painter, offer->totalPrice(), currentYPos);
+
+    // footer
+    printFooter(printer, painter, currentYPos);
+    painter->end();
+}
+
+int PrintServiceImpl::printBillItems(QPrinter *printer, QPainter *painter, QList<BillItem::Ptr> items)
+{
     // print table header
     printBillItemTableHeader(painter, 3200);
 
     int currentYPos = 3400;
-    for(BillItem::Ptr item : bill->items()) {
+    for(BillItem::Ptr item : items) {
 
         //check if item fits on current page
         int itemTextHeight =  item->description().split('\n').count() * 100;
@@ -46,38 +82,7 @@ void PrintServiceImpl::printBill(QPrinter *printer, Bill::Ptr bill)
 
     // draw line
     painter->drawLine(LEFT_MARGIN, currentYPos, RIGHT_MARGIN, currentYPos);
-    currentYPos += 150;
-
-    //discount
-    if(!bill->discounts().isEmpty()) {
-        Discount::Ptr discount = bill->discounts().first();
-        painter->drawText(LEFT_MARGIN, currentYPos, discount->text());
-        QString discountTxt = QString::number(discount->value() * (-1.0), 'f', 2) + QString::fromUtf8("€");
-        painter->drawText(18 * 225 - fm.width(discountTxt), currentYPos, discountTxt);
-        currentYPos += 150;
-    }
-
-    //total sum
-    QFont font = painter->font();
-    font.setBold(true);
-    painter->setFont(font);
-    fm = painter->fontMetrics();
-    painter->drawText(LEFT_MARGIN, currentYPos, tr("Total Amount:"));
-
-    QString total = QString::number(bill->totalPrice(), 'f', 2) + QString::fromUtf8("€");
-    painter->drawText(18 * 225 - fm.width(total), currentYPos, total);
-    currentYPos += 250;
-
-    //check if new page
-    if(currentYPos > 5500) {
-        printer->newPage();
-        currentYPos = 400;
-        printBar(painter);
-    }
-
-    // footer
-    printFooter(painter, currentYPos);
-    painter->end();
+    return currentYPos + 150;
 }
 
 void PrintServiceImpl::printBillItemTableHeader(QPainter *painter, int y)
@@ -154,8 +159,15 @@ void PrintServiceImpl::printHeader(QPainter *painter, Customer::Ptr receiver, QD
     painter->drawText(RIGHT_MARGIN - fm.width(dateString), 2500, dateString);
 }
 
-void PrintServiceImpl::printFooter(QPainter *painter, int y)
+void PrintServiceImpl::printFooter(QPrinter *printer, QPainter *painter, int y)
 {
+    //check if new page
+    if(y > 5500) {
+        printer->newPage();
+        y = 400;
+        printBar(painter);
+    }
+
     painter->drawText(LEFT_MARGIN, y, tr("Many Thanks!"));
     y += 200;
 
@@ -192,6 +204,42 @@ void PrintServiceImpl::printFooter(QPainter *painter, int y)
     if(!seal.isNull()) {
         painter->drawPixmap(4250, 6300, 500, 500, seal);
     }
+}
+
+int PrintServiceImpl::printDiscounts(QPainter *painter, QList<Discount::Ptr> discounts, int y)
+{
+    if(!discounts.isEmpty()) {
+        QFontMetrics fm = painter->fontMetrics();
+        Discount::Ptr discount = discounts.first();
+        painter->drawText(LEFT_MARGIN, y, discount->text());
+        QString discountTxt = QString::number(discount->value() * (-1.0), 'f', 2) + QString::fromUtf8("€");
+        painter->drawText(18 * 225 - fm.width(discountTxt), y, discountTxt);
+        return y + 150;
+    }
+    return y;
+}
+
+int PrintServiceImpl::printTotalPrice(QPainter *painter, double price, int y)
+{
+    QFont font = painter->font();
+    font.setBold(true);
+    painter->setFont(font);
+    QFontMetrics fm = painter->fontMetrics();
+
+    painter->drawText(LEFT_MARGIN, y, tr("Total Amount:"));
+
+    QString total = QString::number(price, 'f', 2) + QString::fromUtf8("€");
+    painter->drawText(18 * 225 - fm.width(total), y, total);
+    return y + 250;
+}
+
+void PrintServiceImpl::printSubject(QPainter *painter, QString subject, QStringList text)
+{
+    // subject
+    painter->drawText(LEFT_MARGIN, 2600, subject);
+
+    // text below subject
+    printTextBlock(painter, text, LEFT_MARGIN, 2800, Qt::AlignLeft);
 }
 
 void PrintServiceImpl::printTextBlock(QPainter *painter, QStringList text, int x, int y, Qt::AlignmentFlag align)
