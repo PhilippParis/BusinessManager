@@ -35,6 +35,9 @@ public:
 
     void setDiscountValidator(const Validator<Discount::Ptr>::Ptr &discountValidator);
 
+signals:
+    void print(Bill::Ptr bill);
+
 public slots:
     void update();
     void actionNewBill();

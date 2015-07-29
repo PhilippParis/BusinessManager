@@ -37,7 +37,7 @@ void DiscountValidator::validateIdentity(Discount::Ptr item)
 void DiscountValidator::validateMandatoryFields(Discount::Ptr item)
 {
     if(item->value() < 0) {
-        throw new ValidationException("discount must not be negative");
+        throw new ValidationException(tr("discount must not be negative"));
     }
 }
 

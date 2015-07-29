@@ -197,3 +197,8 @@ void BillDialog::on_btnAddDiscount_clicked()
         m_discount->setId(idBuffer);
     }
 }
+
+void BillDialog::on_btnPreview_clicked()
+{
+    emit print(toDomainObject());
+}

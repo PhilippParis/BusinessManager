@@ -37,30 +37,47 @@
       <widget class="QLineEdit" name="leOfferText"/>
      </item>
      <item row="2" column="0">
+      <widget class="QLabel" name="dateFormatLabel">
+       <property name="text">
+        <string>Date Format:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QLineEdit" name="leDateFormat"/>
+     </item>
+     <item row="3" column="0">
       <widget class="QLabel" name="footerLabel">
        <property name="text">
         <string>Footer:</string>
        </property>
       </widget>
      </item>
-     <item row="2" column="1">
+     <item row="3" column="1">
       <widget class="QTextEdit" name="textEditFooter"/>
      </item>
-     <item row="3" column="0">
+     <item row="4" column="0">
       <widget class="QLabel" name="colorLabel">
        <property name="text">
         <string>Color:</string>
        </property>
       </widget>
      </item>
-     <item row="3" column="1">
+     <item row="4" column="1">
       <widget class="QPushButton" name="btnColor">
        <property name="text">
         <string>Choose...</string>
        </property>
       </widget>
      </item>
-     <item row="4" column="1">
+     <item row="5" column="0">
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Print:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="1">
       <widget class="QListWidget" name="lwPrint">
        <item>
         <property name="text">
@@ -102,13 +119,6 @@
          <enum>Unchecked</enum>
         </property>
        </item>
-      </widget>
-     </item>
-     <item row="4" column="0">
-      <widget class="QLabel" name="label">
-       <property name="text">
-        <string>Print:</string>
-       </property>
       </widget>
      </item>
     </layout>

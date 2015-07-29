@@ -1,12 +1,15 @@
 #ifndef TEMPLATEVALIDATOR_H
 #define TEMPLATEVALIDATOR_H
 
+#include <QCoreApplication>
+
 #include "domain/template.h"
 #include "persistence/validation/validator.h"
 #include "persistence/validation/impl/productvalidator.h"
 
 class TemplateValidator : public Validator<Template::Ptr>
 {
+    Q_DECLARE_TR_FUNCTIONS(TemplateValidator)
 public:
     TemplateValidator();
 

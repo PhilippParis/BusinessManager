@@ -35,7 +35,7 @@ void TemplatesWidget::on_btnAdd_clicked()
             m_templateService->add(templ);
             m_model->add(templ);
         } catch (ServiceException *e) {
-            QMessageBox::information(this, "error", e->what());
+            QMessageBox::information(this, tr("Error"), e->what());
             delete e;
         }
     }
@@ -57,7 +57,7 @@ void TemplatesWidget::on_btnEdit_clicked()
             m_templateService->update(updated);
             m_model->replace(selected, updated);
         } catch (ServiceException *e) {
-            QMessageBox::information(this, "error", e->what());
+            QMessageBox::information(this, tr("Error"), e->what());
             delete e;
         }
     }
@@ -66,8 +66,8 @@ void TemplatesWidget::on_btnEdit_clicked()
 void TemplatesWidget::on_btnDelete_clicked()
 {
     QMessageBox::StandardButton reply;
-    reply = QMessageBox::question(this, "Delete Template",
-                                    "Are you sure you want to delete the selected Template?",
+    reply = QMessageBox::question(this, tr("Delete Template"),
+                                    tr("Are you sure you want to delete the selected Template?"),
                                     QMessageBox::Yes|QMessageBox::No);
 
     if (reply == QMessageBox::Yes) {
@@ -76,7 +76,7 @@ void TemplatesWidget::on_btnDelete_clicked()
             m_templateService->remove(selected);
             m_model->remove(selected);
         } catch (ServiceException *e) {
-            QMessageBox::information(this, "Error", e->what());
+            QMessageBox::information(this, tr("Error"), e->what());
             delete e;
         }
     }

@@ -37,7 +37,7 @@ bool TemplateWizard::onUpdate()
     try {
         m_templateService->validator()->validateForUpdate(templ);
     } catch (ValidationException *e) {
-        QMessageBox::warning(this, "Invalid Data", e->what());
+        QMessageBox::warning(this, tr("Invalid Data"), e->what());
         delete e;
         return false;
     }
@@ -50,7 +50,7 @@ bool TemplateWizard::onCreate()
     try {
         m_templateService->validator()->validateForCreate(templ);
     } catch (ValidationException *e) {
-        QMessageBox::warning(this, "Invalid Data", e->what());
+        QMessageBox::warning(this, tr("Invalid Data"), e->what());
         delete e;
         return false;
     }

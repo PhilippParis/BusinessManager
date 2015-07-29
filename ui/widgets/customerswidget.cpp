@@ -91,8 +91,8 @@ void CustomersWidget::on_btnSendMail_clicked()
 void CustomersWidget::on_btnDeleteCustomer_clicked()
 {
     QMessageBox::StandardButton reply;
-    reply = QMessageBox::question(this, "Delete Customer",
-                                    "Are you sure you want to delete the selected Customer?",
+    reply = QMessageBox::question(this, tr("Delete Customer"),
+                                    tr("Are you sure you want to delete the selected Customer?"),
                                     QMessageBox::Yes|QMessageBox::No);
 
     if (reply == QMessageBox::Yes) {
@@ -108,7 +108,7 @@ void CustomersWidget::on_btnDeleteCustomer_clicked()
 
 void CustomersWidget::showErrorMessage(QString msg)
 {
-    QMessageBox::information(this, "Error", msg);
+    QMessageBox::information(this, tr("Error"), msg);
 }
 
 Customer::Ptr CustomersWidget::selectedCustomer()

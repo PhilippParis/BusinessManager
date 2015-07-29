@@ -83,6 +83,8 @@ void BillWidget::setDiscountValidator(const Validator<Discount::Ptr>::Ptr &disco
 void BillWidget::actionNewBill()
 {
     BillDialog *dialog = new BillDialog(this, m_billService, m_customerService, m_productService, m_templateService);
+    connect(dialog, SIGNAL(print(Bill::Ptr)), this, SIGNAL(print(Bill::Ptr)));
+
     dialog->setDiscountValidator(m_discountValidator);
     dialog->prepareForCreate();
 
@@ -92,7 +94,7 @@ void BillWidget::actionNewBill()
             m_billService->addBill(bill);
             m_billModel->add(bill);
         } catch (ServiceException *e) {
-            QMessageBox::information(this, "error", e->what());
+            QMessageBox::information(this, tr("Error"), e->what());
             delete e;
         }
     }
@@ -104,9 +106,10 @@ void BillWidget::on_btnEdit_clicked()
 {
     Bill::Ptr selected = selectedBill();
     BillDialog *dialog = new BillDialog(this, m_billService, m_customerService, m_productService, m_templateService);
+    connect(dialog, SIGNAL(print(Bill::Ptr)), this, SIGNAL(print(Bill::Ptr)));
+
     dialog->setDiscountValidator(m_discountValidator);
     dialog->prepareForUpdate(selected);
-
 
     if(dialog->exec() == QDialog::Accepted) {
         Bill::Ptr bill = dialog->toDomainObject();
@@ -114,7 +117,7 @@ void BillWidget::on_btnEdit_clicked()
             m_billService->updateBill(bill);
             m_billModel->replace(selected, bill);
         } catch (ServiceException *e) {
-            QMessageBox::information(this, "error", e->what());
+            QMessageBox::information(this, tr("Error"), e->what());
             delete e;
         }
     }
@@ -145,7 +148,7 @@ void BillWidget::setTemplateService(const TemplateService::Ptr &templateService)
 
 void BillWidget::on_btnPrint_clicked()
 {
-
+    emit print(selectedBill());
 }
 
 void BillWidget::on_btnExport_clicked()
@@ -161,8 +164,8 @@ void BillWidget::on_btnSendPerMail_clicked()
 void BillWidget::on_btnDelete_clicked()
 {
     QMessageBox::StandardButton reply;
-    reply = QMessageBox::question(this, "Delete Bill",
-                                    "Are you sure you want to delete the selected Bill?",
+    reply = QMessageBox::question(this, tr("Delete Bill"),
+                                    tr("Are you sure you want to delete the selected Bill?"),
                                     QMessageBox::Yes|QMessageBox::No);
 
     if (reply == QMessageBox::Yes) {
@@ -171,7 +174,7 @@ void BillWidget::on_btnDelete_clicked()
             m_billService->removeBill(selected);
             m_billModel->remove(selected);
         } catch (ServiceException *e) {
-            QMessageBox::information(this, "Error", e->what());
+            QMessageBox::information(this, tr("Error"), e->what());
             delete e;
         }
     }

@@ -50,17 +50,17 @@ QVariant BillTableModel::headerData(int section, Qt::Orientation orientation, in
                 switch (section)
                 {
                 case Nr:
-                    return QString("Nr.");
+                    return tr("Nr.");
                 case Date:
-                    return QString("Date");
+                    return tr("Date");
                 case Org:
-                    return QString("Organisation");
+                    return tr("Organisation");
                 case Customer:
-                    return QString("Customer");
+                    return tr("Customer");
                 case Value:
-                    return QString("Value");
+                    return tr("Value");
                 case Payed:
-                    return QString("Payed");
+                    return tr("Payed");
                 }
             }
         }

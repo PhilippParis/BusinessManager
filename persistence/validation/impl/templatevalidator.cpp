@@ -38,19 +38,19 @@ void TemplateValidator::validateIdentity(Template::Ptr item)
 void TemplateValidator::validateMandatoryFields(Template::Ptr item)
 {
     if (item->name().isEmpty()) {
-        throw new ValidationException("name must not be empty");
+        throw new ValidationException(tr("name must not be empty"));
     }
     if (item->itemDesc().isEmpty()) {
-        throw new ValidationException("item desc must not be empty");
+        throw new ValidationException(tr("item desc must not be empty"));
     }
     if (item->unit().isEmpty()) {
-        throw new ValidationException("unit must not be empty");
+        throw new ValidationException(tr("unit must not be empty"));
     }
     if (item->price() < 0 ) {
-        throw new ValidationException("price must not be negative");
+        throw new ValidationException(tr("price must not be negative"));
     }
     if (item->workingHours() < 0 ) {
-        throw new ValidationException("working hours must not be negative");
+        throw new ValidationException(tr("working hours must not be negative"));
     }
 
     QMap<Product::Ptr, double> material = item->material();
@@ -60,7 +60,7 @@ void TemplateValidator::validateMandatoryFields(Template::Ptr item)
         m_productValidator->validateIdentity(it.key());
 
         if (it.value() < 0) {
-            throw new ValidationException("material quantity must not be negative");
+            throw new ValidationException(tr("material quantity must not be negative"));
         }
     }
 }

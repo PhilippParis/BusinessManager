@@ -1,6 +1,7 @@
 #ifndef BILLVALIDATOR_H
 #define BILLVALIDATOR_H
 
+#include <QCoreApplication>
 #include <memory>
 
 #include "logging.h"
@@ -13,6 +14,7 @@
 
 class BillValidator : public Validator<Bill::Ptr>
 {
+    Q_DECLARE_TR_FUNCTIONS(BillValidator)
 public:
     BillValidator();
 

@@ -52,7 +52,7 @@ void ProductsWidget::on_btnAdd_clicked()
             m_service->add(product);
             m_model->add(product, 0.0);
         } catch (ServiceException *e) {
-            QMessageBox::information(this, "error", e->what());
+            QMessageBox::information(this, tr("Error"), e->what());
             delete e;
         }
     }
@@ -73,7 +73,7 @@ void ProductsWidget::on_btnEdit_clicked()
             m_service->update(selected);
             m_model->replace(selected, product);
         } catch (ServiceException *e) {
-            QMessageBox::information(this, "Error", e->what());
+            QMessageBox::information(this, tr("Error"), e->what());
             delete e;
         }
     }
@@ -82,8 +82,8 @@ void ProductsWidget::on_btnEdit_clicked()
 void ProductsWidget::on_btnDelete_clicked()
 {
     QMessageBox::StandardButton reply;
-    reply = QMessageBox::question(this, "Delete Product",
-                                    "Are you sure you want to delete the selected Product?",
+    reply = QMessageBox::question(this, tr("Delete Product"),
+                                    tr("Are you sure you want to delete the selected Product?"),
                                     QMessageBox::Yes|QMessageBox::No);
 
     if (reply == QMessageBox::Yes) {
@@ -92,7 +92,7 @@ void ProductsWidget::on_btnDelete_clicked()
             m_service->remove(selected);
             m_model->remove(selected);
         } catch (ServiceException *e) {
-            QMessageBox::information(this, "Error", e->what());
+            QMessageBox::information(this, tr("Error"), e->what());
             delete e;
         }
     }

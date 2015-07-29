@@ -37,6 +37,9 @@ public:
 
     Bill::Ptr toDomainObject();
 
+signals:
+    void print(Bill::Ptr);
+
 private slots:
     void accept() override;
 
@@ -49,6 +52,8 @@ private slots:
     void on_btnDeleteArticle_clicked();
     void on_dateEdit_dateChanged(const QDate &date);
     void on_btnAddDiscount_clicked();
+
+    void on_btnPreview_clicked();
 
 private:
     BillItem::Ptr selectedBillItem();

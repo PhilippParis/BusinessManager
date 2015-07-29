@@ -1,6 +1,7 @@
 #ifndef PRODUCTVALIDATOR_H
 #define PRODUCTVALIDATOR_H
 
+#include <QCoreApplication>
 #include <memory>
 
 #include "logging.h"
@@ -10,6 +11,7 @@
 
 class ProductValidator : public Validator<Product::Ptr>
 {
+    Q_DECLARE_TR_FUNCTIONS(ProductValidator)
 public:
     ProductValidator();
 

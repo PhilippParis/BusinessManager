@@ -1,6 +1,8 @@
 #ifndef DISCOUNTVALIDATOR_H
 #define DISCOUNTVALIDATOR_H
 
+#include <QCoreApplication>
+#include <QObject>
 #include <memory>
 
 #include "domain/discount.h"
@@ -8,6 +10,7 @@
 
 class DiscountValidator : public Validator<Discount::Ptr>
 {
+    Q_DECLARE_TR_FUNCTIONS(DiscountValidator)
 public:
     DiscountValidator();
 

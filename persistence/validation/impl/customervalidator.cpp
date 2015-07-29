@@ -38,16 +38,16 @@ void CustomerValidator::validateIdentity(Customer::Ptr item)
 void CustomerValidator::validateMandatoryFields(Customer::Ptr item)
 {
     if (item->city().isEmpty()) {
-        throw new ValidationException("city must not be emtpy");
+        throw new ValidationException(tr("city must not be emtpy"));
     }
     if (item->name().isEmpty()) {
-        throw new ValidationException("name must not be emtpy");
+        throw new ValidationException(tr("name must not be emtpy"));
     }
     if (item->surname().isEmpty()) {
-        throw new ValidationException("surname must not be emtpy");
+        throw new ValidationException(tr("surname must not be emtpy"));
     }
     if (item->street().isEmpty()) {
-        throw new ValidationException("street must not be empty");
+        throw new ValidationException(tr("street must not be empty"));
     }
 }
 

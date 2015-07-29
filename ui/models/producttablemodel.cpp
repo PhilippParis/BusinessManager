@@ -52,15 +52,15 @@ QVariant ProductTableModel::headerData(int section, Qt::Orientation orientation,
     if (role == Qt::DisplayRole && orientation == Qt::Horizontal) {
         switch (section) {
         case Name:
-            return QString("Name");
+            return tr("Name");
         case Type:
-            return QString("Type");
+            return tr("Type");
         case Manufactor:
-            return QString("Manufactor");
+            return tr("Manufactor");
         case Nr:
-            return QString("Article Number");
+            return tr("Article Number");
         case Quantity:
-            return QString("Quantity");
+            return tr("Quantity");
         }
     }
     return QVariant();

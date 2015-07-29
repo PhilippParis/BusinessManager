@@ -1,6 +1,7 @@
 #ifndef CUSTOMERVALIDATOR_H
 #define CUSTOMERVALIDATOR_H
 
+#include <QCoreApplication>
 #include <memory>
 
 #include "logging.h"
@@ -10,6 +11,7 @@
 
 class CustomerValidator : public Validator<Customer::Ptr>
 {
+    Q_DECLARE_TR_FUNCTIONS(CustomerValidator)
 public:
     CustomerValidator();
 

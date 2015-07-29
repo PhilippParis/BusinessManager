@@ -32,6 +32,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_billService = std::make_shared<BillServiceImpl>(billDAO, billItemDAO, discountDAO, m_billValidator, m_billItemValidator);
     m_productService = std::make_shared<ProductServiceImpl>(productDAO, m_productValidator);
     m_templateService = std::make_shared<TemplateServiceImpl>(templateDAO, m_templateValidator);
+    m_printService = std::make_shared<PrintServiceImpl>();
 
     connect(ui->actionNewBill, SIGNAL(triggered(bool)), ui->widgetBills, SLOT(actionNewBill()));
 
@@ -42,6 +43,22 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::print(Bill::Ptr bill)
+{
+    QPrinter *printer = new QPrinter(QPrinter::HighResolution);
+    printer->setPageSize(QPrinter::A4);
+    printer->setPageMargins(0.14, 0.14, 0.14, 0.14, QPrinter::Inch);
+
+    QPrintPreviewDialog *dialog = new QPrintPreviewDialog(printer, this);
+
+    connect(dialog, &QPrintPreviewDialog::paintRequested, [=](QPrinter *printer) {
+        m_printService->printBill(printer, bill);
+    });
+
+    dialog->exec();
+    delete dialog;
 }
 
 void MainWindow::initWidgets()
@@ -59,6 +76,8 @@ void MainWindow::initWidgets()
 
     ui->templatesWidget->setProductService(m_productService);
     ui->templatesWidget->setTemplateService(m_templateService);
+
+    connect(ui->widgetBills, SIGNAL(print(Bill::Ptr)), this, SLOT(print(Bill::Ptr)));
 
     connect(this, SIGNAL(dataChanged()), ui->widgetBills, SLOT(update()));
     connect(this, SIGNAL(dataChanged()), ui->widgetCustomers, SLOT(update()));

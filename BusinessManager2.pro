@@ -15,6 +15,8 @@ QMAKE_CXXFLAGS += -std=c++0x
 TARGET = BusinessManager2
 TEMPLATE = app
 
+TRANSLATIONS = BusinessManager2_de.ts
+
 SOURCES += main.cpp\
         ui/mainwindow.cpp \
     domain/bill.cpp \
@@ -89,7 +91,9 @@ SOURCES += main.cpp\
     ui/widgets/usersettingswidget.cpp \
     ui/widgets/documentssettingswidget.cpp \
     ui/widgets/financialsettingswidget.cpp \
-    ui/widgets/settingswidget.cpp
+    ui/widgets/settingswidget.cpp \
+    service/printservice.cpp \
+    service/impl/printserviceimpl.cpp
 
 HEADERS  += ui/mainwindow.h \
     domain/bill.h \
@@ -166,7 +170,9 @@ HEADERS  += ui/mainwindow.h \
     ui/widgets/usersettingswidget.h \
     ui/widgets/documentssettingswidget.h \
     ui/widgets/financialsettingswidget.h \
-    ui/widgets/settingswidget.h
+    ui/widgets/settingswidget.h \
+    service/printservice.h \
+    service/impl/printserviceimpl.h
 
 FORMS    += ui/mainwindow.ui \
     ui/widgets/customerswidget.ui \

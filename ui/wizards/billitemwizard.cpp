@@ -62,7 +62,7 @@ bool BillItemWizard::onUpdate()
         }
         m_billService->billItemValidator()->validateForUpdate(item);
     } catch (Exception *e) {
-        QMessageBox::warning(this, "Invalid Data", e->what());
+        QMessageBox::warning(this, tr("Invalid Data"), e->what());
         delete e;
         return false;
     }
@@ -78,7 +78,7 @@ bool BillItemWizard::onCreate()
         }
         m_billService->billItemValidator()->validateForCreate(item);
     } catch (Exception *e) {
-        QMessageBox::warning(this, "Invalid Data", e->what());
+        QMessageBox::warning(this, tr("Invalid Data"), e->what());
         delete e;
         return false;
     }

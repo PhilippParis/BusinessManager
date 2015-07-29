@@ -24,15 +24,11 @@ void UserSettingsWidget::loadSettings(QSettings *settings)
     ui->leBIC->setText(settings->value("user/bic").toString());
     ui->leIBAN->setText(settings->value("user/iban").toString());
 
-    m_logoPath = settings->value("user/logo").toString();
-    if (!m_logoPath.isEmpty()) {
-        ui->lblLogo->setPixmap(QPixmap(m_logoPath));
-    }
+    m_logoPath = settings->value("user/logo_path").toString();
+    m_signaturePath = settings->value("user/signature_path").toString();
 
-    m_signaturePath = settings->value("user/signature").toString();
-    if (!m_signaturePath.isEmpty()) {
-        ui->lblSignature->setPixmap(QPixmap(m_signaturePath));
-    }
+    ui->lblLogo->setPixmap(settings->value("user/logo").value<QPixmap>());
+    ui->lblSignature->setPixmap(settings->value("user/signature").value<QPixmap>());
 }
 
 void UserSettingsWidget::writeSettings(QSettings *settings)
@@ -45,16 +41,22 @@ void UserSettingsWidget::writeSettings(QSettings *settings)
     settings->setValue("user/bic", ui->leBIC->text());
     settings->setValue("user/iban", ui->leIBAN->text());
 
-    settings->setValue("user/logo", m_logoPath);
-    settings->setValue("user/signature", m_signaturePath);
+    settings->setValue("user/logo_path", m_logoPath);
+    settings->setValue("user/logo", QPixmap(m_logoPath));
+
+    settings->setValue("user/signature_path", m_signaturePath);
+    settings->setValue("user/signature", QPixmap(m_signaturePath));
 }
 
 void UserSettingsWidget::on_btnLogo_clicked()
 {
-    m_logoPath = QFileDialog::getOpenFileName(this,"choose logo", m_logoPath, "*.png");
+    m_logoPath = QFileDialog::getOpenFileName(this, tr("choose logo"), m_logoPath, "*.png");
+    ui->lblLogo->setPixmap(QPixmap(m_logoPath));
 }
 
 void UserSettingsWidget::on_btnSignature_clicked()
 {
-    m_signaturePath = QFileDialog::getOpenFileName(this,"choose signature", m_signaturePath, "*.png");
+    m_signaturePath = QFileDialog::getOpenFileName(this,tr("choose signature"), m_signaturePath, "*.png");
+    ui->lblSignature->setPixmap(QPixmap(m_signaturePath));
 }
+

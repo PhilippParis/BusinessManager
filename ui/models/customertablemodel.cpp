@@ -42,11 +42,11 @@ QVariant CustomerTableModel::headerData(int section, Qt::Orientation orientation
                 switch (section)
                 {
                 case Name:
-                    return QString("Organisation / Name");
+                    return tr("Organisation / Name");
                 case Address:
-                    return QString("Address");
+                    return tr("Address");
                 case Mail:
-                    return QString("Mail");
+                    return tr("Mail");
                 }
             }
         }

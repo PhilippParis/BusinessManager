@@ -18,6 +18,7 @@ void DocumentsSettingsWidget::loadSettings(QSettings *settings)
     ui->leBillText->setText(settings->value("docs/billText").toString());
     ui->leOfferText->setText(settings->value("docs/offerText").toString());
     ui->textEditFooter->setText(settings->value("docs/footer").toString());
+    ui->leDateFormat->setText(settings->value("docs/date_format").toString());
 
     m_color = settings->value("docs/color").value<QColor>();
 
@@ -33,6 +34,7 @@ void DocumentsSettingsWidget::writeSettings(QSettings *settings)
     settings->setValue("docs/billText", ui->leBillText->text());
     settings->setValue("docs/offerText", ui->leOfferText->text());
     settings->setValue("docs/footer", ui->textEditFooter->toPlainText());
+    settings->setValue("docs/date_format", ui->leDateFormat->text());
 
     settings->setValue("docs/color", m_color);
 

@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QPrintPreviewDialog>
 
 #include "persistence/databasesingleton.h"
 
@@ -23,6 +24,7 @@
 #include "service/impl/billserviceimpl.h"
 #include "service/impl/productserviceimpl.h"
 #include "service/impl/templateserviceimpl.h"
+#include "service/impl/printserviceimpl.h"
 
 #include "ui/dialogs/settingsdialog.h"
 
@@ -38,20 +40,20 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+public slots:
+    void print(Bill::Ptr bill);
+
 signals:
     void dataChanged();
 
 private slots:
     void on_actionSettings_triggered();
-
     void on_actionEmptyPaper_triggered();
-
     void on_actionImprintedPaper_triggered();
 
 private:
     void initWidgets();
     void loadSettings();
-    void writeSettings();
 
 private:
     Ui::MainWindow *ui;
@@ -60,6 +62,7 @@ private:
     BillService::Ptr m_billService;
     ProductService::Ptr m_productService;
     TemplateService::Ptr m_templateService;
+    PrintService::Ptr m_printService;
 
     Validator<Customer::Ptr>::Ptr m_customerValidator;
     Validator<Bill::Ptr>::Ptr m_billValidator;

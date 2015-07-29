@@ -37,13 +37,13 @@ QVariant TemplateTableModel::headerData(int section, Qt::Orientation orientation
     if (role == Qt::DisplayRole && orientation == Qt::Horizontal) {
         switch (section) {
         case Name:
-            return QString("Name");
+            return tr("Name");
         case Org:
-            return QString("Organisation");
+            return tr("Organisation");
         case Type:
-            return QString("Type");
+            return tr("Type");
         case Desc:
-            return QString("Additional Description");
+            return tr("Additional Description");
         }
     }
     return QVariant();

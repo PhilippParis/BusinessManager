@@ -40,7 +40,7 @@ void BillValidator::validateIdentity(Bill::Ptr item)
 void BillValidator::validateMandatoryFields(Bill::Ptr item)
 {
     if (item->billNumber() <= 0) {
-        throw new ValidationException("bill number must not be negative");
+        throw new ValidationException(tr("bill number must not be negative"));
     }
 
     for(BillItem::Ptr billItem : item->items()) {

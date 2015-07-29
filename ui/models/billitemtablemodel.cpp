@@ -37,13 +37,13 @@ QVariant BillItemTableModel::headerData(int section, Qt::Orientation orientation
     if (role == Qt::DisplayRole && orientation == Qt::Horizontal) {
         switch (section) {
         case Desc:
-            return QString("Article");
+            return tr("Article");
         case Quantity:
-            return QString("Quantity");
+            return tr("Quantity");
         case UnitPrice:
-            return QString("Unit Price");
+            return tr("Unit Price");
         case TotalPrice:
-            return QString("Total Price");
+            return tr("Total Price");
         }
     }
     return QVariant();
