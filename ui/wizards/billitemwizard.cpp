@@ -40,6 +40,7 @@ BillItem::Ptr BillItemWizard::getBillItemDomainObject()
     item->setWorkingHours(ui->sbWorkingHours->value());
     item->setWagePerHour(m_wagePerHour);
     item->setMaterial(m_productModel->itemsWithQuantity());
+    item->setWagePerHour(m_wagePerHour);
 
     return item;
 }

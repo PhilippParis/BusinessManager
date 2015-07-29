@@ -85,7 +85,11 @@ SOURCES += main.cpp\
     ui/models/templatesortfilterproxymodel.cpp \
     ui/wizards/abstractbillitemwizard.cpp \
     ui/wizards/templatewizard.cpp \
-    ui/dialogs/settingsdialog.cpp
+    ui/dialogs/settingsdialog.cpp \
+    ui/widgets/usersettingswidget.cpp \
+    ui/widgets/documentssettingswidget.cpp \
+    ui/widgets/financialsettingswidget.cpp \
+    ui/widgets/settingswidget.cpp
 
 HEADERS  += ui/mainwindow.h \
     domain/bill.h \
@@ -158,7 +162,11 @@ HEADERS  += ui/mainwindow.h \
     ui/models/templatesortfilterproxymodel.h \
     ui/wizards/abstractbillitemwizard.h \
     ui/wizards/templatewizard.h \
-    ui/dialogs/settingsdialog.h
+    ui/dialogs/settingsdialog.h \
+    ui/widgets/usersettingswidget.h \
+    ui/widgets/documentssettingswidget.h \
+    ui/widgets/financialsettingswidget.h \
+    ui/widgets/settingswidget.h
 
 FORMS    += ui/mainwindow.ui \
     ui/widgets/customerswidget.ui \
@@ -171,4 +179,7 @@ FORMS    += ui/mainwindow.ui \
     ui/dialogs/productdialog.ui \
     ui/widgets/templateswidget.ui \
     ui/wizards/abstractbillitemwizard.ui \
-    ui/dialogs/settingsdialog.ui
+    ui/dialogs/settingsdialog.ui \
+    ui/widgets/usersettingswidget.ui \
+    ui/widgets/documentssettingswidget.ui \
+    ui/widgets/financialsettingswidget.ui

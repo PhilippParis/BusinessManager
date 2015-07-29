@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QMessageBox>
+#include <QSettings>
 
 #include "service/billservice.h"
 #include "service/customerservice.h"

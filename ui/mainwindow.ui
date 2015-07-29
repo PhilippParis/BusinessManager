@@ -78,6 +78,27 @@
      <height>29</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuFiel">
+    <property name="title">
+     <string>Fi&amp;le</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuEdit">
+    <property name="title">
+     <string>Edit</string>
+    </property>
+    <widget class="QMenu" name="menuPaper">
+     <property name="title">
+      <string>Paper </string>
+     </property>
+     <addaction name="actionEmptyPaper"/>
+     <addaction name="actionImprintedPaper"/>
+    </widget>
+    <addaction name="actionSettings"/>
+    <addaction name="menuPaper"/>
+   </widget>
+   <addaction name="menuFiel"/>
+   <addaction name="menuEdit"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -92,6 +113,27 @@
   <action name="actionNewBill">
    <property name="text">
     <string>New Bill</string>
+   </property>
+  </action>
+  <action name="actionSettings">
+   <property name="text">
+    <string>Settings</string>
+   </property>
+  </action>
+  <action name="actionEmptyPaper">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Empty</string>
+   </property>
+  </action>
+  <action name="actionImprintedPaper">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Imprinted</string>
    </property>
   </action>
  </widget>

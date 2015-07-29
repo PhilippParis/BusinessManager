@@ -24,7 +24,7 @@
 #include "service/impl/productserviceimpl.h"
 #include "service/impl/templateserviceimpl.h"
 
-#include "ui/dialogs/billdialog.h"
+#include "ui/dialogs/settingsdialog.h"
 
 namespace Ui {
 class MainWindow;
@@ -41,8 +41,17 @@ public:
 signals:
     void dataChanged();
 
+private slots:
+    void on_actionSettings_triggered();
+
+    void on_actionEmptyPaper_triggered();
+
+    void on_actionImprintedPaper_triggered();
+
 private:
     void initWidgets();
+    void loadSettings();
+    void writeSettings();
 
 private:
     Ui::MainWindow *ui;

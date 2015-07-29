@@ -7,6 +7,11 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    QCoreApplication::setOrganizationName("ParisApps");
+    QCoreApplication::setOrganizationDomain("parisApps.com");
+    QCoreApplication::setApplicationName("Business Manager");
+    QCoreApplication::setApplicationVersion("2.0");
+
     QSqlDatabase db = DatabaseSingleton::get()->getProductionDatabase();
 
     m_customerValidator = std::make_shared<CustomerValidator>();
@@ -31,6 +36,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionNewBill, SIGNAL(triggered(bool)), ui->widgetBills, SLOT(actionNewBill()));
 
     initWidgets();
+    loadSettings();
 }
 
 MainWindow::~MainWindow()
@@ -56,4 +62,40 @@ void MainWindow::initWidgets()
 
     connect(this, SIGNAL(dataChanged()), ui->widgetBills, SLOT(update()));
     connect(this, SIGNAL(dataChanged()), ui->widgetCustomers, SLOT(update()));
+}
+
+void MainWindow::loadSettings()
+{
+    QSettings settings;
+    if (settings.value("print/emptyPaper").toBool()) {
+        ui->actionEmptyPaper->setChecked(true);
+    } else {
+        ui->actionImprintedPaper->setChecked(true);
+    }
+}
+
+void MainWindow::on_actionSettings_triggered()
+{
+    SettingsDialog *dialog = new SettingsDialog(this);
+    if (dialog->exec() == QDialog::Accepted) {
+
+    }
+
+    delete dialog;
+}
+
+void MainWindow::on_actionEmptyPaper_triggered()
+{
+    QSettings settings;
+    settings.setValue("print/emptyPaper", true);
+
+    ui->actionImprintedPaper->setChecked(false);
+}
+
+void MainWindow::on_actionImprintedPaper_triggered()
+{
+    QSettings settings;
+    settings.setValue("print/emptyPaper", false);
+
+    ui->actionEmptyPaper->setChecked(false);
 }
