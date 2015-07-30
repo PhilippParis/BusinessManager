@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Envelope</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -257,8 +257,8 @@
         <string>Print</string>
        </property>
        <property name="icon">
-        <iconset>
-         <normaloff>:/icon/images/print.png</normaloff>:/icon/images/print.png</iconset>
+        <iconset resource="../../resources.qrc">
+         <normaloff>:/icon/print</normaloff>:/icon/print</iconset>
        </property>
       </widget>
      </item>
@@ -276,7 +276,9 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../resources.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>buttonBox</sender>

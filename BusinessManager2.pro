@@ -201,3 +201,6 @@ FORMS    += ui/mainwindow.ui \
     ui/dialogs/letterdialog.ui \
     ui/dialogs/envelopedialog.ui \
     ui/widgets/statisticswidget.ui
+
+RESOURCES += \
+    resources.qrc

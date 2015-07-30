@@ -44,6 +44,10 @@
        <property name="text">
         <string>Add Product</string>
        </property>
+       <property name="icon">
+        <iconset resource="../../resources.qrc">
+         <normaloff>:/icon/add</normaloff>:/icon/add</iconset>
+       </property>
       </widget>
      </item>
      <item>
@@ -53,6 +57,10 @@
        </property>
        <property name="text">
         <string>Edit Product</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../../resources.qrc">
+         <normaloff>:/icon/edit</normaloff>:/icon/edit</iconset>
        </property>
       </widget>
      </item>
@@ -77,12 +85,18 @@
        <property name="text">
         <string>Delete Product</string>
        </property>
+       <property name="icon">
+        <iconset resource="../../resources.qrc">
+         <normaloff>:/icon/delete</normaloff>:/icon/delete</iconset>
+       </property>
       </widget>
      </item>
     </layout>
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

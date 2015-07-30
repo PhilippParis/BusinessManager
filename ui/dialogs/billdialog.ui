@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Bill</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -58,8 +58,8 @@
         <string>New</string>
        </property>
        <property name="icon">
-        <iconset>
-         <normaloff>:/icon/images/plus.png</normaloff>:/icon/images/plus.png</iconset>
+        <iconset resource="../../resources.qrc">
+         <normaloff>:/icon/add</normaloff>:/icon/add</iconset>
        </property>
       </widget>
      </item>
@@ -88,8 +88,8 @@
         <string>Edit</string>
        </property>
        <property name="icon">
-        <iconset>
-         <normaloff>:/icon/images/edit-icon.png</normaloff>:/icon/images/edit-icon.png</iconset>
+        <iconset resource="../../resources.qrc">
+         <normaloff>:/icon/edit</normaloff>:/icon/edit</iconset>
        </property>
       </widget>
      </item>
@@ -119,8 +119,8 @@
         <string>Add Article</string>
        </property>
        <property name="icon">
-        <iconset>
-         <normaloff>:/icon/images/plus.png</normaloff>:/icon/images/plus.png</iconset>
+        <iconset resource="../../resources.qrc">
+         <normaloff>:/icon/add</normaloff>:/icon/add</iconset>
        </property>
       </widget>
      </item>
@@ -163,8 +163,8 @@
         <string>Edit Article</string>
        </property>
        <property name="icon">
-        <iconset>
-         <normaloff>:/icon/images/edit-icon.png</normaloff>:/icon/images/edit-icon.png</iconset>
+        <iconset resource="../../resources.qrc">
+         <normaloff>:/icon/edit</normaloff>:/icon/edit</iconset>
        </property>
       </widget>
      </item>
@@ -183,8 +183,8 @@
         <string>Delete Article</string>
        </property>
        <property name="icon">
-        <iconset>
-         <normaloff>:/icon/images/Delete-icon.png</normaloff>:/icon/images/Delete-icon.png</iconset>
+        <iconset resource="../../resources.qrc">
+         <normaloff>:/icon/delete</normaloff>:/icon/delete</iconset>
        </property>
       </widget>
      </item>
@@ -265,6 +265,10 @@
        <property name="text">
         <string>Add Discount</string>
        </property>
+       <property name="icon">
+        <iconset resource="../../resources.qrc">
+         <normaloff>:/icon/add</normaloff>:/icon/add</iconset>
+       </property>
       </widget>
      </item>
      <item>
@@ -292,8 +296,8 @@
         <string>Preview / Print</string>
        </property>
        <property name="icon">
-        <iconset>
-         <normaloff>:/icon/images/print.png</normaloff>:/icon/images/print.png</iconset>
+        <iconset resource="../../resources.qrc">
+         <normaloff>:/icon/print</normaloff>:/icon/print</iconset>
        </property>
       </widget>
      </item>
@@ -311,7 +315,9 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../resources.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>buttonBox_2</sender>

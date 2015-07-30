@@ -56,8 +56,8 @@
         <string>Add Customer</string>
        </property>
        <property name="icon">
-        <iconset>
-         <normaloff>:/icon/images/plus.png</normaloff>:/icon/images/plus.png</iconset>
+        <iconset resource="../../resources.qrc">
+         <normaloff>:/icon/add</normaloff>:/icon/add</iconset>
        </property>
       </widget>
      </item>
@@ -68,6 +68,10 @@
        </property>
        <property name="text">
         <string>Edit Customer</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../../resources.qrc">
+         <normaloff>:/icon/edit</normaloff>:/icon/edit</iconset>
        </property>
       </widget>
      </item>
@@ -91,8 +95,8 @@
         <string>Send Mail</string>
        </property>
        <property name="icon">
-        <iconset>
-         <normaloff>:/icon/images/mail-icon.png</normaloff>:/icon/images/mail-icon.png</iconset>
+        <iconset resource="../../resources.qrc">
+         <normaloff>:/icon/mail</normaloff>:/icon/mail</iconset>
        </property>
       </widget>
      </item>
@@ -129,8 +133,8 @@
         <string>Delete Customer</string>
        </property>
        <property name="icon">
-        <iconset>
-         <normaloff>:/icon/images/Delete-icon.png</normaloff>:/icon/images/Delete-icon.png</iconset>
+        <iconset resource="../../resources.qrc">
+         <normaloff>:/icon/delete</normaloff>:/icon/delete</iconset>
        </property>
       </widget>
      </item>
@@ -138,6 +142,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

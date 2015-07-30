@@ -9,9 +9,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
     QCoreApplication::setOrganizationName("ParisApps");
     QCoreApplication::setOrganizationDomain("parisApps.com");
-    QCoreApplication::setApplicationName("Business Manager");
+    QCoreApplication::setApplicationName("BusinessManager");
     QCoreApplication::setApplicationVersion("2.0");
 
+    setWindowTitle(QCoreApplication::applicationName());
     QSqlDatabase db = DatabaseSingleton::get()->getProductionDatabase();
 
     m_customerValidator = std::make_shared<CustomerValidator>();

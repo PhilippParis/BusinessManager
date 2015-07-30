@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Letter</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -95,8 +95,8 @@
         <string>Align Left</string>
        </property>
        <property name="icon">
-        <iconset>
-         <normaloff>:/icon/images/Text-align-left.ico</normaloff>:/icon/images/Text-align-left.ico</iconset>
+        <iconset resource="../../resources.qrc">
+         <normaloff>:/icon/align_left</normaloff>:/icon/align_left</iconset>
        </property>
        <property name="checkable">
         <bool>true</bool>
@@ -115,8 +115,8 @@
         <string>Center</string>
        </property>
        <property name="icon">
-        <iconset>
-         <normaloff>:/icon/images/Text-align-center.ico</normaloff>:/icon/images/Text-align-center.ico</iconset>
+        <iconset resource="../../resources.qrc">
+         <normaloff>:/icon/align_center</normaloff>:/icon/align_center</iconset>
        </property>
        <property name="checkable">
         <bool>true</bool>
@@ -135,8 +135,8 @@
         <string>Align Right</string>
        </property>
        <property name="icon">
-        <iconset>
-         <normaloff>:/icon/images/Text-align-right.ico</normaloff>:/icon/images/Text-align-right.ico</iconset>
+        <iconset resource="../../resources.qrc">
+         <normaloff>:/icon/align_right</normaloff>:/icon/align_right</iconset>
        </property>
        <property name="checkable">
         <bool>true</bool>
@@ -162,8 +162,8 @@
         <string>Bold</string>
        </property>
        <property name="icon">
-        <iconset>
-         <normaloff>:/icon/images/Text-bold.ico</normaloff>:/icon/images/Text-bold.ico</iconset>
+        <iconset resource="../../resources.qrc">
+         <normaloff>:/icon/bold</normaloff>:/icon/bold</iconset>
        </property>
        <property name="checkable">
         <bool>true</bool>
@@ -182,8 +182,8 @@
         <string>Italic</string>
        </property>
        <property name="icon">
-        <iconset>
-         <normaloff>:/icon/images/Text-itailc.ico</normaloff>:/icon/images/Text-itailc.ico</iconset>
+        <iconset resource="../../resources.qrc">
+         <normaloff>:/icon/italic</normaloff>:/icon/italic</iconset>
        </property>
        <property name="checkable">
         <bool>true</bool>
@@ -241,8 +241,8 @@
         <string>Save</string>
        </property>
        <property name="icon">
-        <iconset>
-         <normaloff>:/icon/images/save-icon.png</normaloff>:/icon/images/save-icon.png</iconset>
+        <iconset resource="../../resources.qrc">
+         <normaloff>:/icon/save</normaloff>:/icon/save</iconset>
        </property>
       </widget>
      </item>
@@ -271,8 +271,8 @@
         <string>Preview / Print</string>
        </property>
        <property name="icon">
-        <iconset>
-         <normaloff>:/icon/images/print.png</normaloff>:/icon/images/print.png</iconset>
+        <iconset resource="../../resources.qrc">
+         <normaloff>:/icon/print</normaloff>:/icon/print</iconset>
        </property>
       </widget>
      </item>
@@ -290,7 +290,9 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../resources.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>buttonBox</sender>

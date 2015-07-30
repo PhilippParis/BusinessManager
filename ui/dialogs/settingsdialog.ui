@@ -11,7 +11,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Settings</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../../resources.qrc">
+    <normaloff>:/icon/settings</normaloff>:/icon/settings</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -24,22 +28,46 @@
          <height>16777215</height>
         </size>
        </property>
+       <property name="movement">
+        <enum>QListView::Free</enum>
+       </property>
+       <property name="flow">
+        <enum>QListView::LeftToRight</enum>
+       </property>
+       <property name="spacing">
+        <number>20</number>
+       </property>
        <property name="viewMode">
         <enum>QListView::IconMode</enum>
+       </property>
+       <property name="uniformItemSizes">
+        <bool>true</bool>
        </property>
        <item>
         <property name="text">
          <string>User</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../../resources.qrc">
+          <normaloff>:/icon/settings_user</normaloff>:/icon/settings_user</iconset>
         </property>
        </item>
        <item>
         <property name="text">
          <string>Documents</string>
         </property>
+        <property name="icon">
+         <iconset resource="../../resources.qrc">
+          <normaloff>:/icon/settings_documents</normaloff>:/icon/settings_documents</iconset>
+        </property>
        </item>
        <item>
         <property name="text">
          <string>Financial</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../../resources.qrc">
+          <normaloff>:/icon/settings_financial</normaloff>:/icon/settings_financial</iconset>
         </property>
        </item>
       </widget>
@@ -65,7 +93,9 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../resources.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>buttonBox</sender>

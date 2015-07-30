@@ -174,8 +174,8 @@
         <string>Edit</string>
        </property>
        <property name="icon">
-        <iconset>
-         <normaloff>:/icon/images/edit-icon.png</normaloff>:/icon/images/edit-icon.png</iconset>
+        <iconset resource="../../resources.qrc">
+         <normaloff>:/icon/edit</normaloff>:/icon/edit</iconset>
        </property>
       </widget>
      </item>
@@ -199,8 +199,8 @@
         <string>Print</string>
        </property>
        <property name="icon">
-        <iconset>
-         <normaloff>:/icon/images/print.png</normaloff>:/icon/images/print.png</iconset>
+        <iconset resource="../../resources.qrc">
+         <normaloff>:/icon/print</normaloff>:/icon/print</iconset>
        </property>
       </widget>
      </item>
@@ -224,8 +224,8 @@
         <string>Export to PDF</string>
        </property>
        <property name="icon">
-        <iconset>
-         <normaloff>:/icon/images/save-icon.png</normaloff>:/icon/images/save-icon.png</iconset>
+        <iconset resource="../../resources.qrc">
+         <normaloff>:/icon/save</normaloff>:/icon/save</iconset>
        </property>
       </widget>
      </item>
@@ -249,8 +249,8 @@
         <string>Send Per Mail</string>
        </property>
        <property name="icon">
-        <iconset>
-         <normaloff>:/icon/images/mail-icon.png</normaloff>:/icon/images/mail-icon.png</iconset>
+        <iconset resource="../../resources.qrc">
+         <normaloff>:/icon/mail</normaloff>:/icon/mail</iconset>
        </property>
       </widget>
      </item>
@@ -287,8 +287,8 @@
         <string>Delete</string>
        </property>
        <property name="icon">
-        <iconset>
-         <normaloff>:/icon/images/Delete-icon.png</normaloff>:/icon/images/Delete-icon.png</iconset>
+        <iconset resource="../../resources.qrc">
+         <normaloff>:/icon/delete</normaloff>:/icon/delete</iconset>
        </property>
       </widget>
      </item>
@@ -296,6 +296,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

@@ -1,0 +1,23 @@
+<RCC>
+    <qresource prefix="/icon">
+        <file alias="add">resources/icons/add_icon.png</file>
+        <file alias="align_center">resources/icons/align_center_icon.ico</file>
+        <file alias="align_left">resources/icons/align_left_icon.ico</file>
+        <file alias="align_right">resources/icons/align_right_icon.ico</file>
+        <file alias="app">resources/icons/app_icon.png</file>
+        <file alias="bold">resources/icons/bold_icon.ico</file>
+        <file alias="delete">resources/icons/delete_icon.png</file>
+        <file alias="edit">resources/icons/edit_icon.png</file>
+        <file alias="italic">resources/icons/italic_icon.ico</file>
+        <file alias="mail">resources/icons/mail_icon.png</file>
+        <file alias="print">resources/icons/print_icon.png</file>
+        <file alias="save">resources/icons/save_icon.png</file>
+        <file alias="settings">resources/icons/settings_icon.png</file>
+        <file alias="settings_user">resources/icons/user_settings_icon.png</file>
+        <file alias="settings_financial">resources/icons/financial_settings_icon.png</file>
+        <file alias="settings_documents">resources/icons/documents_settings_icon.png</file>
+    </qresource>
+    <qresource prefix="/image">
+        <file alias="seal">resources/images/seal.jpg</file>
+    </qresource>
+</RCC>

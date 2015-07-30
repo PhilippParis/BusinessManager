@@ -116,8 +116,8 @@
          <string>Add Material</string>
         </property>
         <property name="icon">
-         <iconset>
-          <normaloff>:/icon/images/plus.png</normaloff>:/icon/images/plus.png</iconset>
+         <iconset resource="../../resources.qrc">
+          <normaloff>:/icon/add</normaloff>:/icon/add</iconset>
         </property>
        </widget>
       </item>
@@ -127,8 +127,8 @@
          <string>Delete Material</string>
         </property>
         <property name="icon">
-         <iconset>
-          <normaloff>:/icon/images/Delete-icon.png</normaloff>:/icon/images/Delete-icon.png</iconset>
+         <iconset resource="../../resources.qrc">
+          <normaloff>:/icon/delete</normaloff>:/icon/delete</iconset>
         </property>
        </widget>
       </item>
@@ -352,6 +352,8 @@
    </layout>
   </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

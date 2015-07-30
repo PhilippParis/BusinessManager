@@ -8,7 +8,6 @@ PrintServiceImpl::PrintServiceImpl()
 void PrintServiceImpl::printBill(QPrinter *printer, Bill::Ptr bill)
 {
     QPainter *painter = getPainter(printer);
-    QFontMetrics fm = painter->fontMetrics();
 
     // draw decoration bar
     printBar(painter);
@@ -94,7 +93,7 @@ void PrintServiceImpl::printEnvelope(QPrinter *printer, Envelope::Ptr envelope)
         printTextBlock(painter, envelope->receiverInfo(), 440, 1500, Qt::AlignLeft);
     }
 
-    QPixmap seal = QPixmap(":/icon/images/seal.jpg");
+    QPixmap seal = QPixmap(":/image/seal");
     if(!seal.isNull()) {
         painter->drawPixmap(1600, 500, 500, 500, seal);
     }
@@ -175,7 +174,7 @@ void PrintServiceImpl::printBillItem(QPainter *painter, BillItem::Ptr item, int 
 void PrintServiceImpl::printHeader(QPainter *painter, Customer::Ptr receiver, QDate date)
 {
     //logo
-    if (m_settings.value("docs/show_logo").toBool()) {
+    if (m_settings.value("docs/show_logo").toBool() && m_settings.value("print/emptyPaper").toBool()) {
         QPixmap logo = m_settings.value("user/logo").value<QPixmap>();
         if (!logo.isNull()) {
             painter->drawPixmap(2500 + 326.6, 110, 2025, 880, logo);
@@ -192,7 +191,7 @@ void PrintServiceImpl::printHeader(QPainter *painter, Customer::Ptr receiver, QD
     printTextBlock(painter, receiverInfo, LEFT_MARGIN, 1400, Qt::AlignLeft);
 
     //sender:
-    if(m_settings.value("docs/show_sender").toBool()) {
+    if(m_settings.value("docs/show_sender").toBool() && m_settings.value("print/emptyPaper").toBool()) {
         QStringList senderInfo;
         senderInfo << m_settings.value("user/street").toString();
         senderInfo << m_settings.value("user/city").toString();
@@ -250,9 +249,11 @@ void PrintServiceImpl::printFooter(QPrinter *printer, QPainter *painter, int y)
     printTextBlock(painter, footer, 350, 6600, Qt::AlignLeft);
 
     // "meisterbetrieb" seal
-    QPixmap seal = QPixmap(":/icon/images/seal.jpg");
-    if(!seal.isNull()) {
-        painter->drawPixmap(4250, 6300, 500, 500, seal);
+    if (m_settings.value("print/emptyPaper").toBool()) {
+        QPixmap seal = QPixmap(":/image/seal");
+        if(!seal.isNull()) {
+            painter->drawPixmap(4250, 6300, 500, 500, seal);
+        }
     }
 }
 
@@ -328,7 +329,7 @@ QPainter* PrintServiceImpl::getPainter(QPrinter *printer)
 
 void PrintServiceImpl::printBar(QPainter *painter)
 {
-    if(m_settings.value("docs/show_bar").toBool()) {
+    if(m_settings.value("docs/show_bar").toBool() && m_settings.value("print/emptyPaper").toBool()) {
         painter->setPen(QColor(255,204,102));
         painter->drawRect(50, 0, 184, 6800);
         painter->setPen(Qt::black);
