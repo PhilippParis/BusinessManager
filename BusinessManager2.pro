@@ -25,7 +25,6 @@ SOURCES += main.cpp\
     domain/billitem.cpp \
     domain/template.cpp \
     domain/customer.cpp \
-    domain/document.cpp \
     domain/offer.cpp \
     domain/letter.cpp \
     persistence/billdao.cpp \
@@ -66,7 +65,6 @@ SOURCES += main.cpp\
     ui/models/customertablemodel.cpp \
     ui/models/billtablemodel.cpp \
     ui/models/billsortfilterproxymodel.cpp \
-    ui/models/customerlistmodel.cpp \
     ui/dialogs/billdialog.cpp \
     ui/models/billitemtablemodel.cpp \
     ui/wizards/billitemwizard.cpp \
@@ -108,7 +106,6 @@ HEADERS  += ui/mainwindow.h \
     domain/billitem.h \
     domain/template.h \
     domain/customer.h \
-    domain/document.h \
     domain/offer.h \
     domain/letter.h \
     persistence/billdao.h \
@@ -150,7 +147,6 @@ HEADERS  += ui/mainwindow.h \
     ui/models/customertablemodel.h \
     ui/models/billtablemodel.h \
     ui/models/billsortfilterproxymodel.h \
-    ui/models/customerlistmodel.h \
     ui/dialogs/billdialog.h \
     ui/models/billitemtablemodel.h \
     ui/models/domainitemmodel.h \
