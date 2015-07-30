@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QColorDialog>
+#include <QFileDialog>
 
 #include "ui/widgets/settingswidget.h"
 
@@ -23,6 +24,7 @@ public:
 
 private slots:
     void on_btnColor_clicked();
+    void on_btnLogo_clicked();
 
 private:
     enum Items {
@@ -31,6 +33,8 @@ private:
 
     Ui::DocumentsSettingsWidget *ui;
     QColor m_color;
+    QPixmap m_logo;
+    QString m_logoPath;
 };
 
 #endif // DOCUMENTSSETTINGSWIDGET_H

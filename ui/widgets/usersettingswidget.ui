@@ -26,7 +26,7 @@
       <item>
        <widget class="QPushButton" name="btnLogo">
         <property name="text">
-         <string>choose Image</string>
+         <string>Choose..</string>
         </property>
        </widget>
       </item>
@@ -186,7 +186,7 @@
       <item>
        <widget class="QPushButton" name="btnSignature">
         <property name="text">
-         <string>btnSignature</string>
+         <string>Choose...</string>
         </property>
        </widget>
       </item>

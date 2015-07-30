@@ -19,6 +19,7 @@ void DocumentsSettingsWidget::loadSettings(QSettings *settings)
     ui->leOfferText->setText(settings->value("docs/offerText").toString());
     ui->textEditFooter->setText(settings->value("docs/footer").toString());
     ui->leDateFormat->setText(settings->value("docs/date_format").toString());
+    ui->lblEnvelopeLogo->setPixmap(settings->value("docs/logo_envelope").value<QPixmap>());
 
     m_color = settings->value("docs/color").value<QColor>();
 
@@ -43,9 +44,18 @@ void DocumentsSettingsWidget::writeSettings(QSettings *settings)
     settings->setValue("docs/show_beam", ui->lwPrint->item(BEAM)->checkState() == Qt::Checked);
     settings->setValue("docs/show_footer", ui->lwPrint->item(FOOTER)->checkState() == Qt::Checked);
     settings->setValue("docs/show_signature", ui->lwPrint->item(SIGNATURE)->checkState() == Qt::Checked);
+
+    settings->setValue("docs/logo_envelope", m_logo);
 }
 
 void DocumentsSettingsWidget::on_btnColor_clicked()
 {
     m_color = QColorDialog::getColor(m_color, this);
+}
+
+void DocumentsSettingsWidget::on_btnLogo_clicked()
+{
+    m_logoPath = QFileDialog::getOpenFileName(this, tr("choose logo"), m_logoPath, "*.png");
+    m_logo = QPixmap(m_logoPath);
+    ui->lblEnvelopeLogo->setPixmap(m_logo);
 }

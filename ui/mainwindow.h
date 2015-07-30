@@ -29,6 +29,7 @@
 #include "ui/dialogs/settingsdialog.h"
 #include "ui/dialogs/offerdialog.h"
 #include "ui/dialogs/letterdialog.h"
+#include "ui/dialogs/envelopedialog.h"
 
 namespace Ui {
 class MainWindow;
@@ -46,6 +47,7 @@ public slots:
     void printBill(Bill::Ptr bill);
     void printOffer(Offer::Ptr offer);
     void printLetter(Letter::Ptr letter);
+    void printEnvelope(Envelope::Ptr envelope);
 
     void saveLetter(Letter::Ptr letter, QString path);
 
@@ -58,6 +60,7 @@ private slots:
     void on_actionImprintedPaper_triggered();
     void on_actionNewOffer_triggered();
     void on_actionNewLetter_triggered();
+    void on_actionPrintEnvelope_triggered();
 
 private:
     void initWidgets();

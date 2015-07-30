@@ -78,6 +78,25 @@ void MainWindow::printLetter(Letter::Ptr letter)
     delete dialog;
 }
 
+void MainWindow::printEnvelope(Envelope::Ptr envelope)
+{
+    QPrinter *printer = new QPrinter(QPrinter::HighResolution);
+
+    printer->setPaperSource(QPrinter::Envelope);
+    printer->setPageMargins(0.14, 0.14, 0.14, 0.14, QPrinter::Inch);
+    printer->setPageSize((QPagedPaintDevice::PageSize) envelope->pageSize());
+    printer->setOrientation((QPrinter::Orientation) envelope->orientation());
+
+    QPrintPreviewDialog *dialog = new QPrintPreviewDialog(printer, this);
+
+    connect(dialog, &QPrintPreviewDialog::paintRequested, [=](QPrinter *printer) {
+        m_printService->printEnvelope(printer, envelope);
+    });
+
+    dialog->exec();
+    delete dialog;
+}
+
 void MainWindow::saveLetter(Letter::Ptr letter, QString path)
 {
     QPrinter *printer = new QPrinter(QPrinter::HighResolution);
@@ -175,6 +194,15 @@ void MainWindow::on_actionNewLetter_triggered()
     LetterDialog *dialog = new LetterDialog(this, m_customerService);
     connect(dialog, SIGNAL(print(Letter::Ptr)), SLOT(printLetter(Letter::Ptr)));
     connect(dialog, SIGNAL(save(Letter::Ptr, QString)), SLOT(saveLetter(Letter::Ptr, QString)));
+    dialog->exec();
+
+    delete dialog;
+}
+
+void MainWindow::on_actionPrintEnvelope_triggered()
+{
+    EnvelopeDialog *dialog = new EnvelopeDialog(this, m_customerService);
+    connect(dialog, SIGNAL(print(Envelope::Ptr)), SLOT(printEnvelope(Envelope::Ptr)));
     dialog->exec();
 
     delete dialog;

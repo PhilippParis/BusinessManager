@@ -30,6 +30,7 @@ public:
     void printBill(QPrinter *printer, Bill::Ptr bill) override;
     void printOffer(QPrinter *printer, Offer::Ptr offer) override;
     void printLetter(QPrinter *printer, Letter::Ptr letter) override;
+    void printEnvelope(QPrinter *printer, Envelope::Ptr envelope) override;
 
 private:
     void printSubject(QPainter *painter, QString subject, QStringList text);

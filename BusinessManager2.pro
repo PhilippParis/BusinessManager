@@ -96,7 +96,9 @@ SOURCES += main.cpp\
     service/impl/printserviceimpl.cpp \
     ui/dialogs/abstractbilldialog.cpp \
     ui/dialogs/offerdialog.cpp \
-    ui/dialogs/letterdialog.cpp
+    ui/dialogs/letterdialog.cpp \
+    ui/dialogs/envelopedialog.cpp \
+    domain/envelope.cpp
 
 HEADERS  += ui/mainwindow.h \
     domain/bill.h \
@@ -178,7 +180,9 @@ HEADERS  += ui/mainwindow.h \
     service/impl/printserviceimpl.h \
     ui/dialogs/abstractbilldialog.h \
     ui/dialogs/offerdialog.h \
-    ui/dialogs/letterdialog.h
+    ui/dialogs/letterdialog.h \
+    ui/dialogs/envelopedialog.h \
+    domain/envelope.h
 
 FORMS    += ui/mainwindow.ui \
     ui/widgets/customerswidget.ui \
@@ -195,4 +199,5 @@ FORMS    += ui/mainwindow.ui \
     ui/widgets/usersettingswidget.ui \
     ui/widgets/documentssettingswidget.ui \
     ui/widgets/financialsettingswidget.ui \
-    ui/dialogs/letterdialog.ui
+    ui/dialogs/letterdialog.ui \
+    ui/dialogs/envelopedialog.ui

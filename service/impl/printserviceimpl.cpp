@@ -80,6 +80,35 @@ void PrintServiceImpl::printLetter(QPrinter *printer, Letter::Ptr letter)
     delete painter;
 }
 
+void PrintServiceImpl::printEnvelope(QPrinter *printer, Envelope::Ptr envelope)
+{
+    QPainter *painter = getPainter(printer);
+
+    QPixmap logo = m_settings.value("docs/logo_envelope").value<QPixmap>();
+    if(!logo.isNull()) {
+        painter->drawPixmap(50, 120, 1840, 800, logo);
+    }
+
+    if(!envelope->withWindow()) {
+        // receiver
+        printTextBlock(painter, envelope->receiverInfo(), 440, 1500, Qt::AlignLeft);
+    }
+
+    QPixmap seal = QPixmap(":/icon/images/seal.jpg");
+    if(!seal.isNull()) {
+        painter->drawPixmap(1600, 500, 500, 500, seal);
+    }
+
+    if(printer->pageSize() == QPrinter::A4) { // document format
+        //draw cutting lines
+        painter->drawLine(QPointF(0, 2400), QPointF(3800, 2400));
+        painter->drawLine(QPointF(3800, 2400), QPointF(3800, 0));
+    }
+
+    painter->end();
+    delete painter;
+}
+
 int PrintServiceImpl::printBillItems(QPrinter *printer, QPainter *painter, QList<BillItem::Ptr> items)
 {
     // print table header

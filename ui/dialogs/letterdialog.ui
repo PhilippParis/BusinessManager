@@ -27,8 +27,8 @@
       <widget class="QComboBox" name="cbCustomer">
        <property name="minimumSize">
         <size>
-         <width>200</width>
-         <height>25</height>
+         <width>300</width>
+         <height>40</height>
         </size>
        </property>
       </widget>
@@ -95,7 +95,7 @@
         <string>Align Left</string>
        </property>
        <property name="icon">
-        <iconset resource="../../../BusinessManager/res.qrc">
+        <iconset>
          <normaloff>:/icon/images/Text-align-left.ico</normaloff>:/icon/images/Text-align-left.ico</iconset>
        </property>
        <property name="checkable">
@@ -115,7 +115,7 @@
         <string>Center</string>
        </property>
        <property name="icon">
-        <iconset resource="../../../BusinessManager/res.qrc">
+        <iconset>
          <normaloff>:/icon/images/Text-align-center.ico</normaloff>:/icon/images/Text-align-center.ico</iconset>
        </property>
        <property name="checkable">
@@ -135,7 +135,7 @@
         <string>Align Right</string>
        </property>
        <property name="icon">
-        <iconset resource="../../../BusinessManager/res.qrc">
+        <iconset>
          <normaloff>:/icon/images/Text-align-right.ico</normaloff>:/icon/images/Text-align-right.ico</iconset>
        </property>
        <property name="checkable">
@@ -162,7 +162,7 @@
         <string>Bold</string>
        </property>
        <property name="icon">
-        <iconset resource="../../../BusinessManager/res.qrc">
+        <iconset>
          <normaloff>:/icon/images/Text-bold.ico</normaloff>:/icon/images/Text-bold.ico</iconset>
        </property>
        <property name="checkable">
@@ -182,7 +182,7 @@
         <string>Italic</string>
        </property>
        <property name="icon">
-        <iconset resource="../../../BusinessManager/res.qrc">
+        <iconset>
          <normaloff>:/icon/images/Text-itailc.ico</normaloff>:/icon/images/Text-itailc.ico</iconset>
        </property>
        <property name="checkable">
@@ -241,7 +241,7 @@
         <string>Save</string>
        </property>
        <property name="icon">
-        <iconset resource="../../../BusinessManager/res.qrc">
+        <iconset>
          <normaloff>:/icon/images/save-icon.png</normaloff>:/icon/images/save-icon.png</iconset>
        </property>
       </widget>
@@ -271,7 +271,7 @@
         <string>Preview / Print</string>
        </property>
        <property name="icon">
-        <iconset resource="../../../BusinessManager/res.qrc">
+        <iconset>
          <normaloff>:/icon/images/print.png</normaloff>:/icon/images/print.png</iconset>
        </property>
       </widget>
@@ -284,15 +284,13 @@
       <enum>Qt::Horizontal</enum>
      </property>
      <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+      <set>QDialogButtonBox::Ok</set>
      </property>
     </widget>
    </item>
   </layout>
  </widget>
- <resources>
-  <include location="../../../BusinessManager/res.qrc"/>
- </resources>
+ <resources/>
  <connections>
   <connection>
    <sender>buttonBox</sender>

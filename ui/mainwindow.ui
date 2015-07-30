@@ -111,6 +111,7 @@
    <addaction name="actionNewBill"/>
    <addaction name="actionNewOffer"/>
    <addaction name="actionNewLetter"/>
+   <addaction name="actionPrintEnvelope"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionNewBill">
@@ -152,6 +153,11 @@
   <action name="actionNewLetter">
    <property name="text">
     <string>New Letter</string>
+   </property>
+  </action>
+  <action name="actionPrintEnvelope">
+   <property name="text">
+    <string>Print Envelope</string>
    </property>
   </action>
  </widget>
