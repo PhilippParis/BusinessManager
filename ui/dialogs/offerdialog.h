@@ -1,6 +1,8 @@
 #ifndef OFFERDIALOG_H
 #define OFFERDIALOG_H
 
+#include <QFileDialog>
+
 #include "domain/offer.h"
 #include "ui/dialogs/abstractbilldialog.h"
 
@@ -13,9 +15,12 @@ public:
 
 signals:
     void print(Offer::Ptr);
+    void save(Offer::Ptr, QString);
 
 private slots:
+    void reject() override;
     void on_btnPreview_clicked();
+    void on_btnSave_clicked();
 
 private:
     Offer::Ptr toDomainObject();

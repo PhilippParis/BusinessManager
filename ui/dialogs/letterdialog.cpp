@@ -100,12 +100,15 @@ void LetterDialog::on_btnItalic_clicked(bool checked)
 
 void LetterDialog::on_btnSave_clicked()
 {
-    QString fileName = QFileDialog::getSaveFileName(this, tr("Save"), "","*.pdf");
-    if(fileName.isEmpty()) {
-        return;
-    }
+    QFileDialog dialog(this,  tr("Save"));
+    dialog.setAcceptMode(QFileDialog::AcceptSave);
+    dialog.setDefaultSuffix("pdf");
+    dialog.setFileMode(QFileDialog::AnyFile);
+    dialog.setNameFilter("PDF Files (*.pdf)");
 
-    emit save(toDomainObject(), fileName);
+    if (dialog.exec()) {
+        emit save(toDomainObject(), dialog.selectedFiles().first());
+    }
 }
 
 void LetterDialog::on_btnPrintPreview_clicked()

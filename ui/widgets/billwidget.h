@@ -5,6 +5,7 @@
 #include <QSortFilterProxyModel>
 #include <QCheckBox>
 #include <QMessageBox>
+#include <QFileDialog>
 
 #include "service/billservice.h"
 #include "service/customerservice.h"
@@ -37,6 +38,8 @@ public:
 
 signals:
     void print(Bill::Ptr bill);
+    void save(Bill::Ptr bill, QString path);
+    void sendMail(Customer::Ptr);
 
 public slots:
     void update();

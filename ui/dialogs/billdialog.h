@@ -34,6 +34,7 @@ signals:
     void print(Bill::Ptr);
 
 private slots:
+    void reject() override;
     void accept() override;
     void on_btnPreview_clicked();
     void on_btnAddDiscount_clicked();

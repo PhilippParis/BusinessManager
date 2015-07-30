@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QPrintPreviewDialog>
+#include <QDesktopServices>
 
 #include "persistence/databasesingleton.h"
 
@@ -49,7 +50,11 @@ public slots:
     void printLetter(Letter::Ptr letter);
     void printEnvelope(Envelope::Ptr envelope);
 
+    void saveBill(Bill::Ptr bill, QString path);
+    void saveOffer(Offer::Ptr offer, QString path);
     void saveLetter(Letter::Ptr letter, QString path);
+
+    void openMailClient(Customer::Ptr customer);
 
 signals:
     void dataChanged();

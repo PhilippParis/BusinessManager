@@ -8,6 +8,8 @@ BillDialog::BillDialog(QWidget *parent, BillService::Ptr billService, CustomerSe
     connect(ui->dateEdit, SIGNAL(dateChanged(QDate)), SLOT(on_dateEdit_dateChanged(QDate)));
     connect(ui->btnAddDiscount, SIGNAL(clicked(bool)), SLOT(on_btnAddDiscount_clicked()));
     connect(ui->btnPreview, SIGNAL(clicked(bool)), SLOT(on_btnPreview_clicked()));
+
+    ui->btnSave->setHidden(true);
 }
 
 void BillDialog::setDiscountValidator(Validator<Discount::Ptr>::Ptr validator)
@@ -74,6 +76,14 @@ Bill::Ptr BillDialog::toDomainObject()
         bill->setDiscounts(QList<Discount::Ptr>() << m_discount);
     }
     return bill;
+}
+
+void BillDialog::reject()
+{
+    if (QMessageBox::warning(this, "Cancel Bill?", "Do you really want to cancel?",
+                             QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes) {
+        QDialog::reject();
+    }
 }
 
 void BillDialog::on_btnPreview_clicked()

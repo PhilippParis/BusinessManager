@@ -246,7 +246,7 @@
         </font>
        </property>
        <property name="text">
-        <string>Send Per Mail</string>
+        <string>Send Mail</string>
        </property>
        <property name="icon">
         <iconset resource="../../resources.qrc">

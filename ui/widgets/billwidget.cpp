@@ -55,7 +55,7 @@ void BillWidget::selectionChanged(QModelIndex newIndex, QModelIndex prevIndex)
     ui->btnEdit->setEnabled(newIndex.isValid());
     ui->btnExport->setEnabled(newIndex.isValid());
     ui->btnPrint->setEnabled(newIndex.isValid());
-    ui->btnSendPerMail->setEnabled(newIndex.isValid());
+    ui->btnSendPerMail->setEnabled(newIndex.isValid() && !selectedBill()->customer()->mail().isEmpty());
 }
 
 void BillWidget::updateFilter()
@@ -153,12 +153,20 @@ void BillWidget::on_btnPrint_clicked()
 
 void BillWidget::on_btnExport_clicked()
 {
+    QFileDialog dialog(this,  tr("Save"));
+    dialog.setAcceptMode(QFileDialog::AcceptSave);
+    dialog.setDefaultSuffix("pdf");
+    dialog.setFileMode(QFileDialog::AnyFile);
+    dialog.setNameFilter("PDF Files (*.pdf)");
 
+    if (dialog.exec()) {
+        emit save(selectedBill(), dialog.selectedFiles().first());
+    }
 }
 
 void BillWidget::on_btnSendPerMail_clicked()
 {
-
+    emit sendMail(selectedBill()->customer());
 }
 
 void BillWidget::on_btnDelete_clicked()

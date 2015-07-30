@@ -98,6 +98,28 @@ void MainWindow::printEnvelope(Envelope::Ptr envelope)
     delete dialog;
 }
 
+void MainWindow::saveBill(Bill::Ptr bill, QString path)
+{
+    QPrinter *printer = new QPrinter(QPrinter::HighResolution);
+    printer->setPageSize(QPrinter::A4);
+    printer->setPageMargins(0.14, 0.14, 0.14, 0.14, QPrinter::Inch);
+    printer->setOutputFileName(path);
+    printer->setOutputFormat(QPrinter::PdfFormat);
+
+    m_printService->printBill(printer, bill);
+}
+
+void MainWindow::saveOffer(Offer::Ptr offer, QString path)
+{
+    QPrinter *printer = new QPrinter(QPrinter::HighResolution);
+    printer->setPageSize(QPrinter::A4);
+    printer->setPageMargins(0.14, 0.14, 0.14, 0.14, QPrinter::Inch);
+    printer->setOutputFileName(path);
+    printer->setOutputFormat(QPrinter::PdfFormat);
+
+    m_printService->printOffer(printer, offer);
+}
+
 void MainWindow::saveLetter(Letter::Ptr letter, QString path)
 {
     QPrinter *printer = new QPrinter(QPrinter::HighResolution);
@@ -107,6 +129,12 @@ void MainWindow::saveLetter(Letter::Ptr letter, QString path)
     printer->setOutputFormat(QPrinter::PdfFormat);
 
     m_printService->printLetter(printer, letter);
+}
+
+void MainWindow::openMailClient(Customer::Ptr customer)
+{
+    QUrl url("mailto:" + customer->mail());
+    QDesktopServices::openUrl(url);
 }
 
 void MainWindow::printBill(Bill::Ptr bill)
@@ -142,6 +170,9 @@ void MainWindow::initWidgets()
     ui->templatesWidget->setTemplateService(m_templateService);
 
     connect(ui->widgetBills, SIGNAL(print(Bill::Ptr)), this, SLOT(printBill(Bill::Ptr)));
+    connect(ui->widgetBills, SIGNAL(save(Bill::Ptr, QString)), this, SLOT(saveBill(Bill::Ptr, QString)));
+    connect(ui->widgetBills, SIGNAL(sendMail(Customer::Ptr)), this, SLOT(openMailClient(Customer::Ptr)));
+    connect(ui->widgetCustomers, SIGNAL(sendMail(Customer::Ptr)), this, SLOT(openMailClient(Customer::Ptr)));
 
     connect(this, SIGNAL(dataChanged()), ui->widgetBills, SLOT(update()));
     connect(this, SIGNAL(dataChanged()), ui->widgetCustomers, SLOT(update()));
@@ -185,6 +216,7 @@ void MainWindow::on_actionNewOffer_triggered()
 {
     OfferDialog *dialog = new OfferDialog(this, m_billService, m_customerService, m_productService, m_templateService);
     connect(dialog, SIGNAL(print(Offer::Ptr)), SLOT(printOffer(Offer::Ptr)));
+    connect(dialog, SIGNAL(save(Offer::Ptr, QString)), SLOT(saveOffer(Offer::Ptr, QString)));
     dialog->exec();
 
     delete dialog;

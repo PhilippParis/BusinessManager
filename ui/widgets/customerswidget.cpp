@@ -56,7 +56,7 @@ void CustomersWidget::update()
 void CustomersWidget::selectionChanged(QModelIndex newIndex, QModelIndex prevIndex)
 {
     ui->btnEditCustomer->setEnabled(newIndex.isValid());
-    ui->btnSendMail->setEnabled(newIndex.isValid());
+    ui->btnSendMail->setEnabled(newIndex.isValid() && !selectedCustomer()->mail().isEmpty());
     ui->btnDeleteCustomer->setEnabled(newIndex.isValid());
 }
 
@@ -85,7 +85,7 @@ void CustomersWidget::on_btnEditCustomer_clicked()
 
 void CustomersWidget::on_btnSendMail_clicked()
 {
-
+    emit sendMail(selectedCustomer());
 }
 
 void CustomersWidget::on_btnDeleteCustomer_clicked()

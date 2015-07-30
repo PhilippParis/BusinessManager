@@ -28,6 +28,9 @@ public:
     void setValidator(Validator<Customer::Ptr>::Ptr validator);
     void setService(CustomerService::Ptr service);
 
+signals:
+    void sendMail(Customer::Ptr);
+
 private slots:
     void update();
     void selectionChanged(QModelIndex,QModelIndex);
