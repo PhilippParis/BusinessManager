@@ -33,6 +33,7 @@ void PrintServiceImpl::printBill(QPrinter *printer, Bill::Ptr bill)
     // footer
     printFooter(printer, painter, currentYPos);
     painter->end();
+    delete painter;
 }
 
 void PrintServiceImpl::printOffer(QPrinter *printer, Offer::Ptr offer)
@@ -57,6 +58,26 @@ void PrintServiceImpl::printOffer(QPrinter *printer, Offer::Ptr offer)
     // footer
     printFooter(printer, painter, currentYPos);
     painter->end();
+    delete painter;
+}
+
+void PrintServiceImpl::printLetter(QPrinter *printer, Letter::Ptr letter)
+{
+    QTextDocument *document = letter->textDoc();
+    document->setDocumentMargin(500);
+    QPainter* painter = getPainter(printer);
+
+    document->documentLayout()->setPaintDevice(printer);
+    document->setPageSize(QSizeF(printer->width(), printer->height()));
+
+    printBar(painter);
+    printHeader(painter, letter->customer(), QDate::currentDate());
+
+    painter->translate(0, 2100);
+    document->drawContents(painter);
+
+    painter->end();
+    delete painter;
 }
 
 int PrintServiceImpl::printBillItems(QPrinter *printer, QPainter *painter, QList<BillItem::Ptr> items)

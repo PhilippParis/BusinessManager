@@ -35,6 +35,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_printService = std::make_shared<PrintServiceImpl>();
 
     connect(ui->actionNewBill, SIGNAL(triggered(bool)), ui->widgetBills, SLOT(actionNewBill()));
+    connect(ui->actionQuit, SIGNAL(triggered(bool)), SLOT(close()));
 
     initWidgets();
     loadSettings();
@@ -59,6 +60,33 @@ void MainWindow::printOffer(Offer::Ptr offer)
 
     dialog->exec();
     delete dialog;
+}
+
+void MainWindow::printLetter(Letter::Ptr letter)
+{
+    QPrinter *printer = new QPrinter(QPrinter::HighResolution);
+    printer->setPageSize(QPrinter::A4);
+    printer->setPageMargins(0.14, 0.14, 0.14, 0.14, QPrinter::Inch);
+
+    QPrintPreviewDialog *dialog = new QPrintPreviewDialog(printer, this);
+
+    connect(dialog, &QPrintPreviewDialog::paintRequested, [=](QPrinter *printer) {
+        m_printService->printLetter(printer, letter);
+    });
+
+    dialog->exec();
+    delete dialog;
+}
+
+void MainWindow::saveLetter(Letter::Ptr letter, QString path)
+{
+    QPrinter *printer = new QPrinter(QPrinter::HighResolution);
+    printer->setPageSize(QPrinter::A4);
+    printer->setPageMargins(0.14, 0.14, 0.14, 0.14, QPrinter::Inch);
+    printer->setOutputFileName(path);
+    printer->setOutputFormat(QPrinter::PdfFormat);
+
+    m_printService->printLetter(printer, letter);
 }
 
 void MainWindow::printBill(Bill::Ptr bill)
@@ -112,9 +140,7 @@ void MainWindow::loadSettings()
 void MainWindow::on_actionSettings_triggered()
 {
     SettingsDialog *dialog = new SettingsDialog(this);
-    if (dialog->exec() == QDialog::Accepted) {
-
-    }
+    dialog->exec();
 
     delete dialog;
 }
@@ -139,6 +165,16 @@ void MainWindow::on_actionNewOffer_triggered()
 {
     OfferDialog *dialog = new OfferDialog(this, m_billService, m_customerService, m_productService, m_templateService);
     connect(dialog, SIGNAL(print(Offer::Ptr)), SLOT(printOffer(Offer::Ptr)));
+    dialog->exec();
+
+    delete dialog;
+}
+
+void MainWindow::on_actionNewLetter_triggered()
+{
+    LetterDialog *dialog = new LetterDialog(this, m_customerService);
+    connect(dialog, SIGNAL(print(Letter::Ptr)), SLOT(printLetter(Letter::Ptr)));
+    connect(dialog, SIGNAL(save(Letter::Ptr, QString)), SLOT(saveLetter(Letter::Ptr, QString)));
     dialog->exec();
 
     delete dialog;

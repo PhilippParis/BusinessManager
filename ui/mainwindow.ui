@@ -16,13 +16,13 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout_13">
     <item>
-     <widget class="QTabWidget" name="tab_3">
+     <widget class="QTabWidget" name="tab_widget">
       <property name="currentIndex">
        <number>0</number>
       </property>
       <widget class="QWidget" name="tab_1">
        <attribute name="title">
-        <string>Tab 1</string>
+        <string>Bills</string>
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_7">
         <item>
@@ -32,7 +32,7 @@
       </widget>
       <widget class="QWidget" name="tab_7">
        <attribute name="title">
-        <string>Tab 2</string>
+        <string>Customers</string>
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_10">
         <item>
@@ -42,7 +42,7 @@
       </widget>
       <widget class="QWidget" name="tab_8">
        <attribute name="title">
-        <string>Page</string>
+        <string>Materials</string>
        </attribute>
        <layout class="QHBoxLayout" name="horizontalLayout_13">
         <item>
@@ -52,7 +52,7 @@
       </widget>
       <widget class="QWidget" name="tab_9">
        <attribute name="title">
-        <string>Page</string>
+        <string>Templates</string>
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_12">
         <item>
@@ -62,7 +62,7 @@
       </widget>
       <widget class="QWidget" name="tab_10">
        <attribute name="title">
-        <string>Page</string>
+        <string>Statistics</string>
        </attribute>
       </widget>
      </widget>
@@ -82,6 +82,7 @@
     <property name="title">
      <string>Fi&amp;le</string>
     </property>
+    <addaction name="actionQuit"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="title">
@@ -109,6 +110,7 @@
    </attribute>
    <addaction name="actionNewBill"/>
    <addaction name="actionNewOffer"/>
+   <addaction name="actionNewLetter"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionNewBill">
@@ -140,6 +142,16 @@
   <action name="actionNewOffer">
    <property name="text">
     <string>New Offer</string>
+   </property>
+  </action>
+  <action name="actionQuit">
+   <property name="text">
+    <string>Quit</string>
+   </property>
+  </action>
+  <action name="actionNewLetter">
+   <property name="text">
+    <string>New Letter</string>
    </property>
   </action>
  </widget>

@@ -6,6 +6,7 @@
 
 #include "domain/bill.h"
 #include "domain/offer.h"
+#include "domain/letter.h"
 
 class PrintService
 {
@@ -15,6 +16,7 @@ public:
 
     virtual void printBill(QPrinter *printer, Bill::Ptr bill) = 0;
     virtual void printOffer(QPrinter *printer, Offer::Ptr offer) = 0;
+    virtual void printLetter(QPrinter *printer, Letter::Ptr letter) = 0;
 };
 
 #endif // PRINTSERVICE_H

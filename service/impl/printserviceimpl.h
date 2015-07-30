@@ -5,6 +5,8 @@
 #include <QSettings>
 #include <QPainter>
 #include <QDate>
+#include <QTextDocument>
+#include <QAbstractTextDocumentLayout>
 
 #include "domain/bill.h"
 #include "domain/customer.h"
@@ -27,6 +29,7 @@ public:
     PrintServiceImpl();
     void printBill(QPrinter *printer, Bill::Ptr bill) override;
     void printOffer(QPrinter *printer, Offer::Ptr offer) override;
+    void printLetter(QPrinter *printer, Letter::Ptr letter) override;
 
 private:
     void printSubject(QPainter *painter, QString subject, QStringList text);
