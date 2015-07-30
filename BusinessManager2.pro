@@ -10,6 +10,7 @@ QT       += testlib
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
+CONFIG += qwt
 QMAKE_CXXFLAGS += -std=c++0x
 
 TARGET = BusinessManager2
@@ -98,7 +99,8 @@ SOURCES += main.cpp\
     ui/dialogs/offerdialog.cpp \
     ui/dialogs/letterdialog.cpp \
     ui/dialogs/envelopedialog.cpp \
-    domain/envelope.cpp
+    domain/envelope.cpp \
+    ui/widgets/statisticswidget.cpp
 
 HEADERS  += ui/mainwindow.h \
     domain/bill.h \
@@ -182,7 +184,8 @@ HEADERS  += ui/mainwindow.h \
     ui/dialogs/offerdialog.h \
     ui/dialogs/letterdialog.h \
     ui/dialogs/envelopedialog.h \
-    domain/envelope.h
+    domain/envelope.h \
+    ui/widgets/statisticswidget.h
 
 FORMS    += ui/mainwindow.ui \
     ui/widgets/customerswidget.ui \
@@ -200,4 +203,5 @@ FORMS    += ui/mainwindow.ui \
     ui/widgets/documentssettingswidget.ui \
     ui/widgets/financialsettingswidget.ui \
     ui/dialogs/letterdialog.ui \
-    ui/dialogs/envelopedialog.ui
+    ui/dialogs/envelopedialog.ui \
+    ui/widgets/statisticswidget.ui
