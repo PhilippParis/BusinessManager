@@ -2,7 +2,7 @@
 
 TemplateValidator::TemplateValidator()
 {
-    m_productValidator = std::make_shared<ProductValidator>();
+    m_materialValidator = std::make_shared<MaterialValidator>();
 }
 
 void TemplateValidator::validateForCreate(Template::Ptr item)
@@ -53,11 +53,11 @@ void TemplateValidator::validateMandatoryFields(Template::Ptr item)
         throw new ValidationException(tr("working hours must not be negative"));
     }
 
-    QMap<Product::Ptr, double> material = item->material();
-    QMap<Product::Ptr, double>::iterator it;
+    QMap<Material::Ptr, double> material = item->material();
+    QMap<Material::Ptr, double>::iterator it;
 
     for (it = material.begin(); it != material.end(); ++it) {
-        m_productValidator->validateIdentity(it.key());
+        m_materialValidator->validateIdentity(it.key());
 
         if (it.value() < 0) {
             throw new ValidationException(tr("material quantity must not be negative"));

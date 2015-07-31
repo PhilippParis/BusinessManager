@@ -1,16 +1,16 @@
 #include "abstractbillitemwizard.h"
 #include "ui_abstractbillitemwizard.h"
 
-AbstractBillItemWizard::AbstractBillItemWizard(QWidget *parent, ProductService::Ptr productService, TemplateService::Ptr templateService)
+AbstractBillItemWizard::AbstractBillItemWizard(QWidget *parent, MaterialService::Ptr materialService, TemplateService::Ptr templateService)
     : QWizard(parent),
       ui(new Ui::AbstractBillItemWizard),
-      m_productService(productService),
+      m_materialService(materialService),
       m_templateService(templateService)
 {
     ui->setupUi(this);
-    m_productModel = new ProductTableModel();
+    m_materialModel = new MaterialTableModel();
     SpinBoxDelegate* delegate = new SpinBoxDelegate(ui->tblMaterial);
-    ui->tblMaterial->setModel(m_productModel);
+    ui->tblMaterial->setModel(m_materialModel);
     ui->tblMaterial->setItemDelegateForColumn(4, delegate);
 
     m_templateModel = new TemplateTableModel();
@@ -24,7 +24,7 @@ AbstractBillItemWizard::AbstractBillItemWizard(QWidget *parent, ProductService::
 AbstractBillItemWizard::~AbstractBillItemWizard()
 {
     delete ui;
-    delete m_productModel;
+    delete m_materialModel;
 }
 
 void AbstractBillItemWizard::prepareForCreate()
@@ -73,15 +73,15 @@ void AbstractBillItemWizard::accept()
 
 void AbstractBillItemWizard::on_btnAddMaterial_clicked()
 {
-    ProductSelectionDialog *dialog = new ProductSelectionDialog(this, m_productService);
+    MaterialSelectionDialog *dialog = new MaterialSelectionDialog(this, m_materialService);
     if(dialog->exec() == QDialog::Accepted) {
-        m_productModel->add(dialog->selectedProduct(), dialog->quantity());
+        m_materialModel->add(dialog->selectedMaterial(), dialog->quantity());
     }
 }
 
 void AbstractBillItemWizard::on_btnDeleteMaterial_clicked()
 {
-    m_productModel->remove(m_productModel->get(ui->tblMaterial->currentIndex()));
+    m_materialModel->remove(m_materialModel->get(ui->tblMaterial->currentIndex()));
 }
 
 void AbstractBillItemWizard::on_AbstractBillItemWizard_currentIdChanged(int id)
@@ -93,10 +93,10 @@ void AbstractBillItemWizard::on_AbstractBillItemWizard_currentIdChanged(int id)
 
 double AbstractBillItemWizard::materialCosts()
 {
-    QMap<Product::Ptr, double> items = m_productModel->itemsWithQuantity();
+    QMap<Material::Ptr, double> items = m_materialModel->itemsWithQuantity();
     double materialCosts = 0.0;
 
-    QMap<Product::Ptr, double>::iterator it;
+    QMap<Material::Ptr, double>::iterator it;
     for(it = items.begin(); it != items.end(); ++it) {
         materialCosts += it.key()->costPerUnit() * it.value();
     }
@@ -124,8 +124,8 @@ Template::Ptr AbstractBillItemWizard::selectedTemplate()
 
 void AbstractBillItemWizard::displayTemplateData(Template::Ptr item)
 {
-    m_productModel->clear();
-    m_productModel->addAllWithQuantity(item->material());
+    m_materialModel->clear();
+    m_materialModel->addAllWithQuantity(item->material());
 
     ui->sbWorkingHours->setValue(item->workingHours());
     ui->sbPricePerUnit->setValue(item->price());
@@ -147,7 +147,7 @@ Template::Ptr AbstractBillItemWizard::toTemplate()
     templ->setUnit(ui->leUnit->text());
     templ->setPrice(ui->sbPricePerUnit->value());
     templ->setWorkingHours(ui->sbWorkingHours->value());
-    templ->setMaterial(m_productModel->itemsWithQuantity());
+    templ->setMaterial(m_materialModel->itemsWithQuantity());
     templ->setDesc(ui->leDesc->text());
     templ->setType(ui->leType->text());
 

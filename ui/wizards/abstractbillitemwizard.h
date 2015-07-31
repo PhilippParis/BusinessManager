@@ -6,14 +6,14 @@
 #include <QMessageBox>
 #include <QDebug>
 
-#include "service/productservice.h"
+#include "service/materialservice.h"
 #include "service/templateservice.h"
 
-#include "ui/models/producttablemodel.h"
+#include "ui/models/materialtablemodel.h"
 #include "ui/models/templatesortfilterproxymodel.h"
 #include "ui/models/templatetablemodel.h"
 #include "ui/delegates/spinboxdelegate.h"
-#include "ui/dialogs/productselectiondialog.h"
+#include "ui/dialogs/materialselectiondialog.h"
 
 namespace Ui {
 class AbstractBillItemWizard;
@@ -23,7 +23,7 @@ class AbstractBillItemWizard : public QWizard
 {
     Q_OBJECT
 public:
-    AbstractBillItemWizard(QWidget *parent, ProductService::Ptr productService, TemplateService::Ptr templateService);
+    AbstractBillItemWizard(QWidget *parent, MaterialService::Ptr materialService, TemplateService::Ptr templateService);
     ~AbstractBillItemWizard();
 
     virtual void prepareForCreate();
@@ -61,13 +61,13 @@ protected:
     int m_id = -1;
     double m_wagePerHour = 0.0;
 
-    ProductService::Ptr m_productService;
+    MaterialService::Ptr m_materialService;
     TemplateService::Ptr m_templateService;
     OpenMode m_openMode;
 
     TemplateTableModel *m_templateModel;
     TemplateSortFilterProxyModel *m_templateSortFilterProxyModel;
-    ProductTableModel *m_productModel;
+    MaterialTableModel *m_materialModel;
 
 };
 

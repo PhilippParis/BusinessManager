@@ -99,7 +99,7 @@ void DatabaseSingleton::createTables(QSqlDatabase db)
        qDebug() << query.lastError();
    }
 
-   res = query.exec("CREATE TABLE IF NOT EXISTS PRODUCT ( "
+   res = query.exec("CREATE TABLE IF NOT EXISTS MATERIAL ( "
                     "ID INTEGER PRIMARY KEY NOT NULL, "
                     "NAME VARCHAR(200) NOT NULL, "
                     "MANUFACTOR VARCHAR(200) NOT NULL, "
@@ -114,11 +114,11 @@ void DatabaseSingleton::createTables(QSqlDatabase db)
        qDebug() << query.lastError();
    }
 
-   res = query.exec("CREATE TABLE IF NOT EXISTS PRODUCT_ITEM_ASSOC ( "
-                    "PRODUCT_ID INTEGER NOT NULL REFERENCES PRODUCT(ID), "
+   res = query.exec("CREATE TABLE IF NOT EXISTS MATERIAL_ITEM_ASSOC ( "
+                    "MATERIAL_ID INTEGER NOT NULL REFERENCES MATERIAL(ID), "
                     "ITEM_ID INTEGER NOT NULL REFERENCES BILL_ITEM(ID), "
                     "QUANTITY INTEGER NOT NULL, "
-                    "PRIMARY KEY(PRODUCT_ID, ITEM_ID));");
+                    "PRIMARY KEY(MATERIAL_ID, ITEM_ID));");
 
    if(!res) {
        qDebug() << query.lastError();
@@ -140,11 +140,11 @@ void DatabaseSingleton::createTables(QSqlDatabase db)
        qDebug() << query.lastError();
    }
 
-   res = query.exec("CREATE TABLE IF NOT EXISTS PRODUCT_TEMPLATE_ASSOC ( "
-                    "PRODUCT_ID INTEGER NOT NULL REFERENCES PRODUCT(ID), "
+   res = query.exec("CREATE TABLE IF NOT EXISTS MATERIAL_TEMPLATE_ASSOC ( "
+                    "MATERIAL_ID INTEGER NOT NULL REFERENCES MATERIAL(ID), "
                     "TEMPLATE_ID INTEGER NOT NULL REFERENCES TEMPLATE(ID), "
                     "QUANTITY INTEGER NOT NULL, "
-                    "PRIMARY KEY(PRODUCT_ID, TEMPLATE_ID));");
+                    "PRIMARY KEY(MATERIAL_ID, TEMPLATE_ID));");
 
    if(!res) {
        qDebug() << query.lastError();

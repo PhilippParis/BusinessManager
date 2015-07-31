@@ -1,15 +1,15 @@
-#ifndef PRODUCTDAOTEST_H
-#define PRODUCTDAOTEST_H
+#ifndef MATERIALDAOTEST_H
+#define MATERIALDAOTEST_H
 
 #include <QObject>
 #include <QString>
 #include <QtTest/QtTest>
 
-#include "persistence/impl/dbproductdao.h"
+#include "persistence/impl/dbmaterialdao.h"
 #include "persistence/databasesingleton.h"
-#include "persistence/validation/impl/productvalidator.h"
+#include "persistence/validation/impl/materialvalidator.h"
 
-class ProductDAOTest : public QObject
+class MaterialDAOTest : public QObject
 {
     Q_OBJECT
 private slots:
@@ -28,7 +28,7 @@ private slots:
     void getAllTest();
 
 private:
-    ProductDAO::Ptr m_productDAO;
+    MaterialDAO::Ptr m_materialDAO;
 };
 
-#endif // PRODUCTDAOTEST_H
+#endif // MATERIALDAOTEST_H

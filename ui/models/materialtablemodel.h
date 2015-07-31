@@ -1,36 +1,36 @@
-#ifndef PRODUCTTABLEMODEL_H
-#define PRODUCTTABLEMODEL_H
+#ifndef MATERIALTABLEMODEL_H
+#define MATERIALTABLEMODEL_H
 
 #include "ui/models/domainitemmodel.h"
 
-#include "domain/product.h"
+#include "domain/material.h"
 
-class ProductTableModel : public DomainItemModel<Product::Ptr>
+class MaterialTableModel : public DomainItemModel<Material::Ptr>
 {
     Q_OBJECT
 public:
-    ProductTableModel();
+    MaterialTableModel();
     int columnCount(const QModelIndex &parent) const override;
     bool setData(const QModelIndex &index, const QVariant &value, int role) override;
     QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const override;
     QVariant headerData(int section, Qt::Orientation orientation, int role) const override;
     Qt::ItemFlags flags(const QModelIndex &) const override;
 
-    void addAllWithQuantity(QMap<Product::Ptr, double> products);
-    void add(Product::Ptr product, double quantity);
+    void addAllWithQuantity(QMap<Material::Ptr, double> materials);
+    void add(Material::Ptr material, double quantity);
 
-    void remove(Product::Ptr item) override;
-    void replace(Product::Ptr old, Product::Ptr updated) override;
+    void remove(Material::Ptr item) override;
+    void replace(Material::Ptr old, Material::Ptr updated) override;
     void clear() override;
 
-    QMap<Product::Ptr, double> itemsWithQuantity() const;
+    QMap<Material::Ptr, double> itemsWithQuantity() const;
 
 private:
     enum Column {
         Name = 0, Nr, Manufactor, Type, Quantity
     };
 
-    QMap<Product::Ptr, double> m_quantities;
+    QMap<Material::Ptr, double> m_quantities;
 };
 
-#endif // PRODUCTTABLEMODEL_H
+#endif // MATERIALTABLEMODEL_H

@@ -2,8 +2,8 @@
 #include "ui_billdialog.h"
 
 BillDialog::BillDialog(QWidget *parent, BillService::Ptr billService, CustomerService::Ptr customerService,
-                       ProductService::Ptr productService, TemplateService::Ptr templateService) :
-    AbstractBillDialog(parent, billService, customerService, productService, templateService)
+                       MaterialService::Ptr materialService, TemplateService::Ptr templateService) :
+    AbstractBillDialog(parent, billService, customerService, materialService, templateService)
 {
     connect(ui->dateEdit, SIGNAL(dateChanged(QDate)), SLOT(on_dateEdit_dateChanged(QDate)));
     connect(ui->btnAddDiscount, SIGNAL(clicked(bool)), SLOT(on_btnAddDiscount_clicked()));

@@ -23,7 +23,7 @@ class BillDialog : public AbstractBillDialog
     Q_OBJECT
 public:
     explicit BillDialog(QWidget *parent, BillService::Ptr billService, CustomerService::Ptr customerService,
-                        ProductService::Ptr productService, TemplateService::Ptr templateService);
+                        MaterialService::Ptr materialService, TemplateService::Ptr templateService);
 
     void setDiscountValidator(Validator<Discount::Ptr>::Ptr validator);
     void prepareForCreate();

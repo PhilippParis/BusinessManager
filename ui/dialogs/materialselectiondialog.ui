@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>ProductSelectionDialog</class>
- <widget class="QDialog" name="ProductSelectionDialog">
+ <class>MaterialSelectionDialog</class>
+ <widget class="QDialog" name="MaterialSelectionDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Select Product</string>
+   <string>Select Material</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -22,7 +22,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QTableView" name="tblProducts">
+    <widget class="QTableView" name="tblMaterials">
      <property name="selectionMode">
       <enum>QAbstractItemView::SingleSelection</enum>
      </property>
@@ -104,7 +104,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>ProductSelectionDialog</receiver>
+   <receiver>MaterialSelectionDialog</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -120,7 +120,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>ProductSelectionDialog</receiver>
+   <receiver>MaterialSelectionDialog</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">

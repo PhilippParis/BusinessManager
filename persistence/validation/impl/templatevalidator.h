@@ -5,7 +5,7 @@
 
 #include "domain/template.h"
 #include "persistence/validation/validator.h"
-#include "persistence/validation/impl/productvalidator.h"
+#include "persistence/validation/impl/materialvalidator.h"
 
 class TemplateValidator : public Validator<Template::Ptr>
 {
@@ -21,7 +21,7 @@ private:
     void validateMandatoryFields(Template::Ptr item);
 
 private:
-    Validator<Product::Ptr>::Ptr m_productValidator;
+    Validator<Material::Ptr>::Ptr m_materialValidator;
 };
 
 #endif // TEMPLATEVALIDATOR_H

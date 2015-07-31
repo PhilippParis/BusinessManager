@@ -6,8 +6,8 @@ void BillDAOTest::initTestCase()
 
     DiscountDAO::Ptr discountDAO = std::make_shared<DBDiscountDAO>(testDB, std::make_shared<DiscountValidator>());
 
-    m_productDAO = std::make_shared<DBProductDAO>(testDB, std::make_shared<ProductValidator>());
-    m_billItemDAO = std::make_shared<DBBillItemDAO>(testDB, std::make_shared<BillItemValidator>(), m_productDAO);
+    m_materialDAO = std::make_shared<DBMaterialDAO>(testDB, std::make_shared<MaterialValidator>());
+    m_billItemDAO = std::make_shared<DBBillItemDAO>(testDB, std::make_shared<BillItemValidator>(), m_materialDAO);
     m_customerDAO = std::make_shared<DBCustomerDAO>(testDB, std::make_shared<CustomerValidator>());
     m_billDAO = std::make_shared<DBBillDAO>(testDB, std::make_shared<BillValidator>(), m_customerDAO, m_billItemDAO, discountDAO);
 

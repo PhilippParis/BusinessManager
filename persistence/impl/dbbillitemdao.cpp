@@ -1,9 +1,9 @@
 #include "dbbillitemdao.h"
 
-DBBillItemDAO::DBBillItemDAO(QSqlDatabase db, Validator<BillItem::Ptr>::Ptr validator, ProductDAO::Ptr productDAO)
+DBBillItemDAO::DBBillItemDAO(QSqlDatabase db, Validator<BillItem::Ptr>::Ptr validator, MaterialDAO::Ptr materialDAO)
  : m_database(db),
    m_validator(validator),
-   m_productDAO(productDAO)
+   m_materialDAO(materialDAO)
 {
 }
 
@@ -179,17 +179,17 @@ BillItem::Ptr DBBillItemDAO::parseBillItem(QSqlRecord record)
 
     // get materials
     QSqlQuery query(m_database);
-    query.prepare("SELECT * FROM PRODUCT_ITEM_ASSOC WHERE ITEM_ID = ?");
+    query.prepare("SELECT * FROM MATERIAL_ITEM_ASSOC WHERE ITEM_ID = ?");
     query.addBindValue(item->id());
 
     if (!query.exec()) {
-        qCCritical(lcPersistence) << "retrieving product-item assocs failed" + query.lastError().text();
-        throw new PersistenceException("retrieving product-item assocs failed" + query.lastError().text());
+        qCCritical(lcPersistence) << "retrieving material-item assocs failed" + query.lastError().text();
+        throw new PersistenceException("retrieving material-item assocs failed" + query.lastError().text());
     }
 
-    QMap<Product::Ptr, double> material;
+    QMap<Material::Ptr, double> material;
     while(query.next()) {
-        material.insert(m_productDAO->get(query.value("PRODUCT_ID").toInt()),
+        material.insert(m_materialDAO->get(query.value("MATERIAL_ID").toInt()),
                         query.value("QUANTITY").toDouble());
     }
 
@@ -203,28 +203,28 @@ void DBBillItemDAO::updateAssocTable(BillItem::Ptr item)
 
     QSqlQuery query(m_database);
     // remove all old entries
-    query.prepare("DELETE FROM PRODUCT_ITEM_ASSOC WHERE ITEM_ID = ?");
+    query.prepare("DELETE FROM MATERIAL_ITEM_ASSOC WHERE ITEM_ID = ?");
     query.addBindValue(item->id());
 
     if (!query.exec()) {
-        qCCritical(lcPersistence) << "removing old product-item assocs failed" + query.lastError().text();
-        throw new PersistenceException("removing old product-item assocs failed" + query.lastError().text());
+        qCCritical(lcPersistence) << "removing old material-item assocs failed" + query.lastError().text();
+        throw new PersistenceException("removing old material-item assocs failed" + query.lastError().text());
     }
 
     QSqlQuery insertQuery(m_database);
-    insertQuery.prepare("INSERT INTO PRODUCT_ITEM_ASSOC VALUES (?,?,?);");
+    insertQuery.prepare("INSERT INTO MATERIAL_ITEM_ASSOC VALUES (?,?,?);");
 
-    QMap<Product::Ptr, double> material = item->material();
+    QMap<Material::Ptr, double> material = item->material();
 
-    QMap<Product::Ptr, double>::iterator it;
+    QMap<Material::Ptr, double>::iterator it;
     for (it = material.begin(); it != material.end(); ++it) {
         insertQuery.addBindValue(it.key()->id());
         insertQuery.addBindValue(item->id());
         insertQuery.addBindValue(it.value());
 
         if (!insertQuery.exec()) {
-            qCCritical(lcPersistence) << "adding product-item assoc failed" + insertQuery.lastError().text();
-            throw new PersistenceException("adding product-item assocs failed" + insertQuery.lastError().text());
+            qCCritical(lcPersistence) << "adding material-item assoc failed" + insertQuery.lastError().text();
+            throw new PersistenceException("adding material-item assocs failed" + insertQuery.lastError().text());
         }
     }
 }

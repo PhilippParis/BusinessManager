@@ -7,7 +7,7 @@
 #include "persistence/impl/dbbilldao.h"
 #include "persistence/impl/dbcustomerdao.h"
 #include "persistence/impl/dbbillitemdao.h"
-#include "persistence/impl/dbproductdao.h"
+#include "persistence/impl/dbmaterialdao.h"
 #include "persistence/impl/dbdiscountdao.h"
 
 #include "persistence/databasesingleton.h"
@@ -39,7 +39,7 @@ private:
     BillDAO::Ptr m_billDAO;
     BillItemDAO::Ptr m_billItemDAO;
     CustomerDAO::Ptr m_customerDAO;
-    ProductDAO::Ptr m_productDAO;
+    MaterialDAO::Ptr m_materialDAO;
 
     BillItem::Ptr m_validBillItem;
     Customer::Ptr m_validCustomer;

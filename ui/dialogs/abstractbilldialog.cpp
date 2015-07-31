@@ -2,12 +2,12 @@
 #include "ui_billdialog.h"
 
 AbstractBillDialog::AbstractBillDialog(QWidget *parent, BillService::Ptr billService, CustomerService::Ptr customerService,
-                                       ProductService::Ptr productService, TemplateService::Ptr templateService)
+                                       MaterialService::Ptr materialService, TemplateService::Ptr templateService)
  : QDialog(parent),
    ui(new Ui::BillDialog),
    m_billService(billService),
    m_customerService(customerService),
-   m_productService(productService),
+   m_materialService(materialService),
    m_templateService(templateService)
 {
     ui->setupUi(this);
@@ -69,7 +69,7 @@ void AbstractBillDialog::on_btnEditCustomer_clicked()
 void AbstractBillDialog::on_btnAddArticle_clicked()
 {
     QSettings settings;
-    BillItemWizard *wizard = new BillItemWizard(this, m_billService, m_productService, m_templateService);
+    BillItemWizard *wizard = new BillItemWizard(this, m_billService, m_materialService, m_templateService);
     wizard->setWagePerHour(settings.value("financial/wage").toDouble());
     wizard->prepareForCreate();
 
@@ -90,7 +90,7 @@ void AbstractBillDialog::on_btnEditArticle_clicked()
         return;
     }
 
-    BillItemWizard *wizard = new BillItemWizard(this, m_billService, m_productService, m_templateService);
+    BillItemWizard *wizard = new BillItemWizard(this, m_billService, m_materialService, m_templateService);
     wizard->setWagePerHour(settings.value("financial/wage").toDouble());
     wizard->prepareForUpdate(selected);
 

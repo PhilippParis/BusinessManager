@@ -18,20 +18,20 @@ MainWindow::MainWindow(QWidget *parent) :
     m_customerValidator = std::make_shared<CustomerValidator>();
     m_billValidator = std::make_shared<BillValidator>();
     m_billItemValidator = std::make_shared<BillItemValidator>();
-    m_productValidator = std::make_shared<ProductValidator>();
+    m_materialValidator = std::make_shared<MaterialValidator>();
     m_discountValidator = std::make_shared<DiscountValidator>();
     m_templateValidator = std::make_shared<TemplateValidator>();
 
     DiscountDAO::Ptr discountDAO = std::make_shared<DBDiscountDAO>(db, m_discountValidator);
     CustomerDAO::Ptr customerDAO = std::make_shared<DBCustomerDAO>(db, m_customerValidator);
-    ProductDAO::Ptr productDAO = std::make_shared<DBProductDAO>(db, m_productValidator);
-    BillItemDAO::Ptr billItemDAO = std::make_shared<DBBillItemDAO>(db, m_billItemValidator, productDAO);
+    MaterialDAO::Ptr materialDAO = std::make_shared<DBMaterialDAO>(db, m_materialValidator);
+    BillItemDAO::Ptr billItemDAO = std::make_shared<DBBillItemDAO>(db, m_billItemValidator, materialDAO);
     BillDAO::Ptr billDAO = std::make_shared<DBBillDAO>(db, m_billValidator, customerDAO, billItemDAO, discountDAO);
-    TemplateDAO::Ptr templateDAO = std::make_shared<DBTemplateDAO>(db, m_templateValidator, productDAO);
+    TemplateDAO::Ptr templateDAO = std::make_shared<DBTemplateDAO>(db, m_templateValidator, materialDAO);
 
     m_customerService = std::make_shared<CustomerServiceImpl>(customerDAO, m_customerValidator);
     m_billService = std::make_shared<BillServiceImpl>(billDAO, billItemDAO, discountDAO, m_billValidator, m_billItemValidator);
-    m_productService = std::make_shared<ProductServiceImpl>(productDAO, m_productValidator);
+    m_materialService = std::make_shared<MaterialServiceImpl>(materialDAO, m_materialValidator);
     m_templateService = std::make_shared<TemplateServiceImpl>(templateDAO, m_templateValidator);
     m_printService = std::make_shared<PrintServiceImpl>();
 
@@ -161,12 +161,12 @@ void MainWindow::initWidgets()
     ui->widgetBills->setCustomerService(m_customerService);
     ui->widgetBills->setBillService(m_billService);
     ui->widgetBills->setDiscountValidator(m_discountValidator);
-    ui->widgetBills->setProductService(m_productService);
+    ui->widgetBills->setMaterialService(m_materialService);
     ui->widgetBills->setTemplateService(m_templateService);
 
-    ui->productsWidget->setProductService(m_productService);
+    ui->materialsWidget->setMaterialService(m_materialService);
 
-    ui->templatesWidget->setProductService(m_productService);
+    ui->templatesWidget->setMaterialService(m_materialService);
     ui->templatesWidget->setTemplateService(m_templateService);
 
     connect(ui->widgetBills, SIGNAL(print(Bill::Ptr)), this, SLOT(printBill(Bill::Ptr)));
@@ -214,7 +214,7 @@ void MainWindow::on_actionImprintedPaper_triggered()
 
 void MainWindow::on_actionNewOffer_triggered()
 {
-    OfferDialog *dialog = new OfferDialog(this, m_billService, m_customerService, m_productService, m_templateService);
+    OfferDialog *dialog = new OfferDialog(this, m_billService, m_customerService, m_materialService, m_templateService);
     connect(dialog, SIGNAL(print(Offer::Ptr)), SLOT(printOffer(Offer::Ptr)));
     connect(dialog, SIGNAL(save(Offer::Ptr, QString)), SLOT(saveOffer(Offer::Ptr, QString)));
     dialog->exec();

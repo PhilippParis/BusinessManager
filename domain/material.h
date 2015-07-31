@@ -1,15 +1,15 @@
-#ifndef PRODUCT_H
-#define PRODUCT_H
+#ifndef MATERIAL_H
+#define MATERIAL_H
 
 #include <memory>
 #include <QString>
 #include <QMetaType>
 
-class Product
+class Material
 {
 public:
-    typedef std::shared_ptr<Product> Ptr;
-    Product();
+    typedef std::shared_ptr<Material> Ptr;
+    Material();
 
     int id() const;
     void setId(int id);
@@ -30,7 +30,7 @@ public:
     void setManufactor(const QString &manufactor);
 
     QString toString() const;
-    bool equals(const Product::Ptr product) const;
+    bool equals(const Material::Ptr material) const;
 
     QString articleNumber() const;
     void setArticleNumber(const QString &articleNumber);
@@ -48,6 +48,6 @@ private:
     QString m_manufactor = "";
     QString m_articleNumber = "";
 };
-Q_DECLARE_METATYPE(Product::Ptr)
+Q_DECLARE_METATYPE(Material::Ptr)
 
-#endif // PRODUCT_H
+#endif // MATERIAL_H

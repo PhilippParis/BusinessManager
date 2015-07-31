@@ -8,12 +8,12 @@
 #include <QMap>
 
 #include "persistence/impl/dbtemplatedao.h"
-#include "persistence/impl/dbproductdao.h"
+#include "persistence/impl/dbmaterialdao.h"
 
 #include "persistence/databasesingleton.h"
 
 #include "persistence/validation/impl/templatevalidator.h"
-#include "persistence/validation/impl/productvalidator.h"
+#include "persistence/validation/impl/materialvalidator.h"
 
 class TemplateDAOTest : public QObject
 {
@@ -35,11 +35,11 @@ private slots:
 
 private:
     TemplateDAO::Ptr m_templateDAO;
-    ProductDAO::Ptr m_productDAO;
+    MaterialDAO::Ptr m_materialDAO;
 
-    Product::Ptr m_validProduct;
-    Product::Ptr m_invalidProduct;
-    Product::Ptr m_nullProduct;
+    Material::Ptr m_validMaterial;
+    Material::Ptr m_invalidMaterial;
+    Material::Ptr m_nullMaterial;
 
 };
 #endif // TEMPLATEDAOTEST_H

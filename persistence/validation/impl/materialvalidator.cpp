@@ -1,41 +1,41 @@
-#include "productvalidator.h"
+#include "materialvalidator.h"
 
-ProductValidator::ProductValidator()
+MaterialValidator::MaterialValidator()
 {
 
 }
 
-void ProductValidator::validateForCreate(Product::Ptr item)
+void MaterialValidator::validateForCreate(Material::Ptr item)
 {
     if (item == nullptr) {
-        throw new ValidationException("product must not be null");
+        throw new ValidationException("material must not be null");
     }
 
     validateMandatoryFields(item);
 }
 
-void ProductValidator::validateForUpdate(Product::Ptr item)
+void MaterialValidator::validateForUpdate(Material::Ptr item)
 {
     if (item == nullptr) {
-        throw new ValidationException("product must not be null");
+        throw new ValidationException("material must not be null");
     }
 
     validateMandatoryFields(item);
     validateIdentity(item);
 }
 
-void ProductValidator::validateIdentity(Product::Ptr item)
+void MaterialValidator::validateIdentity(Material::Ptr item)
 {
     if (item == nullptr) {
-        throw new ValidationException("product must not be null");
+        throw new ValidationException("material must not be null");
     }
 
     if (item->id() < 0) {
-        throw new ValidationException("product must have a valid id");
+        throw new ValidationException("material must have a valid id");
     }
 }
 
-void ProductValidator::validateMandatoryFields(Product::Ptr item)
+void MaterialValidator::validateMandatoryFields(Material::Ptr item)
 {
     if (item->name().isEmpty()) {
         throw new ValidationException(tr("name must not be empty"));

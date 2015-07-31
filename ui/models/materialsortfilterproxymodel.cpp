@@ -1,11 +1,11 @@
-#include "productsortfilterproxymodel.h"
+#include "materialsortfilterproxymodel.h"
 
-ProductSortFilterProxyModel::ProductSortFilterProxyModel()
+MaterialSortFilterProxyModel::MaterialSortFilterProxyModel()
 {
 
 }
 
-bool ProductSortFilterProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
+bool MaterialSortFilterProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
 {
     QModelIndex nameIndex = sourceModel()->index(sourceRow, 0, sourceParent);
     QModelIndex nrIndex = sourceModel()->index(sourceRow, 1, sourceParent);

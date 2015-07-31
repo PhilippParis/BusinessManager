@@ -134,12 +134,12 @@ bool BillItem::equals(const BillItem::Ptr item) const
     return true;
 }
 
-QMap<Product::Ptr, double> BillItem::material() const
+QMap<Material::Ptr, double> BillItem::material() const
 {
     return m_material;
 }
 
-void BillItem::setMaterial(const QMap<Product::Ptr, double> &material)
+void BillItem::setMaterial(const QMap<Material::Ptr, double> &material)
 {
     m_material = material;
 }

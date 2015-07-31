@@ -4,12 +4,12 @@
 #include <QtSql>
 
 #include "persistence/templatedao.h"
-#include "persistence/productdao.h"
+#include "persistence/materialdao.h"
 
 class DBTemplateDAO : public TemplateDAO
 {
 public:
-    DBTemplateDAO(QSqlDatabase database, Validator<Template::Ptr>::Ptr validator, ProductDAO::Ptr productDAO);
+    DBTemplateDAO(QSqlDatabase database, Validator<Template::Ptr>::Ptr validator, MaterialDAO::Ptr materialDAO);
 
     void create(Template::Ptr item) override;
     void update(Template::Ptr item) override;
@@ -25,7 +25,7 @@ private:
     QSqlDatabase m_database;
     Validator<Template::Ptr>::Ptr m_validator;
 
-    ProductDAO::Ptr m_productDAO;
+    MaterialDAO::Ptr m_materialDAO;
 
 };
 

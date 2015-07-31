@@ -45,12 +45,12 @@ void Template::setDesc(const QString &desc)
 {
     m_desc = desc;
 }
-QMap<Product::Ptr, double> Template::material() const
+QMap<Material::Ptr, double> Template::material() const
 {
     return m_material;
 }
 
-void Template::setMaterial(const QMap<Product::Ptr, double> &material)
+void Template::setMaterial(const QMap<Material::Ptr, double> &material)
 {
     m_material = material;
 }

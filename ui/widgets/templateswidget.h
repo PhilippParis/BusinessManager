@@ -21,7 +21,7 @@ public:
     ~TemplatesWidget();
 
     void setTemplateService(const TemplateService::Ptr &templateService);
-    void setProductService(const ProductService::Ptr &productService);
+    void setMaterialService(const MaterialService::Ptr &materialService);
 
 private slots:
     void update();
@@ -40,7 +40,7 @@ private:
     TemplateSortFilterProxyModel *m_sortFilterProxyModel;
 
 
-    ProductService::Ptr m_productService;
+    MaterialService::Ptr m_materialService;
     TemplateService::Ptr m_templateService;
 };
 

@@ -4,24 +4,24 @@ void BillItemDAOTest::initTestCase()
 {
     QSqlDatabase testDB = DatabaseSingleton::get()->getTestDatabase();
 
-    m_productDAO = std::make_shared<DBProductDAO>(testDB, std::make_shared<ProductValidator>());
-    m_billItemDAO = std::make_shared<DBBillItemDAO>(testDB, std::make_shared<BillItemValidator>(), m_productDAO);
+    m_materialDAO = std::make_shared<DBMaterialDAO>(testDB, std::make_shared<MaterialValidator>());
+    m_billItemDAO = std::make_shared<DBBillItemDAO>(testDB, std::make_shared<BillItemValidator>(), m_materialDAO);
 
-    // create dummy products
-    m_invalidProduct = std::make_shared<Product>();
-    m_nullProduct = nullptr;
+    // create dummy materials
+    m_invalidMaterial = std::make_shared<Material>();
+    m_nullMaterial = nullptr;
 
-    m_validProduct = std::make_shared<Product>();
-    m_validProduct->setName("product");
-    m_validProduct->setUnit("unit");
+    m_validMaterial = std::make_shared<Material>();
+    m_validMaterial->setName("material");
+    m_validMaterial->setUnit("unit");
 
-    m_productDAO->create(m_validProduct);
-    QVERIFY(m_validProduct->id() >= 0);
+    m_materialDAO->create(m_validMaterial);
+    QVERIFY(m_validMaterial->id() >= 0);
 }
 
 void BillItemDAOTest::insertTest_data()
 {
-    QTest::addColumn<QMap<Product::Ptr, double>>("material");
+    QTest::addColumn<QMap<Material::Ptr, double>>("material");
     QTest::addColumn<QString>("desc");
     QTest::addColumn<QString>("unit");
     QTest::addColumn<double>("cost");
@@ -32,17 +32,17 @@ void BillItemDAOTest::insertTest_data()
     QTest::addColumn<bool>("result");
 
     // prepare materials
-    QMap<Product::Ptr, double> validMaterial;
-    validMaterial.insert(m_validProduct, 2.0);
+    QMap<Material::Ptr, double> validMaterial;
+    validMaterial.insert(m_validMaterial, 2.0);
 
-    QMap<Product::Ptr, double> invalidMaterial1;
-    invalidMaterial1.insert(m_invalidProduct, 2.0);
+    QMap<Material::Ptr, double> invalidMaterial1;
+    invalidMaterial1.insert(m_invalidMaterial, 2.0);
 
-    QMap<Product::Ptr, double> invalidMaterial2;
-    invalidMaterial2.insert(m_validProduct, -2.0);
+    QMap<Material::Ptr, double> invalidMaterial2;
+    invalidMaterial2.insert(m_validMaterial, -2.0);
 
-    QMap<Product::Ptr, double> invalidMaterial3;
-    invalidMaterial3.insert(m_nullProduct, 2.0);
+    QMap<Material::Ptr, double> invalidMaterial3;
+    invalidMaterial3.insert(m_nullMaterial, 2.0);
 
     // create test data
 
@@ -52,14 +52,14 @@ void BillItemDAOTest::insertTest_data()
     QTest::newRow("invalidBill_shouldFail") << validMaterial << "desc1" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << false;
     QTest::newRow("NoBill_shouldFail") << validMaterial << "desc1" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << false;
 
-    QTest::newRow("invalidProduct_shouldFail") << invalidMaterial1 << "desc1" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << false;
+    QTest::newRow("invalidMaterial_shouldFail") << invalidMaterial1 << "desc1" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << false;
     QTest::newRow("negativeQuantity_shouldFail") << invalidMaterial2 << "desc1" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << false;
-    QTest::newRow("nullProduct_shouldFail") << invalidMaterial3 << "desc1" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << false;
+    QTest::newRow("nullMaterial_shouldFail") << invalidMaterial3 << "desc1" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << false;
 }
 
 void BillItemDAOTest::insertTest()
 {
-    typedef QMap<Product::Ptr, double> MaterialMap;
+    typedef QMap<Material::Ptr, double> MaterialMap;
 
     QFETCH(MaterialMap, material);
     QFETCH(QString, desc);
@@ -98,7 +98,7 @@ void BillItemDAOTest::insertTest()
 
 void BillItemDAOTest::updateTest_data()
 {
-    QTest::addColumn<QMap<Product::Ptr, double>>("material");
+    QTest::addColumn<QMap<Material::Ptr, double>>("material");
     QTest::addColumn<QString>("desc");
     QTest::addColumn<QString>("unit");
     QTest::addColumn<double>("cost");
@@ -113,17 +113,17 @@ void BillItemDAOTest::updateTest_data()
     Bill::Ptr no_bill = nullptr;
 
     // prepare materials
-    QMap<Product::Ptr, double> validMaterial;
-    validMaterial.insert(m_validProduct, 2.0);
+    QMap<Material::Ptr, double> validMaterial;
+    validMaterial.insert(m_validMaterial, 2.0);
 
-    QMap<Product::Ptr, double> invalidMaterial1;
-    invalidMaterial1.insert(m_invalidProduct, 2.0);
+    QMap<Material::Ptr, double> invalidMaterial1;
+    invalidMaterial1.insert(m_invalidMaterial, 2.0);
 
-    QMap<Product::Ptr, double> invalidMaterial2;
-    invalidMaterial2.insert(m_validProduct, -2.0);
+    QMap<Material::Ptr, double> invalidMaterial2;
+    invalidMaterial2.insert(m_validMaterial, -2.0);
 
-    QMap<Product::Ptr, double> invalidMaterial3;
-    invalidMaterial3.insert(m_nullProduct, 2.0);
+    QMap<Material::Ptr, double> invalidMaterial3;
+    invalidMaterial3.insert(m_nullMaterial, 2.0);
 
     // create test data
 
@@ -133,14 +133,14 @@ void BillItemDAOTest::updateTest_data()
     QTest::newRow("invalidBill_shouldFail") << validMaterial << "desc1" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << false;
     QTest::newRow("NoBill_shouldFail") << validMaterial << "desc1" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << false;
 
-    QTest::newRow("invalidProduct_shouldFail") << invalidMaterial1 << "desc1" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << false;
+    QTest::newRow("invalidMaterial_shouldFail") << invalidMaterial1 << "desc1" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << false;
     QTest::newRow("negativeQuantity_shouldFail") << invalidMaterial2 << "desc1" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << false;
-    QTest::newRow("nullProduct_shouldFail") << invalidMaterial3 << "desc1" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << false;
+    QTest::newRow("nullMaterial_shouldFail") << invalidMaterial3 << "desc1" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << false;
 }
 
 void BillItemDAOTest::updateTest()
 {
-    typedef QMap<Product::Ptr, double> MaterialMap;
+    typedef QMap<Material::Ptr, double> MaterialMap;
 
     QFETCH(MaterialMap, material);
     QFETCH(QString, desc);
@@ -153,20 +153,20 @@ void BillItemDAOTest::updateTest()
     QFETCH(bool, result);
 
     // PREPARE
-    // create products
-    Product::Ptr product1 = std::make_shared<Product>();
-    product1->setName("product1");
-    product1->setUnit("unit1");
+    // create Materials
+    Material::Ptr material1 = std::make_shared<Material>();
+    material1->setName("material1");
+    material1->setUnit("unit1");
 
-    m_productDAO->create(product1);
-    QVERIFY(product1->id() >= 0);
+    m_materialDAO->create(material1);
+    QVERIFY(material1->id() >= 0);
 
-    Product::Ptr product2 = std::make_shared<Product>();
-    product2->setName("product2");
-    product2->setUnit("unit2");
+    Material::Ptr material2 = std::make_shared<Material>();
+    material2->setName("material2");
+    material2->setUnit("unit2");
 
-    m_productDAO->create(product2);
-    QVERIFY(product2->id() >= 0);
+    m_materialDAO->create(material2);
+    QVERIFY(material2->id() >= 0);
 
     // create bill item
     BillItem::Ptr item = std::make_shared<BillItem>();
@@ -178,9 +178,9 @@ void BillItemDAOTest::updateTest()
     item->setQuantity(5);
     item->setUnit("unit");
 
-    QMap<Product::Ptr, double> m;
-    m.insert(product1, 1.2);
-    m.insert(product2, 2.4);
+    QMap<Material::Ptr, double> m;
+    m.insert(material1, 1.2);
+    m.insert(material2, 2.4);
     item->setMaterial(m);
 
     m_billItemDAO->create(item);

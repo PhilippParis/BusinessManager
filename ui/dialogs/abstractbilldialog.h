@@ -26,7 +26,7 @@ class AbstractBillDialog : public QDialog
     Q_OBJECT
 public:
     AbstractBillDialog(QWidget *parent, BillService::Ptr billService, CustomerService::Ptr customerService,
-                       ProductService::Ptr productService, TemplateService::Ptr templateService);
+                       MaterialService::Ptr materialService, TemplateService::Ptr templateService);
     ~AbstractBillDialog();
 
 private slots:
@@ -46,7 +46,7 @@ protected:
 
     BillService::Ptr m_billService;
     CustomerService::Ptr m_customerService;
-    ProductService::Ptr m_productService;
+    MaterialService::Ptr m_materialService;
     TemplateService::Ptr m_templateService;
 
     CustomerTableModel* m_customerModel;

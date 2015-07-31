@@ -21,28 +21,23 @@ TRANSLATIONS = BusinessManager2_de.ts
 SOURCES += main.cpp\
         ui/mainwindow.cpp \
     domain/bill.cpp \
-    domain/product.cpp \
     domain/billitem.cpp \
     domain/template.cpp \
     domain/customer.cpp \
     domain/offer.cpp \
     domain/letter.cpp \
     persistence/billdao.cpp \
-    persistence/productdao.cpp \
     persistence/billitemdao.cpp \
     persistence/customerdao.cpp \
     persistence/templatedao.cpp \
     persistence/impl/dbbilldao.cpp \
-    persistence/impl/dbproductdao.cpp \
     persistence/impl/dbbillitemdao.cpp \
     persistence/impl/dbcustomerdao.cpp \
     persistence/impl/dbtemplatedao.cpp \
     service/billservice.cpp \
     service/customerservice.cpp \
     service/templateservice.cpp \
-    service/productservice.cpp \
     service/impl/billserviceimpl.cpp \
-    service/impl/productserviceimpl.cpp \
     service/impl/customerserviceimpl.cpp \
     service/impl/templateserviceimpl.cpp \
     tests/billitemdaotest.cpp \
@@ -53,8 +48,6 @@ SOURCES += main.cpp\
     persistence/validation/impl/customervalidator.cpp \
     tests/customerdaotest.cpp \
     tests/billdaotest.cpp \
-    tests/productdaotest.cpp \
-    persistence/validation/impl/productvalidator.cpp \
     exception.cpp \
     persistence/validation/validationexception.cpp \
     persistence/persistenceexception.cpp \
@@ -68,17 +61,12 @@ SOURCES += main.cpp\
     ui/dialogs/billdialog.cpp \
     ui/models/billitemtablemodel.cpp \
     ui/wizards/billitemwizard.cpp \
-    ui/models/producttablemodel.cpp \
     ui/delegates/spinboxdelegate.cpp \
-    ui/dialogs/productselectiondialog.cpp \
-    ui/models/productsortfilterproxymodel.cpp \
     domain/discount.cpp \
     persistence/discountdao.cpp \
     persistence/impl/dbdiscountdao.cpp \
     persistence/validation/impl/discountvalidator.cpp \
     ui/dialogs/discountdialog.cpp \
-    ui/widgets/productswidget.cpp \
-    ui/dialogs/productdialog.cpp \
     persistence/validation/impl/templatevalidator.cpp \
     tests/templatedaotest.cpp \
     ui/widgets/templateswidget.cpp \
@@ -98,32 +86,39 @@ SOURCES += main.cpp\
     ui/dialogs/letterdialog.cpp \
     ui/dialogs/envelopedialog.cpp \
     domain/envelope.cpp \
-    ui/widgets/statisticswidget.cpp
+    ui/widgets/statisticswidget.cpp \
+    domain/material.cpp \
+    persistence/materialdao.cpp \
+    persistence/impl/dbmaterialdao.cpp \
+    persistence/validation/impl/materialvalidator.cpp \
+    service/materialservice.cpp \
+    service/impl/materialserviceimpl.cpp \
+    ui/dialogs/materialdialog.cpp \
+    ui/dialogs/materialselectiondialog.cpp \
+    ui/widgets/materialswidget.cpp \
+    ui/models/materialsortfilterproxymodel.cpp \
+    ui/models/materialtablemodel.cpp \
+    tests/materialdaotest.cpp
 
 HEADERS  += ui/mainwindow.h \
     domain/bill.h \
-    domain/product.h \
     domain/billitem.h \
     domain/template.h \
     domain/customer.h \
     domain/offer.h \
     domain/letter.h \
     persistence/billdao.h \
-    persistence/productdao.h \
     persistence/billitemdao.h \
     persistence/customerdao.h \
     persistence/templatedao.h \
     persistence/impl/dbbilldao.h \
-    persistence/impl/dbproductdao.h \
     persistence/impl/dbbillitemdao.h \
     persistence/impl/dbcustomerdao.h \
     persistence/impl/dbtemplatedao.h \
     service/billservice.h \
     service/customerservice.h \
     service/templateservice.h \
-    service/productservice.h \
     service/impl/billserviceimpl.h \
-    service/impl/productserviceimpl.h \
     service/impl/customerserviceimpl.h \
     service/impl/templateserviceimpl.h \
     tests/billitemdaotest.h \
@@ -135,8 +130,6 @@ HEADERS  += ui/mainwindow.h \
     persistence/validation/impl/customervalidator.h \
     tests/customerdaotest.h \
     tests/billdaotest.h \
-    tests/productdaotest.h \
-    persistence/validation/impl/productvalidator.h \
     persistence/persistenceexception.h \
     persistence/validation/validationexception.h \
     exception.h \
@@ -151,17 +144,12 @@ HEADERS  += ui/mainwindow.h \
     ui/models/billitemtablemodel.h \
     ui/models/domainitemmodel.h \
     ui/wizards/billitemwizard.h \
-    ui/models/producttablemodel.h \
     ui/delegates/spinboxdelegate.h \
-    ui/dialogs/productselectiondialog.h \
-    ui/models/productsortfilterproxymodel.h \
     domain/discount.h \
     persistence/discountdao.h \
     persistence/impl/dbdiscountdao.h \
     persistence/validation/impl/discountvalidator.h \
     ui/dialogs/discountdialog.h \
-    ui/widgets/productswidget.h \
-    ui/dialogs/productdialog.h \
     persistence/validation/impl/templatevalidator.h \
     tests/templatedaotest.h \
     ui/widgets/templateswidget.h \
@@ -181,17 +169,26 @@ HEADERS  += ui/mainwindow.h \
     ui/dialogs/letterdialog.h \
     ui/dialogs/envelopedialog.h \
     domain/envelope.h \
-    ui/widgets/statisticswidget.h
+    ui/widgets/statisticswidget.h \
+    domain/material.h \
+    persistence/materialdao.h \
+    persistence/impl/dbmaterialdao.h \
+    persistence/validation/impl/materialvalidator.h \
+    service/materialservice.h \
+    service/impl/materialserviceimpl.h \
+    ui/dialogs/materialdialog.h \
+    ui/dialogs/materialselectiondialog.h \
+    ui/widgets/materialswidget.h \
+    ui/models/materialsortfilterproxymodel.h \
+    ui/models/materialtablemodel.h \
+    tests/materialdaotest.h
 
 FORMS    += ui/mainwindow.ui \
     ui/widgets/customerswidget.ui \
     ui/dialogs/customerdialog.ui \
     ui/widgets/billwidget.ui \
     ui/dialogs/billdialog.ui \
-    ui/dialogs/productselectiondialog.ui \
     ui/dialogs/discountdialog.ui \
-    ui/widgets/productswidget.ui \
-    ui/dialogs/productdialog.ui \
     ui/widgets/templateswidget.ui \
     ui/wizards/abstractbillitemwizard.ui \
     ui/dialogs/settingsdialog.ui \
@@ -200,7 +197,10 @@ FORMS    += ui/mainwindow.ui \
     ui/widgets/financialsettingswidget.ui \
     ui/dialogs/letterdialog.ui \
     ui/dialogs/envelopedialog.ui \
-    ui/widgets/statisticswidget.ui
+    ui/widgets/statisticswidget.ui \
+    ui/dialogs/materialdialog.ui \
+    ui/dialogs/materialselectiondialog.ui \
+    ui/widgets/materialswidget.ui
 
 RESOURCES += \
     resources.qrc

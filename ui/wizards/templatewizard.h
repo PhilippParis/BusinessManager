@@ -8,7 +8,7 @@ class TemplateWizard : public AbstractBillItemWizard
 {
     Q_OBJECT
 public:
-    TemplateWizard(QWidget *parent, ProductService::Ptr productService, TemplateService::Ptr templateService);
+    TemplateWizard(QWidget *parent, MaterialService::Ptr materialService, TemplateService::Ptr templateService);
 
     void prepareForCreate() override;
     void prepareForUpdate(Template::Ptr item);

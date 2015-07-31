@@ -9,7 +9,7 @@
 
 #include "service/billservice.h"
 #include "service/customerservice.h"
-#include "service/productservice.h"
+#include "service/materialservice.h"
 #include "service/templateservice.h"
 
 #include "ui/models/billtablemodel.h"
@@ -30,7 +30,7 @@ public:
     ~BillWidget();
 
     void setTemplateService(const TemplateService::Ptr &templateService);
-    void setProductService(const ProductService::Ptr &productService);
+    void setMaterialService(const MaterialService::Ptr &materialService);
     void setCustomerService(const CustomerService::Ptr &customerService);
     void setBillService(const BillService::Ptr &billService);
 
@@ -63,7 +63,7 @@ private:
 
     BillService::Ptr m_billService;
     CustomerService::Ptr m_customerService;
-    ProductService::Ptr m_productService;
+    MaterialService::Ptr m_materialService;
     TemplateService::Ptr m_templateService;
 
     Validator<Discount::Ptr>::Ptr m_discountValidator;

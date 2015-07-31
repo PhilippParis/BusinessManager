@@ -5,12 +5,12 @@
 #include <QTest>
 
 #include "persistence/impl/dbbillitemdao.h"
-#include "persistence/impl/dbproductdao.h"
+#include "persistence/impl/dbmaterialdao.h"
 
 #include "persistence/databasesingleton.h"
 
 #include "persistence/validation/impl/billitemvalidator.h"
-#include "persistence/validation/impl/productvalidator.h"
+#include "persistence/validation/impl/materialvalidator.h"
 
 class BillItemDAOTest : public QObject
 {
@@ -32,11 +32,11 @@ private slots:
 
 private:
     BillItemDAO::Ptr m_billItemDAO;
-    ProductDAO::Ptr m_productDAO;
+    MaterialDAO::Ptr m_materialDAO;
 
-    Product::Ptr m_validProduct;
-    Product::Ptr m_invalidProduct;
-    Product::Ptr m_nullProduct;
+    Material::Ptr m_validMaterial;
+    Material::Ptr m_invalidMaterial;
+    Material::Ptr m_nullMaterial;
 
 };
 

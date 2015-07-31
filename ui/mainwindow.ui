@@ -22,7 +22,7 @@
     <item>
      <widget class="QTabWidget" name="tab_widget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="tab_1">
        <attribute name="title">
@@ -50,7 +50,7 @@
        </attribute>
        <layout class="QHBoxLayout" name="horizontalLayout_13">
         <item>
-         <widget class="ProductsWidget" name="productsWidget" native="true"/>
+         <widget class="MaterialsWidget" name="materialsWidget" native="true"/>
         </item>
        </layout>
       </widget>
@@ -175,7 +175,9 @@
   </action>
   <action name="actionQuit">
    <property name="icon">
-    <iconset theme="quit"/>
+    <iconset theme="quit">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>&amp;Quit</string>
@@ -215,9 +217,9 @@
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>ProductsWidget</class>
+   <class>MaterialsWidget</class>
    <extends>QWidget</extends>
-   <header>ui/widgets/productswidget.h</header>
+   <header>ui/widgets/materialswidget.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>

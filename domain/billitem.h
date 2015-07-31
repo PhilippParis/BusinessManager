@@ -6,7 +6,7 @@
 #include <QMap>
 #include <QMetaType>
 
-#include "domain/product.h"
+#include "domain/material.h"
 
 class BillItem
 {
@@ -43,8 +43,8 @@ public:
     QString toString() const;
     bool equals(const BillItem::Ptr item) const;
 
-    QMap<Product::Ptr, double> material() const;
-    void setMaterial(const QMap<Product::Ptr, double> &material);
+    QMap<Material::Ptr, double> material() const;
+    void setMaterial(const QMap<Material::Ptr, double> &material);
 
 private:
     int m_id = -1;
@@ -55,7 +55,7 @@ private:
     double m_quantity = 0.0;
     QString m_description;
     QString m_unit;
-    QMap<Product::Ptr, double> m_material;
+    QMap<Material::Ptr, double> m_material;
 };
 Q_DECLARE_METATYPE(BillItem::Ptr)
 

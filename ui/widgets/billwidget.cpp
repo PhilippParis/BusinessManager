@@ -82,7 +82,7 @@ void BillWidget::setDiscountValidator(const Validator<Discount::Ptr>::Ptr &disco
 
 void BillWidget::actionNewBill()
 {
-    BillDialog *dialog = new BillDialog(this, m_billService, m_customerService, m_productService, m_templateService);
+    BillDialog *dialog = new BillDialog(this, m_billService, m_customerService, m_materialService, m_templateService);
     connect(dialog, SIGNAL(print(Bill::Ptr)), this, SIGNAL(print(Bill::Ptr)));
 
     dialog->setDiscountValidator(m_discountValidator);
@@ -105,7 +105,7 @@ void BillWidget::actionNewBill()
 void BillWidget::on_btnEdit_clicked()
 {
     Bill::Ptr selected = selectedBill();
-    BillDialog *dialog = new BillDialog(this, m_billService, m_customerService, m_productService, m_templateService);
+    BillDialog *dialog = new BillDialog(this, m_billService, m_customerService, m_materialService, m_templateService);
     connect(dialog, SIGNAL(print(Bill::Ptr)), this, SIGNAL(print(Bill::Ptr)));
 
     dialog->setDiscountValidator(m_discountValidator);
@@ -136,9 +136,9 @@ void BillWidget::setCustomerService(const CustomerService::Ptr &customerService)
     m_customerService = customerService;
 }
 
-void BillWidget::setProductService(const ProductService::Ptr &productService)
+void BillWidget::setMaterialService(const MaterialService::Ptr &materialService)
 {
-    m_productService = productService;
+    m_materialService = materialService;
 }
 
 void BillWidget::setTemplateService(const TemplateService::Ptr &templateService)

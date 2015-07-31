@@ -1,8 +1,8 @@
 #include "templatewizard.h"
 #include "ui_abstractbillitemwizard.h"
 
-TemplateWizard::TemplateWizard(QWidget *parent, ProductService::Ptr productService, TemplateService::Ptr templateService) :
-    AbstractBillItemWizard(parent, productService, templateService)
+TemplateWizard::TemplateWizard(QWidget *parent, MaterialService::Ptr materialService, TemplateService::Ptr templateService) :
+    AbstractBillItemWizard(parent, materialService, templateService)
 {
 }
 

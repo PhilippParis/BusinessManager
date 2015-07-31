@@ -7,7 +7,7 @@
 
 #include "persistence/validation/validator.h"
 #include "persistence/validation/impl/billvalidator.h"
-#include "persistence/validation/impl/productvalidator.h"
+#include "persistence/validation/impl/materialvalidator.h"
 #include "domain/billitem.h"
 
 class BillItemValidator : public Validator<BillItem::Ptr>
@@ -24,7 +24,7 @@ private:
     void validateMandatoryFields(BillItem::Ptr item);
 
 private:
-    Validator<Product::Ptr>::Ptr m_productValidator;
+    Validator<Material::Ptr>::Ptr m_materialValidator;
 };
 
 #endif // BILLITEMVALIDATOR_H

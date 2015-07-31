@@ -26,7 +26,7 @@ TemplatesWidget::~TemplatesWidget()
 
 void TemplatesWidget::on_btnAdd_clicked()
 {
-    TemplateWizard *wizard = new TemplateWizard(this, m_productService, m_templateService);
+    TemplateWizard *wizard = new TemplateWizard(this, m_materialService, m_templateService);
     wizard->prepareForCreate();
 
     if (wizard->exec() == QWizard::Accepted) {
@@ -48,7 +48,7 @@ void TemplatesWidget::on_btnEdit_clicked()
         return;
     }
 
-    TemplateWizard *wizard = new TemplateWizard(this, m_productService, m_templateService);
+    TemplateWizard *wizard = new TemplateWizard(this, m_materialService, m_templateService);
     wizard->prepareForUpdate(selected);
 
     if (wizard->exec() == QWizard::Accepted) {
@@ -94,9 +94,9 @@ Template::Ptr TemplatesWidget::selectedTemplate()
     return m_model->get(m_sortFilterProxyModel->mapToSource(index));
 }
 
-void TemplatesWidget::setProductService(const ProductService::Ptr &productService)
+void TemplatesWidget::setMaterialService(const MaterialService::Ptr &materialService)
 {
-    m_productService = productService;
+    m_materialService = materialService;
 }
 
 void TemplatesWidget::setTemplateService(const TemplateService::Ptr &templateService)

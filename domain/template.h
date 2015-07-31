@@ -4,7 +4,7 @@
 #include <QMap>
 #include <QString>
 
-#include "domain/product.h"
+#include "domain/material.h"
 
 class Template
 {
@@ -29,8 +29,8 @@ public:
     QString desc() const;
     void setDesc(const QString &desc);
 
-    QMap<Product::Ptr, double> material() const;
-    void setMaterial(const QMap<Product::Ptr, double> &material);
+    QMap<Material::Ptr, double> material() const;
+    void setMaterial(const QMap<Material::Ptr, double> &material);
 
     QString itemDesc() const;
     void setItemDesc(const QString &itemDesc);
@@ -59,7 +59,7 @@ private:
     double m_workingHours;
     double m_price;
 
-    QMap<Product::Ptr, double> m_material;
+    QMap<Material::Ptr, double> m_material;
 };
 
 #endif // TEMPLATE_H

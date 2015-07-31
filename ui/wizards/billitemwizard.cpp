@@ -2,8 +2,8 @@
 #include "ui_abstractbillitemwizard.h"
 
 BillItemWizard::BillItemWizard(QWidget *parent, BillService::Ptr billService,
-                               ProductService::Ptr productService, TemplateService::Ptr templateService) :
-    AbstractBillItemWizard(parent, productService, templateService),
+                               MaterialService::Ptr materialService, TemplateService::Ptr templateService) :
+    AbstractBillItemWizard(parent, materialService, templateService),
     m_billService(billService)
 {
 }
@@ -24,7 +24,7 @@ void BillItemWizard::prepareForUpdate(BillItem::Ptr item)
     ui->sbQuantity->setValue(item->quantity());
     ui->sbWorkingHours->setValue(item->workingHours());
     ui->lblCostPerArticle->setText(QString::number(cost) + QString::fromUtf8("€"));
-    m_productModel->addAllWithQuantity(item->material());
+    m_materialModel->addAllWithQuantity(item->material());
 }
 
 BillItem::Ptr BillItemWizard::getBillItemDomainObject()
@@ -39,7 +39,7 @@ BillItem::Ptr BillItemWizard::getBillItemDomainObject()
     item->setUnit(ui->leUnit->text());
     item->setWorkingHours(ui->sbWorkingHours->value());
     item->setWagePerHour(m_wagePerHour);
-    item->setMaterial(m_productModel->itemsWithQuantity());
+    item->setMaterial(m_materialModel->itemsWithQuantity());
     item->setWagePerHour(m_wagePerHour);
 
     return item;

@@ -11,7 +11,7 @@ class OfferDialog : public AbstractBillDialog
     Q_OBJECT
 public:
     OfferDialog(QWidget *parent, BillService::Ptr billService, CustomerService::Ptr customerService,
-                ProductService::Ptr productService, TemplateService::Ptr templateService);
+                MaterialService::Ptr materialService, TemplateService::Ptr templateService);
 
 signals:
     void print(Offer::Ptr);
