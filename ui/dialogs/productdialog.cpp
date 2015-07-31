@@ -25,7 +25,7 @@ void ProductDialog::prepareForCreate()
     ui->leType->clear();
 
     ui->sbCost->setValue(0.0);
-    ui->sbPrice->setValue(0.0);
+    ui->sbTax->setValue(0.0);
 }
 
 void ProductDialog::prepareForUpdate(Product::Ptr product)
@@ -39,8 +39,8 @@ void ProductDialog::prepareForUpdate(Product::Ptr product)
     ui->leUnit->setText(product->unit());
     ui->leType->setText(product->type());
 
-    ui->sbCost->setValue(product->costPerUnit());
-    ui->sbPrice->setValue(product->pricePerUnit());
+    ui->sbCost->setValue(product->costPerUnit() + product->tax());
+    ui->sbTax->setValue(product->tax());
 }
 
 Product::Ptr ProductDialog::toDomainObject()
@@ -54,8 +54,8 @@ Product::Ptr ProductDialog::toDomainObject()
     product->setUnit(ui->leUnit->text());
     product->setType(ui->leType->text());
 
-    product->setCostPerUnit(ui->sbCost->value());
-    product->setPricePerUnit(ui->sbPrice->value());
+    product->setCostPerUnit(ui->sbCost->value() - ui->sbTax->value());
+    product->setTax(ui->sbTax->value());
 
     return product;
 }
@@ -84,5 +84,5 @@ void ProductDialog::on_leUnit_textChanged(const QString &arg1)
     }
 
     ui->sbCost->setSuffix(suffix);
-    ui->sbPrice->setSuffix(suffix);
+    ui->sbTax->setSuffix(suffix);
 }

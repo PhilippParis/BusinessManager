@@ -43,8 +43,8 @@ void ProductValidator::validateMandatoryFields(Product::Ptr item)
     if (item->costPerUnit() < 0) {
         throw new ValidationException(tr("cost must not be negative"));
     }
-    if (item->pricePerUnit() < 0) {
-        throw new ValidationException(tr("price must not be negative"));
+    if (item->tax() < 0) {
+        throw new ValidationException(tr("tax must not be negative"));
     }
     if (item->unit().isEmpty()) {
         throw new ValidationException(tr("unit must not be empty"));

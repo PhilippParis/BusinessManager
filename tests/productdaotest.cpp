@@ -11,7 +11,7 @@ void ProductDAOTest::insertTest_data()
 {
     QTest::addColumn<QString>("nr");
     QTest::addColumn<double>("cost");
-    QTest::addColumn<double>("price");
+    QTest::addColumn<double>("tax");
     QTest::addColumn<QString>("name");
     QTest::addColumn<QString>("type");
     QTest::addColumn<QString>("unit");
@@ -20,7 +20,7 @@ void ProductDAOTest::insertTest_data()
 
     QTest::newRow("validData_shouldPass") << "Z1" << 1.0 << 2.0 << "name" << "type" << "unit" << "desc" << true;
     QTest::newRow("negativeCost_shouldFail") << "1" << -1.0 << 2.0 << "name" << "type" << "unit" << "desc" << false;
-    QTest::newRow("negativePrice_shouldFail") << "1" << 1.0 << -2.0 << "name" << "type" << "unit" << "desc" << false;
+    QTest::newRow("negativetax_shouldFail") << "1" << 1.0 << -2.0 << "name" << "type" << "unit" << "desc" << false;
     QTest::newRow("emptyName_shouldFail") << "1" << 1.0 << 2.0 << "" << "type" << "unit" << "desc" << false;
     QTest::newRow("emptyUnit_shouldFail") << "1" << 1.0 << 2.0 << "name" << "type" << "" << "desc" << false;
 }
@@ -29,7 +29,7 @@ void ProductDAOTest::insertTest()
 {
     QFETCH(QString, nr);
     QFETCH(double, cost);
-    QFETCH(double, price);
+    QFETCH(double, tax);
     QFETCH(QString, name);
     QFETCH(QString, type);
     QFETCH(QString, unit);
@@ -39,7 +39,7 @@ void ProductDAOTest::insertTest()
     Product::Ptr product = std::make_shared<Product>();
     product->setName(name);
     product->setCostPerUnit(cost);
-    product->setPricePerUnit(price);
+    product->setTax(tax);
     product->setName(name);
     product->setType(type);
     product->setUnit(unit);
@@ -64,7 +64,7 @@ void ProductDAOTest::updateTest_data()
 {
     QTest::addColumn<QString>("nr");
     QTest::addColumn<double>("cost");
-    QTest::addColumn<double>("price");
+    QTest::addColumn<double>("tax");
     QTest::addColumn<QString>("name");
     QTest::addColumn<QString>("type");
     QTest::addColumn<QString>("unit");
@@ -73,7 +73,7 @@ void ProductDAOTest::updateTest_data()
 
     QTest::newRow("validData_shouldPass") << "Z1" << 1.0 << 2.0 << "name" << "type" << "unit" << "desc" << true;
     QTest::newRow("negativeCost_shouldFail") << "1" << -1.0 << 2.0 << "name" << "type" << "unit" << "desc" << false;
-    QTest::newRow("negativePrice_shouldFail") << "1" << 1.0 << -2.0 << "name" << "type" << "unit" << "desc" << false;
+    QTest::newRow("negativetax_shouldFail") << "1" << 1.0 << -2.0 << "name" << "type" << "unit" << "desc" << false;
     QTest::newRow("emptyName_shouldFail") << "1" << 1.0 << 2.0 << "" << "type" << "unit" << "desc" << false;
     QTest::newRow("emptyUnit_shouldFail") << "1" << 1.0 << 2.0 << "name" << "type" << "" << "desc" << false;
 }
@@ -82,7 +82,7 @@ void ProductDAOTest::updateTest()
 {
     QFETCH(QString, nr);
     QFETCH(double, cost);
-    QFETCH(double, price);
+    QFETCH(double, tax);
     QFETCH(QString, name);
     QFETCH(QString, type);
     QFETCH(QString, unit);
@@ -92,7 +92,7 @@ void ProductDAOTest::updateTest()
     Product::Ptr product = std::make_shared<Product>();
     product->setName("name");
     product->setCostPerUnit(1.0);
-    product->setPricePerUnit(2.0);
+    product->setTax(2.0);
     product->setName("name");
     product->setType("type");
     product->setUnit("unit");
@@ -106,7 +106,7 @@ void ProductDAOTest::updateTest()
 
     product->setName(name);
     product->setCostPerUnit(cost);
-    product->setPricePerUnit(price);
+    product->setTax(tax);
     product->setName(name);
     product->setType(type);
     product->setUnit(unit);
@@ -130,7 +130,7 @@ void ProductDAOTest::updateWithInvalidIDTest()
     Product::Ptr product = std::make_shared<Product>();
     product->setName("name");
     product->setCostPerUnit(1.0);
-    product->setPricePerUnit(2.0);
+    product->setTax(2.0);
     product->setName("name");
     product->setType("type");
     product->setUnit("unit");
@@ -161,7 +161,7 @@ void ProductDAOTest::removeTestWithValidIDShouldPass()
     Product::Ptr product = std::make_shared<Product>();
     product->setName("name");
     product->setCostPerUnit(1.0);
-    product->setPricePerUnit(2.0);
+    product->setTax(2.0);
     product->setName("name");
     product->setType("type");
     product->setUnit("unit");
@@ -210,7 +210,7 @@ void ProductDAOTest::getAllTest()
     Product::Ptr product = std::make_shared<Product>();
     product->setName("name");
     product->setCostPerUnit(1.0);
-    product->setPricePerUnit(2.0);
+    product->setTax(2.0);
     product->setName("name");
     product->setType("type");
     product->setUnit("unit");

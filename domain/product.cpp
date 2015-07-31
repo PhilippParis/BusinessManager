@@ -59,21 +59,12 @@ void Product::setManufactor(const QString &desc)
 {
     m_manufactor = desc;
 }
-double Product::pricePerUnit() const
-{
-    return m_pricePerUnit;
-}
-
-void Product::setPricePerUnit(double pricePerUnit)
-{
-    m_pricePerUnit = pricePerUnit;
-}
 
 QString Product::toString() const
 {
     return "Product{id= " + QString::number(m_id) +
            ", cost = " + QString::number(m_costPerUnit) +
-           ", price = " + QString::number(m_pricePerUnit) +
+           ", tax = " + QString::number(m_tax) +
            ", name = " + m_name +
            ", type = " + m_type +
            ", unit = " + m_type +
@@ -92,7 +83,7 @@ bool Product::equals(const Product::Ptr product) const
     if (m_costPerUnit != product->m_costPerUnit) {
         return false;
     }
-    if (m_pricePerUnit != product->m_pricePerUnit) {
+    if (m_tax != product->m_tax) {
         return false;
     }
     if (m_name.compare(product->m_name) != 0) {
@@ -122,4 +113,14 @@ void Product::setArticleNumber(const QString &articleNumber)
 {
     m_articleNumber = articleNumber;
 }
+double Product::tax() const
+{
+    return m_tax;
+}
+
+void Product::setTax(double tax)
+{
+    m_tax = tax;
+}
+
 

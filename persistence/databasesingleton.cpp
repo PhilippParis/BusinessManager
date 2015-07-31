@@ -104,10 +104,10 @@ void DatabaseSingleton::createTables(QSqlDatabase db)
                     "NAME VARCHAR(200) NOT NULL, "
                     "MANUFACTOR VARCHAR(200) NOT NULL, "
                     "COST REAL NOT NULL, "
-                    "PRICE REAL NOT NULL, "
                     "TYPE VARCHAR(20) NOT NULL, "
                     "UNIT VARCHAR(20) NOT NULL, "
                     "NR VARCHAR(20) NOT NULL, "
+                    "TAX REAL NOT NULL, "
                     "DELETED INTEGER NOT NULL DEFAULT 0);");
 
    if(!res) {
