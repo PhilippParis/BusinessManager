@@ -113,24 +113,6 @@ void BillServiceImpl::removeItem(BillItem::Ptr item)
     }
 }
 
-BillItem::Ptr BillServiceImpl::getItem(int id)
-{
-    try {
-        return m_billItemDAO->get(id);
-    } catch (PersistenceException *e) {
-        throw new ServiceException(e);
-    }
-}
-
-QList<BillItem::Ptr> BillServiceImpl::getItemsOfBill(int billID)
-{
-    try {
-        return m_billItemDAO->getItemsOfBill(billID);
-    } catch (PersistenceException *e) {
-        throw new ServiceException(e);
-    }
-}
-
 int BillServiceImpl::nextBillNumber(QDate date)
 {
     try {

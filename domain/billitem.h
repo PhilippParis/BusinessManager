@@ -61,6 +61,9 @@ public:
     double tax() const;
     void setTax(double tax);
 
+    double costs();
+    double calculatedPrice();
+
 private:
     int m_id = -1;
 

@@ -201,6 +201,23 @@ void BillItem::setTax(double tax)
     m_tax = tax;
 }
 
+double BillItem::costs()
+{
+    double materialCost = m_materialCost * (1.0 + m_materialOverhead);
+    double factoryCost = (m_wagePerHour * m_workingHours) * (1.0 + m_factoryOverhead);
+
+    return materialCost + factoryCost;
+}
+
+double BillItem::calculatedPrice()
+{
+    double cost = costs();
+    double costWithProfit = cost * (1.0 + m_profit);
+    double costWithCashback = costWithProfit * (1.0 + m_cashback);
+    return costWithCashback * (1.0 + m_tax);
+}
+
+
 
 
 

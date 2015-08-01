@@ -4,6 +4,7 @@
 TemplateWizard::TemplateWizard(QWidget *parent, MaterialService::Ptr materialService, TemplateService::Ptr templateService) :
     AbstractBillItemWizard(parent, materialService, templateService)
 {
+    connect(this, SIGNAL(currentIdChanged(int)), SLOT(on_TemplateWizard_currentIdChanged(int)));
 }
 
 void TemplateWizard::prepareForCreate()
@@ -31,6 +32,27 @@ Template::Ptr TemplateWizard::toDomainObject()
     return templ;
 }
 
+void TemplateWizard::on_TemplateWizard_currentIdChanged(int id)
+{
+    if (id == ItemDetailsPage) {
+        BillItem::Ptr tmp = std::make_shared<BillItem>();
+        QSettings settings;
+
+        tmp->setMaterialCost(m_materialCost);
+        tmp->setWorkingHours(ui->sbWorkingHours->value());
+        tmp->setWagePerHour(settings.value("financial/wage").toDouble());
+        tmp->setMaterialOverhead(settings.value("financial/materialOverhead").toDouble());
+        tmp->setFactoryOverhead(settings.value("financial/factoryOverhead").toDouble());
+        tmp->setProfit(settings.value("financial/profit").toDouble());
+        tmp->setCashback(settings.value("financial/cashback").toDouble());
+        tmp->setTax(settings.value("financial/tax").toDouble());
+
+        ui->lblCostPerArticle->setText(QString::number(tmp->costs(), 'f', 2) + QString::fromUtf8("€"));
+        ui->sbPricePerUnit->setValue(tmp->price() < 0 ? 0.0 : tmp->price());
+        ui->lblCalculatedPrice->setText(QString::number(tmp->calculatedPrice(), 'f', 2) + QString::fromUtf8("€"));
+    }
+}
+
 bool TemplateWizard::onUpdate()
 {
     Template::Ptr templ = toDomainObject();
@@ -56,4 +78,6 @@ bool TemplateWizard::onCreate()
     }
     return true;
 }
+
+
 

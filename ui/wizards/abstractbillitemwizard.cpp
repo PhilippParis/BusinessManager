@@ -19,6 +19,8 @@ AbstractBillItemWizard::AbstractBillItemWizard(QWidget *parent, MaterialService:
     ui->tblTemplates->setModel(m_templateSortFilterProxyModel);
 
     m_templateModel->addAll(templateService->getAll());
+
+    connect(m_materialModel, SIGNAL(materialChanged()), SLOT(updateMaterialCosts()));
 }
 
 AbstractBillItemWizard::~AbstractBillItemWizard()
@@ -84,14 +86,7 @@ void AbstractBillItemWizard::on_btnDeleteMaterial_clicked()
     m_materialModel->remove(m_materialModel->get(ui->tblMaterial->currentIndex()));
 }
 
-void AbstractBillItemWizard::on_AbstractBillItemWizard_currentIdChanged(int id)
-{
-    if (id == ItemDetailsPage) {
-        ui->lblCostPerArticle->setText(QString::number(totalCostsPerUnit(), 'f', 2) + QString::fromUtf8("€"));
-    }
-}
-
-double AbstractBillItemWizard::materialCosts()
+double AbstractBillItemWizard::updateMaterialCosts()
 {
     QMap<Material::Ptr, double> items = m_materialModel->itemsWithQuantity();
     double materialCosts = 0.0;
@@ -101,12 +96,7 @@ double AbstractBillItemWizard::materialCosts()
         materialCosts += it.key()->costPerUnit() * it.value();
     }
 
-    return materialCosts;
-}
-
-double AbstractBillItemWizard::totalCostsPerUnit()
-{
-    return materialCosts() + ui->sbWorkingHours->value() * m_wagePerHour;
+    m_materialCost =  materialCosts;
 }
 
 void AbstractBillItemWizard::on_tblTemplates_activated(const QModelIndex &index)
@@ -153,9 +143,3 @@ Template::Ptr AbstractBillItemWizard::toTemplate()
 
     return templ;
 }
-
-void AbstractBillItemWizard::setWagePerHour(double wagePerHour)
-{
-    m_wagePerHour = wagePerHour;
-}
-

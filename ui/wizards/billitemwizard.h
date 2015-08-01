@@ -5,6 +5,7 @@
 #include <QTextBlock>
 #include <QMessageBox>
 #include <QDebug>
+#include <QSettings>
 
 #include "domain/billitem.h"
 
@@ -27,6 +28,9 @@ public:
     void prepareForUpdate(BillItem::Ptr item);
     BillItem::Ptr getBillItemDomainObject();
     Template::Ptr getTemplateDomainObject();
+
+private slots:
+    void on_BillItemWizard_currentIdChanged(int id);
 
 private:
     bool onUpdate() override;

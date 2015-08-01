@@ -13,7 +13,6 @@ class BillService
 {
 public:
     typedef std::shared_ptr<BillService> Ptr;
-
     BillService();
 
     virtual void addBill(Bill::Ptr bill) = 0;
@@ -21,12 +20,6 @@ public:
     virtual void removeBill(Bill::Ptr bill) = 0;
     virtual Bill::Ptr getBill(int id) = 0;
     virtual QList<Bill::Ptr> getAllBills() = 0;
-
-    virtual void addItem(BillItem::Ptr item) = 0;
-    virtual void updateItem(BillItem::Ptr item) = 0;
-    virtual void removeItem(BillItem::Ptr item) = 0;
-    virtual BillItem::Ptr getItem(int id) = 0;
-    virtual QList<BillItem::Ptr> getItemsOfBill(int billID) = 0;
 
     virtual int nextBillNumber(QDate date) = 0;
     virtual QPair<QDate, QDate> billDateRange() = 0;

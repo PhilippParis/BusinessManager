@@ -17,13 +17,23 @@
    <item>
     <layout class="QFormLayout" name="formLayout">
      <item row="0" column="0">
+      <widget class="QLabel" name="legalDomicileLabel">
+       <property name="text">
+        <string>Legal Domicile:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="leLegalDomicile"/>
+     </item>
+     <item row="1" column="0">
       <widget class="QLabel" name="wagePerHourLabel">
        <property name="text">
         <string>Wage Per Hour:</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
+     <item row="1" column="1">
       <widget class="QDoubleSpinBox" name="sbWage">
        <property name="suffix">
         <string> €</string>
@@ -33,13 +43,88 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="1">
-      <widget class="QLineEdit" name="leLegalDomicile"/>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="legalDomicileLabel">
+     <item row="4" column="0">
+      <widget class="QLabel" name="materialOverheadLabel">
        <property name="text">
-        <string>Legal Domicile:</string>
+        <string>Material Overhead:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="0">
+      <widget class="QLabel" name="factoryOverheadLabel">
+       <property name="text">
+        <string>Factory Overhead:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="0">
+      <widget class="QLabel" name="profitLabel">
+       <property name="text">
+        <string>Profit:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="0">
+      <widget class="QLabel" name="cashbackLabel">
+       <property name="text">
+        <string>Cashback:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="8" column="0">
+      <widget class="QLabel" name="taxLabel">
+       <property name="text">
+        <string>Tax:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="QSpinBox" name="sbMaterialOverhead">
+       <property name="suffix">
+        <string> %</string>
+       </property>
+       <property name="maximum">
+        <number>100</number>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="1">
+      <widget class="QSpinBox" name="sbFactoryOverhead">
+       <property name="suffix">
+        <string> %</string>
+       </property>
+       <property name="maximum">
+        <number>100</number>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="1">
+      <widget class="QSpinBox" name="sbProfit">
+       <property name="suffix">
+        <string> %</string>
+       </property>
+       <property name="maximum">
+        <number>100</number>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="1">
+      <widget class="QSpinBox" name="sbCashback">
+       <property name="suffix">
+        <string> %</string>
+       </property>
+       <property name="maximum">
+        <number>100</number>
+       </property>
+      </widget>
+     </item>
+     <item row="8" column="1">
+      <widget class="QSpinBox" name="sbTax">
+       <property name="suffix">
+        <string> %</string>
+       </property>
+       <property name="maximum">
+        <number>100</number>
        </property>
       </widget>
      </item>

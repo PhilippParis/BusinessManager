@@ -68,9 +68,7 @@ void AbstractBillDialog::on_btnEditCustomer_clicked()
 
 void AbstractBillDialog::on_btnAddArticle_clicked()
 {
-    QSettings settings;
     BillItemWizard *wizard = new BillItemWizard(this, m_billService, m_materialService, m_templateService);
-    wizard->setWagePerHour(settings.value("financial/wage").toDouble());
     wizard->prepareForCreate();
 
     if(wizard->exec() == QWizard::Accepted) {
@@ -83,7 +81,6 @@ void AbstractBillDialog::on_btnAddArticle_clicked()
 
 void AbstractBillDialog::on_btnEditArticle_clicked()
 {
-    QSettings settings;
     BillItem::Ptr selected = selectedBillItem();
 
     if (selected == nullptr) {
@@ -91,7 +88,6 @@ void AbstractBillDialog::on_btnEditArticle_clicked()
     }
 
     BillItemWizard *wizard = new BillItemWizard(this, m_billService, m_materialService, m_templateService);
-    wizard->setWagePerHour(settings.value("financial/wage").toDouble());
     wizard->prepareForUpdate(selected);
 
     if(wizard->exec() == QWizard::Accepted) {

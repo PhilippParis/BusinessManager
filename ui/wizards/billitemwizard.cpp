@@ -6,6 +6,7 @@ BillItemWizard::BillItemWizard(QWidget *parent, BillService::Ptr billService,
     AbstractBillItemWizard(parent, materialService, templateService),
     m_billService(billService)
 {
+    connect(this, SIGNAL(currentIdChanged(int)), SLOT(on_BillItemWizard_currentIdChanged(int)));
 }
 
 void BillItemWizard::prepareForUpdate(BillItem::Ptr item)
@@ -14,6 +15,7 @@ void BillItemWizard::prepareForUpdate(BillItem::Ptr item)
 
     double cost = item->materialCost() + item->workingHours() * item->wagePerHour();
     m_id = item->id();
+    m_materialCost = item->materialCost();
 
     ui->sbPricePerUnit->setValue(item->price());
     ui->leSearchTemplate->clear();
@@ -31,16 +33,23 @@ BillItem::Ptr BillItemWizard::getBillItemDomainObject()
 {
     BillItem::Ptr item = std::make_shared<BillItem>();
 
+    QSettings settings;
+
     item->setId(m_id);
     item->setDescription(ui->textEditArticleDesc->toPlainText());
-    item->setMaterialCost(materialCosts());
+    item->setMaterialCost(m_materialCost);
     item->setPrice(ui->sbPricePerUnit->value());
     item->setQuantity(ui->sbQuantity->value());
     item->setUnit(ui->leUnit->text());
     item->setWorkingHours(ui->sbWorkingHours->value());
-    item->setWagePerHour(m_wagePerHour);
     item->setMaterial(m_materialModel->itemsWithQuantity());
-    item->setWagePerHour(m_wagePerHour);
+
+    item->setWagePerHour(settings.value("financial/wage").toDouble());
+    item->setMaterialOverhead(settings.value("financial/materialOverhead").toDouble());
+    item->setFactoryOverhead(settings.value("financial/factoryOverhead").toDouble());
+    item->setProfit(settings.value("financial/profit").toDouble());
+    item->setCashback(settings.value("financial/cashback").toDouble());
+    item->setTax(settings.value("financial/tax").toDouble());
 
     return item;
 }
@@ -60,7 +69,7 @@ bool BillItemWizard::onUpdate()
         if (ui->gbTemplate->isChecked()) {
             m_templateService->validator()->validateForCreate(toTemplate());
         }
-        m_billService->billItemValidator()->validateForUpdate(item);
+        m_billService->billItemValidator()->validateForCreate(item);
     } catch (Exception *e) {
         QMessageBox::warning(this, tr("Invalid Data"), e->what());
         delete e;
@@ -83,5 +92,15 @@ bool BillItemWizard::onCreate()
         return false;
     }
     return true;
+}
+
+void BillItemWizard::on_BillItemWizard_currentIdChanged(int id)
+{
+    if (id == ItemDetailsPage) {
+        BillItem::Ptr item = getBillItemDomainObject();
+        ui->lblCostPerArticle->setText(QString::number(item->costs(), 'f', 2) + QString::fromUtf8("€"));
+        ui->sbPricePerUnit->setValue(item->price() < 0 ? 0.0 : item->price());
+        ui->lblCalculatedPrice->setText(QString::number(item->calculatedPrice(), 'f', 2) + QString::fromUtf8("€"));
+    }
 }
 

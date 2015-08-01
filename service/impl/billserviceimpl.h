@@ -20,17 +20,16 @@ public:
     Bill::Ptr getBill(int id) override;
     QList<Bill::Ptr> getAllBills() override;
 
-    void addItem(BillItem::Ptr item) override;
-    void updateItem(BillItem::Ptr item) override;
-    void removeItem(BillItem::Ptr item) override;
-    BillItem::Ptr getItem(int id) override;
-    QList<BillItem::Ptr> getItemsOfBill(int billID) override;
-
     int nextBillNumber(QDate date) override;
     QPair<QDate, QDate> billDateRange() override;
 
     Validator<BillItem::Ptr>::Ptr billItemValidator();
     Validator<Bill::Ptr>::Ptr billValidator();
+
+private:
+    void addItem(BillItem::Ptr item);
+    void updateItem(BillItem::Ptr item);
+    void removeItem(BillItem::Ptr item);
 
 private:
     BillDAO::Ptr m_billDAO;

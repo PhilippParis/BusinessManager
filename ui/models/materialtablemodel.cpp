@@ -14,6 +14,7 @@ bool MaterialTableModel::setData(const QModelIndex &index, const QVariant &value
 {
     if(role == Qt::EditRole) {
         m_quantities.insert(m_data.at(index.row()), value.toDouble());
+        emit materialChanged();
     }
 }
 
@@ -78,18 +79,21 @@ void MaterialTableModel::addAllWithQuantity(QMap<Material::Ptr, double> material
 {
     DomainItemModel::addAll(materials.keys());
     m_quantities = materials;
+    emit materialChanged();
 }
 
 void MaterialTableModel::add(Material::Ptr material, double quantity)
 {
     m_quantities.insert(material, quantity);
     DomainItemModel::add(material);
+    emit materialChanged();
 }
 
 void MaterialTableModel::remove(Material::Ptr item)
 {
     DomainItemModel::remove(item);
     m_quantities.remove(item);
+    emit materialChanged();
 }
 
 void MaterialTableModel::replace(Material::Ptr old, Material::Ptr updated)
@@ -97,12 +101,14 @@ void MaterialTableModel::replace(Material::Ptr old, Material::Ptr updated)
     DomainItemModel::replace(old, updated);
     m_quantities.insert(updated, m_quantities.value(old, 0.0));
     m_quantities.remove(old);
+    emit materialChanged();
 }
 
 void MaterialTableModel::clear()
 {
     DomainItemModel::clear();
     m_quantities.clear();
+    emit materialChanged();
 }
 
 QMap<Material::Ptr, double> MaterialTableModel::itemsWithQuantity() const

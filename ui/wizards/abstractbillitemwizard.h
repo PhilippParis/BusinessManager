@@ -27,15 +27,14 @@ public:
     ~AbstractBillItemWizard();
 
     virtual void prepareForCreate();
-    void setWagePerHour(double wagePerHour);
 
 private slots:
-    virtual void on_textEditArticleDesc_textChanged();
-    virtual void accept();
-    virtual void on_btnAddMaterial_clicked();
-    virtual void on_btnDeleteMaterial_clicked();
-    virtual void on_AbstractBillItemWizard_currentIdChanged(int id);
-    virtual void on_tblTemplates_activated(const QModelIndex &index);
+    void on_textEditArticleDesc_textChanged();
+    void accept();
+    void on_btnAddMaterial_clicked();
+    void on_btnDeleteMaterial_clicked();
+    void on_tblTemplates_activated(const QModelIndex &index);
+    double updateMaterialCosts();
 
 private:
     virtual bool onUpdate() = 0;
@@ -46,8 +45,6 @@ private:
 
 protected:
     Template::Ptr toTemplate();
-    double materialCosts();
-    double totalCostsPerUnit();
 
 protected:
     enum OpenMode {
@@ -59,7 +56,7 @@ protected:
     };
     Ui::AbstractBillItemWizard *ui;
     int m_id = -1;
-    double m_wagePerHour = 0.0;
+    double m_materialCost = 0.0;
 
     MaterialService::Ptr m_materialService;
     TemplateService::Ptr m_templateService;

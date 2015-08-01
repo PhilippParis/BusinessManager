@@ -25,6 +25,9 @@ public:
 
     QMap<Material::Ptr, double> itemsWithQuantity() const;
 
+signals:
+    void materialChanged();
+
 private:
     enum Column {
         Name = 0, Nr, Manufactor, Type, Quantity

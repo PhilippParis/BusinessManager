@@ -2,6 +2,10 @@
 #define TEMPLATEWIZARD_H
 
 #include <QWizard>
+#include <QSettings>
+
+#include "domain/billitem.h"
+
 #include "ui/wizards/abstractbillitemwizard.h"
 
 class TemplateWizard : public AbstractBillItemWizard
@@ -13,6 +17,9 @@ public:
     void prepareForCreate() override;
     void prepareForUpdate(Template::Ptr item);
     Template::Ptr toDomainObject();
+
+private slots:
+    void on_TemplateWizard_currentIdChanged(int id);
 
 private:
     bool onUpdate() override;

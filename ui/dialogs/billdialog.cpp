@@ -32,7 +32,7 @@ void BillDialog::prepareForUpdate(Bill::Ptr bill)
     m_payed = bill->payed();
     ui->dateEdit->setDate(bill->date());
     ui->sbNr->setValue(bill->billNumber());
-    m_billItemModel->addAll(m_billService->getItemsOfBill(bill->id()));
+    m_billItemModel->addAll(bill->items());
 
     if (!bill->discounts().isEmpty()) {
         m_discount = bill->discounts().first();
