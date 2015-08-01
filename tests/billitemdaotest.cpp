@@ -29,6 +29,11 @@ void BillItemDAOTest::insertTest_data()
     QTest::addColumn<double>("hours");
     QTest::addColumn<double>("wage");
     QTest::addColumn<double>("quantity");
+    QTest::addColumn<double>("materialOverhead");
+    QTest::addColumn<double>("factoryOverhead");
+    QTest::addColumn<double>("profit");
+    QTest::addColumn<double>("cashback");
+    QTest::addColumn<double>("tax");
     QTest::addColumn<bool>("result");
 
     // prepare materials
@@ -46,15 +51,27 @@ void BillItemDAOTest::insertTest_data()
 
     // create test data
 
-    QTest::newRow("validData_shouldPass") << validMaterial << "desc1" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << true;
-    QTest::newRow("descEmpty_shouldFail") << validMaterial << "" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << false;
-    QTest::newRow("UnitEmpty_shouldFail") << validMaterial << "desc1" << "" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << false;
-    QTest::newRow("invalidBill_shouldFail") << validMaterial << "desc1" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << false;
-    QTest::newRow("NoBill_shouldFail") << validMaterial << "desc1" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << false;
+    QTest::newRow("validData_shouldPass") << validMaterial << "desc1" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << 0.05 << 0.05 << 0.2 << 0.02 << 0.2 << true;
+    QTest::newRow("descEmpty_shouldFail") << validMaterial << "" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << 0.05 << 0.05 << 0.2 << 0.02 << 0.2 << false;
+    QTest::newRow("UnitEmpty_shouldFail") << validMaterial << "desc1" << "" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << 0.05 << 0.05 << 0.2 << 0.02 << 0.2 << false;
+    QTest::newRow("invalidBill_shouldFail") << validMaterial << "desc1" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << 0.05 << 0.05 << 0.2 << 0.02 << 0.2 << false;
+    QTest::newRow("NoBill_shouldFail") << validMaterial << "desc1" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << 0.05 << 0.05 << 0.2 << 0.02 << 0.2 << false;
 
-    QTest::newRow("invalidMaterial_shouldFail") << invalidMaterial1 << "desc1" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << false;
-    QTest::newRow("negativeQuantity_shouldFail") << invalidMaterial2 << "desc1" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << false;
-    QTest::newRow("nullMaterial_shouldFail") << invalidMaterial3 << "desc1" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << false;
+
+    QTest::newRow("matOverheadInvalid1_shouldFail") << validMaterial << "desc1" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << -0.05 << 0.05 << 0.2 << 0.02 << 0.2 << false;
+    QTest::newRow("matOverheadInvalid2_shouldFail") << validMaterial << "desc1" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << 1.05 << 0.05 << 0.2 << 0.02 << 0.2 << false;
+    QTest::newRow("facOverheadInvalid1_shouldFail") << validMaterial << "desc1" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << 0.05 << -0.05 << 0.2 << 0.02 << 0.2 << false;
+    QTest::newRow("facOverheadInvalid2_shouldFail") << validMaterial << "desc1" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << 0.05 << 1.05 << 0.2 << 0.02 << 0.2 << false;
+    QTest::newRow("profitInvalid1_shouldFail") << validMaterial << "desc1" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << 0.05 << 0.05 << -0.2 << 0.02 << 0.2 << false;
+    QTest::newRow("profitInvalid2_shouldFail") << validMaterial << "desc1" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << 0.05 << 0.05 << 1.2 << 0.02 << 0.2 << false;
+    QTest::newRow("cashbackInvalid1_shouldFail") << validMaterial << "desc1" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << 0.05 << 0.05 << 0.2 << -0.02 << 0.2 << false;
+    QTest::newRow("cashbackInvalid2_shouldFail") << validMaterial << "desc1" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << 0.05 << 0.05 << 0.2 << 1.02 << 0.2 << false;
+    QTest::newRow("taxInvalid1_shouldFail") << validMaterial << "desc1" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << 0.05 << 0.05 << 0.2 << 0.02 << -0.2 << false;
+    QTest::newRow("taxInvalid2_shouldFail") << validMaterial << "desc1" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << 0.05 << 0.05 << 0.2 << 0.02 << 1.2 << false;
+
+    QTest::newRow("invalidMaterial_shouldFail") << invalidMaterial1 << "desc1" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << 0.05 << 0.05 << 0.2 << 0.02 << 0.2 << false;
+    QTest::newRow("negativeQuantity_shouldFail") << invalidMaterial2 << "desc1" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << 0.05 << 0.05 << 0.2 << 0.02 << 0.2 << false;
+    QTest::newRow("nullMaterial_shouldFail") << invalidMaterial3 << "desc1" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << 0.05 << 0.05 << 0.2 << 0.02 << 0.2 << false;
 }
 
 void BillItemDAOTest::insertTest()
@@ -69,6 +86,11 @@ void BillItemDAOTest::insertTest()
     QFETCH(double, hours);
     QFETCH(double, wage);
     QFETCH(double, quantity);
+    QFETCH(double, materialOverhead);
+    QFETCH(double, factoryOverhead);
+    QFETCH(double, profit);
+    QFETCH(double, cashback);
+    QFETCH(double, tax);
     QFETCH(bool, result);
 
     BillItem::Ptr item = std::make_shared<BillItem>();
@@ -79,6 +101,11 @@ void BillItemDAOTest::insertTest()
     item->setWagePerHour(wage);
     item->setQuantity(quantity);
     item->setUnit(unit);
+    item->setMaterialOverhead(materialOverhead);
+    item->setFactoryOverhead(factoryOverhead);
+    item->setProfit(profit);
+    item->setCashback(cashback);
+    item->setTax(tax);
 
     item->setMaterial(material);
 
@@ -106,11 +133,12 @@ void BillItemDAOTest::updateTest_data()
     QTest::addColumn<double>("hours");
     QTest::addColumn<double>("wage");
     QTest::addColumn<double>("quantity");
+    QTest::addColumn<double>("materialOverhead");
+    QTest::addColumn<double>("factoryOverhead");
+    QTest::addColumn<double>("profit");
+    QTest::addColumn<double>("cashback");
+    QTest::addColumn<double>("tax");
     QTest::addColumn<bool>("result");
-
-    // create dummy invalid bills
-    Bill::Ptr invalid_bill = std::make_shared<Bill>();
-    Bill::Ptr no_bill = nullptr;
 
     // prepare materials
     QMap<Material::Ptr, double> validMaterial;
@@ -127,15 +155,27 @@ void BillItemDAOTest::updateTest_data()
 
     // create test data
 
-    QTest::newRow("validData_shouldPass") << validMaterial << "desc1" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << true;
-    QTest::newRow("descEmpty_shouldFail") << validMaterial << "" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << false;
-    QTest::newRow("UnitEmpty_shouldFail") << validMaterial << "desc1" << "" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << false;
-    QTest::newRow("invalidBill_shouldFail") << validMaterial << "desc1" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << false;
-    QTest::newRow("NoBill_shouldFail") << validMaterial << "desc1" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << false;
+    QTest::newRow("validData_shouldPass") << validMaterial << "desc1" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << 0.05 << 0.05 << 0.2 << 0.02 << 0.2 << true;
+    QTest::newRow("descEmpty_shouldFail") << validMaterial << "" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << 0.05 << 0.05 << 0.2 << 0.02 << 0.2 << false;
+    QTest::newRow("UnitEmpty_shouldFail") << validMaterial << "desc1" << "" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << 0.05 << 0.05 << 0.2 << 0.02 << 0.2 << false;
+    QTest::newRow("invalidBill_shouldFail") << validMaterial << "desc1" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << 0.05 << 0.05 << 0.2 << 0.02 << 0.2 << false;
+    QTest::newRow("NoBill_shouldFail") << validMaterial << "desc1" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << 0.05 << 0.05 << 0.2 << 0.02 << 0.2 << false;
 
-    QTest::newRow("invalidMaterial_shouldFail") << invalidMaterial1 << "desc1" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << false;
-    QTest::newRow("negativeQuantity_shouldFail") << invalidMaterial2 << "desc1" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << false;
-    QTest::newRow("nullMaterial_shouldFail") << invalidMaterial3 << "desc1" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << false;
+
+    QTest::newRow("matOverheadInvalid1_shouldFail") << validMaterial << "desc1" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << -0.05 << 0.05 << 0.2 << 0.02 << 0.2 << false;
+    QTest::newRow("matOverheadInvalid2_shouldFail") << validMaterial << "desc1" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << 1.05 << 0.05 << 0.2 << 0.02 << 0.2 << false;
+    QTest::newRow("facOverheadInvalid1_shouldFail") << validMaterial << "desc1" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << 0.05 << -0.05 << 0.2 << 0.02 << 0.2 << false;
+    QTest::newRow("facOverheadInvalid2_shouldFail") << validMaterial << "desc1" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << 0.05 << 1.05 << 0.2 << 0.02 << 0.2 << false;
+    QTest::newRow("profitInvalid1_shouldFail") << validMaterial << "desc1" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << 0.05 << 0.05 << -0.2 << 0.02 << 0.2 << false;
+    QTest::newRow("profitInvalid2_shouldFail") << validMaterial << "desc1" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << 0.05 << 0.05 << 1.2 << 0.02 << 0.2 << false;
+    QTest::newRow("cashbackInvalid1_shouldFail") << validMaterial << "desc1" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << 0.05 << 0.05 << 0.2 << -0.02 << 0.2 << false;
+    QTest::newRow("cashbackInvalid2_shouldFail") << validMaterial << "desc1" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << 0.05 << 0.05 << 0.2 << 1.02 << 0.2 << false;
+    QTest::newRow("taxInvalid1_shouldFail") << validMaterial << "desc1" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << 0.05 << 0.05 << 0.2 << 0.02 << -0.2 << false;
+    QTest::newRow("taxInvalid2_shouldFail") << validMaterial << "desc1" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << 0.05 << 0.05 << 0.2 << 0.02 << 1.2 << false;
+
+    QTest::newRow("invalidMaterial_shouldFail") << invalidMaterial1 << "desc1" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << 0.05 << 0.05 << 0.2 << 0.02 << 0.2 << false;
+    QTest::newRow("negativeQuantity_shouldFail") << invalidMaterial2 << "desc1" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << 0.05 << 0.05 << 0.2 << 0.02 << 0.2 << false;
+    QTest::newRow("nullMaterial_shouldFail") << invalidMaterial3 << "desc1" << "m" << 100.0 << 500.0 << 10.0 << 9.99 << 10.0 << 0.05 << 0.05 << 0.2 << 0.02 << 0.2 << false;
 }
 
 void BillItemDAOTest::updateTest()
@@ -150,6 +190,11 @@ void BillItemDAOTest::updateTest()
     QFETCH(double, hours);
     QFETCH(double, wage);
     QFETCH(double, quantity);
+    QFETCH(double, materialOverhead);
+    QFETCH(double, factoryOverhead);
+    QFETCH(double, profit);
+    QFETCH(double, cashback);
+    QFETCH(double, tax);
     QFETCH(bool, result);
 
     // PREPARE
@@ -177,6 +222,11 @@ void BillItemDAOTest::updateTest()
     item->setWagePerHour(1.3);
     item->setQuantity(5);
     item->setUnit("unit");
+    item->setMaterialOverhead(0.05);
+    item->setFactoryOverhead(0.05);
+    item->setProfit(0.2);
+    item->setCashback(0.02);
+    item->setTax(0.2);
 
     QMap<Material::Ptr, double> m;
     m.insert(material1, 1.2);
@@ -194,6 +244,11 @@ void BillItemDAOTest::updateTest()
     item->setWagePerHour(wage);
     item->setQuantity(quantity);
     item->setUnit(unit);
+    item->setMaterialOverhead(materialOverhead);
+    item->setFactoryOverhead(factoryOverhead);
+    item->setProfit(profit);
+    item->setCashback(cashback);
+    item->setTax(tax);
 
     item->setMaterial(material);
 
@@ -219,6 +274,11 @@ void BillItemDAOTest::updateWithInvalidIDTest()
     item->setWagePerHour(1.3);
     item->setQuantity(5);
     item->setUnit("unit");
+    item->setMaterialOverhead(0.05);
+    item->setFactoryOverhead(0.05);
+    item->setProfit(0.2);
+    item->setCashback(0.02);
+    item->setTax(0.2);
 
     // get not used id
     int id = 0;
@@ -250,6 +310,11 @@ void BillItemDAOTest::removeTestWithValidIDShouldPass()
     item->setWagePerHour(1.3);
     item->setQuantity(5);
     item->setUnit("unit");
+    item->setMaterialOverhead(0.05);
+    item->setFactoryOverhead(0.05);
+    item->setProfit(0.2);
+    item->setCashback(0.02);
+    item->setTax(0.2);
 
     m_billItemDAO->create(item);
     QVERIFY(item->id() >= 0);
@@ -298,6 +363,11 @@ void BillItemDAOTest::getAllTest()
     item->setWagePerHour(1.3);
     item->setQuantity(5);
     item->setUnit("unit");
+    item->setMaterialOverhead(0.05);
+    item->setFactoryOverhead(0.05);
+    item->setProfit(0.2);
+    item->setCashback(0.02);
+    item->setTax(0.2);
 
     m_billItemDAO->create(item);
     QVERIFY(item->id() >= 0);

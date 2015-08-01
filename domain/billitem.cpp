@@ -130,6 +130,18 @@ bool BillItem::equals(const BillItem::Ptr item) const
     if (m_wagePerHour != item->m_wagePerHour) {
         return false;
     }
+    if (m_materialOverhead != item->m_materialOverhead) {
+        return false;
+    }
+    if (m_factoryOverhead != item->m_factoryOverhead) {
+        return false;
+    }
+    if (m_tax != item->m_tax) {
+        return false;
+    }
+    if (m_cashback != item->m_cashback) {
+        return false;
+    }
 
     return true;
 }
@@ -143,6 +155,56 @@ void BillItem::setMaterial(const QMap<Material::Ptr, double> &material)
 {
     m_material = material;
 }
+double BillItem::materialOverhead() const
+{
+    return m_materialOverhead;
+}
+
+void BillItem::setMaterialOverhead(double material_overhead)
+{
+    m_materialOverhead = material_overhead;
+}
+double BillItem::factoryOverhead() const
+{
+    return m_factoryOverhead;
+}
+
+void BillItem::setFactoryOverhead(double factory_overhead)
+{
+    m_factoryOverhead = factory_overhead;
+}
+double BillItem::profit() const
+{
+    return m_profit;
+}
+
+void BillItem::setProfit(double profit)
+{
+    m_profit = profit;
+}
+double BillItem::cashback() const
+{
+    return m_cashback;
+}
+
+void BillItem::setCashback(double cashback)
+{
+    m_cashback = cashback;
+}
+double BillItem::tax() const
+{
+    return m_tax;
+}
+
+void BillItem::setTax(double tax)
+{
+    m_tax = tax;
+}
+
+
+
+
+
 
 
 

@@ -33,6 +33,11 @@ void BillDAOTest::initTestCase()
     m_validBillItem->setUnit("Stk.");
     m_validBillItem->setWagePerHour(10.0);
     m_validBillItem->setWorkingHours(1.0);
+    m_validBillItem->setMaterialOverhead(0.05);
+    m_validBillItem->setFactoryOverhead(0.05);
+    m_validBillItem->setProfit(0.2);
+    m_validBillItem->setCashback(0.02);
+    m_validBillItem->setTax(0.2);
 
     m_billItemDAO->create(m_validBillItem);
     QVERIFY(m_validBillItem->id() >= 0);

@@ -46,12 +46,35 @@ public:
     QMap<Material::Ptr, double> material() const;
     void setMaterial(const QMap<Material::Ptr, double> &material);
 
+    double materialOverhead() const;
+    void setMaterialOverhead(double materialOverhead);
+
+    double factoryOverhead() const;
+    void setFactoryOverhead(double factoryOverhead);
+
+    double profit() const;
+    void setProfit(double profit);
+
+    double cashback() const;
+    void setCashback(double cashback);
+
+    double tax() const;
+    void setTax(double tax);
+
 private:
     int m_id = -1;
-    double m_workingHours = 0.0;
-    double m_materialCost = 0.0;
-    double m_price = 0.0;
-    double m_wagePerHour = 0.0;
+
+    double m_materialOverhead = -1.0;
+    double m_factoryOverhead = -1.0;
+    double m_profit = -1.0;
+    double m_cashback = -1.0;
+    double m_tax = -1.0;
+    double m_price = -1.0;
+
+    double m_workingHours = -1.0;
+    double m_wagePerHour = -1.0;
+    double m_materialCost = -1.0;
+
     double m_quantity = 0.0;
     QString m_description;
     QString m_unit;

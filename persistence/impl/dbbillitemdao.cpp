@@ -18,12 +18,17 @@ void DBBillItemDAO::create(BillItem::Ptr item)
     }
 
     QSqlQuery insertQuery(m_database);
-    insertQuery.prepare("INSERT INTO BILL_ITEM VALUES(NULL, ?, ?, ?, ?, ?, ?, ?, NULL, 0);");
+    insertQuery.prepare("INSERT INTO BILL_ITEM VALUES(NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NULL, 0);");
 
     insertQuery.addBindValue(item->description());
     insertQuery.addBindValue(item->workingHours());
     insertQuery.addBindValue(item->wagePerHour());
     insertQuery.addBindValue(item->materialCost());
+    insertQuery.addBindValue(item->materialOverhead());
+    insertQuery.addBindValue(item->factoryOverhead());
+    insertQuery.addBindValue(item->profit());
+    insertQuery.addBindValue(item->cashback());
+    insertQuery.addBindValue(item->tax());
     insertQuery.addBindValue(item->price());
     insertQuery.addBindValue(item->unit());
     insertQuery.addBindValue(item->quantity());
@@ -50,18 +55,26 @@ void DBBillItemDAO::update(BillItem::Ptr item)
 
     QSqlQuery updateQuery(m_database);
     updateQuery.prepare("UPDATE BILL_ITEM SET DESC = ?, "
-                           "UNIT = ?, QUANTITY = ?, "
-                           "PRICE = ?,  COST = ?, "
-                           "WORK_HOURS = ?, WAGE = ? "
-                           "WHERE ID = ?;");
+                           "WORK_HOURS = ?, WAGE = ?, "
+                           "MATERIAL_COST = ?, MATERIAL_OVERHEAD = ?, "
+                           "FACTORY_OVERHEAD = ?, PROFIT = ?, "
+                           "CASHBACK = ?, TAX = ?, "
+                           "PRICE = ?, UNIT = ?, "
+                           "QUANTITY = ? WHERE ID = ?;"
+                        );
 
     updateQuery.addBindValue(item->description());
-    updateQuery.addBindValue(item->unit());
-    updateQuery.addBindValue(item->quantity());
-    updateQuery.addBindValue(item->price());
-    updateQuery.addBindValue(item->materialCost());
     updateQuery.addBindValue(item->workingHours());
     updateQuery.addBindValue(item->wagePerHour());
+    updateQuery.addBindValue(item->materialCost());
+    updateQuery.addBindValue(item->materialOverhead());
+    updateQuery.addBindValue(item->factoryOverhead());
+    updateQuery.addBindValue(item->profit());
+    updateQuery.addBindValue(item->cashback());
+    updateQuery.addBindValue(item->tax());
+    updateQuery.addBindValue(item->price());
+    updateQuery.addBindValue(item->unit());
+    updateQuery.addBindValue(item->quantity());
     updateQuery.addBindValue(item->id());
 
     if (!updateQuery.exec()) {
@@ -170,7 +183,12 @@ BillItem::Ptr DBBillItemDAO::parseBillItem(QSqlRecord record)
 
     item->setId(record.value("ID").toInt());
     item->setDescription(record.value("DESC").toString());
-    item->setMaterialCost(record.value("COST").toDouble());
+    item->setMaterialCost(record.value("MATERIAL_COST").toDouble());
+    item->setMaterialOverhead(record.value("MATERIAL_OVERHEAD").toDouble());
+    item->setFactoryOverhead(record.value("FACTORY_OVERHEAD").toDouble());
+    item->setProfit(record.value("PROFIT").toDouble());
+    item->setCashback(record.value("CASHBACK").toDouble());
+    item->setTax(record.value("TAX").toDouble());
     item->setPrice(record.value("PRICE").toDouble());
     item->setQuantity(record.value("QUANTITY").toDouble());
     item->setUnit(record.value("UNIT").toString());

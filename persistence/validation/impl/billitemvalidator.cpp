@@ -39,23 +39,38 @@ void BillItemValidator::validateMandatoryFields(BillItem::Ptr item)
     if (item->description() == nullptr || item->description().isEmpty()) {
         throw new ValidationException(tr("description must not be empty"));
     }
-    if (item->workingHours() < 0) {
+    if (item->workingHours() < 0.0) {
         throw new ValidationException(tr("working hours must not be negative"));
     }
-    if (item->wagePerHour() < 0) {
+    if (item->wagePerHour() < 0.0) {
         throw new ValidationException(tr("wage must not be negative"));
     }
-    if (item->materialCost() < 0) {
+    if (item->materialCost() < 0.0) {
         throw new ValidationException(tr("material cost must not be negative"));
     }
-    if (item->price() < 0) {
+    if (item->price() < 0.0) {
         throw new ValidationException(tr("price must not be negative"));
     }
     if (item->unit() == nullptr || item->unit().isEmpty()) {
         throw new ValidationException(tr("unit must not be empty"));
     }
-    if (item->quantity() <= 0) {
+    if (item->quantity() <= 0.0) {
         throw new ValidationException(tr("quantity must not be negative"));
+    }
+    if (item->materialOverhead() < 0.0 || item->materialOverhead() > 1.0) {
+        throw new ValidationException(tr("material overhead must be between 0% and 100%"));
+    }
+    if (item->factoryOverhead() < 0.0 || item->factoryOverhead() > 1.0) {
+        throw new ValidationException(tr("factory overhead must be between 0% and 100%"));
+    }
+    if (item->tax() < 0.0 || item->tax() > 1.0) {
+        throw new ValidationException(tr("tax must be between 0% and 100%"));
+    }
+    if (item->cashback() < 0.0 || item->cashback() > 1.0) {
+        throw new ValidationException(tr("cashback must be between 0% and 100%"));
+    }
+    if (item->profit() < 0.0 || item->profit() > 1.0) {
+        throw new ValidationException(tr("profit must be between 0% and 100%"));
     }
 
     QMap<Material::Ptr, double> material = item->material();
