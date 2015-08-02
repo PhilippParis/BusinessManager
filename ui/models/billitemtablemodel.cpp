@@ -24,9 +24,9 @@ QVariant BillItemTableModel::data(const QModelIndex &index, int role) const
     case Quantity:
         return item->quantity();
     case UnitPrice:
-        return QString::number(item->price(), 'f', 2) + QString::fromUtf8("€");
+        return QString::number(item->price().value(), 'f', 2) + QString::fromUtf8("€");
     case TotalPrice:
-        return QString::number(item->price() * item->quantity(), 'f', 2) + QString::fromUtf8("€");
+        return QString::number((item->price() * item->quantity()).value(), 'f', 2) + QString::fromUtf8("€");
     }
 
     return QVariant();

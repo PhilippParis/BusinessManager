@@ -27,11 +27,11 @@ void BillDAOTest::initTestCase()
     // create dummy valid bill item
     m_validBillItem = std::make_shared<BillItem>();
     m_validBillItem->setDescription("item");
-    m_validBillItem->setMaterialCost(10.0);
-    m_validBillItem->setPrice(200.0);
+    m_validBillItem->setMaterialCost(Decimal::fromValue(10.0));
+    m_validBillItem->setPrice(Decimal::fromValue(200.0));
     m_validBillItem->setQuantity(4.0);
     m_validBillItem->setUnit("Stk.");
-    m_validBillItem->setWagePerHour(10.0);
+    m_validBillItem->setWagePerHour(Decimal::fromValue(10.0));
     m_validBillItem->setWorkingHours(1.0);
     m_validBillItem->setMaterialOverhead(0.05);
     m_validBillItem->setFactoryOverhead(0.05);

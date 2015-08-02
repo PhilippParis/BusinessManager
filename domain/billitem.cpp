@@ -29,22 +29,22 @@ void BillItem::setWorkingHours(double workingHours)
     m_workingHours = workingHours;
 }
 
-double BillItem::materialCost() const
+Decimal BillItem::materialCost() const
 {
     return m_materialCost;
 }
 
-void BillItem::setMaterialCost(double materialCost)
+void BillItem::setMaterialCost(Decimal materialCost)
 {
     m_materialCost = materialCost;
 }
 
-double BillItem::wagePerHour() const
+Decimal BillItem::wagePerHour() const
 {
     return m_wagePerHour;
 }
 
-void BillItem::setWagePerHour(double wagePerHour)
+void BillItem::setWagePerHour(Decimal wagePerHour)
 {
     m_wagePerHour = wagePerHour;
 }
@@ -69,15 +69,21 @@ void BillItem::setUnit(const QString &unit)
     m_unit = unit;
 }
 
-double BillItem::price() const
+Decimal BillItem::price() const
 {
     return m_price;
 }
 
-void BillItem::setPrice(double price)
+void BillItem::setPrice(Decimal price)
 {
     m_price = price;
 }
+
+Decimal BillItem::netPrice() const
+{
+    return m_price / (1.0 + m_tax);
+}
+
 double BillItem::quantity() const
 {
     return m_quantity;
@@ -92,12 +98,12 @@ QString BillItem::toString() const
 {
     return "BillItem{id=" + QString::number(m_id) +
            ", desc=" + m_description +
-           ", cost=" + QString::number(m_materialCost) +
-           ", price=" + QString::number(m_price) +
+           ", cost=" + QString::number(m_materialCost.value()) +
+           ", price=" + QString::number(m_price.value()) +
            ", unit=" + m_unit +
            ", quantity=" + QString::number(m_quantity) +
            ", workingHours=" + QString::number(m_workingHours) +
-           ", wage=" + QString::number(m_wagePerHour) +
+           ", wage=" + QString::number(m_wagePerHour.value()) +
             "}";
 }
 
@@ -201,19 +207,18 @@ void BillItem::setTax(double tax)
     m_tax = tax;
 }
 
-double BillItem::costs()
+Decimal BillItem::costs()
 {
-    double materialCost = m_materialCost * (1.0 + m_materialOverhead);
-    double factoryCost = (m_wagePerHour * m_workingHours) * (1.0 + m_factoryOverhead);
+    Decimal materialCost = m_materialCost * (1.0 + m_materialOverhead);
+    Decimal factoryCost = (m_wagePerHour * m_workingHours) * (1.0 + m_factoryOverhead);
 
     return materialCost + factoryCost;
 }
 
-double BillItem::calculatedPrice()
+Decimal BillItem::calculatedPrice()
 {
-    double cost = costs();
-    double costWithProfit = cost * (1.0 + m_profit);
-    double costWithCashback = costWithProfit * (1.0 + m_cashback);
+    Decimal costWithProfit = costs() * (1.0 + m_profit);
+    Decimal costWithCashback = costWithProfit * (1.0 + m_cashback);
     return costWithCashback * (1.0 + m_tax);
 }
 

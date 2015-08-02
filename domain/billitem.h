@@ -8,6 +8,8 @@
 
 #include "domain/material.h"
 
+#include "decimal.h"
+
 class BillItem
 {
 public:
@@ -22,11 +24,11 @@ public:
     double workingHours() const;
     void setWorkingHours(double workingHours);
 
-    double materialCost() const;
-    void setMaterialCost(double materialCost);
+    Decimal materialCost() const;
+    void setMaterialCost(Decimal materialCost);
 
-    double wagePerHour() const;
-    void setWagePerHour(double wagePerHour);
+    Decimal wagePerHour() const;
+    void setWagePerHour(Decimal wagePerHour);
 
     QString description() const;
     void setDescription(const QString &description);
@@ -34,8 +36,10 @@ public:
     QString unit() const;
     void setUnit(const QString &unit);
 
-    double price() const;
-    void setPrice(double price);
+    Decimal price() const;
+    void setPrice(Decimal price);
+
+    Decimal netPrice() const;
 
     double quantity() const;
     void setQuantity(double quantity);
@@ -61,8 +65,8 @@ public:
     double tax() const;
     void setTax(double tax);
 
-    double costs();
-    double calculatedPrice();
+    Decimal costs();
+    Decimal calculatedPrice();
 
 private:
     int m_id = -1;
@@ -72,11 +76,11 @@ private:
     double m_profit = -1.0;
     double m_cashback = -1.0;
     double m_tax = -1.0;
-    double m_price = -1.0;
+    Decimal m_price = Decimal::fromValue(-1.0);
 
     double m_workingHours = -1.0;
-    double m_wagePerHour = -1.0;
-    double m_materialCost = -1.0;
+    Decimal m_wagePerHour = Decimal::fromValue(-1.0);
+    Decimal m_materialCost = Decimal::fromValue(-1.0);
 
     double m_quantity = 0.0;
     QString m_description;

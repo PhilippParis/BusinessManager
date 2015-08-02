@@ -5,6 +5,8 @@
 #include <QString>
 #include <QMetaType>
 
+#include "decimal.h"
+
 class Material
 {
 public:
@@ -14,8 +16,8 @@ public:
     int id() const;
     void setId(int id);
 
-    double costPerUnit() const;
-    void setCostPerUnit(double costPerUnit);
+    Decimal costPerUnit() const;
+    void setCostPerUnit(Decimal costPerUnit);
 
     QString name() const;
     void setName(const QString &name);
@@ -35,13 +37,14 @@ public:
     QString articleNumber() const;
     void setArticleNumber(const QString &articleNumber);
 
-    double tax() const;
-    void setTax(double tax);
+    Decimal tax() const;
+    void setTax(Decimal tax);
 
 private:
     int m_id = -1;
-    double m_costPerUnit = 0.0; // net cost (without tax)
-    double m_tax;               // total costs = m_costPerUnit + m_tax
+    Decimal m_costPerUnit; // net cost (without tax)
+    Decimal m_tax;               // total costs = m_costPerUnit + m_tax
+
     QString m_name;
     QString m_type = "";
     QString m_unit;

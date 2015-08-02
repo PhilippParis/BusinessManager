@@ -21,7 +21,7 @@ void DBDiscountDAO::create(Discount::Ptr item)
     insertQuery.prepare("INSERT INTO DISCOUNT VALUES(NULL, ?, ?, NULL, 0);");
 
     insertQuery.addBindValue(item->text());
-    insertQuery.addBindValue(item->value());
+    insertQuery.addBindValue(item->value().cents());
 
     if (!insertQuery.exec()) {
         qCCritical(lcPersistence) << "DBDiscountDAO::create failed: " + insertQuery.lastError().text();
@@ -48,7 +48,7 @@ void DBDiscountDAO::update(Discount::Ptr item)
                         "WHERE ID = ?;");
 
     updateQuery.addBindValue(item->text());
-    updateQuery.addBindValue(item->value());
+    updateQuery.addBindValue(item->value().cents());
     updateQuery.addBindValue(item->id());
 
     if (!updateQuery.exec()) {
@@ -133,7 +133,7 @@ Discount::Ptr DBDiscountDAO::parseDiscount(QSqlRecord record)
 {
     Discount::Ptr discount = std::make_shared<Discount>();
     discount->setText(record.value("TEXT").toString());
-    discount->setValue(record.value("VALUE").toDouble());
+    discount->setValue(Decimal::fromCents(record.value("VALUE").toInt()));
     discount->setId(record.value("ID").toInt());
 
     return discount;

@@ -56,7 +56,7 @@ protected:
     };
     Ui::AbstractBillItemWizard *ui;
     int m_id = -1;
-    double m_materialCost = 0.0;
+    Decimal m_materialCost;
 
     MaterialService::Ptr m_materialService;
     TemplateService::Ptr m_templateService;

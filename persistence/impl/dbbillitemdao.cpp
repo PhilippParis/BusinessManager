@@ -22,14 +22,14 @@ void DBBillItemDAO::create(BillItem::Ptr item)
 
     insertQuery.addBindValue(item->description());
     insertQuery.addBindValue(item->workingHours());
-    insertQuery.addBindValue(item->wagePerHour());
-    insertQuery.addBindValue(item->materialCost());
+    insertQuery.addBindValue(item->wagePerHour().cents());
+    insertQuery.addBindValue(item->materialCost().cents());
     insertQuery.addBindValue(item->materialOverhead());
     insertQuery.addBindValue(item->factoryOverhead());
     insertQuery.addBindValue(item->profit());
     insertQuery.addBindValue(item->cashback());
     insertQuery.addBindValue(item->tax());
-    insertQuery.addBindValue(item->price());
+    insertQuery.addBindValue(item->price().cents());
     insertQuery.addBindValue(item->unit());
     insertQuery.addBindValue(item->quantity());
 
@@ -65,14 +65,14 @@ void DBBillItemDAO::update(BillItem::Ptr item)
 
     updateQuery.addBindValue(item->description());
     updateQuery.addBindValue(item->workingHours());
-    updateQuery.addBindValue(item->wagePerHour());
-    updateQuery.addBindValue(item->materialCost());
+    updateQuery.addBindValue(item->wagePerHour().cents());
+    updateQuery.addBindValue(item->materialCost().cents());
     updateQuery.addBindValue(item->materialOverhead());
     updateQuery.addBindValue(item->factoryOverhead());
     updateQuery.addBindValue(item->profit());
     updateQuery.addBindValue(item->cashback());
     updateQuery.addBindValue(item->tax());
-    updateQuery.addBindValue(item->price());
+    updateQuery.addBindValue(item->price().cents());
     updateQuery.addBindValue(item->unit());
     updateQuery.addBindValue(item->quantity());
     updateQuery.addBindValue(item->id());
@@ -183,16 +183,16 @@ BillItem::Ptr DBBillItemDAO::parseBillItem(QSqlRecord record)
 
     item->setId(record.value("ID").toInt());
     item->setDescription(record.value("DESC").toString());
-    item->setMaterialCost(record.value("MATERIAL_COST").toDouble());
+    item->setMaterialCost(Decimal::fromCents(record.value("MATERIAL_COST").toInt()));
     item->setMaterialOverhead(record.value("MATERIAL_OVERHEAD").toDouble());
     item->setFactoryOverhead(record.value("FACTORY_OVERHEAD").toDouble());
     item->setProfit(record.value("PROFIT").toDouble());
     item->setCashback(record.value("CASHBACK").toDouble());
     item->setTax(record.value("TAX").toDouble());
-    item->setPrice(record.value("PRICE").toDouble());
+    item->setPrice(Decimal::fromCents(record.value("PRICE").toInt()));
     item->setQuantity(record.value("QUANTITY").toDouble());
     item->setUnit(record.value("UNIT").toString());
-    item->setWagePerHour(record.value("WAGE").toDouble());
+    item->setWagePerHour(Decimal::fromCents(record.value("WAGE").toInt()));
     item->setWorkingHours(record.value("WORK_HOURS").toDouble());
 
     // get materials

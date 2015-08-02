@@ -24,11 +24,20 @@ void Offer::setItems(const QList<BillItem::Ptr> &items)
     m_items = items;
 }
 
-double Offer::totalPrice() const
+Decimal Offer::totalPrice() const
 {
-    double total = 0.0;
+    Decimal total = Decimal::fromValue(0.0);
     for(BillItem::Ptr item : m_items) {
         total += item->price() * item->quantity();
+    }
+    return total;
+}
+
+Decimal Offer::netPrice() const
+{
+    Decimal total = Decimal::fromValue(0.0);
+    for(BillItem::Ptr item : m_items) {
+        total += item->netPrice() * item->quantity();
     }
     return total;
 }

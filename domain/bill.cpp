@@ -104,9 +104,9 @@ void Bill::setItems(const QList<BillItem::Ptr> &items)
     m_items = items;
 }
 
-double Bill::totalPrice() const
+Decimal Bill::totalPrice() const
 {
-    double total = 0.0;
+    Decimal total;
     for (BillItem::Ptr item : m_items) {
         total += item->price() * item->quantity();
     }
@@ -116,6 +116,20 @@ double Bill::totalPrice() const
     }
 
     return total;
+}
+
+Decimal Bill::netPrice() const
+{
+    Decimal sum;
+    for (BillItem::Ptr item : m_items) {
+        sum += item->netPrice() * item->quantity();
+    }
+
+    for (Discount::Ptr discount : m_discounts) {
+        sum -= discount->value();
+    }
+
+    return sum;
 }
 
 QList<Discount::Ptr> Bill::discounts() const

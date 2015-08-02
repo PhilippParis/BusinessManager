@@ -42,13 +42,13 @@ void BillItemValidator::validateMandatoryFields(BillItem::Ptr item)
     if (item->workingHours() < 0.0) {
         throw new ValidationException(tr("working hours must not be negative"));
     }
-    if (item->wagePerHour() < 0.0) {
+    if (item->wagePerHour() < Decimal::fromValue(0.0)) {
         throw new ValidationException(tr("wage must not be negative"));
     }
-    if (item->materialCost() < 0.0) {
+    if (item->materialCost() < Decimal::fromValue(0.0)) {
         throw new ValidationException(tr("material cost must not be negative"));
     }
-    if (item->price() < 0.0) {
+    if (item->price() < Decimal::fromValue(0.0)) {
         throw new ValidationException(tr("price must not be negative"));
     }
     if (item->unit() == nullptr || item->unit().isEmpty()) {

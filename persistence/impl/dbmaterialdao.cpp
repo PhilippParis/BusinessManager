@@ -63,11 +63,11 @@ void DBMaterialDAO::create(Material::Ptr item)
 
     insertQuery.addBindValue(item->name());
     insertQuery.addBindValue(item->manufactor());
-    insertQuery.addBindValue(item->costPerUnit());
+    insertQuery.addBindValue(item->costPerUnit().cents());
     insertQuery.addBindValue(item->type());
     insertQuery.addBindValue(item->unit());
     insertQuery.addBindValue(item->articleNumber());
-    insertQuery.addBindValue(item->tax());
+    insertQuery.addBindValue(item->tax().cents());
 
     if (!insertQuery.exec()) {
         qCCritical(lcPersistence) << "DBMaterialDAO::create failed: " + insertQuery.lastError().text();
@@ -100,11 +100,11 @@ void DBMaterialDAO::update(Material::Ptr item)
 
     updateQuery.addBindValue(item->name());
     updateQuery.addBindValue(item->manufactor());
-    updateQuery.addBindValue(item->costPerUnit());
+    updateQuery.addBindValue(item->costPerUnit().cents());
     updateQuery.addBindValue(item->type());
     updateQuery.addBindValue(item->unit());
     updateQuery.addBindValue(item->articleNumber());
-    updateQuery.addBindValue(item->tax());
+    updateQuery.addBindValue(item->tax().cents());
     updateQuery.addBindValue(item->id());
 
     if (!updateQuery.exec()) {
@@ -150,11 +150,11 @@ Material::Ptr DBMaterialDAO::parseMaterial(QSqlRecord record)
     material->setId(record.value("ID").toInt());
     material->setName(record.value("NAME").toString());
     material->setManufactor(record.value("MANUFACTOR").toString());
-    material->setCostPerUnit(record.value("COST").toDouble());
+    material->setCostPerUnit(Decimal::fromCents(record.value("COST").toInt()));
     material->setType(record.value("TYPE").toString());
     material->setUnit(record.value("UNIT").toString());
     material->setArticleNumber(record.value("NR").toString());
-    material->setTax(record.value("TAX").toDouble());
+    material->setTax(Decimal::fromCents(record.value("TAX").toInt()));
 
     return material;
 }

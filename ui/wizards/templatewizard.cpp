@@ -40,16 +40,16 @@ void TemplateWizard::on_TemplateWizard_currentIdChanged(int id)
 
         tmp->setMaterialCost(m_materialCost);
         tmp->setWorkingHours(ui->sbWorkingHours->value());
-        tmp->setWagePerHour(settings.value("financial/wage").toDouble());
+        tmp->setWagePerHour(Decimal::fromValue(settings.value("financial/wage").toDouble()));
         tmp->setMaterialOverhead(settings.value("financial/materialOverhead").toDouble());
         tmp->setFactoryOverhead(settings.value("financial/factoryOverhead").toDouble());
         tmp->setProfit(settings.value("financial/profit").toDouble());
         tmp->setCashback(settings.value("financial/cashback").toDouble());
         tmp->setTax(settings.value("financial/tax").toDouble());
 
-        ui->lblCostPerArticle->setText(QString::number(tmp->costs(), 'f', 2) + QString::fromUtf8("€"));
-        ui->sbPricePerUnit->setValue(tmp->price() < 0 ? 0.0 : tmp->price());
-        ui->lblCalculatedPrice->setText(QString::number(tmp->calculatedPrice(), 'f', 2) + QString::fromUtf8("€"));
+        ui->lblCostPerArticle->setText(QString::number(tmp->costs().value(), 'f', 2) + QString::fromUtf8("€"));
+        ui->sbPricePerUnit->setValue(tmp->price() < Decimal::fromValue(0.0) ? 0.0 : tmp->price().value());
+        ui->lblCalculatedPrice->setText(QString::number(tmp->calculatedPrice().value(), 'f', 2) + QString::fromUtf8("€"));
     }
 }
 

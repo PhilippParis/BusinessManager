@@ -38,8 +38,8 @@ void MaterialDAOTest::insertTest()
 
     Material::Ptr material = std::make_shared<Material>();
     material->setName(name);
-    material->setCostPerUnit(cost);
-    material->setTax(tax);
+    material->setCostPerUnit(Decimal::fromValue(cost));
+    material->setTax(Decimal::fromValue(tax));
     material->setName(name);
     material->setType(type);
     material->setUnit(unit);
@@ -91,8 +91,8 @@ void MaterialDAOTest::updateTest()
 
     Material::Ptr material = std::make_shared<Material>();
     material->setName("name");
-    material->setCostPerUnit(1.0);
-    material->setTax(2.0);
+    material->setCostPerUnit(Decimal::fromValue(1.0));
+    material->setTax(Decimal::fromValue(2.0));
     material->setName("name");
     material->setType("type");
     material->setUnit("unit");
@@ -105,8 +105,8 @@ void MaterialDAOTest::updateTest()
     QVERIFY(material->equals(materialFromData));
 
     material->setName(name);
-    material->setCostPerUnit(cost);
-    material->setTax(tax);
+    material->setCostPerUnit(Decimal::fromValue(cost));
+    material->setTax(Decimal::fromValue(tax));
     material->setName(name);
     material->setType(type);
     material->setUnit(unit);
@@ -129,8 +129,8 @@ void MaterialDAOTest::updateWithInvalidIDTest()
     // PREPARE
     Material::Ptr material = std::make_shared<Material>();
     material->setName("name");
-    material->setCostPerUnit(1.0);
-    material->setTax(2.0);
+    material->setCostPerUnit(Decimal::fromValue(1.0));
+    material->setTax(Decimal::fromValue(2.0));
     material->setName("name");
     material->setType("type");
     material->setUnit("unit");
@@ -160,8 +160,8 @@ void MaterialDAOTest::removeTestWithValidIDShouldPass()
     // PREPARE
     Material::Ptr material = std::make_shared<Material>();
     material->setName("name");
-    material->setCostPerUnit(1.0);
-    material->setTax(2.0);
+    material->setCostPerUnit(Decimal::fromValue(1.0));
+    material->setTax(Decimal::fromValue(2.0));
     material->setName("name");
     material->setType("type");
     material->setUnit("unit");
@@ -209,8 +209,8 @@ void MaterialDAOTest::getAllTest()
     // PREPARE
     Material::Ptr material = std::make_shared<Material>();
     material->setName("name");
-    material->setCostPerUnit(1.0);
-    material->setTax(2.0);
+    material->setCostPerUnit(Decimal::fromValue(1.0));
+    material->setTax(Decimal::fromValue(2.0));
     material->setName("name");
     material->setType("type");
     material->setUnit("unit");

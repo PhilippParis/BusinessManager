@@ -20,6 +20,7 @@ void UserSettingsWidget::loadSettings(QSettings *settings)
     ui->leTel->setText(settings->value("user/phone").toString());
     ui->leWebsite->setText(settings->value("user/website").toString());
     ui->leMail->setText(settings->value("user/mail").toString());
+    ui->leUIDNr->setText(settings->value("user/uid").toString());
 
     ui->leBIC->setText(settings->value("user/bic").toString());
     ui->leIBAN->setText(settings->value("user/iban").toString());
@@ -40,6 +41,7 @@ void UserSettingsWidget::writeSettings(QSettings *settings)
     settings->setValue("user/mail", ui->leMail->text());
     settings->setValue("user/bic", ui->leBIC->text());
     settings->setValue("user/iban", ui->leIBAN->text());
+    settings->setValue("user/uid", ui->leUIDNr->text());
 
     settings->setValue("user/logo_path", m_logoPath);
     settings->setValue("user/logo", QPixmap(m_logoPath));

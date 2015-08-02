@@ -42,7 +42,7 @@ private:
     void printBar(QPainter *painter);
     void printFooter(QPrinter *printer, QPainter *painter, int y);
     int printDiscounts(QPainter *painter, QList<Discount::Ptr> discounts, int y);
-    int printTotalPrice(QPainter *painter, double price, int y);
+    int printTotalPrice(QPainter *painter, Decimal netPrice, Decimal totalPrice, int y);
 
     QPainter* getPainter(QPrinter *printer);
 

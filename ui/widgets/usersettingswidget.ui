@@ -126,6 +126,16 @@
         <item row="4" column="1">
          <widget class="QLineEdit" name="leWebsite"/>
         </item>
+        <item row="5" column="0">
+         <widget class="QLabel" name="uIDNrLabel">
+          <property name="text">
+           <string>UID-Nr:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="1">
+         <widget class="QLineEdit" name="leUIDNr"/>
+        </item>
        </layout>
       </item>
      </layout>

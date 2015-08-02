@@ -4,14 +4,16 @@
 #include <memory>
 #include <QString>
 
+#include "decimal.h"
+
 class Discount
 {
 public:
     typedef std::shared_ptr<Discount> Ptr;
     Discount();
 
-    double value() const;
-    void setValue(double value);
+    Decimal value() const;
+    void setValue(Decimal value);
 
     QString text() const;
     void setText(const QString &text);
@@ -25,7 +27,7 @@ public:
 private:
     int m_id = -1;
     QString m_text = "";
-    double m_value = -1;
+    Decimal m_value = Decimal::fromValue(-1.0);
 };
 
 #endif // DISCOUNT_H

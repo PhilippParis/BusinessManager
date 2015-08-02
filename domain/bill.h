@@ -43,7 +43,8 @@ public:
     QList<Discount::Ptr> discounts() const;
     void setDiscounts(const QList<Discount::Ptr> &discounts);
 
-    double totalPrice() const;
+    Decimal totalPrice() const;
+    Decimal netPrice() const;
 
 private:
     int m_id = -1;

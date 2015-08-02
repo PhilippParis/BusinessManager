@@ -3,6 +3,7 @@
 
 #include <QtSql>
 
+#include "decimal.h"
 #include "logging.h"
 #include "persistence/billitemdao.h"
 

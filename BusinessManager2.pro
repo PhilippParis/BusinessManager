@@ -98,7 +98,8 @@ SOURCES += main.cpp\
     ui/widgets/materialswidget.cpp \
     ui/models/materialsortfilterproxymodel.cpp \
     ui/models/materialtablemodel.cpp \
-    tests/materialdaotest.cpp
+    tests/materialdaotest.cpp \
+    decimal.cpp
 
 HEADERS  += ui/mainwindow.h \
     domain/bill.h \
@@ -181,7 +182,8 @@ HEADERS  += ui/mainwindow.h \
     ui/widgets/materialswidget.h \
     ui/models/materialsortfilterproxymodel.h \
     ui/models/materialtablemodel.h \
-    tests/materialdaotest.h
+    tests/materialdaotest.h \
+    decimal.h
 
 FORMS    += ui/mainwindow.ui \
     ui/widgets/customerswidget.ui \

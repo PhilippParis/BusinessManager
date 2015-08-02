@@ -4,15 +4,17 @@ Discount::Discount()
 {
 
 }
-double Discount::value() const
+
+Decimal Discount::value() const
 {
     return m_value;
 }
 
-void Discount::setValue(double value)
+void Discount::setValue(Decimal value)
 {
     m_value = value;
 }
+
 QString Discount::text() const
 {
     return m_text;
@@ -36,7 +38,7 @@ QString Discount::toString() const
 {
     return "Discount{ id= " + QString::number(m_id) +
            "text= " + m_text +
-           "value= " + QString::number(m_value) +
+           "value= " + QString::number(m_value.value()) +
            "}";
 }
 

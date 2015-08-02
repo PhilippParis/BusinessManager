@@ -40,10 +40,10 @@ void MaterialValidator::validateMandatoryFields(Material::Ptr item)
     if (item->name().isEmpty()) {
         throw new ValidationException(tr("name must not be empty"));
     }
-    if (item->costPerUnit() < 0) {
+    if (item->costPerUnit() < Decimal::fromValue(0.0)) {
         throw new ValidationException(tr("cost must not be negative"));
     }
-    if (item->tax() < 0) {
+    if (item->tax() < Decimal::fromValue(0.0)) {
         throw new ValidationException(tr("tax must not be negative"));
     }
     if (item->unit().isEmpty()) {

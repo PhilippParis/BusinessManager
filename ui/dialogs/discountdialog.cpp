@@ -27,7 +27,7 @@ void DiscountDialog::prepareForUpdate(Discount::Ptr discount)
     m_openMode = Update;
 
     m_id = discount->id();
-    ui->sbValue->setValue(discount->value());
+    ui->sbValue->setValue(discount->value().value());
     ui->leText->setText(discount->text());
 }
 
@@ -52,6 +52,6 @@ Discount::Ptr DiscountDialog::toDomainObject()
     Discount::Ptr discount = std::make_shared<Discount>();
     discount->setId(m_id);
     discount->setText(ui->leText->text());
-    discount->setValue(ui->sbValue->value());
+    discount->setValue(Decimal::fromValue(ui->sbValue->value()));
     return discount;
 }

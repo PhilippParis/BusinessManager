@@ -75,7 +75,7 @@ void DatabaseSingleton::createTables(QSqlDatabase db)
    res = query.exec("CREATE TABLE IF NOT EXISTS DISCOUNT ( "
                     "ID INTEGER PRIMARY KEY NOT NULL, "
                     "TEXT VARCHAR(200) NOT NULL, "
-                    "VALUE REAL NOT NULL, "
+                    "VALUE INTEGER NOT NULL, "
                     "BILL INTEGER REFERENCES BILL, "
                     "DELETED INTEGER NOT NULL DEFAULT 0);");
 
@@ -87,14 +87,14 @@ void DatabaseSingleton::createTables(QSqlDatabase db)
                     "ID INTEGER PRIMARY KEY NOT NULL, "
                     "DESC VARCHAR(200) NOT NULL, "
                     "WORK_HOURS REAL NOT NULL, "
-                    "WAGE REAL NOT NULL, "
-                    "MATERIAL_COST REAL NOT NULL, "
+                    "WAGE INTEGER NOT NULL, "
+                    "MATERIAL_COST INTEGER NOT NULL, "
                     "MATERIAL_OVERHEAD REAL NOT NULL, "
                     "FACTORY_OVERHEAD REAL NOT NULL, "
                     "PROFIT REAL NOT NULL, "
                     "CASHBACK REAL NOT NULL, "
                     "TAX REAL NOT NULL, "
-                    "PRICE REAL NOT NULL, "
+                    "PRICE INTEGER NOT NULL, "
                     "UNIT VARCHAR(20) NOT NULL, "
                     "QUANTITY INTEGER NOT NULL, "
                     "BILL INTEGER REFERENCES BILL(ID), "
@@ -108,11 +108,11 @@ void DatabaseSingleton::createTables(QSqlDatabase db)
                     "ID INTEGER PRIMARY KEY NOT NULL, "
                     "NAME VARCHAR(200) NOT NULL, "
                     "MANUFACTOR VARCHAR(200) NOT NULL, "
-                    "COST REAL NOT NULL, "
+                    "COST INTEGER NOT NULL, "
                     "TYPE VARCHAR(20) NOT NULL, "
                     "UNIT VARCHAR(20) NOT NULL, "
                     "NR VARCHAR(20) NOT NULL, "
-                    "TAX REAL NOT NULL, "
+                    "TAX INTEGER NOT NULL, "
                     "DELETED INTEGER NOT NULL DEFAULT 0);");
 
    if(!res) {

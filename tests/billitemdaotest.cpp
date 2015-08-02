@@ -95,10 +95,10 @@ void BillItemDAOTest::insertTest()
 
     BillItem::Ptr item = std::make_shared<BillItem>();
     item->setDescription(desc);
-    item->setMaterialCost(cost);
-    item->setPrice(price);
+    item->setMaterialCost(Decimal::fromValue(cost));
+    item->setPrice(Decimal::fromValue(price));
     item->setWorkingHours(hours);
-    item->setWagePerHour(wage);
+    item->setWagePerHour(Decimal::fromValue(wage));
     item->setQuantity(quantity);
     item->setUnit(unit);
     item->setMaterialOverhead(materialOverhead);
@@ -216,10 +216,10 @@ void BillItemDAOTest::updateTest()
     // create bill item
     BillItem::Ptr item = std::make_shared<BillItem>();
     item->setDescription("desc");
-    item->setMaterialCost(1.0);
-    item->setPrice(5.0);
+    item->setMaterialCost(Decimal::fromValue(1.0));
+    item->setPrice(Decimal::fromValue(5.0));
     item->setWorkingHours(10);
-    item->setWagePerHour(1.3);
+    item->setWagePerHour(Decimal::fromValue(1.3));
     item->setQuantity(5);
     item->setUnit("unit");
     item->setMaterialOverhead(0.05);
@@ -238,10 +238,10 @@ void BillItemDAOTest::updateTest()
 
     // WHEN / THEN
     item->setDescription(desc);
-    item->setMaterialCost(cost);
-    item->setPrice(price);
+    item->setMaterialCost(Decimal::fromValue(cost));
+    item->setPrice(Decimal::fromValue(price));
     item->setWorkingHours(hours);
-    item->setWagePerHour(wage);
+    item->setWagePerHour(Decimal::fromValue(wage));
     item->setQuantity(quantity);
     item->setUnit(unit);
     item->setMaterialOverhead(materialOverhead);
@@ -268,10 +268,10 @@ void BillItemDAOTest::updateWithInvalidIDTest()
 {
     BillItem::Ptr item = std::make_shared<BillItem>();
     item->setDescription("desc");
-    item->setMaterialCost(1.0);
-    item->setPrice(5.0);
+    item->setMaterialCost(Decimal::fromValue(1.0));
+    item->setPrice(Decimal::fromValue(5.0));
     item->setWorkingHours(10);
-    item->setWagePerHour(1.3);
+    item->setWagePerHour(Decimal::fromValue(1.3));
     item->setQuantity(5);
     item->setUnit("unit");
     item->setMaterialOverhead(0.05);
@@ -304,10 +304,10 @@ void BillItemDAOTest::removeTestWithValidIDShouldPass()
     // PREPARE
     BillItem::Ptr item = std::make_shared<BillItem>();
     item->setDescription("desc");
-    item->setMaterialCost(1.0);
-    item->setPrice(5.0);
+    item->setMaterialCost(Decimal::fromValue(1.0));
+    item->setPrice(Decimal::fromValue(5.0));
     item->setWorkingHours(10);
-    item->setWagePerHour(1.3);
+    item->setWagePerHour(Decimal::fromValue(1.3));
     item->setQuantity(5);
     item->setUnit("unit");
     item->setMaterialOverhead(0.05);
@@ -357,10 +357,10 @@ void BillItemDAOTest::getAllTest()
     // PREPARE
     BillItem::Ptr item = std::make_shared<BillItem>();
     item->setDescription("desc");
-    item->setMaterialCost(1.0);
-    item->setPrice(5.0);
+    item->setMaterialCost(Decimal::fromValue(1.0));
+    item->setPrice(Decimal::fromValue(5.0));
     item->setWorkingHours(10);
-    item->setWagePerHour(1.3);
+    item->setWagePerHour(Decimal::fromValue(1.3));
     item->setQuantity(5);
     item->setUnit("unit");
     item->setMaterialOverhead(0.05);

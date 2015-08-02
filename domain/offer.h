@@ -18,7 +18,8 @@ public:
     QList<BillItem::Ptr> items() const;
     void setItems(const QList<BillItem::Ptr> &items);
 
-    double totalPrice() const;
+    Decimal totalPrice() const;
+    Decimal netPrice() const;
 
 private:
     Customer::Ptr m_customer;

@@ -14,12 +14,12 @@ void Material::setId(int id)
     m_id = id;
 }
 
-double Material::costPerUnit() const
+Decimal Material::costPerUnit() const
 {
     return m_costPerUnit;
 }
 
-void Material::setCostPerUnit(double costPerUnit)
+void Material::setCostPerUnit(Decimal costPerUnit)
 {
     m_costPerUnit = costPerUnit;
 }
@@ -63,8 +63,8 @@ void Material::setManufactor(const QString &desc)
 QString Material::toString() const
 {
     return "Material{id= " + QString::number(m_id) +
-           ", cost = " + QString::number(m_costPerUnit) +
-           ", tax = " + QString::number(m_tax) +
+           ", cost = " + QString::number(m_costPerUnit.value()) +
+           ", tax = " + QString::number(m_tax.value()) +
            ", name = " + m_name +
            ", type = " + m_type +
            ", unit = " + m_type +
@@ -113,12 +113,12 @@ void Material::setArticleNumber(const QString &articleNumber)
 {
     m_articleNumber = articleNumber;
 }
-double Material::tax() const
+Decimal Material::tax() const
 {
     return m_tax;
 }
 
-void Material::setTax(double tax)
+void Material::setTax(Decimal tax)
 {
     m_tax = tax;
 }
