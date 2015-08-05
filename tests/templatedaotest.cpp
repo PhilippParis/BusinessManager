@@ -81,7 +81,7 @@ void TemplateDAOTest::insertTest()
     templ->setItemDesc(itemDesc);
     templ->setUnit(unit);
     templ->setWorkingHours(hours);
-    templ->setPrice(price);
+    templ->setPrice(Decimal::fromValue(price));
     templ->setMaterial(material);
 
     try {
@@ -177,7 +177,7 @@ void TemplateDAOTest::updateTest()
     templ->setItemDesc("itemDesc");
     templ->setUnit("unit");
     templ->setWorkingHours(1.0);
-    templ->setPrice(10.0);
+    templ->setPrice(Decimal::fromValue(10.0));
 
     QMap<Material::Ptr, double> m;
     m.insert(material1, 1.2);
@@ -195,7 +195,7 @@ void TemplateDAOTest::updateTest()
     templ->setItemDesc(itemDesc);
     templ->setUnit(unit);
     templ->setWorkingHours(hours);
-    templ->setPrice(price);
+    templ->setPrice(Decimal::fromValue(price));
     templ->setMaterial(material);
 
     try {
@@ -220,7 +220,7 @@ void TemplateDAOTest::updateWithInvalidIDTest()
     templ->setItemDesc("itemDesc");
     templ->setUnit("unit");
     templ->setWorkingHours(1.0);
-    templ->setPrice(10.0);
+    templ->setPrice(Decimal::fromValue(10.0));
 
     // get not used id
     int id = 0;
@@ -252,7 +252,7 @@ void TemplateDAOTest::removeTestWithValidIDShouldPass()
     templ->setItemDesc("itemDesc");
     templ->setUnit("unit");
     templ->setWorkingHours(1.0);
-    templ->setPrice(10.0);
+    templ->setPrice(Decimal::fromValue(10.0));
 
     m_templateDAO->create(templ);
     QVERIFY(templ->id() >= 0);
@@ -302,7 +302,7 @@ void TemplateDAOTest::getAllTest()
     templ->setItemDesc("itemDesc");
     templ->setUnit("unit");
     templ->setWorkingHours(1.0);
-    templ->setPrice(10.0);
+    templ->setPrice(Decimal::fromValue(10.0));
 
     m_templateDAO->create(templ);
     QVERIFY(templ->id() >= 0);

@@ -46,7 +46,7 @@ void BillWidget::update()
 
     QPair<QDate,QDate> dateRange = m_billService->billDateRange();
     ui->dateFrom->setDate(dateRange.first);
-    ui->dateTo->setDate(dateRange.second);
+    ui->dateTo->setDate(QDate::currentDate());
 }
 
 void BillWidget::selectionChanged(QModelIndex newIndex, QModelIndex prevIndex)

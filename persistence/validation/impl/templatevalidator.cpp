@@ -46,7 +46,7 @@ void TemplateValidator::validateMandatoryFields(Template::Ptr item)
     if (item->unit().isEmpty()) {
         throw new ValidationException(tr("unit must not be empty"));
     }
-    if (item->price() < 0 ) {
+    if (item->price() < Decimal::fromValue(0.0) ) {
         throw new ValidationException(tr("price must not be negative"));
     }
     if (item->workingHours() < 0 ) {

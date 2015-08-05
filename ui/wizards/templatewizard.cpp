@@ -23,6 +23,7 @@ void TemplateWizard::prepareForUpdate(Template::Ptr item)
     m_openMode = Update;
     m_id = item->id();
     ui->tblTemplates->setCurrentIndex(m_templateModel->index(m_templateModel->indexOf(item), 0));
+    displayTemplateData(item);
 }
 
 Template::Ptr TemplateWizard::toDomainObject()
@@ -45,7 +46,7 @@ void TemplateWizard::on_TemplateWizard_currentIdChanged(int id)
         tmp->setFactoryOverhead(settings.value("financial/factoryOverhead").toDouble());
         tmp->setProfit(settings.value("financial/profit").toDouble());
         tmp->setCashback(settings.value("financial/cashback").toDouble());
-        tmp->setTax(settings.value("financial/tax").toDouble());
+        tmp->setTaxRate(ui->sbTaxRate->value() / 100.0);
 
         ui->lblCostPerArticle->setText(QString::number(tmp->costs().value(), 'f', 2) + QString::fromUtf8("€"));
         ui->sbPricePerUnit->setValue(tmp->price() < Decimal::fromValue(0.0) ? 0.0 : tmp->price().value());

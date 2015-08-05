@@ -81,7 +81,7 @@ void BillItem::setPrice(Decimal price)
 
 Decimal BillItem::netPrice() const
 {
-    return m_price / (1.0 + m_tax);
+    return m_price / (1.0 + m_taxRate);
 }
 
 double BillItem::quantity() const
@@ -142,7 +142,7 @@ bool BillItem::equals(const BillItem::Ptr item) const
     if (m_factoryOverhead != item->m_factoryOverhead) {
         return false;
     }
-    if (m_tax != item->m_tax) {
+    if (m_taxRate != item->m_taxRate) {
         return false;
     }
     if (m_cashback != item->m_cashback) {
@@ -170,6 +170,7 @@ void BillItem::setMaterialOverhead(double material_overhead)
 {
     m_materialOverhead = material_overhead;
 }
+
 double BillItem::factoryOverhead() const
 {
     return m_factoryOverhead;
@@ -179,6 +180,7 @@ void BillItem::setFactoryOverhead(double factory_overhead)
 {
     m_factoryOverhead = factory_overhead;
 }
+
 double BillItem::profit() const
 {
     return m_profit;
@@ -188,6 +190,7 @@ void BillItem::setProfit(double profit)
 {
     m_profit = profit;
 }
+
 double BillItem::cashback() const
 {
     return m_cashback;
@@ -197,14 +200,15 @@ void BillItem::setCashback(double cashback)
 {
     m_cashback = cashback;
 }
-double BillItem::tax() const
+
+double BillItem::taxRate() const
 {
-    return m_tax;
+    return m_taxRate;
 }
 
-void BillItem::setTax(double tax)
+void BillItem::setTaxRate(double tax)
 {
-    m_tax = tax;
+    m_taxRate = tax;
 }
 
 Decimal BillItem::costs()
@@ -219,7 +223,7 @@ Decimal BillItem::calculatedPrice()
 {
     Decimal costWithProfit = costs() * (1.0 + m_profit);
     Decimal costWithCashback = costWithProfit * (1.0 + m_cashback);
-    return costWithCashback * (1.0 + m_tax);
+    return costWithCashback * (1.0 + m_taxRate);
 }
 
 

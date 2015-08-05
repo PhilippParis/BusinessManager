@@ -42,4 +42,22 @@ Decimal Offer::netPrice() const
     return total;
 }
 
+QMap<double, Decimal> Offer::inTotalPriceIncludedTaxes() const
+{
+    QMap<double, Decimal> taxes;
+
+    // get different tax rates
+    for (BillItem::Ptr item : m_items) {
+        double taxRate = item->taxRate();
+        taxes.insert(taxRate, taxes.value(taxRate, Decimal::fromValue(0.0)) + item->price() * item->quantity());
+    }
+
+    QMap<double, Decimal>::iterator i;
+    for (i = taxes.begin(); i != taxes.end(); i++) {
+        taxes.insert(i.key(), i.value() * i.key());
+    }
+
+    return taxes;
+}
+
 

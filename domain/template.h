@@ -41,11 +41,14 @@ public:
     double workingHours() const;
     void setWorkingHours(double workingHours);
 
-    double price() const;
-    void setPrice(double price);
+    Decimal price() const;
+    void setPrice(Decimal price);
 
     QString toString();
     bool equals(Template::Ptr item);
+
+    double taxRate() const;
+    void setTaxRate(double taxRate);
 
 private:
     int m_id = -1;
@@ -57,7 +60,8 @@ private:
     QString m_itemDesc;
     QString m_unit;
     double m_workingHours;
-    double m_price;
+    double m_taxRate;
+    Decimal m_price;
 
     QMap<Material::Ptr, double> m_material;
 };

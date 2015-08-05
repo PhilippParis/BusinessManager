@@ -19,7 +19,7 @@ void DBTemplateDAO::create(Template::Ptr item)
     }
 
     QSqlQuery insertQuery(m_database);
-    insertQuery.prepare("INSERT INTO TEMPLATE VALUES(NULL, ?, ?, ?, ?, ?, ?, ?, ?, 0);");
+    insertQuery.prepare("INSERT INTO TEMPLATE VALUES(NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0);");
 
     insertQuery.addBindValue(item->name());
     insertQuery.addBindValue(item->organisation());
@@ -28,7 +28,8 @@ void DBTemplateDAO::create(Template::Ptr item)
     insertQuery.addBindValue(item->itemDesc());
     insertQuery.addBindValue(item->unit());
     insertQuery.addBindValue(item->workingHours());
-    insertQuery.addBindValue(item->price());
+    insertQuery.addBindValue(item->price().cents());
+    insertQuery.addBindValue(item->taxRate());
 
     if (!insertQuery.exec()) {
         qCCritical(lcPersistence) << "DBTemplateDAO::create failed: " + insertQuery.lastError().text();
@@ -58,7 +59,8 @@ void DBTemplateDAO::update(Template::Ptr item)
                         "ITEM_DESC = ?, "
                         "UNIT = ?, "
                         "WORK_HOURS = ?, "
-                        "PRICE = ? "
+                        "PRICE = ?, "
+                        "TAXRATE = ? "
                         "WHERE ID = ?;");
 
 
@@ -69,7 +71,8 @@ void DBTemplateDAO::update(Template::Ptr item)
     updateQuery.addBindValue(item->itemDesc());
     updateQuery.addBindValue(item->unit());
     updateQuery.addBindValue(item->workingHours());
-    updateQuery.addBindValue(item->price());
+    updateQuery.addBindValue(item->price().cents());
+    updateQuery.addBindValue(item->taxRate());
     updateQuery.addBindValue(item->id());
 
     if (!updateQuery.exec()) {
@@ -163,7 +166,8 @@ Template::Ptr DBTemplateDAO::parseTemplate(QSqlRecord record)
     templ->setItemDesc(record.value("ITEM_DESC").toString());
     templ->setUnit(record.value("UNIT").toString());
     templ->setWorkingHours(record.value("WORK_HOURS").toDouble());
-    templ->setPrice(record.value("PRICE").toDouble());
+    templ->setPrice(Decimal::fromCents(record.value("PRICE").toInt()));
+    templ->setTaxRate(record.value("TAXRATE").toDouble());
 
     // get materials
     QSqlQuery query(m_database);

@@ -46,6 +46,8 @@ public:
     Decimal totalPrice() const;
     Decimal netPrice() const;
 
+    QMap<double, Decimal> inTotalPriceIncludedTaxes() const;
+
 private:
     int m_id = -1;
     Customer::Ptr m_customer;

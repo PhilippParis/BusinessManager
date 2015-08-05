@@ -8,6 +8,8 @@ AbstractBillItemWizard::AbstractBillItemWizard(QWidget *parent, MaterialService:
       m_templateService(templateService)
 {
     ui->setupUi(this);
+    QSettings settings;
+
     m_materialModel = new MaterialTableModel();
     SpinBoxDelegate* delegate = new SpinBoxDelegate(ui->tblMaterial);
     ui->tblMaterial->setModel(m_materialModel);
@@ -19,6 +21,8 @@ AbstractBillItemWizard::AbstractBillItemWizard(QWidget *parent, MaterialService:
     ui->tblTemplates->setModel(m_templateSortFilterProxyModel);
 
     m_templateModel->addAll(templateService->getAll());
+
+    ui->sbTaxRate->setValue(settings.value("financial/tax").toDouble() * 100.0);
 
     connect(m_materialModel, SIGNAL(materialChanged()), SLOT(updateMaterialCosts()));
 }
@@ -118,13 +122,14 @@ void AbstractBillItemWizard::displayTemplateData(Template::Ptr item)
     m_materialModel->addAllWithQuantity(item->material());
 
     ui->sbWorkingHours->setValue(item->workingHours());
-    ui->sbPricePerUnit->setValue(item->price());
+    ui->sbPricePerUnit->setValue(item->price().value());
     ui->textEditArticleDesc->setText(item->itemDesc());
     ui->leTemplateName->setText(item->name());
     ui->leTemplateOrg->setText(item->organisation());
     ui->leDesc->setText(item->desc());
     ui->leType->setText(item->type());
     ui->leUnit->setText(item->unit());
+    ui->sbTaxRate->setValue(item->taxRate() * 100.0);
 }
 
 Template::Ptr AbstractBillItemWizard::toTemplate()
@@ -135,11 +140,12 @@ Template::Ptr AbstractBillItemWizard::toTemplate()
     templ->setOrganisation(ui->leTemplateOrg->text());
     templ->setItemDesc(ui->textEditArticleDesc->toPlainText());
     templ->setUnit(ui->leUnit->text());
-    templ->setPrice(ui->sbPricePerUnit->value());
+    templ->setPrice(Decimal::fromValue(ui->sbPricePerUnit->value()));
     templ->setWorkingHours(ui->sbWorkingHours->value());
     templ->setMaterial(m_materialModel->itemsWithQuantity());
     templ->setDesc(ui->leDesc->text());
     templ->setType(ui->leType->text());
+    templ->setTaxRate(ui->sbTaxRate->value() / 100.0);
 
     return templ;
 }

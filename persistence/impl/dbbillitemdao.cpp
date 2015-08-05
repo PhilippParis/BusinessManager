@@ -28,7 +28,7 @@ void DBBillItemDAO::create(BillItem::Ptr item)
     insertQuery.addBindValue(item->factoryOverhead());
     insertQuery.addBindValue(item->profit());
     insertQuery.addBindValue(item->cashback());
-    insertQuery.addBindValue(item->tax());
+    insertQuery.addBindValue(item->taxRate());
     insertQuery.addBindValue(item->price().cents());
     insertQuery.addBindValue(item->unit());
     insertQuery.addBindValue(item->quantity());
@@ -71,7 +71,7 @@ void DBBillItemDAO::update(BillItem::Ptr item)
     updateQuery.addBindValue(item->factoryOverhead());
     updateQuery.addBindValue(item->profit());
     updateQuery.addBindValue(item->cashback());
-    updateQuery.addBindValue(item->tax());
+    updateQuery.addBindValue(item->taxRate());
     updateQuery.addBindValue(item->price().cents());
     updateQuery.addBindValue(item->unit());
     updateQuery.addBindValue(item->quantity());
@@ -188,7 +188,7 @@ BillItem::Ptr DBBillItemDAO::parseBillItem(QSqlRecord record)
     item->setFactoryOverhead(record.value("FACTORY_OVERHEAD").toDouble());
     item->setProfit(record.value("PROFIT").toDouble());
     item->setCashback(record.value("CASHBACK").toDouble());
-    item->setTax(record.value("TAX").toDouble());
+    item->setTaxRate(record.value("TAX").toDouble());
     item->setPrice(Decimal::fromCents(record.value("PRICE").toInt()));
     item->setQuantity(record.value("QUANTITY").toDouble());
     item->setUnit(record.value("UNIT").toString());

@@ -63,7 +63,7 @@ void BillItemValidator::validateMandatoryFields(BillItem::Ptr item)
     if (item->factoryOverhead() < 0.0 || item->factoryOverhead() > 1.0) {
         throw new ValidationException(tr("factory overhead must be between 0% and 100%"));
     }
-    if (item->tax() < 0.0 || item->tax() > 1.0) {
+    if (item->taxRate() < 0.0 || item->taxRate() > 1.0) {
         throw new ValidationException(tr("tax must be between 0% and 100%"));
     }
     if (item->cashback() < 0.0 || item->cashback() > 1.0) {

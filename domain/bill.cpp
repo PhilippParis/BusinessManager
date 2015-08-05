@@ -132,6 +132,42 @@ Decimal Bill::netPrice() const
     return sum;
 }
 
+QMap<double, Decimal> Bill::inTotalPriceIncludedTaxes() const
+{
+    QMap<double, Decimal> sumPerTaxRate;
+    QMap<double, Decimal> taxes;
+
+    // get total bill price without discounts
+    Decimal total = Decimal::fromValue(0.0);
+    for (BillItem::Ptr item : m_items) {
+        total += item->price() * item->quantity();
+    }
+
+    // get sum of discounts
+    Decimal discount = Decimal::fromValue(0.0);
+    for (Discount::Ptr disc : m_discounts) {
+        discount += disc->value();
+    }
+
+    // get different tax rates
+    for (BillItem::Ptr item : m_items) {
+        double taxRate = item->taxRate();
+        sumPerTaxRate.insert(taxRate, sumPerTaxRate.value(taxRate, Decimal::fromValue(0.0)) + item->price() * item->quantity());
+    }
+
+    // calc tax value
+    QMap<double, Decimal>::iterator i;
+    for (i = sumPerTaxRate.begin(); i != sumPerTaxRate.end(); ++i) {
+        double taxRate = i.key();
+        Decimal priceSum = i.value();
+
+        Decimal taxValue = (priceSum - (discount * (priceSum / total))) * (taxRate / (1.0 + taxRate));
+        taxes.insert(taxRate, taxValue);
+    }
+
+    return taxes;
+}
+
 QList<Discount::Ptr> Bill::discounts() const
 {
     return m_discounts;

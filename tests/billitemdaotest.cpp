@@ -105,7 +105,7 @@ void BillItemDAOTest::insertTest()
     item->setFactoryOverhead(factoryOverhead);
     item->setProfit(profit);
     item->setCashback(cashback);
-    item->setTax(tax);
+    item->setTaxRate(tax);
 
     item->setMaterial(material);
 
@@ -226,7 +226,7 @@ void BillItemDAOTest::updateTest()
     item->setFactoryOverhead(0.05);
     item->setProfit(0.2);
     item->setCashback(0.02);
-    item->setTax(0.2);
+    item->setTaxRate(0.2);
 
     QMap<Material::Ptr, double> m;
     m.insert(material1, 1.2);
@@ -248,7 +248,7 @@ void BillItemDAOTest::updateTest()
     item->setFactoryOverhead(factoryOverhead);
     item->setProfit(profit);
     item->setCashback(cashback);
-    item->setTax(tax);
+    item->setTaxRate(tax);
 
     item->setMaterial(material);
 
@@ -278,7 +278,7 @@ void BillItemDAOTest::updateWithInvalidIDTest()
     item->setFactoryOverhead(0.05);
     item->setProfit(0.2);
     item->setCashback(0.02);
-    item->setTax(0.2);
+    item->setTaxRate(0.2);
 
     // get not used id
     int id = 0;
@@ -314,7 +314,7 @@ void BillItemDAOTest::removeTestWithValidIDShouldPass()
     item->setFactoryOverhead(0.05);
     item->setProfit(0.2);
     item->setCashback(0.02);
-    item->setTax(0.2);
+    item->setTaxRate(0.2);
 
     m_billItemDAO->create(item);
     QVERIFY(item->id() >= 0);
@@ -367,7 +367,7 @@ void BillItemDAOTest::getAllTest()
     item->setFactoryOverhead(0.05);
     item->setProfit(0.2);
     item->setCashback(0.02);
-    item->setTax(0.2);
+    item->setTaxRate(0.2);
 
     m_billItemDAO->create(item);
     QVERIFY(item->id() >= 0);

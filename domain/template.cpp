@@ -97,6 +97,16 @@ bool Template::equals(Template::Ptr item)
 
     return true;
 }
+double Template::taxRate() const
+{
+    return m_taxRate;
+}
+
+void Template::setTaxRate(double taxRate)
+{
+    m_taxRate = taxRate;
+}
+
 
 QString Template::itemDesc() const
 {
@@ -125,18 +135,15 @@ void Template::setWorkingHours(double workingHours)
 {
     m_workingHours = workingHours;
 }
-double Template::price() const
+Decimal Template::price() const
 {
     return m_price;
 }
 
-void Template::setPrice(double price)
+void Template::setPrice(Decimal price)
 {
     m_price = price;
 }
-
-
-
 
 int Template::id() const
 {

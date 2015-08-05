@@ -21,6 +21,8 @@ public:
     Decimal totalPrice() const;
     Decimal netPrice() const;
 
+    QMap<double, Decimal> inTotalPriceIncludedTaxes() const;
+
 private:
     Customer::Ptr m_customer;
     QList<BillItem::Ptr> m_items;

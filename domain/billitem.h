@@ -62,8 +62,8 @@ public:
     double cashback() const;
     void setCashback(double cashback);
 
-    double tax() const;
-    void setTax(double tax);
+    double taxRate() const;
+    void setTaxRate(double taxRate);
 
     Decimal costs();
     Decimal calculatedPrice();
@@ -75,7 +75,7 @@ private:
     double m_factoryOverhead = -1.0;
     double m_profit = -1.0;
     double m_cashback = -1.0;
-    double m_tax = -1.0;
+    double m_taxRate = -1.0;
     Decimal m_price = Decimal::fromValue(-1.0);
 
     double m_workingHours = -1.0;

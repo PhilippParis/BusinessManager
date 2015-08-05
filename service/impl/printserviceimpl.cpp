@@ -27,7 +27,7 @@ void PrintServiceImpl::printBill(QPrinter *printer, Bill::Ptr bill)
     currentYPos = printDiscounts(painter, bill->discounts(), currentYPos);
 
     // total price
-    currentYPos = printTotalPrice(painter, bill->netPrice(), bill->totalPrice(), currentYPos);
+    currentYPos = printTotalPrice(painter, bill->inTotalPriceIncludedTaxes(), bill->totalPrice(), currentYPos);
 
     // footer
     printFooter(printer, painter, currentYPos);
@@ -52,7 +52,7 @@ void PrintServiceImpl::printOffer(QPrinter *printer, Offer::Ptr offer)
     int currentYPos = printBillItems(printer, painter, offer->items());
 
     // total price
-    currentYPos = printTotalPrice(painter, offer->netPrice(), offer->totalPrice(), currentYPos);
+    currentYPos = printTotalPrice(painter, offer->inTotalPriceIncludedTaxes(), offer->totalPrice(), currentYPos);
 
     // footer
     printFooter(printer, painter, currentYPos);
@@ -163,11 +163,11 @@ void PrintServiceImpl::printBillItem(QPainter *painter, BillItem::Ptr item, int 
     painter->drawText(9.5 * 225, y, QString::number(item->quantity()) + " "+item->unit());
 
     //print price
-    QString price = QString::number(item->netPrice().value(), 'f', 2) + QString::fromUtf8("€");
+    QString price = QString::number(item->price().value(), 'f', 2) + QString::fromUtf8("€");
     painter->drawText(14.5 * 225 - fm.width(price), y, price);
 
     //print total price
-    QString totalPrice = QString::number((item->netPrice() * item->quantity()).value(), 'f', 2) + QString::fromUtf8("€");
+    QString totalPrice = QString::number((item->price() * item->quantity()).value(), 'f', 2) + QString::fromUtf8("€");
     painter->drawText(18 * 225 - fm.width(totalPrice), y, totalPrice);
 }
 
@@ -271,32 +271,35 @@ int PrintServiceImpl::printDiscounts(QPainter *painter, QList<Discount::Ptr> dis
     return y;
 }
 
-int PrintServiceImpl::printTotalPrice(QPainter *painter, Decimal netPrice, Decimal totalPrice, int y)
+int PrintServiceImpl::printTotalPrice(QPainter *painter, QMap<double, Decimal> taxes, Decimal totalPrice, int y)
 {
-    QFontMetrics fm = painter->fontMetrics();
-
-    painter->drawText(LEFT_MARGIN, y, tr("Sub Total:"));
-    QString net = QString::number(netPrice.value(), 'f', 2) + QString::fromUtf8("€");
-    painter->drawText(18 * 225 - fm.width(net), y, net);
-
-    y += 100;
-
-    painter->drawText(LEFT_MARGIN, y, tr("Sales Tax:"));
-    QString tax = QString::number((totalPrice - netPrice).value(), 'f', 2) + QString::fromUtf8("€");
-    painter->drawText(18 * 225 - fm.width(tax), y, tax);
-
-    y += 100;
-
     QFont font = painter->font();
     font.setBold(true);
     painter->setFont(font);
-    fm = painter->fontMetrics();
+    QFontMetrics fm = painter->fontMetrics();
 
-    painter->drawText(LEFT_MARGIN, y, tr("Total Price:"));
+    painter->drawText(LEFT_MARGIN, y, tr("Total Price (incl. tax):"));
     QString total = QString::number(totalPrice.value(), 'f', 2) + QString::fromUtf8("€");
     painter->drawText(18 * 225 - fm.width(total), y, total);
+    y += 120;
 
-    return y + 250;
+    font.setBold(false);
+    font.setPointSizeF(8.0 / SCALE);
+    painter->setFont(font);
+    fm = painter->fontMetrics();
+
+    QMap<double, Decimal>::iterator i;
+    for (i = taxes.begin(); i != taxes.end(); i++) {
+        painter->drawText(LEFT_MARGIN, y, tr("Sales Tax (%1 %):").arg(QString::number(i.key() * 100)));
+        QString tax = QString::number(i.value().value(), 'f', 2) + QString::fromUtf8("€");
+        painter->drawText(18 * 225 - fm.width(tax), y, tax);
+        y += 100;
+    }
+
+    font.setPointSizeF(1.0 / SCALE);
+    painter->setFont(font);
+
+    return y + 150;
 }
 
 void PrintServiceImpl::printSubject(QPainter *painter, QString subject, QStringList text)

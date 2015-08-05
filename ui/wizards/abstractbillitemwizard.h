@@ -5,6 +5,7 @@
 #include <QTextBlock>
 #include <QMessageBox>
 #include <QDebug>
+#include <QSettings>
 
 #include "service/materialservice.h"
 #include "service/templateservice.h"
@@ -41,10 +42,10 @@ private:
     virtual bool onCreate() = 0;
 
     Template::Ptr selectedTemplate();
-    void displayTemplateData(Template::Ptr templ);
 
 protected:
     Template::Ptr toTemplate();
+    void displayTemplateData(Template::Ptr templ);
 
 protected:
     enum OpenMode {

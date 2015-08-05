@@ -26,6 +26,7 @@ void BillItemWizard::prepareForUpdate(BillItem::Ptr item)
     ui->sbQuantity->setValue(item->quantity());
     ui->sbWorkingHours->setValue(item->workingHours());
     ui->lblCostPerArticle->setText(QString::number(cost.value()) + QString::fromUtf8("€"));
+    ui->sbTaxRate->setValue(item->taxRate() * 100.0);
     m_materialModel->addAllWithQuantity(item->material());
 }
 
@@ -49,7 +50,7 @@ BillItem::Ptr BillItemWizard::getBillItemDomainObject()
     item->setFactoryOverhead(settings.value("financial/factoryOverhead").toDouble());
     item->setProfit(settings.value("financial/profit").toDouble());
     item->setCashback(settings.value("financial/cashback").toDouble());
-    item->setTax(settings.value("financial/tax").toDouble());
+    item->setTaxRate(ui->sbTaxRate->value() / 100.0);
 
     return item;
 }

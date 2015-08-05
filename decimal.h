@@ -1,7 +1,6 @@
 #ifndef DECIMAL_H
 #define DECIMAL_H
 
-
 class Decimal
 {
 
