@@ -26,6 +26,7 @@
 #include "service/impl/materialserviceimpl.h"
 #include "service/impl/templateserviceimpl.h"
 #include "service/impl/printserviceimpl.h"
+#include "service/impl/statisticsserviceimpl.h"
 
 #include "ui/dialogs/settingsdialog.h"
 #include "ui/dialogs/offerdialog.h"
@@ -79,6 +80,7 @@ private:
     MaterialService::Ptr m_materialService;
     TemplateService::Ptr m_templateService;
     PrintService::Ptr m_printService;
+    StatisticsService::Ptr m_statisticsService;
 
     Validator<Customer::Ptr>::Ptr m_customerValidator;
     Validator<Bill::Ptr>::Ptr m_billValidator;

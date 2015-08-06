@@ -211,12 +211,19 @@ void BillItem::setTaxRate(double tax)
     m_taxRate = tax;
 }
 
+Decimal BillItem::materialExpenses()
+{
+    return m_materialCost * (1.0 + m_materialOverhead);
+}
+
+Decimal BillItem::factoryExpenses()
+{
+    return (m_wagePerHour * m_workingHours) * (1.0 + m_factoryOverhead);
+}
+
 Decimal BillItem::costs()
 {
-    Decimal materialCost = m_materialCost * (1.0 + m_materialOverhead);
-    Decimal factoryCost = (m_wagePerHour * m_workingHours) * (1.0 + m_factoryOverhead);
-
-    return materialCost + factoryCost;
+    return materialExpenses() + factoryExpenses();
 }
 
 Decimal BillItem::calculatedPrice()

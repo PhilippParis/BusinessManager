@@ -34,6 +34,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_materialService = std::make_shared<MaterialServiceImpl>(materialDAO, m_materialValidator);
     m_templateService = std::make_shared<TemplateServiceImpl>(templateDAO, m_templateValidator);
     m_printService = std::make_shared<PrintServiceImpl>();
+    m_statisticsService = std::make_shared<StatisticsServiceImpl>(billDAO);
 
     connect(ui->actionNewBill, SIGNAL(triggered(bool)), ui->widgetBills, SLOT(actionNewBill()));
     connect(ui->actionQuit, SIGNAL(triggered(bool)), SLOT(close()));
@@ -168,6 +169,10 @@ void MainWindow::initWidgets()
 
     ui->templatesWidget->setMaterialService(m_materialService);
     ui->templatesWidget->setTemplateService(m_templateService);
+
+    ui->statisticsWidget->setStatisticsService(m_statisticsService);
+    ui->statisticsWidget->setBillService(m_billService);
+    ui->statisticsWidget->update();
 
     connect(ui->widgetBills, SIGNAL(print(Bill::Ptr)), this, SLOT(printBill(Bill::Ptr)));
     connect(ui->widgetBills, SIGNAL(save(Bill::Ptr, QString)), this, SLOT(saveBill(Bill::Ptr, QString)));

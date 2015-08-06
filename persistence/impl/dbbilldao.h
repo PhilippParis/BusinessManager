@@ -20,6 +20,7 @@ public:
               BillItemDAO::Ptr billItemDAO, DiscountDAO::Ptr discountDAO);
 
     Bill::Ptr get(int id) override;
+    QList<Bill::Ptr> get(QDate from, QDate to) override;
     QList<Bill::Ptr> getAll() override;
     void create(Bill::Ptr item) override;
     void update(Bill::Ptr item) override;

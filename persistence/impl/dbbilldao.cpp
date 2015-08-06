@@ -31,6 +31,28 @@ Bill::Ptr DBBillDAO::get(int id)
     return parseBill(query.record());
 }
 
+QList<Bill::Ptr> DBBillDAO::get(QDate from, QDate to)
+{
+    qCDebug(lcPersistence) << "Entering DBBillDAO::get between: " << from.toString() << " - " << to.toString();
+
+    QList<Bill::Ptr> items;
+    QSqlQuery query(m_database);
+    query.prepare("SELECT * FROM BILL WHERE JULIANDAY(DATE) >= JULIANDAY(?) AND JULIANDAY(DATE) <= JULIANDAY(?) AND DELETED = 0");
+    query.addBindValue(from);
+    query.addBindValue(to);
+
+    if (!query.exec()) {
+        qCCritical(lcPersistence) << "retrieving bills failed" + query.lastError().text();
+        throw new PersistenceException("retrieving bill failed" + query.lastError().text());
+    }
+
+    while(query.next()) {
+        items.append(parseBill(query.record()));
+    }
+
+    return items;
+}
+
 QList<Bill::Ptr> DBBillDAO::getAll()
 {
     qCDebug(lcPersistence) << "Entering DBBillDAO::getAll";

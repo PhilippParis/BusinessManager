@@ -42,7 +42,7 @@ public:
 
 private:
     int m_id = -1;
-    Decimal m_costPerUnit; // net cost (without tax)
+    Decimal m_costPerUnit;       // net cost (without tax)
     Decimal m_tax;               // total costs = m_costPerUnit + m_tax
 
     QString m_name;

@@ -65,6 +65,9 @@ public:
     double taxRate() const;
     void setTaxRate(double taxRate);
 
+    Decimal materialExpenses();
+    Decimal factoryExpenses();
+
     Decimal costs();
     Decimal calculatedPrice();
 

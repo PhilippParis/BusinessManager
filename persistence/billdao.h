@@ -40,6 +40,13 @@ public:
     virtual Bill::Ptr get(int id) = 0;
 
     /**
+     * @param from start date
+     * @param to end date
+     * @return returns bills between from and to
+     */
+    virtual QList<Bill::Ptr> get(QDate from, QDate to) = 0;
+
+    /**
      * @return returns all items from the underlying datasource
      */
     virtual QList<Bill::Ptr> getAll() = 0;

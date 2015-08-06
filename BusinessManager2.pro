@@ -10,6 +10,9 @@ QT       += testlib
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
+INCLUDEPATH +="/usr/include/qwt"
+LIBS += -L/usr/lib -lqwt
+
 CONFIG += qwt
 QMAKE_CXXFLAGS += -std=c++0x
 
@@ -99,7 +102,10 @@ SOURCES += main.cpp\
     ui/models/materialsortfilterproxymodel.cpp \
     ui/models/materialtablemodel.cpp \
     tests/materialdaotest.cpp \
-    decimal.cpp
+    decimal.cpp \
+    service/statisticsservice.cpp \
+    domain/statistics.cpp \
+    service/impl/statisticsserviceimpl.cpp
 
 HEADERS  += ui/mainwindow.h \
     domain/bill.h \
@@ -183,7 +189,10 @@ HEADERS  += ui/mainwindow.h \
     ui/models/materialsortfilterproxymodel.h \
     ui/models/materialtablemodel.h \
     tests/materialdaotest.h \
-    decimal.h
+    decimal.h \
+    service/statisticsservice.h \
+    domain/statistics.h \
+    service/impl/statisticsserviceimpl.h
 
 FORMS    += ui/mainwindow.ui \
     ui/widgets/customerswidget.ui \
