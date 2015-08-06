@@ -36,7 +36,7 @@ bool BillSortFilterProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex
     QModelIndex payedIndex = sourceModel()->index(sourceRow, 5, sourceParent);
     QModelIndex dateIndex = sourceModel()->index(sourceRow, 1, sourceParent);
 
-    bool payed = sourceModel()->data(payedIndex).toBool();
+    bool payed = sourceModel()->data(payedIndex, Qt::UserRole + 1).toBool();
     QDate date = sourceModel()->data(dateIndex).toDate();
 
     int customerID = sourceModel()->data(dateIndex, Qt::UserRole).toInt();

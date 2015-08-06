@@ -27,6 +27,10 @@ BillWidget::BillWidget(QWidget *parent) :
     connect(ui->cbCustomers, SIGNAL(currentIndexChanged(int)), this, SLOT(updateFilter()));
     connect(ui->cbOnlyOpen, SIGNAL(clicked(bool)), this, SLOT(updateFilter()));
 
+    connect(m_billModel, &BillTableModel::billPayedStatusChanged, [=](Bill::Ptr bill) {
+        m_billService->updateBill(bill);
+    });
+
     m_customerModel = new CustomerTableModel();
     ui->cbCustomers->setModel(m_customerModel);
 }

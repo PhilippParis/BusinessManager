@@ -27,6 +27,7 @@ public:
 
     void setValidator(Validator<Customer::Ptr>::Ptr validator);
     void setService(CustomerService::Ptr service);
+    Customer::Ptr selectedCustomer();
 
 signals:
     void sendMail(Customer::Ptr);
@@ -42,7 +43,6 @@ private slots:
 
 private:
     void showErrorMessage(QString msg);
-    Customer::Ptr selectedCustomer();
 
 private:
     Ui::CustomersWidget *ui;

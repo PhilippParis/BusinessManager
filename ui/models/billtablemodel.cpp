@@ -5,6 +5,15 @@ BillTableModel::BillTableModel()
 
 }
 
+bool BillTableModel::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+    if (role == Qt::CheckStateRole) {
+        Bill::Ptr bill = m_data.at(index.row());
+        bill->setPayed(value.toInt() == Qt::Checked);
+        emit billPayedStatusChanged(bill);
+    }
+}
+
 int BillTableModel::columnCount(const QModelIndex &parent) const
 {
     return 6;
@@ -19,10 +28,17 @@ QVariant BillTableModel::data(const QModelIndex &index, int role) const
         return customer->id();
     }
 
+    if (role == Qt::UserRole + 1) {
+        return bill->payed();
+    }
+
+    if (role == Qt::CheckStateRole && index.column() == Payed) {
+        return bill->payed()? Qt::Checked : Qt::Unchecked;
+    }
+
     if (role != Qt::DisplayRole) {
         return QVariant();
     }
-
 
     switch(index.column()) {
         case Nr:
@@ -35,8 +51,6 @@ QVariant BillTableModel::data(const QModelIndex &index, int role) const
             return customer->fullName();
         case Value:
             return QString::number(bill->totalPrice().value(), 'f', 2) + QString::fromUtf8("€");
-        case Payed:
-            return bill->payed();
     }
 
     return QVariant();
@@ -65,4 +79,12 @@ QVariant BillTableModel::headerData(int section, Qt::Orientation orientation, in
             }
         }
     return QVariant();
+}
+
+Qt::ItemFlags BillTableModel::flags(const QModelIndex &index) const
+{
+    if (index.column() == Payed) {
+        return QAbstractTableModel::flags(index) | Qt::ItemIsUserCheckable | Qt::ItemIsEnabled | Qt::ItemIsEditable;
+    }
+    return QAbstractTableModel::flags(index);
 }
