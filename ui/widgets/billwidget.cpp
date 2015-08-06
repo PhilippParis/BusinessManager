@@ -21,18 +21,14 @@ BillWidget::BillWidget(QWidget *parent) :
     connect(ui->tblData->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
             this, SLOT(selectionChanged(QModelIndex,QModelIndex)));
 
-    connect(ui->gbFilter, SIGNAL(toggled(bool)), this, SLOT(updateFilter()));
     connect(ui->dateFrom, SIGNAL(dateChanged(QDate)), this, SLOT(updateFilter()));
     connect(ui->dateTo, SIGNAL(dateChanged(QDate)), this, SLOT(updateFilter()));
-    connect(ui->cbCustomers, SIGNAL(currentIndexChanged(int)), this, SLOT(updateFilter()));
+    connect(ui->leFilter, SIGNAL(textChanged(QString)), this, SLOT(updateFilter()));
     connect(ui->cbOnlyOpen, SIGNAL(clicked(bool)), this, SLOT(updateFilter()));
 
     connect(m_billModel, &BillTableModel::billPayedStatusChanged, [=](Bill::Ptr bill) {
         m_billService->updateBill(bill);
     });
-
-    m_customerModel = new CustomerTableModel();
-    ui->cbCustomers->setModel(m_customerModel);
 }
 
 BillWidget::~BillWidget()
@@ -42,9 +38,6 @@ BillWidget::~BillWidget()
 
 void BillWidget::update()
 {
-    m_customerModel->clear();
-    m_customerModel->addAll(m_customerService->getAll());
-
     m_billModel->clear();
     m_billModel->addAll(m_billService->getAllBills());
 
@@ -66,11 +59,7 @@ void BillWidget::updateFilter()
 {
     m_sortFilterModel->setMinDate(ui->dateFrom->date());
     m_sortFilterModel->setMaxDate(ui->dateTo->date());
-
-    int comboBoxIndex = ui->cbCustomers->currentIndex();
-    CustomerTableModel *model = (CustomerTableModel*) ui->cbCustomers->model();
-
-    m_sortFilterModel->setCustomer(ui->gbFilter->isChecked()? model->get(model->index(comboBoxIndex, 0)) : nullptr);
+    m_sortFilterModel->setFilterWildcard(ui->leFilter->text());
     m_sortFilterModel->setOnlyOpen(ui->cbOnlyOpen->isChecked());
 }
 
@@ -79,6 +68,7 @@ Bill::Ptr BillWidget::selectedBill()
     QModelIndex index = m_sortFilterModel->mapToSource(ui->tblData->currentIndex());
     return m_billModel->get(index);
 }
+
 void BillWidget::setDiscountValidator(const Validator<Discount::Ptr>::Ptr &discountValidator)
 {
     m_discountValidator = discountValidator;

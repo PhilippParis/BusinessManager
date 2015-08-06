@@ -39,8 +39,8 @@ bool BillSortFilterProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex
     bool payed = sourceModel()->data(payedIndex, Qt::UserRole + 1).toBool();
     QDate date = sourceModel()->data(dateIndex).toDate();
 
-    int customerID = sourceModel()->data(dateIndex, Qt::UserRole).toInt();
-    return (m_customer == nullptr || customerID == m_customer->id()) && dateInRange(date) && (m_onlyOpen ? !payed : true);
+    QString customerText = sourceModel()->data(dateIndex, Qt::UserRole).toString();
+    return customerText.contains(filterRegExp()) && dateInRange(date) && (m_onlyOpen ? !payed : true);
 }
 
 bool BillSortFilterProxyModel::dateInRange(const QDate &date) const

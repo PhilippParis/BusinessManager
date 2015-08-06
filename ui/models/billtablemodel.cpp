@@ -25,7 +25,7 @@ QVariant BillTableModel::data(const QModelIndex &index, int role) const
     Customer::Ptr customer = bill->customer();
 
     if (role == Qt::UserRole) {
-        return customer->id();
+        return customer->fullName() + "\n" + customer->organisation();
     }
 
     if (role == Qt::UserRole + 1) {

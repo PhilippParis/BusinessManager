@@ -15,39 +15,10 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
-    <widget class="QGroupBox" name="gbFilter">
-     <property name="font">
-      <font>
-       <pointsize>10</pointsize>
-      </font>
+    <widget class="QLineEdit" name="leFilter">
+     <property name="placeholderText">
+      <string>Filter...</string>
      </property>
-     <property name="title">
-      <string>Filter</string>
-     </property>
-     <property name="checkable">
-      <bool>true</bool>
-     </property>
-     <property name="checked">
-      <bool>false</bool>
-     </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_3">
-      <item>
-       <widget class="QComboBox" name="cbCustomers">
-        <property name="minimumSize">
-         <size>
-          <width>300</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>400</width>
-          <height>16777215</height>
-         </size>
-        </property>
-       </widget>
-      </item>
-     </layout>
     </widget>
    </item>
    <item>

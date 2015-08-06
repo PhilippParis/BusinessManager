@@ -69,7 +69,6 @@ private:
     Validator<Discount::Ptr>::Ptr m_discountValidator;
 
     BillTableModel *m_billModel;
-    CustomerTableModel *m_customerModel;
     BillSortFilterProxyModel *m_sortFilterModel;
 };
 
