@@ -21,7 +21,12 @@ public:
     ~TemplatesWidget();
 
     void setTemplateService(const TemplateService::Ptr &templateService);
-    void setMaterialService(const MaterialService::Ptr &materialService);
+    void setTemplateModel(TemplateTableModel *model);
+
+signals:
+    void create();
+    void edit(Template::Ptr);
+    void remove(Template::Ptr);
 
 private slots:
     void update();
@@ -38,9 +43,6 @@ private:
     Ui::TemplatesWidget *ui;
     TemplateTableModel *m_model;
     TemplateSortFilterProxyModel *m_sortFilterProxyModel;
-
-
-    MaterialService::Ptr m_materialService;
     TemplateService::Ptr m_templateService;
 };
 

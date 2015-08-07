@@ -19,7 +19,6 @@ MaterialsWidget::MaterialsWidget(QWidget *parent) :
 MaterialsWidget::~MaterialsWidget()
 {
     delete ui;
-    delete m_model;
     delete m_sortFilterProxyModel;
 }
 

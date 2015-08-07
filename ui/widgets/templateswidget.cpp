@@ -7,10 +7,7 @@ TemplatesWidget::TemplatesWidget(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    m_model = new TemplateTableModel();
     m_sortFilterProxyModel = new TemplateSortFilterProxyModel();
-
-    m_sortFilterProxyModel->setSourceModel(m_model);
     ui->tblTemplates->setModel(m_sortFilterProxyModel);
     ui->tblTemplates->setSortingEnabled(true);
 
@@ -20,66 +17,22 @@ TemplatesWidget::TemplatesWidget(QWidget *parent) :
 TemplatesWidget::~TemplatesWidget()
 {
     delete ui;
-    delete m_model;
     delete m_sortFilterProxyModel;
 }
 
 void TemplatesWidget::on_btnAdd_clicked()
 {
-    TemplateWizard *wizard = new TemplateWizard(this, m_materialService, m_templateService);
-    wizard->prepareForCreate();
-
-    if (wizard->exec() == QWizard::Accepted) {
-        Template::Ptr templ = wizard->toDomainObject();
-        try {
-            m_templateService->add(templ);
-            m_model->add(templ);
-        } catch (ServiceException *e) {
-            QMessageBox::information(this, tr("Error"), e->what());
-            delete e;
-        }
-    }
+    emit create();
 }
 
 void TemplatesWidget::on_btnEdit_clicked()
 {
-    Template::Ptr selected = selectedTemplate();
-    if (selected == nullptr) {
-        return;
-    }
-
-    TemplateWizard *wizard = new TemplateWizard(this, m_materialService, m_templateService);
-    wizard->prepareForUpdate(selected);
-
-    if (wizard->exec() == QWizard::Accepted) {
-        Template::Ptr updated = wizard->toDomainObject();
-        try {
-            m_templateService->update(updated);
-            m_model->replace(selected, updated);
-        } catch (ServiceException *e) {
-            QMessageBox::information(this, tr("Error"), e->what());
-            delete e;
-        }
-    }
+    emit edit(selectedTemplate());
 }
 
 void TemplatesWidget::on_btnDelete_clicked()
 {
-    QMessageBox::StandardButton reply;
-    reply = QMessageBox::question(this, tr("Delete Template"),
-                                    tr("Are you sure you want to delete the selected Template?"),
-                                    QMessageBox::Yes|QMessageBox::No);
-
-    if (reply == QMessageBox::Yes) {
-        Template::Ptr selected = selectedTemplate();
-        try {
-            m_templateService->remove(selected);
-            m_model->remove(selected);
-        } catch (ServiceException *e) {
-            QMessageBox::information(this, tr("Error"), e->what());
-            delete e;
-        }
-    }
+    emit remove(selectedTemplate());
 }
 
 void TemplatesWidget::on_tblTemplates_clicked(const QModelIndex &index)
@@ -94,15 +47,16 @@ Template::Ptr TemplatesWidget::selectedTemplate()
     return m_model->get(m_sortFilterProxyModel->mapToSource(index));
 }
 
-void TemplatesWidget::setMaterialService(const MaterialService::Ptr &materialService)
-{
-    m_materialService = materialService;
-}
-
 void TemplatesWidget::setTemplateService(const TemplateService::Ptr &templateService)
 {
     m_templateService = templateService;
     update();
+}
+
+void TemplatesWidget::setTemplateModel(TemplateTableModel *model)
+{
+    m_model = model;
+    m_sortFilterProxyModel->setSourceModel(m_model);
 }
 
 void TemplatesWidget::update()

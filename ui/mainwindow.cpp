@@ -39,6 +39,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_billTableModel = new BillTableModel();
     m_customerTableModel = new CustomerTableModel();
     m_materialTableModel = new MaterialTableModel();
+    m_templateTableModel = new TemplateTableModel();
 
     connect(ui->actionNewBill, SIGNAL(triggered(bool)), SLOT(createBill()));
     connect(ui->actionQuit, SIGNAL(triggered(bool)), SLOT(close()));
@@ -52,6 +53,8 @@ MainWindow::~MainWindow()
     delete ui;
     delete m_billTableModel;
     delete m_customerTableModel;
+    delete m_materialTableModel;
+    delete m_templateTableModel;
 }
 
 void MainWindow::printOffer(Offer::Ptr offer)
@@ -190,6 +193,27 @@ void MainWindow::createMaterial()
             delete e;
         }
     }
+
+    delete dialog;
+}
+
+void MainWindow::createTemplate()
+{
+    TemplateWizard *wizard = new TemplateWizard(this, m_materialService, m_templateService);
+    wizard->prepareForCreate();
+
+    if (wizard->exec() == QWizard::Accepted) {
+        Template::Ptr templ = wizard->toDomainObject();
+        try {
+            m_templateService->add(templ);
+            m_templateTableModel->add(templ);
+        } catch (ServiceException *e) {
+            QMessageBox::information(this, tr("Error"), e->what());
+            delete e;
+        }
+    }
+
+    delete wizard;
 }
 
 void MainWindow::editBill(Bill::Ptr selected)
@@ -223,6 +247,8 @@ void MainWindow::editCustomer(Customer::Ptr selected)
         Customer::Ptr editedCustomer = dialog->toDomainObject();
         m_customerTableModel->replace(selected, editedCustomer);
     }
+
+    delete dialog;
 }
 
 void MainWindow::editMaterial(Material::Ptr selected)
@@ -239,6 +265,27 @@ void MainWindow::editMaterial(Material::Ptr selected)
             delete e;
         }
     }
+
+    delete dialog;
+}
+
+void MainWindow::editTemplate(Template::Ptr selected)
+{
+    TemplateWizard *wizard = new TemplateWizard(this, m_materialService, m_templateService);
+    wizard->prepareForUpdate(selected);
+
+    if (wizard->exec() == QWizard::Accepted) {
+        Template::Ptr updated = wizard->toDomainObject();
+        try {
+            m_templateService->update(updated);
+            m_templateTableModel->replace(selected, updated);
+        } catch (ServiceException *e) {
+            QMessageBox::information(this, tr("Error"), e->what());
+            delete e;
+        }
+    }
+
+    delete wizard;
 }
 
 void MainWindow::removeBill(Bill::Ptr selected)
@@ -287,6 +334,24 @@ void MainWindow::removeMaterial(Material::Ptr selected)
         try {
             m_materialService->remove(selected);
             m_materialTableModel->remove(selected);
+        } catch (ServiceException *e) {
+            QMessageBox::information(this, tr("Error"), e->what());
+            delete e;
+        }
+    }
+}
+
+void MainWindow::removeTemplate(Template::Ptr selected)
+{
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, tr("Delete Template"),
+                                    tr("Are you sure you want to delete the selected Template?"),
+                                    QMessageBox::Yes|QMessageBox::No);
+
+    if (reply == QMessageBox::Yes) {
+        try {
+            m_templateService->remove(selected);
+            m_templateTableModel->remove(selected);
         } catch (ServiceException *e) {
             QMessageBox::information(this, tr("Error"), e->what());
             delete e;
@@ -346,8 +411,12 @@ void MainWindow::initWidgets()
     connect(ui->materialsWidget, SIGNAL(remove(Material::Ptr)), this, SLOT(removeMaterial(Material::Ptr)));
 
     // templates widget
-    ui->templatesWidget->setMaterialService(m_materialService);
+    ui->templatesWidget->setTemplateModel(m_templateTableModel);
     ui->templatesWidget->setTemplateService(m_templateService);
+
+    connect(ui->templatesWidget, SIGNAL(create()), this, SLOT(createTemplate()));
+    connect(ui->templatesWidget, SIGNAL(edit(Template::Ptr)), this, SLOT(editTemplate(Template::Ptr)));
+    connect(ui->templatesWidget, SIGNAL(remove(Template::Ptr)), this, SLOT(removeTemplate(Template::Ptr)));
 
     // statisticsWidget
     ui->statisticsWidget->setStatisticsService(m_statisticsService);

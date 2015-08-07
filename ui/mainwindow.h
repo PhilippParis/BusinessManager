@@ -36,6 +36,7 @@
 #include "ui/models/billtablemodel.h"
 #include "ui/models/customertablemodel.h"
 #include "ui/models/materialtablemodel.h"
+#include "ui/models/templatetablemodel.h"
 
 namespace Ui {
 class MainWindow;
@@ -62,14 +63,17 @@ public slots:
     void createBill();
     void createCustomer();
     void createMaterial();
+    void createTemplate();
 
     void editBill(Bill::Ptr bill);
     void editCustomer(Customer::Ptr customer);
     void editMaterial(Material::Ptr material);
+    void editTemplate(Template::Ptr templ);
 
     void removeBill(Bill::Ptr bill);
     void removeCustomer(Customer::Ptr customer);
     void removeMaterial(Material::Ptr material);
+    void removeTemplate(Template::Ptr templ);
 
     void openMailClient(Customer::Ptr customer);
 
@@ -109,6 +113,7 @@ private:
     BillTableModel *m_billTableModel;
     CustomerTableModel *m_customerTableModel;
     MaterialTableModel *m_materialTableModel;
+    TemplateTableModel *m_templateTableModel;
 };
 
 #endif // MAINWINDOW_H
