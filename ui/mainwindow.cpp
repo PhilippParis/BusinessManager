@@ -38,6 +38,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     m_billTableModel = new BillTableModel();
     m_customerTableModel = new CustomerTableModel();
+    m_materialTableModel = new MaterialTableModel();
 
     connect(ui->actionNewBill, SIGNAL(triggered(bool)), SLOT(createBill()));
     connect(ui->actionQuit, SIGNAL(triggered(bool)), SLOT(close()));
@@ -175,6 +176,22 @@ void MainWindow::createCustomer()
     }
 }
 
+void MainWindow::createMaterial()
+{
+    MaterialDialog *dialog = new MaterialDialog(this, m_materialService->validator());
+    dialog->prepareForCreate();
+    if (dialog->exec() == QDialog::Accepted) {
+        Material::Ptr material = dialog->toDomainObject();
+        try {
+            m_materialService->add(material);
+            m_materialTableModel->add(material, 0.0);
+        } catch (ServiceException *e) {
+            QMessageBox::information(this, tr("Error"), e->what());
+            delete e;
+        }
+    }
+}
+
 void MainWindow::editBill(Bill::Ptr selected)
 {
     BillDialog *dialog = new BillDialog(this, m_billService, m_customerService, m_materialService, m_templateService);
@@ -205,6 +222,22 @@ void MainWindow::editCustomer(Customer::Ptr selected)
     if(dialog->exec() == QDialog::Accepted) {
         Customer::Ptr editedCustomer = dialog->toDomainObject();
         m_customerTableModel->replace(selected, editedCustomer);
+    }
+}
+
+void MainWindow::editMaterial(Material::Ptr selected)
+{
+    MaterialDialog *dialog = new MaterialDialog(this, m_materialService->validator());
+    dialog->prepareForUpdate(selected);
+    if (dialog->exec() == QDialog::Accepted) {
+        Material::Ptr material = dialog->toDomainObject();
+        try {
+            m_materialService->update(material);
+            m_materialTableModel->replace(selected, material);
+        } catch (ServiceException *e) {
+            QMessageBox::information(this, tr("Error"), e->what());
+            delete e;
+        }
     }
 }
 
@@ -239,6 +272,24 @@ void MainWindow::removeCustomer(Customer::Ptr selected)
             m_customerTableModel->remove(selected);
         } catch (ServiceException *e) {
             QMessageBox::information(this, tr("Error"), e->what());
+        }
+    }
+}
+
+void MainWindow::removeMaterial(Material::Ptr selected)
+{
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, tr("Delete Material"),
+                                    tr("Are you sure you want to delete the selected Material?"),
+                                    QMessageBox::Yes|QMessageBox::No);
+
+    if (reply == QMessageBox::Yes) {
+        try {
+            m_materialService->remove(selected);
+            m_materialTableModel->remove(selected);
+        } catch (ServiceException *e) {
+            QMessageBox::information(this, tr("Error"), e->what());
+            delete e;
         }
     }
 }
@@ -287,7 +338,12 @@ void MainWindow::initWidgets()
     connect(ui->widgetCustomers, SIGNAL(sendMail(Customer::Ptr)), this, SLOT(openMailClient(Customer::Ptr)));
 
     // materials widget
+    ui->materialsWidget->setMaterialModel(m_materialTableModel);
     ui->materialsWidget->setMaterialService(m_materialService);
+
+    connect(ui->materialsWidget, SIGNAL(create()), this, SLOT(createMaterial()));
+    connect(ui->materialsWidget, SIGNAL(edit(Material::Ptr)), this, SLOT(editMaterial(Material::Ptr)));
+    connect(ui->materialsWidget, SIGNAL(remove(Material::Ptr)), this, SLOT(removeMaterial(Material::Ptr)));
 
     // templates widget
     ui->templatesWidget->setMaterialService(m_materialService);

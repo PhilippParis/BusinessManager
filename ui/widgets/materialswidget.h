@@ -23,7 +23,13 @@ public:
     ~MaterialsWidget();
 
     void setMaterialService(MaterialService::Ptr service);
+    void setMaterialModel(MaterialTableModel *model);
     Material::Ptr selectedMaterial();
+
+signals:
+    void create();
+    void edit(Material::Ptr);
+    void remove(Material::Ptr);
 
 private slots:
     void update();
