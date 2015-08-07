@@ -36,7 +36,9 @@ MainWindow::MainWindow(QWidget *parent) :
     m_printService = std::make_shared<PrintServiceImpl>();
     m_statisticsService = std::make_shared<StatisticsServiceImpl>(billDAO);
 
-    connect(ui->actionNewBill, SIGNAL(triggered(bool)), ui->widgetBills, SLOT(actionNewBill()));
+    m_billTableModel = new BillTableModel();
+
+    connect(ui->actionNewBill, SIGNAL(triggered(bool)), SLOT(createBill()));
     connect(ui->actionQuit, SIGNAL(triggered(bool)), SLOT(close()));
 
     initWidgets();
@@ -99,8 +101,13 @@ void MainWindow::printEnvelope(Envelope::Ptr envelope)
     delete dialog;
 }
 
-void MainWindow::saveBill(Bill::Ptr bill, QString path)
+void MainWindow::exportBill(Bill::Ptr bill)
 {
+    QString path = getSaveFileName();
+    if(path.isEmpty()) {
+        return;
+    }
+
     QPrinter *printer = new QPrinter(QPrinter::HighResolution);
     printer->setPageSize(QPrinter::A4);
     printer->setPageMargins(0.14, 0.14, 0.14, 0.14, QPrinter::Inch);
@@ -110,7 +117,7 @@ void MainWindow::saveBill(Bill::Ptr bill, QString path)
     m_printService->printBill(printer, bill);
 }
 
-void MainWindow::saveOffer(Offer::Ptr offer, QString path)
+void MainWindow::exportOffer(Offer::Ptr offer, QString path)
 {
     QPrinter *printer = new QPrinter(QPrinter::HighResolution);
     printer->setPageSize(QPrinter::A4);
@@ -121,7 +128,7 @@ void MainWindow::saveOffer(Offer::Ptr offer, QString path)
     m_printService->printOffer(printer, offer);
 }
 
-void MainWindow::saveLetter(Letter::Ptr letter, QString path)
+void MainWindow::exportLetter(Letter::Ptr letter, QString path)
 {
     QPrinter *printer = new QPrinter(QPrinter::HighResolution);
     printer->setPageSize(QPrinter::A4);
@@ -130,6 +137,68 @@ void MainWindow::saveLetter(Letter::Ptr letter, QString path)
     printer->setOutputFormat(QPrinter::PdfFormat);
 
     m_printService->printLetter(printer, letter);
+}
+
+void MainWindow::createBill()
+{
+    BillDialog *dialog = new BillDialog(this, m_billService, m_customerService, m_materialService, m_templateService);
+    connect(dialog, SIGNAL(print(Bill::Ptr)), this, SIGNAL(print(Bill::Ptr)));
+
+    dialog->setDiscountValidator(m_discountValidator);
+    dialog->prepareForCreate();
+
+    if(dialog->exec() == QDialog::Accepted) {
+        Bill::Ptr bill = dialog->toDomainObject();
+        try {
+            m_billService->addBill(bill);
+            m_billTableModel->add(bill);
+        } catch (ServiceException *e) {
+            QMessageBox::information(this, tr("Error"), e->what());
+            delete e;
+        }
+    }
+
+    delete dialog;
+}
+
+void MainWindow::editBill(Bill::Ptr selected)
+{
+    BillDialog *dialog = new BillDialog(this, m_billService, m_customerService, m_materialService, m_templateService);
+    connect(dialog, SIGNAL(print(Bill::Ptr)), this, SIGNAL(print(Bill::Ptr)));
+
+    dialog->setDiscountValidator(m_discountValidator);
+    dialog->prepareForUpdate(selected);
+
+    if(dialog->exec() == QDialog::Accepted) {
+        Bill::Ptr bill = dialog->toDomainObject();
+        try {
+            m_billService->updateBill(bill);
+            m_billTableModel->replace(selected, bill);
+        } catch (ServiceException *e) {
+            QMessageBox::information(this, tr("Error"), e->what());
+            delete e;
+        }
+    }
+
+    delete dialog;
+}
+
+void MainWindow::removeBill(Bill::Ptr selected)
+{
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, tr("Delete Bill"),
+                                    tr("Are you sure you want to delete the selected Bill?"),
+                                    QMessageBox::Yes|QMessageBox::No);
+
+    if (reply == QMessageBox::Yes) {
+        try {
+            m_billService->removeBill(selected);
+            m_billTableModel->remove(selected);
+        } catch (ServiceException *e) {
+            QMessageBox::information(this, tr("Error"), e->what());
+            delete e;
+        }
+    }
 }
 
 void MainWindow::openMailClient(Customer::Ptr customer)
@@ -156,29 +225,35 @@ void MainWindow::printBill(Bill::Ptr bill)
 
 void MainWindow::initWidgets()
 {
+    // bill widget
+    ui->widgetBills->setBillModel(m_billTableModel);
+    ui->widgetBills->setBillService(m_billService);
+
+    connect(ui->widgetBills, SIGNAL(remove(Bill::Ptr)), this, SLOT(removeBill(Bill::Ptr)));
+    connect(ui->widgetBills, SIGNAL(edit(Bill::Ptr)), this, SLOT(editBill(Bill::Ptr)));
+    connect(ui->widgetBills, SIGNAL(print(Bill::Ptr)), this, SLOT(printBill(Bill::Ptr)));
+    connect(ui->widgetBills, SIGNAL(saveToFile(Bill::Ptr)), this, SLOT(exportBill(Bill::Ptr)));
+    connect(ui->widgetBills, SIGNAL(sendMail(Customer::Ptr)), this, SLOT(openMailClient(Customer::Ptr)));
+
+    // customer widget
     ui->widgetCustomers->setService(m_customerService);
     ui->widgetCustomers->setValidator(m_customerValidator);
 
-    ui->widgetBills->setCustomerService(m_customerService);
-    ui->widgetBills->setBillService(m_billService);
-    ui->widgetBills->setDiscountValidator(m_discountValidator);
-    ui->widgetBills->setMaterialService(m_materialService);
-    ui->widgetBills->setTemplateService(m_templateService);
+    connect(ui->widgetCustomers, SIGNAL(sendMail(Customer::Ptr)), this, SLOT(openMailClient(Customer::Ptr)));
 
+    // materials widget
     ui->materialsWidget->setMaterialService(m_materialService);
 
+    // templates widget
     ui->templatesWidget->setMaterialService(m_materialService);
     ui->templatesWidget->setTemplateService(m_templateService);
 
+    // statisticsWidget
     ui->statisticsWidget->setStatisticsService(m_statisticsService);
     ui->statisticsWidget->setBillService(m_billService);
     ui->statisticsWidget->update();
 
-    connect(ui->widgetBills, SIGNAL(print(Bill::Ptr)), this, SLOT(printBill(Bill::Ptr)));
-    connect(ui->widgetBills, SIGNAL(save(Bill::Ptr, QString)), this, SLOT(saveBill(Bill::Ptr, QString)));
-    connect(ui->widgetBills, SIGNAL(sendMail(Customer::Ptr)), this, SLOT(openMailClient(Customer::Ptr)));
-    connect(ui->widgetCustomers, SIGNAL(sendMail(Customer::Ptr)), this, SLOT(openMailClient(Customer::Ptr)));
-
+    // other signals
     connect(this, SIGNAL(dataChanged()), ui->widgetBills, SLOT(update()));
     connect(this, SIGNAL(dataChanged()), ui->widgetCustomers, SLOT(update()));
 }
@@ -221,7 +296,7 @@ void MainWindow::on_actionNewOffer_triggered()
 {
     OfferDialog *dialog = new OfferDialog(this, m_billService, m_customerService, m_materialService, m_templateService);
     connect(dialog, SIGNAL(print(Offer::Ptr)), SLOT(printOffer(Offer::Ptr)));
-    connect(dialog, SIGNAL(save(Offer::Ptr, QString)), SLOT(saveOffer(Offer::Ptr, QString)));
+    connect(dialog, SIGNAL(save(Offer::Ptr, QString)), SLOT(exportOffer(Offer::Ptr, QString)));
     dialog->exec();
 
     delete dialog;
@@ -231,7 +306,7 @@ void MainWindow::on_actionNewLetter_triggered()
 {
     LetterDialog *dialog = new LetterDialog(this, m_customerService);
     connect(dialog, SIGNAL(print(Letter::Ptr)), SLOT(printLetter(Letter::Ptr)));
-    connect(dialog, SIGNAL(save(Letter::Ptr, QString)), SLOT(saveLetter(Letter::Ptr, QString)));
+    connect(dialog, SIGNAL(save(Letter::Ptr, QString)), SLOT(exportLetter(Letter::Ptr, QString)));
     dialog->exec();
 
     delete dialog;
@@ -244,4 +319,18 @@ void MainWindow::on_actionPrintEnvelope_triggered()
     dialog->exec();
 
     delete dialog;
+}
+
+QString MainWindow::getSaveFileName()
+{
+    QFileDialog dialog(this,  tr("Save"));
+    dialog.setAcceptMode(QFileDialog::AcceptSave);
+    dialog.setDefaultSuffix("pdf");
+    dialog.setFileMode(QFileDialog::AnyFile);
+    dialog.setNameFilter("PDF Files (*.pdf)");
+
+    if (dialog.exec()) {
+       return dialog.selectedFiles().first();
+    }
+    return QString();
 }

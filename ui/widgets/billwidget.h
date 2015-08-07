@@ -29,21 +29,18 @@ public:
     explicit BillWidget(QWidget *parent = 0);
     ~BillWidget();
 
-    void setTemplateService(const TemplateService::Ptr &templateService);
-    void setMaterialService(const MaterialService::Ptr &materialService);
-    void setCustomerService(const CustomerService::Ptr &customerService);
     void setBillService(const BillService::Ptr &billService);
-
-    void setDiscountValidator(const Validator<Discount::Ptr>::Ptr &discountValidator);
+    void setBillModel(BillTableModel *model);
 
 signals:
     void print(Bill::Ptr bill);
-    void save(Bill::Ptr bill, QString path);
+    void edit(Bill::Ptr bill);
+    void remove(Bill::Ptr bill);
+    void saveToFile(Bill::Ptr bill);
     void sendMail(Customer::Ptr);
 
 public slots:
     void update();
-    void actionNewBill();
 
 private slots:
     void on_btnEdit_clicked();
@@ -60,13 +57,7 @@ private:
 
 private:
     Ui::BillWidget *ui;
-
     BillService::Ptr m_billService;
-    CustomerService::Ptr m_customerService;
-    MaterialService::Ptr m_materialService;
-    TemplateService::Ptr m_templateService;
-
-    Validator<Discount::Ptr>::Ptr m_discountValidator;
 
     BillTableModel *m_billModel;
     BillSortFilterProxyModel *m_sortFilterModel;

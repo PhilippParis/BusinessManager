@@ -7,9 +7,7 @@ BillWidget::BillWidget(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    m_billModel = new BillTableModel();
     m_sortFilterModel = new BillSortFilterProxyModel();
-    m_sortFilterModel->setSourceModel(m_billModel);
 
     ui->tblData->setModel(m_sortFilterModel);
     ui->tblData->setSortingEnabled(true);
@@ -25,10 +23,6 @@ BillWidget::BillWidget(QWidget *parent) :
     connect(ui->dateTo, SIGNAL(dateChanged(QDate)), this, SLOT(updateFilter()));
     connect(ui->leFilter, SIGNAL(textChanged(QString)), this, SLOT(updateFilter()));
     connect(ui->cbOnlyOpen, SIGNAL(clicked(bool)), this, SLOT(updateFilter()));
-
-    connect(m_billModel, &BillTableModel::billPayedStatusChanged, [=](Bill::Ptr bill) {
-        m_billService->updateBill(bill);
-    });
 }
 
 BillWidget::~BillWidget()
@@ -69,75 +63,25 @@ Bill::Ptr BillWidget::selectedBill()
     return m_billModel->get(index);
 }
 
-void BillWidget::setDiscountValidator(const Validator<Discount::Ptr>::Ptr &discountValidator)
+void BillWidget::setBillModel(BillTableModel *model)
 {
-    m_discountValidator = discountValidator;
-}
+    m_billModel = model;
+    m_sortFilterModel->setSourceModel(m_billModel);
 
-void BillWidget::actionNewBill()
-{
-    BillDialog *dialog = new BillDialog(this, m_billService, m_customerService, m_materialService, m_templateService);
-    connect(dialog, SIGNAL(print(Bill::Ptr)), this, SIGNAL(print(Bill::Ptr)));
-
-    dialog->setDiscountValidator(m_discountValidator);
-    dialog->prepareForCreate();
-
-    if(dialog->exec() == QDialog::Accepted) {
-        Bill::Ptr bill = dialog->toDomainObject();
-        try {
-            m_billService->addBill(bill);
-            m_billModel->add(bill);
-        } catch (ServiceException *e) {
-            QMessageBox::information(this, tr("Error"), e->what());
-            delete e;
-        }
-    }
-
-    delete dialog;
+    connect(m_billModel, &BillTableModel::billPayedStatusChanged, [=](Bill::Ptr bill) {
+        m_billService->updateBill(bill);
+    });
 }
 
 void BillWidget::on_btnEdit_clicked()
 {
-    Bill::Ptr selected = selectedBill();
-    BillDialog *dialog = new BillDialog(this, m_billService, m_customerService, m_materialService, m_templateService);
-    connect(dialog, SIGNAL(print(Bill::Ptr)), this, SIGNAL(print(Bill::Ptr)));
-
-    dialog->setDiscountValidator(m_discountValidator);
-    dialog->prepareForUpdate(selected);
-
-    if(dialog->exec() == QDialog::Accepted) {
-        Bill::Ptr bill = dialog->toDomainObject();
-        try {
-            m_billService->updateBill(bill);
-            m_billModel->replace(selected, bill);
-        } catch (ServiceException *e) {
-            QMessageBox::information(this, tr("Error"), e->what());
-            delete e;
-        }
-    }
-
-    delete dialog;
+    emit edit(selectedBill());
 }
 
 void BillWidget::setBillService(const BillService::Ptr &billService)
 {
     m_billService = billService;
     update();
-}
-
-void BillWidget::setCustomerService(const CustomerService::Ptr &customerService)
-{
-    m_customerService = customerService;
-}
-
-void BillWidget::setMaterialService(const MaterialService::Ptr &materialService)
-{
-    m_materialService = materialService;
-}
-
-void BillWidget::setTemplateService(const TemplateService::Ptr &templateService)
-{
-    m_templateService = templateService;
 }
 
 void BillWidget::on_btnPrint_clicked()
@@ -147,15 +91,7 @@ void BillWidget::on_btnPrint_clicked()
 
 void BillWidget::on_btnExport_clicked()
 {
-    QFileDialog dialog(this,  tr("Save"));
-    dialog.setAcceptMode(QFileDialog::AcceptSave);
-    dialog.setDefaultSuffix("pdf");
-    dialog.setFileMode(QFileDialog::AnyFile);
-    dialog.setNameFilter("PDF Files (*.pdf)");
-
-    if (dialog.exec()) {
-        emit save(selectedBill(), dialog.selectedFiles().first());
-    }
+    emit saveToFile(selectedBill());
 }
 
 void BillWidget::on_btnSendPerMail_clicked()
@@ -165,19 +101,5 @@ void BillWidget::on_btnSendPerMail_clicked()
 
 void BillWidget::on_btnDelete_clicked()
 {
-    QMessageBox::StandardButton reply;
-    reply = QMessageBox::question(this, tr("Delete Bill"),
-                                    tr("Are you sure you want to delete the selected Bill?"),
-                                    QMessageBox::Yes|QMessageBox::No);
-
-    if (reply == QMessageBox::Yes) {
-        Bill::Ptr selected = selectedBill();
-        try {
-            m_billService->removeBill(selected);
-            m_billModel->remove(selected);
-        } catch (ServiceException *e) {
-            QMessageBox::information(this, tr("Error"), e->what());
-            delete e;
-        }
-    }
+    emit remove(selectedBill());
 }

@@ -33,6 +33,8 @@
 #include "ui/dialogs/letterdialog.h"
 #include "ui/dialogs/envelopedialog.h"
 
+#include "ui/models/billtablemodel.h"
+
 namespace Ui {
 class MainWindow;
 }
@@ -51,9 +53,13 @@ public slots:
     void printLetter(Letter::Ptr letter);
     void printEnvelope(Envelope::Ptr envelope);
 
-    void saveBill(Bill::Ptr bill, QString path);
-    void saveOffer(Offer::Ptr offer, QString path);
-    void saveLetter(Letter::Ptr letter, QString path);
+    void exportBill(Bill::Ptr bill);
+    void exportOffer(Offer::Ptr offer, QString path);
+    void exportLetter(Letter::Ptr letter, QString path);
+
+    void createBill();
+    void editBill(Bill::Ptr bill);
+    void removeBill(Bill::Ptr bill);
 
     void openMailClient(Customer::Ptr customer);
 
@@ -69,6 +75,7 @@ private slots:
     void on_actionPrintEnvelope_triggered();
 
 private:
+    QString getSaveFileName();
     void initWidgets();
     void loadSettings();
 
@@ -89,6 +96,7 @@ private:
     Validator<Discount::Ptr>::Ptr m_discountValidator;
     Validator<Template::Ptr>::Ptr m_templateValidator;
 
+    BillTableModel *m_billTableModel;
 };
 
 #endif // MAINWINDOW_H
