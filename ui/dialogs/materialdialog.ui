@@ -96,20 +96,20 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="1">
-         <widget class="QDoubleSpinBox" name="sbTax">
-          <property name="suffix">
-           <string> €</string>
-          </property>
-          <property name="maximum">
-           <double>999999.989999999990687</double>
-          </property>
-         </widget>
-        </item>
         <item row="1" column="0">
          <widget class="QLabel" name="einkaufspreisLabel_2">
           <property name="text">
            <string>cost (incl. tax)</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="QSpinBox" name="sbTax">
+          <property name="suffix">
+           <string>%</string>
+          </property>
+          <property name="maximum">
+           <number>100</number>
           </property>
          </widget>
         </item>
@@ -137,7 +137,6 @@
   <tabstop>leType</tabstop>
   <tabstop>leUnit</tabstop>
   <tabstop>sbCost</tabstop>
-  <tabstop>sbTax</tabstop>
  </tabstops>
  <resources/>
  <connections>

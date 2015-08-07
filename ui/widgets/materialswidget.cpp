@@ -70,7 +70,7 @@ void MaterialsWidget::on_btnEdit_clicked()
     if (dialog->exec() == QDialog::Accepted) {
         Material::Ptr material = dialog->toDomainObject();
         try {
-            m_service->update(selected);
+            m_service->update(material);
             m_model->replace(selected, material);
         } catch (ServiceException *e) {
             QMessageBox::information(this, tr("Error"), e->what());

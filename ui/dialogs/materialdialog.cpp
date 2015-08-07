@@ -25,7 +25,7 @@ void MaterialDialog::prepareForCreate()
     ui->leType->clear();
 
     ui->sbCost->setValue(0.0);
-    ui->sbTax->setValue(0.0);
+    ui->sbTax->setValue(20);
 }
 
 void MaterialDialog::prepareForUpdate(Material::Ptr material)
@@ -40,7 +40,7 @@ void MaterialDialog::prepareForUpdate(Material::Ptr material)
     ui->leType->setText(material->type());
 
     ui->sbCost->setValue((material->costPerUnit() + material->tax()).value());
-    ui->sbTax->setValue(material->tax().value());
+    ui->sbTax->setValue(material->tax().value() / (material->costPerUnit() + material->tax()).value() * 100.0);
 }
 
 Material::Ptr MaterialDialog::toDomainObject()
@@ -54,8 +54,10 @@ Material::Ptr MaterialDialog::toDomainObject()
     material->setUnit(ui->leUnit->text());
     material->setType(ui->leType->text());
 
-    material->setCostPerUnit(Decimal::fromValue(ui->sbCost->value() - ui->sbTax->value()));
-    material->setTax(Decimal::fromValue(ui->sbTax->value()));
+    Decimal taxValue = Decimal::fromValue((ui->sbTax->value() / 100.0) * ui->sbCost->value());
+
+    material->setCostPerUnit(Decimal::fromValue(ui->sbCost->value()) - taxValue);
+    material->setTax(taxValue);
 
     return material;
 }
@@ -84,5 +86,4 @@ void MaterialDialog::on_leUnit_textChanged(const QString &arg1)
     }
 
     ui->sbCost->setSuffix(suffix);
-    ui->sbTax->setSuffix(suffix);
 }
