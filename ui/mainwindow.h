@@ -34,6 +34,7 @@
 #include "ui/dialogs/envelopedialog.h"
 
 #include "ui/models/billtablemodel.h"
+#include "ui/models/customertablemodel.h"
 
 namespace Ui {
 class MainWindow;
@@ -58,8 +59,13 @@ public slots:
     void exportLetter(Letter::Ptr letter, QString path);
 
     void createBill();
+    void createCustomer();
+
     void editBill(Bill::Ptr bill);
+    void editCustomer(Customer::Ptr customer);
+
     void removeBill(Bill::Ptr bill);
+    void removeCustomer(Customer::Ptr customer);
 
     void openMailClient(Customer::Ptr customer);
 
@@ -97,6 +103,7 @@ private:
     Validator<Template::Ptr>::Ptr m_templateValidator;
 
     BillTableModel *m_billTableModel;
+    CustomerTableModel *m_customerTableModel;
 };
 
 #endif // MAINWINDOW_H

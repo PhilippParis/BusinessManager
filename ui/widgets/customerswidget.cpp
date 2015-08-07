@@ -10,9 +10,7 @@ CustomersWidget::CustomersWidget(QWidget *parent) :
     ui->setupUi(this);
     ui->tblData->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
-    m_model = new CustomerTableModel();
     m_sortFilterModel = new QSortFilterProxyModel();
-    m_sortFilterModel->setSourceModel(m_model);
 
     connect(ui->leSearch, SIGNAL(textChanged(QString)), m_sortFilterModel, SLOT(setFilterWildcard(QString)));
     m_sortFilterModel->setFilterKeyColumn(0);
@@ -32,19 +30,19 @@ CustomersWidget::CustomersWidget(QWidget *parent) :
 CustomersWidget::~CustomersWidget()
 {
     delete ui;
-    delete m_model;
     delete m_sortFilterModel;
-}
-
-void CustomersWidget::setValidator(Validator<Customer::Ptr>::Ptr validator)
-{
-    m_validator = validator;
 }
 
 void CustomersWidget::setService(CustomerService::Ptr service)
 {
     m_service = service;
     update();
+}
+
+void CustomersWidget::setCustomerModel(CustomerTableModel *model)
+{
+    m_model = model;
+    m_sortFilterModel->setSourceModel(m_model);
 }
 
 void CustomersWidget::update()
@@ -62,25 +60,12 @@ void CustomersWidget::selectionChanged(QModelIndex newIndex, QModelIndex prevInd
 
 void CustomersWidget::on_btnAddCustomer_clicked()
 {
-    CustomerDialog *dialog = new CustomerDialog(this, m_service);
-    dialog->prepareForCreate();
-
-    if(dialog->exec() == QDialog::Accepted) {
-        Customer::Ptr customer = dialog->toDomainObject();
-        m_model->add(customer);
-    }
+    emit create();
 }
 
 void CustomersWidget::on_btnEditCustomer_clicked()
 {
-    Customer::Ptr selected = selectedCustomer();
-    CustomerDialog *dialog = new CustomerDialog(this, m_service);
-    dialog->prepareForUpdate(selected);
-
-    if(dialog->exec() == QDialog::Accepted) {
-        Customer::Ptr editedCustomer = dialog->toDomainObject();
-        m_model->replace(selected, editedCustomer);
-    }
+    emit edit(selectedCustomer());
 }
 
 void CustomersWidget::on_btnSendMail_clicked()
@@ -90,25 +75,7 @@ void CustomersWidget::on_btnSendMail_clicked()
 
 void CustomersWidget::on_btnDeleteCustomer_clicked()
 {
-    QMessageBox::StandardButton reply;
-    reply = QMessageBox::question(this, tr("Delete Customer"),
-                                    tr("Are you sure you want to delete the selected Customer?"),
-                                    QMessageBox::Yes|QMessageBox::No);
-
-    if (reply == QMessageBox::Yes) {
-        Customer::Ptr selected = selectedCustomer();
-        try {
-            m_service->remove(selected);
-            m_model->remove(selected);
-        } catch (ServiceException *e) {
-            showErrorMessage(e->what());
-        }
-    }
-}
-
-void CustomersWidget::showErrorMessage(QString msg)
-{
-    QMessageBox::information(this, tr("Error"), msg);
+    emit remove(selectedCustomer());
 }
 
 Customer::Ptr CustomersWidget::selectedCustomer()

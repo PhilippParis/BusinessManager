@@ -10,7 +10,6 @@
 #include "ui/models/customertablemodel.h"
 #include "ui/dialogs/customerdialog.h"
 
-#include "persistence/validation/validator.h"
 #include "service/customerservice.h"
 
 namespace Ui {
@@ -25,11 +24,15 @@ public:
     explicit CustomersWidget(QWidget *parent = 0);
     ~CustomersWidget();
 
-    void setValidator(Validator<Customer::Ptr>::Ptr validator);
     void setService(CustomerService::Ptr service);
+    void setCustomerModel(CustomerTableModel *model);
+
     Customer::Ptr selectedCustomer();
 
 signals:
+    void create();
+    void edit(Customer::Ptr);
+    void remove(Customer::Ptr);
     void sendMail(Customer::Ptr);
 
 private slots:
@@ -42,13 +45,8 @@ private slots:
     void on_btnDeleteCustomer_clicked();
 
 private:
-    void showErrorMessage(QString msg);
-
-private:
     Ui::CustomersWidget *ui;
-
     CustomerService::Ptr m_service;
-    Validator<Customer::Ptr>::Ptr m_validator;
 
     CustomerTableModel *m_model;
     QSortFilterProxyModel *m_sortFilterModel;

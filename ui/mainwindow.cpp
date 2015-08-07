@@ -37,6 +37,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_statisticsService = std::make_shared<StatisticsServiceImpl>(billDAO);
 
     m_billTableModel = new BillTableModel();
+    m_customerTableModel = new CustomerTableModel();
 
     connect(ui->actionNewBill, SIGNAL(triggered(bool)), SLOT(createBill()));
     connect(ui->actionQuit, SIGNAL(triggered(bool)), SLOT(close()));
@@ -48,6 +49,8 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete m_billTableModel;
+    delete m_customerTableModel;
 }
 
 void MainWindow::printOffer(Offer::Ptr offer)
@@ -161,6 +164,17 @@ void MainWindow::createBill()
     delete dialog;
 }
 
+void MainWindow::createCustomer()
+{
+    CustomerDialog *dialog = new CustomerDialog(this, m_customerService);
+    dialog->prepareForCreate();
+
+    if(dialog->exec() == QDialog::Accepted) {
+        Customer::Ptr customer = dialog->toDomainObject();
+        m_customerTableModel->add(customer);
+    }
+}
+
 void MainWindow::editBill(Bill::Ptr selected)
 {
     BillDialog *dialog = new BillDialog(this, m_billService, m_customerService, m_materialService, m_templateService);
@@ -183,6 +197,17 @@ void MainWindow::editBill(Bill::Ptr selected)
     delete dialog;
 }
 
+void MainWindow::editCustomer(Customer::Ptr selected)
+{
+    CustomerDialog *dialog = new CustomerDialog(this, m_customerService);
+    dialog->prepareForUpdate(selected);
+
+    if(dialog->exec() == QDialog::Accepted) {
+        Customer::Ptr editedCustomer = dialog->toDomainObject();
+        m_customerTableModel->replace(selected, editedCustomer);
+    }
+}
+
 void MainWindow::removeBill(Bill::Ptr selected)
 {
     QMessageBox::StandardButton reply;
@@ -197,6 +222,23 @@ void MainWindow::removeBill(Bill::Ptr selected)
         } catch (ServiceException *e) {
             QMessageBox::information(this, tr("Error"), e->what());
             delete e;
+        }
+    }
+}
+
+void MainWindow::removeCustomer(Customer::Ptr selected)
+{
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, tr("Delete Customer"),
+                                    tr("Are you sure you want to delete the selected Customer?"),
+                                    QMessageBox::Yes|QMessageBox::No);
+
+    if (reply == QMessageBox::Yes) {
+        try {
+            m_customerService->remove(selected);
+            m_customerTableModel->remove(selected);
+        } catch (ServiceException *e) {
+            QMessageBox::information(this, tr("Error"), e->what());
         }
     }
 }
@@ -236,9 +278,12 @@ void MainWindow::initWidgets()
     connect(ui->widgetBills, SIGNAL(sendMail(Customer::Ptr)), this, SLOT(openMailClient(Customer::Ptr)));
 
     // customer widget
+    ui->widgetCustomers->setCustomerModel(m_customerTableModel);
     ui->widgetCustomers->setService(m_customerService);
-    ui->widgetCustomers->setValidator(m_customerValidator);
 
+    connect(ui->widgetCustomers, SIGNAL(create()), this, SLOT(createCustomer()));
+    connect(ui->widgetCustomers, SIGNAL(edit(Customer::Ptr)), this, SLOT(editCustomer(Customer::Ptr)));
+    connect(ui->widgetCustomers, SIGNAL(remove(Customer::Ptr)), this, SLOT(removeCustomer(Customer::Ptr)));
     connect(ui->widgetCustomers, SIGNAL(sendMail(Customer::Ptr)), this, SLOT(openMailClient(Customer::Ptr)));
 
     // materials widget
