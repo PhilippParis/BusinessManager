@@ -105,7 +105,9 @@ SOURCES += main.cpp\
     decimal.cpp \
     service/statisticsservice.cpp \
     domain/statistics.cpp \
-    service/impl/statisticsserviceimpl.cpp
+    service/impl/statisticsserviceimpl.cpp \
+    ui/dialogs/customerselectiondialog.cpp \
+    ui/models/customersortfilterproxymodel.cpp
 
 HEADERS  += ui/mainwindow.h \
     domain/bill.h \
@@ -192,7 +194,9 @@ HEADERS  += ui/mainwindow.h \
     decimal.h \
     service/statisticsservice.h \
     domain/statistics.h \
-    service/impl/statisticsserviceimpl.h
+    service/impl/statisticsserviceimpl.h \
+    ui/dialogs/customerselectiondialog.h \
+    ui/models/customersortfilterproxymodel.h
 
 FORMS    += ui/mainwindow.ui \
     ui/widgets/customerswidget.ui \
@@ -211,7 +215,8 @@ FORMS    += ui/mainwindow.ui \
     ui/widgets/statisticswidget.ui \
     ui/dialogs/materialdialog.ui \
     ui/dialogs/materialselectiondialog.ui \
-    ui/widgets/materialswidget.ui
+    ui/widgets/materialswidget.ui \
+    ui/dialogs/customerselectiondialog.ui
 
 RESOURCES += \
     resources.qrc

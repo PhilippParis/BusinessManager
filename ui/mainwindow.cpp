@@ -148,11 +148,16 @@ void MainWindow::exportLetter(Letter::Ptr letter, QString path)
 
 void MainWindow::createBill()
 {
+    Customer::Ptr customer = openCustomerSelectionDialog();
+    if (customer == nullptr) {
+        return;
+    }
+
     BillDialog *dialog = new BillDialog(this, m_billService, m_customerService, m_materialService, m_templateService);
-    connect(dialog, SIGNAL(print(Bill::Ptr)), this, SIGNAL(print(Bill::Ptr)));
+    connect(dialog, SIGNAL(print(Bill::Ptr)), this, SLOT(printBill(Bill::Ptr)));
 
     dialog->setDiscountValidator(m_discountValidator);
-    dialog->prepareForCreate();
+    dialog->prepareForCreate(customer);
 
     if(dialog->exec() == QDialog::Accepted) {
         Bill::Ptr bill = dialog->toDomainObject();
@@ -436,6 +441,15 @@ void MainWindow::loadSettings()
     } else {
         ui->actionImprintedPaper->setChecked(true);
     }
+}
+
+Customer::Ptr MainWindow::openCustomerSelectionDialog()
+{
+    CustomerSelectionDialog *dialog = new CustomerSelectionDialog(this, m_customerService);
+    if (dialog->exec() == QDialog::Accepted) {
+        return dialog->selectedCustomer();
+    }
+    return nullptr;
 }
 
 void MainWindow::on_actionSettings_triggered()

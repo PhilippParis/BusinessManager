@@ -24,7 +24,7 @@ Offer::Ptr OfferDialog::toDomainObject()
 {
     Offer::Ptr offer = std::make_shared<Offer>();
 
-    offer->setCustomer(selectedCustomer());
+    offer->setCustomer(m_customer);
     offer->setItems(m_billItemModel->items());
 
     return offer;

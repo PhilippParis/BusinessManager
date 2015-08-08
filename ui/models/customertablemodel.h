@@ -19,7 +19,7 @@ public:
 
 private:
     enum Column {
-        Name, Address, Mail
+        Name, Org, Address, Mail
     };
 };
 

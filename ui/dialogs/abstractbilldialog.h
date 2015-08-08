@@ -16,6 +16,7 @@
 #include "ui/dialogs/customerdialog.h"
 #include "ui/dialogs/discountdialog.h"
 #include "ui/wizards/billitemwizard.h"
+#include "ui/dialogs/customerselectiondialog.h"
 
 namespace Ui {
 class BillDialog;
@@ -29,9 +30,10 @@ public:
                        MaterialService::Ptr materialService, TemplateService::Ptr templateService);
     ~AbstractBillDialog();
 
+    void setCustomer(Customer::Ptr customer);
+
 private slots:
-    void on_btnAddCustomer_clicked();
-    void on_btnEditCustomer_clicked();
+    void on_btnSelectCustomer_clicked();
     void on_btnAddArticle_clicked();
     void on_btnEditArticle_clicked();
     void selectionChanged(QModelIndex newIndex, QModelIndex prevIndex);
@@ -39,17 +41,16 @@ private slots:
 
 protected:
     BillItem::Ptr selectedBillItem();
-    Customer::Ptr selectedCustomer();
 
 protected:
     Ui::BillDialog *ui;
+    Customer::Ptr m_customer;
 
     BillService::Ptr m_billService;
     CustomerService::Ptr m_customerService;
     MaterialService::Ptr m_materialService;
     TemplateService::Ptr m_templateService;
 
-    CustomerTableModel* m_customerModel;
     BillItemTableModel *m_billItemModel;
 
 };

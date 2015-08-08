@@ -30,7 +30,7 @@ signals:
 
 private:
     enum Column {
-        Name = 0, Nr, Manufactor, Type, Quantity
+        Name = 0, Nr, Manufactor, Type, Price, Quantity
     };
 
     QMap<Material::Ptr, double> m_quantities;

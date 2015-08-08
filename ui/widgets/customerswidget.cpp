@@ -10,7 +10,7 @@ CustomersWidget::CustomersWidget(QWidget *parent) :
     ui->setupUi(this);
     ui->tblData->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
-    m_sortFilterModel = new QSortFilterProxyModel();
+    m_sortFilterModel = new CustomerSortFilterProxyModel();
 
     connect(ui->leSearch, SIGNAL(textChanged(QString)), m_sortFilterModel, SLOT(setFilterWildcard(QString)));
     m_sortFilterModel->setFilterKeyColumn(0);
@@ -20,8 +20,7 @@ CustomersWidget::CustomersWidget(QWidget *parent) :
     ui->tblData->setSortingEnabled(true);
     ui->tblData->sortByColumn(0, Qt::AscendingOrder);
 
-    ui->tblData->setColumnWidth(0, 300);
-    ui->tblData->setColumnWidth(1, 200);
+    ui->tblData->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
     connect(ui->tblData->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
                                                   this, SLOT(selectionChanged(QModelIndex,QModelIndex)));

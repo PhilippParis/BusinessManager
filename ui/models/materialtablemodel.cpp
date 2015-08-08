@@ -7,7 +7,7 @@ MaterialTableModel::MaterialTableModel()
 
 int MaterialTableModel::columnCount(const QModelIndex &parent) const
 {
-    return 5;
+    return 6;
 }
 
 bool MaterialTableModel::setData(const QModelIndex &index, const QVariant &value, int role)
@@ -40,6 +40,8 @@ QVariant MaterialTableModel::data(const QModelIndex &index, int role) const
             return material->type();
         case Manufactor:
             return material->manufactor();
+        case Price:
+            return QString::number((material->costPerUnit() + material->tax()).value()) + QString::fromUtf8("€");
         case Quantity:
             return QString::number(m_quantities.value(material, 0.0)) + "  " + material->unit();
         }
@@ -60,6 +62,8 @@ QVariant MaterialTableModel::headerData(int section, Qt::Orientation orientation
             return tr("Manufactor");
         case Nr:
             return tr("Article Number");
+        case Price:
+            return tr("Price");
         case Quantity:
             return tr("Quantity");
         }
@@ -69,7 +73,7 @@ QVariant MaterialTableModel::headerData(int section, Qt::Orientation orientation
 
 Qt::ItemFlags MaterialTableModel::flags(const QModelIndex & index) const
 {
-    if (index.column() == 4) {
+    if (index.column() == Quantity) {
         return QAbstractTableModel::flags(index) | Qt::ItemIsEditable;
     }
     return QAbstractTableModel::flags(index);

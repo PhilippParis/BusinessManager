@@ -8,13 +8,13 @@ BillWidget::BillWidget(QWidget *parent) :
     ui->setupUi(this);
 
     m_sortFilterModel = new BillSortFilterProxyModel();
+    m_sortFilterModel->setFilterCaseSensitivity(Qt::CaseInsensitive);
 
     ui->tblData->setModel(m_sortFilterModel);
     ui->tblData->setSortingEnabled(true);
     ui->tblData->sortByColumn(1, Qt::DescendingOrder);
 
-    ui->tblData->setColumnWidth(2, 200);
-    ui->tblData->setColumnWidth(3, 200);
+    ui->tblData->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
     connect(ui->tblData->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
             this, SLOT(selectionChanged(QModelIndex,QModelIndex)));

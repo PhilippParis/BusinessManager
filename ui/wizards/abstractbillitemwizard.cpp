@@ -13,7 +13,7 @@ AbstractBillItemWizard::AbstractBillItemWizard(QWidget *parent, MaterialService:
     m_materialModel = new MaterialTableModel();
     SpinBoxDelegate* delegate = new SpinBoxDelegate(ui->tblMaterial);
     ui->tblMaterial->setModel(m_materialModel);
-    ui->tblMaterial->setItemDelegateForColumn(4, delegate);
+    ui->tblMaterial->setItemDelegateForColumn(5, delegate);
 
     m_templateModel = new TemplateTableModel();
     m_templateSortFilterProxyModel = new TemplateSortFilterProxyModel();

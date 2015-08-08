@@ -12,10 +12,6 @@ AbstractBillDialog::AbstractBillDialog(QWidget *parent, BillService::Ptr billSer
 {
     ui->setupUi(this);
 
-    m_customerModel = new CustomerTableModel();
-    m_customerModel->addAll(customerService->getAll());
-    ui->cbRecipient->setModel(m_customerModel);
-
     m_billItemModel = new BillItemTableModel();
     ui->tblBillItems->setModel(m_billItemModel);
 
@@ -26,8 +22,21 @@ AbstractBillDialog::AbstractBillDialog(QWidget *parent, BillService::Ptr billSer
 AbstractBillDialog::~AbstractBillDialog()
 {
     delete ui;
-    delete m_customerModel;
     delete m_billItemModel;
+}
+
+void AbstractBillDialog::setCustomer(Customer::Ptr customer)
+{
+    m_customer = customer;
+
+    QString text;
+    if(m_customer->organisation().isEmpty()) {
+        text = m_customer->fullName();
+    } else {
+        text = m_customer->organisation() + "\n" + m_customer->fullName();
+    }
+
+    ui->btnSelectCustomer->setText(text);
 }
 
 BillItem::Ptr AbstractBillDialog::selectedBillItem()
@@ -35,32 +44,12 @@ BillItem::Ptr AbstractBillDialog::selectedBillItem()
     return m_billItemModel->get(ui->tblBillItems->currentIndex());
 }
 
-Customer::Ptr AbstractBillDialog::selectedCustomer()
+void AbstractBillDialog::on_btnSelectCustomer_clicked()
 {
-    return m_customerModel->get(m_customerModel->index(ui->cbRecipient->currentIndex(), 0));
-}
-
-void AbstractBillDialog::on_btnAddCustomer_clicked()
-{
-    CustomerDialog *dialog = new CustomerDialog(this, m_customerService);
-    dialog->prepareForCreate();
+    CustomerSelectionDialog *dialog = new CustomerSelectionDialog(this, m_customerService);
 
     if(dialog->exec() == QDialog::Accepted) {
-        QModelIndex index = m_customerModel->add(dialog->toDomainObject());
-        ui->cbRecipient->setCurrentIndex(index.row());
-    }
-
-    delete dialog;
-}
-
-void AbstractBillDialog::on_btnEditCustomer_clicked()
-{
-    CustomerDialog *dialog = new CustomerDialog(this, m_customerService);
-    Customer::Ptr selected = m_customerModel->get(m_customerModel->index(ui->cbRecipient->currentIndex(), 0));
-    dialog->prepareForUpdate(selected);
-
-    if(dialog->exec() == QDialog::Accepted) {
-        m_customerModel->replace(selected, dialog->toDomainObject());
+       setCustomer(dialog->selectedCustomer());
     }
 
     delete dialog;

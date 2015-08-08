@@ -8,6 +8,7 @@ TemplatesWidget::TemplatesWidget(QWidget *parent) :
     ui->setupUi(this);
 
     m_sortFilterProxyModel = new TemplateSortFilterProxyModel();
+    m_sortFilterProxyModel->setFilterCaseSensitivity(Qt::CaseInsensitive);
     ui->tblTemplates->setModel(m_sortFilterProxyModel);
     ui->tblTemplates->setSortingEnabled(true);
 

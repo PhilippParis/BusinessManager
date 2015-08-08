@@ -9,7 +9,7 @@ CustomerTableModel::CustomerTableModel()
 int CustomerTableModel::columnCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent)
-    return 3;
+    return 4;
 }
 
 QVariant CustomerTableModel::data(const QModelIndex &index, int role) const
@@ -20,15 +20,14 @@ QVariant CustomerTableModel::data(const QModelIndex &index, int role) const
     }
 
     switch(index.column()) {
-        case Name:
-            if(!customer->organisation().isEmpty()) {
-                return customer->organisation() + "\n" + customer->fullName();
-            }
-            return customer->fullName();
-        case Address:
-            return customer->street() + "\n" + customer->city();
-        case Mail:
-            return customer->mail();
+    case Name:
+        return customer->fullName();
+    case Org:
+        return customer->organisation();
+    case Address:
+        return customer->street() + "; " + customer->city();
+    case Mail:
+        return customer->mail();
     }
 
     return QVariant();
@@ -42,7 +41,9 @@ QVariant CustomerTableModel::headerData(int section, Qt::Orientation orientation
                 switch (section)
                 {
                 case Name:
-                    return tr("Organisation / Name");
+                    return tr("Name");
+                case Org:
+                    return tr("Organisation");
                 case Address:
                     return tr("Address");
                 case Mail:

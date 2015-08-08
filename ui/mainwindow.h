@@ -92,6 +92,7 @@ private:
     QString getSaveFileName();
     void initWidgets();
     void loadSettings();
+    Customer::Ptr openCustomerSelectionDialog();
 
 private:
     Ui::MainWindow *ui;

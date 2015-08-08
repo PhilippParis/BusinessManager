@@ -26,7 +26,7 @@ public:
                         MaterialService::Ptr materialService, TemplateService::Ptr templateService);
 
     void setDiscountValidator(Validator<Discount::Ptr>::Ptr validator);
-    void prepareForCreate();
+    void prepareForCreate(Customer::Ptr customer);
     void prepareForUpdate(Bill::Ptr bill);
     Bill::Ptr toDomainObject();
 

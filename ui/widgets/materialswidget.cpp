@@ -8,10 +8,10 @@ MaterialsWidget::MaterialsWidget(QWidget *parent) :
     ui->setupUi(this);
 
     m_sortFilterProxyModel = new MaterialSortFilterProxyModel();
+    m_sortFilterProxyModel->setFilterCaseSensitivity(Qt::CaseInsensitive);
 
     ui->tblMaterials->setModel(m_sortFilterProxyModel);
     ui->tblMaterials->setSortingEnabled(true);
-    ui->tblMaterials->hideColumn(4);
 
     connect(ui->leFilter, SIGNAL(textChanged(QString)), m_sortFilterProxyModel, SLOT(setFilterWildcard(QString)));
 }
@@ -32,6 +32,7 @@ void MaterialsWidget::setMaterialModel(MaterialTableModel *model)
 {
     m_model = model;
     m_sortFilterProxyModel->setSourceModel(m_model);
+    ui->tblMaterials->hideColumn(5);
 }
 
 Material::Ptr MaterialsWidget::selectedMaterial()

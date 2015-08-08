@@ -17,12 +17,13 @@ void BillDialog::setDiscountValidator(Validator<Discount::Ptr>::Ptr validator)
     m_discountValidator = validator;
 }
 
-void BillDialog::prepareForCreate()
+void BillDialog::prepareForCreate(Customer::Ptr customer)
 {
     m_openMode = Create;
     m_payed = false;
     ui->dateEdit->setDate(QDate::currentDate());
     ui->sbNr->setValue(m_billService->nextBillNumber(QDate::currentDate()));
+    setCustomer(customer);
 }
 
 void BillDialog::prepareForUpdate(Bill::Ptr bill)
@@ -33,17 +34,11 @@ void BillDialog::prepareForUpdate(Bill::Ptr bill)
     ui->dateEdit->setDate(bill->date());
     ui->sbNr->setValue(bill->billNumber());
     m_billItemModel->addAll(bill->items());
+    setCustomer(bill->customer());
 
     if (!bill->discounts().isEmpty()) {
         m_discount = bill->discounts().first();
     }
-
-    int index = m_customerModel->indexOf(bill->customer());
-    if(index < 0) {
-        // customer deleted -> add customer to combobox
-        index = m_customerModel->add(m_customerService->get(bill->customer()->id())).row();
-    }
-    ui->cbRecipient->setCurrentIndex(index);
 }
 
 void BillDialog::accept()
@@ -68,7 +63,7 @@ Bill::Ptr BillDialog::toDomainObject()
     bill->setBillNumber(ui->sbNr->value());
     bill->setDate(ui->dateEdit->date());
     bill->setId(m_id);
-    bill->setCustomer(selectedCustomer());
+    bill->setCustomer(m_customer);
     bill->setPayed(m_payed);
     bill->setItems(m_billItemModel->items());
 

@@ -8,6 +8,7 @@
 #include "persistence/databasesingleton.h"
 
 #include "ui/models/customertablemodel.h"
+#include "ui/models/customersortfilterproxymodel.h"
 #include "ui/dialogs/customerdialog.h"
 
 #include "service/customerservice.h"
@@ -49,7 +50,7 @@ private:
     CustomerService::Ptr m_service;
 
     CustomerTableModel *m_model;
-    QSortFilterProxyModel *m_sortFilterModel;
+    CustomerSortFilterProxyModel *m_sortFilterModel;
 };
 
 #endif // CUSTOMERSWIDGET_H
