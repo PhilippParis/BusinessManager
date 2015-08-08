@@ -107,7 +107,14 @@ SOURCES += main.cpp\
     domain/statistics.cpp \
     service/impl/statisticsserviceimpl.cpp \
     ui/dialogs/customerselectiondialog.cpp \
-    ui/models/customersortfilterproxymodel.cpp
+    ui/models/customersortfilterproxymodel.cpp \
+    persistence/offerdao.cpp \
+    persistence/letterdao.cpp \
+    persistence/impl/dbofferdao.cpp \
+    persistence/itemdao.cpp \
+    persistence/offeritemdao.cpp \
+    persistence/impl/dbitemdao.cpp \
+    persistence/impl/dbofferitemdao.cpp
 
 HEADERS  += ui/mainwindow.h \
     domain/bill.h \
@@ -196,7 +203,14 @@ HEADERS  += ui/mainwindow.h \
     domain/statistics.h \
     service/impl/statisticsserviceimpl.h \
     ui/dialogs/customerselectiondialog.h \
-    ui/models/customersortfilterproxymodel.h
+    ui/models/customersortfilterproxymodel.h \
+    persistence/offerdao.h \
+    persistence/letterdao.h \
+    persistence/impl/dbofferdao.h \
+    persistence/itemdao.h \
+    persistence/offeritemdao.h \
+    persistence/impl/dbitemdao.h \
+    persistence/impl/dbofferitemdao.h
 
 FORMS    += ui/mainwindow.ui \
     ui/widgets/customerswidget.ui \

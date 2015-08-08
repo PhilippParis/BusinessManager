@@ -59,5 +59,33 @@ QMap<double, Decimal> Offer::inTotalPriceIncludedTaxes() const
 
     return taxes;
 }
+QDate Offer::date() const
+{
+    return m_date;
+}
+
+void Offer::setDate(const QDate &date)
+{
+    m_date = date;
+}
+int Offer::id() const
+{
+    return m_id;
+}
+
+void Offer::setId(int id)
+{
+    m_id = id;
+}
+
+QString Offer::toString()
+{
+    return "Offer{id= " +QString::number(m_id) +
+           "date= " + m_date.toString("dd.MM.yyyy")+
+           "customer= " + m_customer->toString();
+           "}";
+}
+
+
 
 

@@ -83,7 +83,7 @@ void DatabaseSingleton::createTables(QSqlDatabase db)
        qDebug() << query.lastError();
    }
 
-   res = query.exec("CREATE TABLE IF NOT EXISTS BILL_ITEM ( "
+   res = query.exec("CREATE TABLE IF NOT EXISTS ITEM ( "
                     "ID INTEGER PRIMARY KEY NOT NULL, "
                     "DESC VARCHAR(200) NOT NULL, "
                     "WORK_HOURS REAL NOT NULL, "
@@ -97,8 +97,15 @@ void DatabaseSingleton::createTables(QSqlDatabase db)
                     "PRICE INTEGER NOT NULL, "
                     "UNIT VARCHAR(20) NOT NULL, "
                     "QUANTITY INTEGER NOT NULL, "
-                    "BILL INTEGER REFERENCES BILL(ID), "
                     "DELETED INTEGER NOT NULL DEFAULT 0);");
+
+   if(!res) {
+       qDebug() << query.lastError();
+   }
+
+   res = query.exec("CREATE TABLE IF NOT EXISTS BILL_ITEM ( "
+                    "ID INTEGER PRIMARY KEY REFERENCES ITEM(ID), "
+                    "BILL INTEGER REFERENCES BILL(ID));");
 
    if(!res) {
        qDebug() << query.lastError();
@@ -151,6 +158,24 @@ void DatabaseSingleton::createTables(QSqlDatabase db)
                     "TEMPLATE_ID INTEGER NOT NULL REFERENCES TEMPLATE(ID), "
                     "QUANTITY INTEGER NOT NULL, "
                     "PRIMARY KEY(MATERIAL_ID, TEMPLATE_ID));");
+
+   if(!res) {
+       qDebug() << query.lastError();
+   }
+
+   res = query.exec("CREATE TABLE IF NOT EXISTS OFFER_ITEM ( "
+                    "ID INTEGER PRIMARY KEY REFERENCES ITEM(ID), "
+                    "OFFER INTEGER REFERENCES OFFER(ID));");
+
+   if(!res) {
+       qDebug() << query.lastError();
+   }
+
+   res = query.exec("CREATE TABLE IF NOT EXISTS OFFER ( "
+                    "ID INTEGER PRIMARY KEY NOT NULL, "
+                    "DATE VARCHAR(20) NOT NULL, "
+                    "CUSTOMER INTEGER NOT NULL REFERENCES CUSTOMER(ID), "
+                    "DELETED INTEGER NOT NULL DEFAULT 0);");
 
    if(!res) {
        qDebug() << query.lastError();

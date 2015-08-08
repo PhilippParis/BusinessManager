@@ -247,12 +247,12 @@ void DBBillDAO::updateBillItems(Bill::Ptr bill)
 
     // set all already stored items as deleted
     QSqlQuery query(m_database);
-    query.prepare("UPDATE BILL_ITEM SET DELETED = 1 WHERE BILL = ?;");
+    query.prepare("UPDATE ITEM SET DELETED = 1 WHERE ID IN (SELECT ID FROM BILL_ITEM WHERE BILL = ?);");
     query.addBindValue(bill->id());
 
     if (!query.exec()) {
-        qCCritical(lcPersistence) << "DBBillDAO::updateBillItems failed:" + query.lastError().text();
-        throw new PersistenceException("DBBillDAO::updateBillItems failed:" + query.lastError().text());
+        qCCritical(lcPersistence) << "DBBillDAO::updateBillItems delete failed:" + query.lastError().text();
+        throw new PersistenceException("DBBillDAO::updateBillItems delete failed:" + query.lastError().text());
     }
 
     QStringList placeholders;
@@ -260,16 +260,26 @@ void DBBillDAO::updateBillItems(Bill::Ptr bill)
          placeholders << "?";
     }
 
-    // enable items and set bill id
-    query.prepare("UPDATE BILL_ITEM SET BILL = ?, DELETED = 0 WHERE ID IN (" + placeholders.join(", ") + ")");
+    // enable items
+    query.prepare("UPDATE ITEM SET DELETED = 0 WHERE ID IN (" + placeholders.join(", ") + ")");
+    for (int i = 0; i < items.size(); ++i) {
+         query.addBindValue(items.at(i)->id());
+    }
+    if (!query.exec()) {
+        qCCritical(lcPersistence) << "DBBillDAO::updateBillItems undelete failed:" + query.lastError().text();
+        throw new PersistenceException("DBBillDAO::updateBillItems undelete failed:" + query.lastError().text());
+    }
+
+    // set bill id
+    query.prepare("UPDATE BILL_ITEM SET BILL = ? WHERE ID IN (" + placeholders.join(", ") + ")");
     query.addBindValue(bill->id());
     for (int i = 0; i < items.size(); ++i) {
          query.addBindValue(items.at(i)->id());
     }
 
     if (!query.exec()) {
-        qCCritical(lcPersistence) << "DBBillDAO::updateBillItems failed:" + query.lastError().text();
-        throw new PersistenceException("DBBillDAO::updateBillItems failed:" + query.lastError().text());
+        qCCritical(lcPersistence) << "DBBillDAO::updateBillItems set billID failed:" + query.lastError().text();
+        throw new PersistenceException("DBBillDAO::updateBillItems set billID failed:" + query.lastError().text());
     }
 }
 
