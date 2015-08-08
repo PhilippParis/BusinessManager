@@ -119,7 +119,7 @@ QList<Offer::Ptr> DBOfferDAO::getAll()
 
     QList<Offer::Ptr> items;
     QSqlQuery query(m_database);
-    query.prepare("SELECT * FROM BILL WHERE DELETED = 0");
+    query.prepare("SELECT * FROM OFFER WHERE DELETED = 0");
 
     if (!query.exec()) {
         qCCritical(lcPersistence) << "retrieving offers failed" + query.lastError().text();
@@ -155,7 +155,6 @@ void DBOfferDAO::updateOfferItems(Offer::Ptr offer)
 
     // enable items
     query.prepare("UPDATE ITEM SET DELETED = 0 WHERE ID IN (" + placeholders.join(", ") + ")");
-    query.addBindValue(offer->id());
     for (int i = 0; i < items.size(); ++i) {
          query.addBindValue(items.at(i)->id());
     }

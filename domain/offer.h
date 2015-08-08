@@ -31,6 +31,7 @@ public:
     void setId(int id);
 
     QString toString();
+    bool equals(const Offer::Ptr offer) const;
 
 private:
     int m_id;

@@ -82,8 +82,31 @@ QString Offer::toString()
 {
     return "Offer{id= " +QString::number(m_id) +
            "date= " + m_date.toString("dd.MM.yyyy")+
-           "customer= " + m_customer->toString();
-           "}";
+           "customer= " + (m_customer == nullptr? "null" : m_customer->toString()) +
+    "}";
+}
+
+bool Offer::equals(const Offer::Ptr offer) const
+{
+    if (m_id != offer->m_id) {
+        return false;
+    }
+
+    if (m_date != offer->m_date) {
+        return false;
+    }
+
+    if (m_items.size() != offer->m_items.size()) {
+        return false;
+    }
+
+    for (int i = 0; i < m_items.size(); ++i) {
+        if (!m_items.at(i)->equals(offer->m_items.at(i))) {
+            return false;
+        }
+    }
+
+    return m_customer == nullptr ? offer->m_customer == nullptr : m_customer->equals(offer->m_customer);
 }
 
 
