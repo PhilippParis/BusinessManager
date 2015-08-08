@@ -114,7 +114,9 @@ SOURCES += main.cpp\
     persistence/itemdao.cpp \
     persistence/offeritemdao.cpp \
     persistence/impl/dbitemdao.cpp \
-    persistence/impl/dbofferitemdao.cpp
+    persistence/impl/dbofferitemdao.cpp \
+    service/offerservice.cpp \
+    service/impl/offerserviceimpl.cpp
 
 HEADERS  += ui/mainwindow.h \
     domain/bill.h \
@@ -210,7 +212,9 @@ HEADERS  += ui/mainwindow.h \
     persistence/itemdao.h \
     persistence/offeritemdao.h \
     persistence/impl/dbitemdao.h \
-    persistence/impl/dbofferitemdao.h
+    persistence/impl/dbofferitemdao.h \
+    service/offerservice.h \
+    service/impl/offerserviceimpl.h
 
 FORMS    += ui/mainwindow.ui \
     ui/widgets/customerswidget.ui \
