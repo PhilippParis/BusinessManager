@@ -8,8 +8,6 @@ BillDialog::BillDialog(QWidget *parent, BillService::Ptr billService, CustomerSe
     connect(ui->dateEdit, SIGNAL(dateChanged(QDate)), SLOT(on_dateEdit_dateChanged(QDate)));
     connect(ui->btnAddDiscount, SIGNAL(clicked(bool)), SLOT(on_btnAddDiscount_clicked()));
     connect(ui->btnPreview, SIGNAL(clicked(bool)), SLOT(on_btnPreview_clicked()));
-
-    ui->btnSave->setHidden(true);
 }
 
 void BillDialog::setDiscountValidator(Validator<Discount::Ptr>::Ptr validator)
@@ -51,7 +49,7 @@ void BillDialog::accept()
             m_billService->billValidator()->validateForUpdate(bill);
         }
         QDialog::accept();
-    } catch (ServiceException *e) {
+    } catch (ValidationException *e) {
         QMessageBox::warning(this, "Invalid Data", e->what());
         delete e;
     }

@@ -43,7 +43,7 @@ void PrintServiceImpl::printOffer(QPrinter *printer, Offer::Ptr offer)
     printBar(painter);
 
     // print header
-    printHeader(painter, offer->customer(), QDate::currentDate());
+    printHeader(painter, offer->customer(), offer->date());
 
     // subject and text
     printSubject(painter, tr("Offer"), m_settings.value("docs/offerText").toString().split('\n'));

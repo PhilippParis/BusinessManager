@@ -118,7 +118,10 @@ SOURCES += main.cpp\
     service/offerservice.cpp \
     service/impl/offerserviceimpl.cpp \
     persistence/validation/impl/offervalidator.cpp \
-    tests/offerdaotest.cpp
+    tests/offerdaotest.cpp \
+    ui/widgets/offerwidget.cpp \
+    ui/models/offertablemodel.cpp \
+    ui/models/offersortfilterproxymodel.cpp
 
 HEADERS  += ui/mainwindow.h \
     domain/bill.h \
@@ -218,7 +221,10 @@ HEADERS  += ui/mainwindow.h \
     service/offerservice.h \
     service/impl/offerserviceimpl.h \
     persistence/validation/impl/offervalidator.h \
-    tests/offerdaotest.h
+    tests/offerdaotest.h \
+    ui/widgets/offerwidget.h \
+    ui/models/offertablemodel.h \
+    ui/models/offersortfilterproxymodel.h
 
 FORMS    += ui/mainwindow.ui \
     ui/widgets/customerswidget.ui \
@@ -238,7 +244,8 @@ FORMS    += ui/mainwindow.ui \
     ui/dialogs/materialdialog.ui \
     ui/dialogs/materialselectiondialog.ui \
     ui/widgets/materialswidget.ui \
-    ui/dialogs/customerselectiondialog.ui
+    ui/dialogs/customerselectiondialog.ui \
+    ui/widgets/offerwidget.ui
 
 RESOURCES += \
     resources.qrc

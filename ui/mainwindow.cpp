@@ -21,6 +21,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_materialValidator = std::make_shared<MaterialValidator>();
     m_discountValidator = std::make_shared<DiscountValidator>();
     m_templateValidator = std::make_shared<TemplateValidator>();
+    m_offerValidator = std::make_shared<OfferValidator>();
 
     DiscountDAO::Ptr discountDAO = std::make_shared<DBDiscountDAO>(db, m_discountValidator);
     CustomerDAO::Ptr customerDAO = std::make_shared<DBCustomerDAO>(db, m_customerValidator);
@@ -28,6 +29,8 @@ MainWindow::MainWindow(QWidget *parent) :
     BillItemDAO::Ptr billItemDAO = std::make_shared<DBBillItemDAO>(db, m_billItemValidator, materialDAO);
     BillDAO::Ptr billDAO = std::make_shared<DBBillDAO>(db, m_billValidator, customerDAO, billItemDAO, discountDAO);
     TemplateDAO::Ptr templateDAO = std::make_shared<DBTemplateDAO>(db, m_templateValidator, materialDAO);
+    OfferItemDAO::Ptr offerItemDAO = std::make_shared<DBOfferItemDAO>(db, m_billItemValidator, materialDAO);
+    OfferDAO::Ptr offerDAO = std::make_shared<DBOfferDAO>(db, m_offerValidator, offerItemDAO, customerDAO);
 
     m_customerService = std::make_shared<CustomerServiceImpl>(customerDAO, m_customerValidator);
     m_billService = std::make_shared<BillServiceImpl>(billDAO, billItemDAO, discountDAO, m_billValidator, m_billItemValidator);
@@ -35,13 +38,16 @@ MainWindow::MainWindow(QWidget *parent) :
     m_templateService = std::make_shared<TemplateServiceImpl>(templateDAO, m_templateValidator);
     m_printService = std::make_shared<PrintServiceImpl>();
     m_statisticsService = std::make_shared<StatisticsServiceImpl>(billDAO);
+    m_offerService = std::make_shared<OfferServiceImpl>(offerDAO, offerItemDAO, m_offerValidator, m_billItemValidator);
 
     m_billTableModel = new BillTableModel();
     m_customerTableModel = new CustomerTableModel();
     m_materialTableModel = new MaterialTableModel();
     m_templateTableModel = new TemplateTableModel();
+    m_offerTableModel = new OfferTableModel();
 
     connect(ui->actionNewBill, SIGNAL(triggered(bool)), SLOT(createBill()));
+    connect(ui->actionNewOffer, SIGNAL(triggered(bool)), SLOT(createOffer()));
     connect(ui->actionQuit, SIGNAL(triggered(bool)), SLOT(close()));
 
     initWidgets();
@@ -55,6 +61,7 @@ MainWindow::~MainWindow()
     delete m_customerTableModel;
     delete m_materialTableModel;
     delete m_templateTableModel;
+    delete m_offerTableModel;
 }
 
 void MainWindow::printOffer(Offer::Ptr offer)
@@ -124,8 +131,13 @@ void MainWindow::exportBill(Bill::Ptr bill)
     m_printService->printBill(printer, bill);
 }
 
-void MainWindow::exportOffer(Offer::Ptr offer, QString path)
+void MainWindow::exportOffer(Offer::Ptr offer)
 {
+    QString path = getSaveFileName();
+    if(path.isEmpty()) {
+        return;
+    }
+
     QPrinter *printer = new QPrinter(QPrinter::HighResolution);
     printer->setPageSize(QPrinter::A4);
     printer->setPageMargins(0.14, 0.14, 0.14, 0.14, QPrinter::Inch);
@@ -221,6 +233,32 @@ void MainWindow::createTemplate()
     delete wizard;
 }
 
+void MainWindow::createOffer()
+{
+    Customer::Ptr customer = openCustomerSelectionDialog();
+    if (customer == nullptr) {
+        return;
+    }
+
+    OfferDialog *dialog = new OfferDialog(this, m_billService, m_customerService, m_materialService, m_templateService, m_offerService);
+    connect(dialog, SIGNAL(print(Offer::Ptr)), SLOT(printOffer(Offer::Ptr)));
+
+    dialog->prepareForCreate(customer);
+
+    if (dialog->exec()) {
+        Offer::Ptr offer = dialog->toDomainObject();
+        try {
+            m_offerService->add(offer);
+            m_offerTableModel->add(offer);
+        } catch (ServiceException *e) {
+            QMessageBox::information(this, tr("Error"), e->what());
+            delete e;
+        }
+    }
+
+    delete dialog;
+}
+
 void MainWindow::editBill(Bill::Ptr selected)
 {
     BillDialog *dialog = new BillDialog(this, m_billService, m_customerService, m_materialService, m_templateService);
@@ -291,6 +329,27 @@ void MainWindow::editTemplate(Template::Ptr selected)
     }
 
     delete wizard;
+}
+
+void MainWindow::editOffer(Offer::Ptr selected)
+{
+    OfferDialog *dialog = new OfferDialog(this, m_billService, m_customerService, m_materialService, m_templateService, m_offerService);
+    connect(dialog, SIGNAL(print(Offer::Ptr)), SLOT(printOffer(Offer::Ptr)));
+
+    dialog->prepareForUpdate(selected);
+
+    if (dialog->exec()) {
+        Offer::Ptr offer = dialog->toDomainObject();
+        try {
+            m_offerService->update(offer);
+            m_offerTableModel->replace(selected, offer);
+        } catch (ServiceException *e) {
+            QMessageBox::information(this, tr("Error"), e->what());
+            delete e;
+        }
+    }
+
+    delete dialog;
 }
 
 void MainWindow::removeBill(Bill::Ptr selected)
@@ -364,6 +423,24 @@ void MainWindow::removeTemplate(Template::Ptr selected)
     }
 }
 
+void MainWindow::removeOffer(Offer::Ptr selected)
+{
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, tr("Delete Offer"),
+                                    tr("Are you sure you want to delete the selected Offer?"),
+                                    QMessageBox::Yes|QMessageBox::No);
+
+    if (reply == QMessageBox::Yes) {
+        try {
+            m_offerService->remove(selected);
+            m_offerTableModel->remove(selected);
+        } catch (ServiceException *e) {
+            QMessageBox::information(this, tr("Error"), e->what());
+            delete e;
+        }
+    }
+}
+
 void MainWindow::openMailClient(Customer::Ptr customer)
 {
     QUrl url("mailto:" + customer->mail());
@@ -406,6 +483,16 @@ void MainWindow::initWidgets()
     connect(ui->widgetCustomers, SIGNAL(edit(Customer::Ptr)), this, SLOT(editCustomer(Customer::Ptr)));
     connect(ui->widgetCustomers, SIGNAL(remove(Customer::Ptr)), this, SLOT(removeCustomer(Customer::Ptr)));
     connect(ui->widgetCustomers, SIGNAL(sendMail(Customer::Ptr)), this, SLOT(openMailClient(Customer::Ptr)));
+
+    // offers widget
+    ui->offersWidget->setOfferModel(m_offerTableModel);
+    ui->offersWidget->setOfferService(m_offerService);
+
+    connect(ui->offersWidget, SIGNAL(create()), this, SLOT(createOffer()));
+    connect(ui->offersWidget, SIGNAL(edit(Offer::Ptr)), this, SLOT(editOffer(Offer::Ptr)));
+    connect(ui->offersWidget, SIGNAL(remove(Offer::Ptr)), this, SLOT(removeOffer(Offer::Ptr)));
+    connect(ui->offersWidget, SIGNAL(print(Offer::Ptr)), this, SLOT(printOffer(Offer::Ptr)));
+    connect(ui->offersWidget, SIGNAL(saveToFile(Offer::Ptr)), this, SLOT(exportOffer(Offer::Ptr)));
 
     // materials widget
     ui->materialsWidget->setMaterialModel(m_materialTableModel);
@@ -474,16 +561,6 @@ void MainWindow::on_actionImprintedPaper_triggered()
     settings.setValue("print/emptyPaper", false);
 
     ui->actionEmptyPaper->setChecked(false);
-}
-
-void MainWindow::on_actionNewOffer_triggered()
-{
-    OfferDialog *dialog = new OfferDialog(this, m_billService, m_customerService, m_materialService, m_templateService);
-    connect(dialog, SIGNAL(print(Offer::Ptr)), SLOT(printOffer(Offer::Ptr)));
-    connect(dialog, SIGNAL(save(Offer::Ptr, QString)), SLOT(exportOffer(Offer::Ptr, QString)));
-    dialog->exec();
-
-    delete dialog;
 }
 
 void MainWindow::on_actionNewLetter_triggered()

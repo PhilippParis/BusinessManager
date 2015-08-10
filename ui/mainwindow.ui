@@ -22,7 +22,7 @@
     <item>
      <widget class="QTabWidget" name="tab_widget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="tab_1">
        <attribute name="title">
@@ -41,6 +41,16 @@
        <layout class="QVBoxLayout" name="verticalLayout_10">
         <item>
          <widget class="CustomersWidget" name="widgetCustomers" native="true"/>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab">
+       <attribute name="title">
+        <string>Offers</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="OfferWidget" name="offersWidget" native="true"/>
         </item>
        </layout>
       </widget>
@@ -231,6 +241,12 @@
    <class>StatisticsWidget</class>
    <extends>QWidget</extends>
    <header>ui/widgets/statisticswidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>OfferWidget</class>
+   <extends>QWidget</extends>
+   <header>ui/widgets/offerwidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
