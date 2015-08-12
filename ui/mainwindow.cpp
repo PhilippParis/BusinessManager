@@ -575,8 +575,14 @@ void MainWindow::on_actionNewLetter_triggered()
 
 void MainWindow::on_actionPrintEnvelope_triggered()
 {
+    Customer::Ptr customer = openCustomerSelectionDialog();
+    if (customer == nullptr) {
+        return;
+    }
+
     EnvelopeDialog *dialog = new EnvelopeDialog(this, m_customerService);
     connect(dialog, SIGNAL(print(Envelope::Ptr)), SLOT(printEnvelope(Envelope::Ptr)));
+    dialog->setCustomer(customer);
     dialog->exec();
 
     delete dialog;

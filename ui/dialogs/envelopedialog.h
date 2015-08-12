@@ -7,6 +7,7 @@
 #include "domain/envelope.h"
 #include "service/customerservice.h"
 #include "ui/models/customertablemodel.h"
+#include "ui/dialogs/customerselectiondialog.h"
 
 namespace Ui {
 class EnvelopeDialog;
@@ -20,21 +21,22 @@ public:
     explicit EnvelopeDialog(QWidget *parent, CustomerService::Ptr customerService);
     ~EnvelopeDialog();
 
+    void setCustomer(Customer::Ptr customer);
+
 signals:
     void print(Envelope::Ptr);
 
 private slots:
     void on_btnPrint_clicked();
-
-    void on_cbCustomers_currentIndexChanged(int index);
+    void on_btnRecipient_clicked();
 
 private:
     Envelope::Ptr toDomainObject();
 
 private:
     Ui::EnvelopeDialog *ui;
+    Customer::Ptr m_customer;
     CustomerService::Ptr m_customerService;
-    CustomerTableModel *m_customerModel;
 };
 
 #endif // ENVELOPEDIALOG_H

@@ -8,10 +8,6 @@ EnvelopeDialog::EnvelopeDialog(QWidget *parent, CustomerService::Ptr customerSer
 {
     ui->setupUi(this);
 
-    m_customerModel = new CustomerTableModel();
-    m_customerModel->addAll(m_customerService->getAll());
-    ui->cbCustomers->setModel(m_customerModel);
-
     ui->cbOrientation->addItem(tr("Portrait"), QPrinter::Portrait);
     ui->cbOrientation->addItem(tr("Landscape"), QPrinter::Landscape);
 
@@ -27,6 +23,19 @@ EnvelopeDialog::~EnvelopeDialog()
     delete ui;
 }
 
+void EnvelopeDialog::setCustomer(Customer::Ptr customer)
+{
+    m_customer = customer;
+
+    QString text;
+    if (m_customer->organisation().isEmpty()) {
+        text = m_customer->fullName();
+    } else {
+        text = m_customer->organisation() + "\n" + m_customer->fullName();
+    }
+    ui->btnRecipient->setText(text);
+}
+
 void EnvelopeDialog::on_btnPrint_clicked()
 {
     emit print(toDomainObject());
@@ -37,12 +46,12 @@ Envelope::Ptr EnvelopeDialog::toDomainObject()
     Envelope::Ptr envelope = std::make_shared<Envelope>();
 
     QStringList address;
-    if(ui->cb_printOrg->isChecked() && !ui->leOrg->text().isEmpty()) {
-        address << ui->leOrg->text();
+    if(ui->cb_printOrg->isChecked() && !m_customer->organisation().isEmpty()) {
+        address << m_customer->organisation();
     }
-    address << ui->leName->text();
-    address << ui->leStreet->text();
-    address << ui->leCity->text();
+    address << m_customer->fullName();
+    address << m_customer->street();
+    address << m_customer->city();
 
     envelope->setPageSize(ui->cbFormat->currentData().toInt());
     envelope->setOrientation(ui->cbOrientation->currentData().toInt());
@@ -52,13 +61,12 @@ Envelope::Ptr EnvelopeDialog::toDomainObject()
     return envelope;
 }
 
-void EnvelopeDialog::on_cbCustomers_currentIndexChanged(int index)
+void EnvelopeDialog::on_btnRecipient_clicked()
 {
-    Q_UNUSED(index)
+    CustomerSelectionDialog *dialog = new CustomerSelectionDialog(this, m_customerService);
+    if(dialog->exec() == QDialog::Accepted) {
+        setCustomer(dialog->selectedCustomer());
+    }
 
-    Customer::Ptr customer = m_customerModel->get(m_customerModel->index(ui->cbCustomers->currentIndex(), 0));
-    ui->leName->setText(customer->fullName());
-    ui->leOrg->setText(customer->organisation());
-    ui->leStreet->setText(customer->street());
-    ui->leCity->setText(customer->city());
+    delete dialog;
 }
