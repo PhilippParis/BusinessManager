@@ -126,7 +126,10 @@ SOURCES += main.cpp\
     tests/letterdaotest.cpp \
     persistence/validation/impl/lettervalidator.cpp \
     service/letterservice.cpp \
-    service/impl/letterserviceimpl.cpp
+    service/impl/letterserviceimpl.cpp \
+    ui/widgets/letterwidget.cpp \
+    ui/models/lettertablemodel.cpp \
+    ui/models/lettersortfilterproxymodel.cpp
 
 HEADERS  += ui/mainwindow.h \
     domain/bill.h \
@@ -234,7 +237,10 @@ HEADERS  += ui/mainwindow.h \
     tests/letterdaotest.h \
     persistence/validation/impl/lettervalidator.h \
     service/letterservice.h \
-    service/impl/letterserviceimpl.h
+    service/impl/letterserviceimpl.h \
+    ui/widgets/letterwidget.h \
+    ui/models/lettertablemodel.h \
+    ui/models/lettersortfilterproxymodel.h
 
 FORMS    += ui/mainwindow.ui \
     ui/widgets/customerswidget.ui \
@@ -255,7 +261,8 @@ FORMS    += ui/mainwindow.ui \
     ui/dialogs/materialselectiondialog.ui \
     ui/widgets/materialswidget.ui \
     ui/dialogs/customerselectiondialog.ui \
-    ui/widgets/offerwidget.ui
+    ui/widgets/offerwidget.ui \
+    ui/widgets/letterwidget.ui
 
 RESOURCES += \
     resources.qrc

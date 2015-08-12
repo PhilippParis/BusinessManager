@@ -23,7 +23,6 @@ public:
     void setOfferService(OfferService::Ptr offerService);
 
 signals:
-    void create();
     void edit(Offer::Ptr);
     void remove(Offer::Ptr);
     void print(Offer::Ptr);

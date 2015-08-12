@@ -22,6 +22,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_discountValidator = std::make_shared<DiscountValidator>();
     m_templateValidator = std::make_shared<TemplateValidator>();
     m_offerValidator = std::make_shared<OfferValidator>();
+    m_letterValidator = std::make_shared<LetterValidator>();
 
     DiscountDAO::Ptr discountDAO = std::make_shared<DBDiscountDAO>(db, m_discountValidator);
     CustomerDAO::Ptr customerDAO = std::make_shared<DBCustomerDAO>(db, m_customerValidator);
@@ -31,6 +32,7 @@ MainWindow::MainWindow(QWidget *parent) :
     TemplateDAO::Ptr templateDAO = std::make_shared<DBTemplateDAO>(db, m_templateValidator, materialDAO);
     OfferItemDAO::Ptr offerItemDAO = std::make_shared<DBOfferItemDAO>(db, m_billItemValidator, materialDAO);
     OfferDAO::Ptr offerDAO = std::make_shared<DBOfferDAO>(db, m_offerValidator, offerItemDAO, customerDAO);
+    LetterDAO::Ptr letterDAO = std::make_shared<DBHTMLFileLetterDAO>(db, m_letterValidator, customerDAO);
 
     m_customerService = std::make_shared<CustomerServiceImpl>(customerDAO, m_customerValidator);
     m_billService = std::make_shared<BillServiceImpl>(billDAO, billItemDAO, discountDAO, m_billValidator, m_billItemValidator);
@@ -39,15 +41,20 @@ MainWindow::MainWindow(QWidget *parent) :
     m_printService = std::make_shared<PrintServiceImpl>();
     m_statisticsService = std::make_shared<StatisticsServiceImpl>(billDAO);
     m_offerService = std::make_shared<OfferServiceImpl>(offerDAO, offerItemDAO, m_offerValidator, m_billItemValidator);
+    m_letterService = std::make_shared<LetterServiceImpl>(letterDAO, m_letterValidator);
 
     m_billTableModel = new BillTableModel();
     m_customerTableModel = new CustomerTableModel();
     m_materialTableModel = new MaterialTableModel();
     m_templateTableModel = new TemplateTableModel();
     m_offerTableModel = new OfferTableModel();
+    m_letterTableModel = new LetterTableModel();
+
+    m_letterTableModel->addAll(m_letterService->getAll());
 
     connect(ui->actionNewBill, SIGNAL(triggered(bool)), SLOT(createBill()));
     connect(ui->actionNewOffer, SIGNAL(triggered(bool)), SLOT(createOffer()));
+    connect(ui->actionNewLetter, SIGNAL(triggered(bool)), SLOT(createLetter()));
     connect(ui->actionQuit, SIGNAL(triggered(bool)), SLOT(close()));
 
     initWidgets();
@@ -147,8 +154,13 @@ void MainWindow::exportOffer(Offer::Ptr offer)
     m_printService->printOffer(printer, offer);
 }
 
-void MainWindow::exportLetter(Letter::Ptr letter, QString path)
+void MainWindow::exportLetter(Letter::Ptr letter)
 {
+    QString path = getSaveFileName();
+    if(path.isEmpty()) {
+        return;
+    }
+
     QPrinter *printer = new QPrinter(QPrinter::HighResolution);
     printer->setPageSize(QPrinter::A4);
     printer->setPageMargins(0.14, 0.14, 0.14, 0.14, QPrinter::Inch);
@@ -259,6 +271,31 @@ void MainWindow::createOffer()
     delete dialog;
 }
 
+void MainWindow::createLetter()
+{
+    Customer::Ptr customer = openCustomerSelectionDialog();
+    if (customer == nullptr) {
+        return;
+    }
+
+    LetterDialog *dialog = new LetterDialog(this, m_letterService, m_customerService);
+    connect(dialog, SIGNAL(print(Letter::Ptr)), SLOT(printLetter(Letter::Ptr)));
+    dialog->prepareForCreate(customer);
+
+    if (dialog->exec() == QDialog::Accepted) {
+        Letter::Ptr letter = dialog->toDomainObject();
+        try {
+            m_letterService->add(letter);
+            m_letterTableModel->add(letter);
+        } catch (ServiceException *e) {
+            QMessageBox::information(this, tr("Error"), e->what());
+            delete e;
+        }
+    }
+
+    delete dialog;
+}
+
 void MainWindow::editBill(Bill::Ptr selected)
 {
     BillDialog *dialog = new BillDialog(this, m_billService, m_customerService, m_materialService, m_templateService);
@@ -343,6 +380,26 @@ void MainWindow::editOffer(Offer::Ptr selected)
         try {
             m_offerService->update(offer);
             m_offerTableModel->replace(selected, offer);
+        } catch (ServiceException *e) {
+            QMessageBox::information(this, tr("Error"), e->what());
+            delete e;
+        }
+    }
+
+    delete dialog;
+}
+
+void MainWindow::editLetter(Letter::Ptr selected)
+{
+    LetterDialog *dialog = new LetterDialog(this, m_letterService, m_customerService);
+    connect(dialog, SIGNAL(print(Letter::Ptr)), SLOT(printLetter(Letter::Ptr)));
+    dialog->prepareForUpdate(selected);
+
+    if (dialog->exec() == QDialog::Accepted) {
+        Letter::Ptr letter = dialog->toDomainObject();
+        try {
+            m_letterService->update(letter);
+            m_letterTableModel->replace(selected, letter);
         } catch (ServiceException *e) {
             QMessageBox::information(this, tr("Error"), e->what());
             delete e;
@@ -441,6 +498,24 @@ void MainWindow::removeOffer(Offer::Ptr selected)
     }
 }
 
+void MainWindow::removeLetter(Letter::Ptr selected)
+{
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, tr("Delete Letter"),
+                                    tr("Are you sure you want to delete the selected Letter?"),
+                                    QMessageBox::Yes|QMessageBox::No);
+
+    if (reply == QMessageBox::Yes) {
+        try {
+            m_letterService->remove(selected);
+            m_letterTableModel->remove(selected);
+        } catch (ServiceException *e) {
+            QMessageBox::information(this, tr("Error"), e->what());
+            delete e;
+        }
+    }
+}
+
 void MainWindow::openMailClient(Customer::Ptr customer)
 {
     QUrl url("mailto:" + customer->mail());
@@ -475,6 +550,23 @@ void MainWindow::initWidgets()
     connect(ui->widgetBills, SIGNAL(saveToFile(Bill::Ptr)), this, SLOT(exportBill(Bill::Ptr)));
     connect(ui->widgetBills, SIGNAL(sendMail(Customer::Ptr)), this, SLOT(openMailClient(Customer::Ptr)));
 
+    // letters widget
+    ui->widgetLetters->setLetterModel(m_letterTableModel);
+
+    connect(ui->widgetLetters, SIGNAL(edit(Letter::Ptr)), this, SLOT(editLetter(Letter::Ptr)));
+    connect(ui->widgetLetters, SIGNAL(remove(Letter::Ptr)), this, SLOT(removeLetter(Letter::Ptr)));
+    connect(ui->widgetLetters, SIGNAL(print(Letter::Ptr)), this, SLOT(printLetter(Letter::Ptr)));
+    connect(ui->widgetLetters, SIGNAL(saveToFile(Letter::Ptr)), this, SLOT(exportLetter(Letter::Ptr)));
+
+    // offers widget
+    ui->offersWidget->setOfferModel(m_offerTableModel);
+    ui->offersWidget->setOfferService(m_offerService);
+
+    connect(ui->offersWidget, SIGNAL(edit(Offer::Ptr)), this, SLOT(editOffer(Offer::Ptr)));
+    connect(ui->offersWidget, SIGNAL(remove(Offer::Ptr)), this, SLOT(removeOffer(Offer::Ptr)));
+    connect(ui->offersWidget, SIGNAL(print(Offer::Ptr)), this, SLOT(printOffer(Offer::Ptr)));
+    connect(ui->offersWidget, SIGNAL(saveToFile(Offer::Ptr)), this, SLOT(exportOffer(Offer::Ptr)));
+
     // customer widget
     ui->widgetCustomers->setCustomerModel(m_customerTableModel);
     ui->widgetCustomers->setService(m_customerService);
@@ -483,16 +575,6 @@ void MainWindow::initWidgets()
     connect(ui->widgetCustomers, SIGNAL(edit(Customer::Ptr)), this, SLOT(editCustomer(Customer::Ptr)));
     connect(ui->widgetCustomers, SIGNAL(remove(Customer::Ptr)), this, SLOT(removeCustomer(Customer::Ptr)));
     connect(ui->widgetCustomers, SIGNAL(sendMail(Customer::Ptr)), this, SLOT(openMailClient(Customer::Ptr)));
-
-    // offers widget
-    ui->offersWidget->setOfferModel(m_offerTableModel);
-    ui->offersWidget->setOfferService(m_offerService);
-
-    connect(ui->offersWidget, SIGNAL(create()), this, SLOT(createOffer()));
-    connect(ui->offersWidget, SIGNAL(edit(Offer::Ptr)), this, SLOT(editOffer(Offer::Ptr)));
-    connect(ui->offersWidget, SIGNAL(remove(Offer::Ptr)), this, SLOT(removeOffer(Offer::Ptr)));
-    connect(ui->offersWidget, SIGNAL(print(Offer::Ptr)), this, SLOT(printOffer(Offer::Ptr)));
-    connect(ui->offersWidget, SIGNAL(saveToFile(Offer::Ptr)), this, SLOT(exportOffer(Offer::Ptr)));
 
     // materials widget
     ui->materialsWidget->setMaterialModel(m_materialTableModel);
@@ -561,16 +643,6 @@ void MainWindow::on_actionImprintedPaper_triggered()
     settings.setValue("print/emptyPaper", false);
 
     ui->actionEmptyPaper->setChecked(false);
-}
-
-void MainWindow::on_actionNewLetter_triggered()
-{
-    LetterDialog *dialog = new LetterDialog(this, m_customerService);
-    connect(dialog, SIGNAL(print(Letter::Ptr)), SLOT(printLetter(Letter::Ptr)));
-    connect(dialog, SIGNAL(save(Letter::Ptr, QString)), SLOT(exportLetter(Letter::Ptr, QString)));
-    dialog->exec();
-
-    delete dialog;
 }
 
 void MainWindow::on_actionPrintEnvelope_triggered()

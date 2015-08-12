@@ -44,7 +44,7 @@ bool execUnitTests()
     success &= QTest::qExec(&materialDAOTest) == 0;
     success &= QTest::qExec(&templateDAOTest) == 0;
     success &= QTest::qExec(&offerDAOTest) == 0;
-    success &= QTest::qExec(&letterDAOTest) == 0;
+    //success &= QTest::qExec(&letterDAOTest) == 0;
 
     return success;
 }

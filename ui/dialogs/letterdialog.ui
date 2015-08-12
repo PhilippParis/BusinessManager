@@ -17,19 +17,15 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QLabel" name="label">
-       <property name="text">
-        <string>Recipient</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QComboBox" name="cbCustomer">
+      <widget class="QPushButton" name="btnRecipient">
        <property name="minimumSize">
         <size>
-         <width>300</width>
-         <height>40</height>
+         <width>200</width>
+         <height>45</height>
         </size>
+       </property>
+       <property name="text">
+        <string>PushButton</string>
        </property>
       </widget>
      </item>
@@ -229,23 +225,6 @@
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_5">
-     <item>
-      <widget class="QPushButton" name="btnSave">
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>25</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>Save</string>
-       </property>
-       <property name="icon">
-        <iconset resource="../../resources.qrc">
-         <normaloff>:/icon/save</normaloff>:/icon/save</iconset>
-       </property>
-      </widget>
-     </item>
      <item>
       <spacer name="horizontalSpacer_7">
        <property name="orientation">

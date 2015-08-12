@@ -144,13 +144,12 @@ Letter::Ptr DBHTMLFileLetterDAO::parseLetter(QSqlRecord record)
     QTextDocument *doc = new QTextDocument();
 
     QFile file(record.value("FILEPATH").toString());
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        qCCritical(lcPersistence) << "DBHTMLFileLetterDAO: reading html file failed";
-        throw new PersistenceException("DBHTMLFileLetterDAO: reading html file failed");
+    if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        doc->setHtml(QString::fromStdString(file.readAll().toStdString()));
+        file.close();
+    } else {
+        qCCritical(lcPersistence) << "DBHTMLFileLetterDAO::parseLetter: html file not found";
     }
-
-    doc->setHtml(QString::fromStdString(file.readAll().toStdString()));
-    file.close();
 
     letter->setTextDoc(doc);
     return letter;
@@ -175,7 +174,7 @@ QString DBHTMLFileLetterDAO::createHtmlFile(Letter::Ptr letter)
     QString filePath = QString("letters/letter_%1.html").arg(id);
 
     QFile file(filePath);
-    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+    if (!file.open(QIODevice::ReadWrite | QIODevice::Text | QIODevice::Truncate)) {
         qCCritical(lcPersistence) << "DBHTMLFileLetterDAO::creating file failed:";
         throw new PersistenceException("DBHTMLFileLetterDAO::creating file  failed:");
     }
@@ -201,13 +200,13 @@ void DBHTMLFileLetterDAO::updateHtmlFile(Letter::Ptr letter)
     QString filePath = query.value("FILEPATH").toString();
 
     QFile file(filePath);
-    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+    if (!file.open(QIODevice::ReadWrite | QIODevice::Text | QIODevice::Truncate)) {
         qCCritical(lcPersistence) << "DBHTMLFileLetterDAO::updateHtmlFile failed";
         throw new PersistenceException("DBHTMLFileLetterDAO::updateHtmlFile failed");
     }
+
     QTextStream out(&file);
     out << letter->textDoc()->toHtml();
-
     file.close();
 }
 
@@ -222,6 +221,10 @@ void DBHTMLFileLetterDAO::removeHtmlFile(Letter::Ptr letter)
         throw new PersistenceException("DBHTMLFileLetterDAO::removeHtmlFile failed:" + query.lastError().text());
     }
     QString filePath = query.value("FILEPATH").toString();
+
+    if (!QFile::exists(filePath)) {
+        return;
+    }
 
     if (!QFile::remove(filePath)) {
         qCCritical(lcPersistence) << "DBHTMLFileLetterDAO:: removing html file failed";

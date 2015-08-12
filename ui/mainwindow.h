@@ -14,6 +14,7 @@
 #include "persistence/validation/impl/discountvalidator.h"
 #include "persistence/validation/impl/templatevalidator.h"
 #include "persistence/validation/impl/offervalidator.h"
+#include "persistence/validation/impl/lettervalidator.h"
 
 #include "persistence/impl/dbcustomerdao.h"
 #include "persistence/impl/dbmaterialdao.h"
@@ -23,6 +24,7 @@
 #include "persistence/impl/dbdiscountdao.h"
 #include "persistence/impl/dbofferdao.h"
 #include "persistence/impl/dbofferitemdao.h"
+#include "persistence/impl/dbhtmlfileletterdao.h"
 
 #include "service/impl/customerserviceimpl.h"
 #include "service/impl/billserviceimpl.h"
@@ -31,6 +33,7 @@
 #include "service/impl/printserviceimpl.h"
 #include "service/impl/statisticsserviceimpl.h"
 #include "service/impl/offerserviceimpl.h"
+#include "service/impl/letterserviceimpl.h"
 
 #include "ui/dialogs/settingsdialog.h"
 #include "ui/dialogs/offerdialog.h"
@@ -42,6 +45,7 @@
 #include "ui/models/materialtablemodel.h"
 #include "ui/models/templatetablemodel.h"
 #include "ui/models/offertablemodel.h"
+#include "ui/models/lettertablemodel.h"
 
 namespace Ui {
 class MainWindow;
@@ -63,25 +67,28 @@ public slots:
 
     void exportBill(Bill::Ptr bill);
     void exportOffer(Offer::Ptr offer);
-    void exportLetter(Letter::Ptr letter, QString path);
+    void exportLetter(Letter::Ptr letter);
 
     void createBill();
     void createCustomer();
     void createMaterial();
     void createTemplate();
     void createOffer();
+    void createLetter();
 
     void editBill(Bill::Ptr bill);
     void editCustomer(Customer::Ptr customer);
     void editMaterial(Material::Ptr material);
     void editTemplate(Template::Ptr templ);
     void editOffer(Offer::Ptr);
+    void editLetter(Letter::Ptr);
 
     void removeBill(Bill::Ptr bill);
     void removeCustomer(Customer::Ptr customer);
     void removeMaterial(Material::Ptr material);
     void removeTemplate(Template::Ptr templ);
     void removeOffer(Offer::Ptr);
+    void removeLetter(Letter::Ptr);
 
     void openMailClient(Customer::Ptr customer);
 
@@ -92,7 +99,6 @@ private slots:
     void on_actionSettings_triggered();
     void on_actionEmptyPaper_triggered();
     void on_actionImprintedPaper_triggered();
-    void on_actionNewLetter_triggered();
     void on_actionPrintEnvelope_triggered();
 
 private:
@@ -111,6 +117,7 @@ private:
     PrintService::Ptr m_printService;
     StatisticsService::Ptr m_statisticsService;
     OfferService::Ptr m_offerService;
+    LetterService::Ptr m_letterService;
 
     Validator<Customer::Ptr>::Ptr m_customerValidator;
     Validator<Bill::Ptr>::Ptr m_billValidator;
@@ -119,12 +126,14 @@ private:
     Validator<Discount::Ptr>::Ptr m_discountValidator;
     Validator<Template::Ptr>::Ptr m_templateValidator;
     Validator<Offer::Ptr>::Ptr m_offerValidator;
+    Validator<Letter::Ptr>::Ptr m_letterValidator;
 
     BillTableModel *m_billTableModel;
     CustomerTableModel *m_customerTableModel;
     MaterialTableModel *m_materialTableModel;
     TemplateTableModel *m_templateTableModel;
     OfferTableModel *m_offerTableModel;
+    LetterTableModel *m_letterTableModel;
 
 };
 

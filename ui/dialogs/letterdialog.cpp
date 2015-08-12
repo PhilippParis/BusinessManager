@@ -1,23 +1,51 @@
 #include "letterdialog.h"
 #include "ui_letterdialog.h"
 
-LetterDialog::LetterDialog(QWidget *parent, CustomerService::Ptr customerService) :
+LetterDialog::LetterDialog(QWidget *parent, LetterService::Ptr letterService, CustomerService::Ptr customerService) :
     QDialog(parent),
     ui(new Ui::LetterDialog),
+    m_letterService(letterService),
     m_customerService(customerService)
 {
     ui->setupUi(this);
-
-    m_customerModel = new CustomerTableModel();
-    m_customerModel->addAll(m_customerService->getAll());
-
-    ui->cbCustomer->setModel(m_customerModel);
 }
 
 LetterDialog::~LetterDialog()
 {
     delete ui;
-    delete m_customerModel;
+}
+
+void LetterDialog::prepareForCreate(Customer::Ptr customer)
+{
+    m_openMode = Create;
+    setCustomer(customer);
+    m_date = QDate::currentDate();
+    ui->textEdit->clear();
+}
+
+void LetterDialog::prepareForUpdate(Letter::Ptr letter)
+{
+    m_openMode = Update;
+    m_id = letter->id();
+    m_date = letter->date();
+    ui->textEdit->setDocument(letter->textDoc());
+    setCustomer(letter->customer());
+}
+
+void LetterDialog::accept()
+{
+    Letter::Ptr letter = toDomainObject();
+    try {
+        if(m_openMode == Create) {
+            m_letterService->validator()->validateForCreate(letter);
+        } else {
+            m_letterService->validator()->validateForUpdate(letter);
+        }
+        QDialog::accept();
+    } catch (ValidationException *e) {
+        QMessageBox::warning(this, "Invalid Data", e->what());
+        delete e;
+    }
 }
 
 void LetterDialog::on_cbFont_currentFontChanged(const QFont &f)
@@ -98,35 +126,33 @@ void LetterDialog::on_btnItalic_clicked(bool checked)
     ui->textEdit->setFocus();
 }
 
-void LetterDialog::on_btnSave_clicked()
-{
-    QFileDialog dialog(this,  tr("Save"));
-    dialog.setAcceptMode(QFileDialog::AcceptSave);
-    dialog.setDefaultSuffix("pdf");
-    dialog.setFileMode(QFileDialog::AnyFile);
-    dialog.setNameFilter("PDF Files (*.pdf)");
-
-    if (dialog.exec()) {
-        emit save(toDomainObject(), dialog.selectedFiles().first());
-    }
-}
-
 void LetterDialog::on_btnPrintPreview_clicked()
 {
     emit print(toDomainObject());
-}
-
-Customer::Ptr LetterDialog::selectedCustomer()
-{
-    return m_customerModel->get(m_customerModel->index(ui->cbCustomer->currentIndex(), 0));
 }
 
 Letter::Ptr LetterDialog::toDomainObject()
 {
     Letter::Ptr letter = std::make_shared<Letter>();
     letter->setTextDoc(ui->textEdit->document()->clone());
-    letter->setCustomer(selectedCustomer());
+    letter->setCustomer(m_customer);
+    letter->setDate(m_date);
+    letter->setId(m_id);
     return letter;
+}
+
+void LetterDialog::setCustomer(Customer::Ptr customer)
+{
+    m_customer = customer;
+
+    QString text;
+    if(m_customer->organisation().isEmpty()) {
+        text = m_customer->fullName();
+    } else {
+        text = m_customer->organisation() + "\n" + m_customer->fullName();
+    }
+
+    ui->btnRecipient->setText(text);
 }
 
 void LetterDialog::on_textEdit_cursorPositionChanged()
@@ -140,4 +166,14 @@ void LetterDialog::on_textEdit_cursorPositionChanged()
     ui->btnAlignRight->setChecked(blockFormat.alignment() == Qt::AlignRight);
     ui->btnItalic->setChecked(charFormat.fontItalic());
     ui->btnBold->setChecked(charFormat.fontWeight() == QFont::Bold);
+}
+
+void LetterDialog::on_btnRecipient_clicked()
+{
+    CustomerSelectionDialog *dialog = new CustomerSelectionDialog(this, m_customerService);
+    if (dialog->exec() == QDialog::Accepted) {
+        setCustomer(dialog->selectedCustomer());
+    }
+
+    delete dialog;
 }

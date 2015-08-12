@@ -62,7 +62,7 @@ void PrintServiceImpl::printOffer(QPrinter *printer, Offer::Ptr offer)
 
 void PrintServiceImpl::printLetter(QPrinter *printer, Letter::Ptr letter)
 {
-    QTextDocument *document = letter->textDoc();
+    QTextDocument *document = letter->textDoc()->clone();
     document->setDocumentMargin(500);
     QPainter* painter = getPainter(printer);
 
@@ -70,13 +70,14 @@ void PrintServiceImpl::printLetter(QPrinter *printer, Letter::Ptr letter)
     document->setPageSize(QSizeF(printer->width(), printer->height()));
 
     printBar(painter);
-    printHeader(painter, letter->customer(), QDate::currentDate());
+    printHeader(painter, letter->customer(), letter->date());
 
     painter->translate(0, 2100);
     document->drawContents(painter);
 
     painter->end();
     delete painter;
+    delete document;
 }
 
 void PrintServiceImpl::printEnvelope(QPrinter *printer, Envelope::Ptr envelope)

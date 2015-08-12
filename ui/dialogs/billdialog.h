@@ -44,12 +44,12 @@ private:
     enum OpenMode {
         Create, Update
     };
+    OpenMode m_openMode;
 
     int m_id = -1;
     bool m_payed = false;
     Discount::Ptr m_discount;
     Validator<Discount::Ptr>::Ptr m_discountValidator;
-    OpenMode m_openMode;
 
 };
 
