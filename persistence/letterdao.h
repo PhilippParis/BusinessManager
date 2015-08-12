@@ -2,6 +2,7 @@
 #define LETTERDAO_H
 
 #include "domain/letter.h"
+#include "persistence/persistenceexception.h"
 
 class LetterDAO
 {
