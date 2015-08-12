@@ -121,7 +121,10 @@ SOURCES += main.cpp\
     tests/offerdaotest.cpp \
     ui/widgets/offerwidget.cpp \
     ui/models/offertablemodel.cpp \
-    ui/models/offersortfilterproxymodel.cpp
+    ui/models/offersortfilterproxymodel.cpp \
+    persistence/impl/dbhtmlfileletterdao.cpp \
+    tests/letterdaotest.cpp \
+    persistence/validation/impl/lettervalidator.cpp
 
 HEADERS  += ui/mainwindow.h \
     domain/bill.h \
@@ -224,7 +227,10 @@ HEADERS  += ui/mainwindow.h \
     tests/offerdaotest.h \
     ui/widgets/offerwidget.h \
     ui/models/offertablemodel.h \
-    ui/models/offersortfilterproxymodel.h
+    ui/models/offersortfilterproxymodel.h \
+    persistence/impl/dbhtmlfileletterdao.h \
+    tests/letterdaotest.h \
+    persistence/validation/impl/lettervalidator.h
 
 FORMS    += ui/mainwindow.ui \
     ui/widgets/customerswidget.ui \

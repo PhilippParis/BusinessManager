@@ -181,6 +181,15 @@ void DatabaseSingleton::createTables(QSqlDatabase db)
        qDebug() << query.lastError();
    }
 
+   res = query.exec("CREATE TABLE IF NOT EXISTS LETTER ( "
+                    "ID INTEGER PRIMARY KEY NOT NULL, "
+                    "DATE VARCHAR(20) NOT NULL, "
+                    "CUSTOMER INTEGER NOT NULL REFERENCES CUSTOMER(ID), "
+                    "FILEPATH VARCHAR(200) NOT NULL);");
+
+   if(!res) {
+       qDebug() << query.lastError();
+   }
 }
 
 DatabaseSingleton::DatabaseSingleton()
