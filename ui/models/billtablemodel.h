@@ -2,6 +2,7 @@
 #define BILLTABLEMODEL_H
 
 #include <QDebug>
+#include <QColor>
 
 #include "ui/models/domainitemmodel.h"
 #include <domain/bill.h>

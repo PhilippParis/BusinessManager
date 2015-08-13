@@ -70,6 +70,15 @@
           <normaloff>:/icon/settings_financial</normaloff>:/icon/settings_financial</iconset>
         </property>
        </item>
+       <item>
+        <property name="text">
+         <string>Application</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../../resources.qrc">
+          <normaloff>:/icon/settings_app</normaloff>:/icon/settings_app</iconset>
+        </property>
+       </item>
       </widget>
      </item>
      <item>

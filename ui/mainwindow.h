@@ -105,7 +105,7 @@ private:
     void initWidgets();
     void loadSettings();
     Customer::Ptr openCustomerSelectionDialog();
-    QString getSaveFileName();
+    QString getSaveFileName(QString defaultFileName, QString dir);
 
 private:
     Ui::MainWindow *ui;

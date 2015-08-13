@@ -6,6 +6,7 @@
 #include "ui/widgets/usersettingswidget.h"
 #include "ui/widgets/documentssettingswidget.h"
 #include "ui/widgets/financialsettingswidget.h"
+#include "ui/widgets/appsettingswidget.h"
 
 namespace Ui {
 class SettingsDialog;
@@ -30,6 +31,7 @@ private:
     UserSettingsWidget *m_userSettingsWidget;
     DocumentsSettingsWidget *m_documentsSettingsWidget;
     FinancialSettingsWidget *m_financialSettingsWidget;
+    AppSettingsWidget *m_appSettingsWidget;
 };
 
 #endif // SETTINGSDIALOG_H

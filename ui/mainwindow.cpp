@@ -209,7 +209,14 @@ void MainWindow::printEnvelope(Envelope::Ptr envelope)
 
 void MainWindow::exportBill(Bill::Ptr bill)
 {
-    QString path = getSaveFileName();
+    QString fileName = QString::number(bill->date().year()) + " - " + QString::number(bill->billNumber()) + " - ";
+    if (bill->customer()->organisation().isEmpty()) {
+        fileName += bill->customer()->fullName();
+    } else {
+        fileName += bill->customer()->organisation();
+    }
+    QSettings settings;
+    QString path = getSaveFileName(fileName, settings.value("app/billDir").toString());
     if(path.isEmpty()) {
         return;
     }
@@ -225,7 +232,15 @@ void MainWindow::exportBill(Bill::Ptr bill)
 
 void MainWindow::exportOffer(Offer::Ptr offer)
 {
-    QString path = getSaveFileName();
+    QString fileName = tr("Offer") + " - " + offer->date().toString("dd-MM-yyyy") + " - ";
+    if (offer->customer()->organisation().isEmpty()) {
+        fileName += offer->customer()->fullName();
+    } else {
+        fileName += offer->customer()->organisation();
+    }
+
+    QSettings settings;
+    QString path = getSaveFileName(fileName, settings.value("app/offerDir").toString());
     if(path.isEmpty()) {
         return;
     }
@@ -241,7 +256,15 @@ void MainWindow::exportOffer(Offer::Ptr offer)
 
 void MainWindow::exportLetter(Letter::Ptr letter)
 {
-    QString path = getSaveFileName();
+    QString fileName = tr("Letter") + " - " + letter->date().toString("dd-MM-yyyy") + " - ";
+    if (letter->customer()->organisation().isEmpty()) {
+        fileName += letter->customer()->fullName();
+    } else {
+        fileName += letter->customer()->organisation();
+    }
+
+    QSettings settings;
+    QString path = getSaveFileName(fileName, settings.value("app/letterDir").toString());
     if(path.isEmpty()) {
         return;
     }
@@ -570,13 +593,16 @@ void MainWindow::on_actionPrintEnvelope_triggered()
     delete dialog;
 }
 
-QString MainWindow::getSaveFileName()
+QString MainWindow::getSaveFileName(QString defaultFileName, QString dir)
 {
     QFileDialog dialog(this,  tr("Save"));
     dialog.setAcceptMode(QFileDialog::AcceptSave);
     dialog.setDefaultSuffix("pdf");
     dialog.setFileMode(QFileDialog::AnyFile);
     dialog.setNameFilter("PDF Files (*.pdf)");
+    dialog.selectFile(defaultFileName);
+    dialog.setConfirmOverwrite(true);
+    dialog.setDirectory(dir);
 
     if (dialog.exec()) {
        return dialog.selectedFiles().first();

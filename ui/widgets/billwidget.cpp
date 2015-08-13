@@ -13,7 +13,6 @@ BillWidget::BillWidget(QWidget *parent) :
     ui->tblData->setModel(m_sortFilterModel);
     ui->tblData->setSortingEnabled(true);
     ui->tblData->sortByColumn(1, Qt::DescendingOrder);
-
     ui->tblData->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
     connect(ui->tblData->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),

@@ -16,6 +16,8 @@
         <file alias="settings_user">resources/icons/user_settings_icon.png</file>
         <file alias="settings_financial">resources/icons/financial_settings_icon.png</file>
         <file alias="settings_documents">resources/icons/documents_settings_icon.png</file>
+        <file alias="settings_app">resources/icons/app_settings_icon.png</file>
+        <file alias="folder">resources/icons/folder_icon.png</file>
     </qresource>
     <qresource prefix="/image">
         <file alias="seal">resources/images/seal.jpg</file>

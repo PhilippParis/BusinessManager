@@ -129,7 +129,8 @@ SOURCES += main.cpp\
     service/impl/letterserviceimpl.cpp \
     ui/widgets/letterwidget.cpp \
     ui/models/lettertablemodel.cpp \
-    ui/models/lettersortfilterproxymodel.cpp
+    ui/models/lettersortfilterproxymodel.cpp \
+    ui/widgets/appsettingswidget.cpp
 
 HEADERS  += ui/mainwindow.h \
     domain/bill.h \
@@ -240,7 +241,8 @@ HEADERS  += ui/mainwindow.h \
     service/impl/letterserviceimpl.h \
     ui/widgets/letterwidget.h \
     ui/models/lettertablemodel.h \
-    ui/models/lettersortfilterproxymodel.h
+    ui/models/lettersortfilterproxymodel.h \
+    ui/widgets/appsettingswidget.h
 
 FORMS    += ui/mainwindow.ui \
     ui/widgets/customerswidget.ui \
@@ -262,7 +264,8 @@ FORMS    += ui/mainwindow.ui \
     ui/widgets/materialswidget.ui \
     ui/dialogs/customerselectiondialog.ui \
     ui/widgets/offerwidget.ui \
-    ui/widgets/letterwidget.ui
+    ui/widgets/letterwidget.ui \
+    ui/widgets/appsettingswidget.ui
 
 RESOURCES += \
     resources.qrc
