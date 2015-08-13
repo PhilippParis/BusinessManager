@@ -147,6 +147,7 @@ void MainWindow::printBill(Bill::Ptr bill)
     printer->setPageMargins(0.14, 0.14, 0.14, 0.14, QPrinter::Inch);
 
     QPrintPreviewDialog *dialog = new QPrintPreviewDialog(printer, this);
+    dialog->setFixedHeight(900);
 
     connect(dialog, &QPrintPreviewDialog::paintRequested, [=](QPrinter *printer) {
         m_printService->printBill(printer, bill);
@@ -163,6 +164,7 @@ void MainWindow::printOffer(Offer::Ptr offer)
     printer->setPageMargins(0.14, 0.14, 0.14, 0.14, QPrinter::Inch);
 
     QPrintPreviewDialog *dialog = new QPrintPreviewDialog(printer, this);
+    dialog->setFixedHeight(900);
 
     connect(dialog, &QPrintPreviewDialog::paintRequested, [=](QPrinter *printer) {
         m_printService->printOffer(printer, offer);
@@ -179,6 +181,7 @@ void MainWindow::printLetter(Letter::Ptr letter)
     printer->setPageMargins(0.14, 0.14, 0.14, 0.14, QPrinter::Inch);
 
     QPrintPreviewDialog *dialog = new QPrintPreviewDialog(printer, this);
+    dialog->setFixedHeight(900);
 
     connect(dialog, &QPrintPreviewDialog::paintRequested, [=](QPrinter *printer) {
         m_printService->printLetter(printer, letter);

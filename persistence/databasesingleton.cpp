@@ -46,6 +46,11 @@ void DatabaseSingleton::createTables(QSqlDatabase db)
     QSqlQuery query(db);
     bool res = false;
 
+    res = query.exec("PRAGMA synchronous = OFF");
+    if(!res) {
+        qDebug() << query.lastError();
+    }
+
     res = query.exec("CREATE TABLE IF NOT EXISTS CUSTOMER ( "
                      "ID INTEGER PRIMARY KEY NOT NULL, "
                      "TITLE VARCHAR(20), "
