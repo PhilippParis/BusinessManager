@@ -100,32 +100,32 @@
        </attribute>
        <row>
         <property name="text">
-         <string>Einnahmen</string>
+         <string>Revenue:</string>
         </property>
        </row>
        <row>
         <property name="text">
-         <string>Materialkosten:</string>
+         <string>Material Overhead:</string>
         </property>
        </row>
        <row>
         <property name="text">
-         <string>Lohnkosten:</string>
+         <string>Labor Costs:</string>
         </property>
        </row>
        <row>
         <property name="text">
-         <string>Mwst.:</string>
+         <string>Tax Rate:</string>
         </property>
        </row>
        <row>
         <property name="text">
-         <string>Vorsteuer:</string>
+         <string>Pre Tax:</string>
         </property>
        </row>
        <row>
         <property name="text">
-         <string>Gewinn:</string>
+         <string>Profit:</string>
         </property>
        </row>
        <column>
