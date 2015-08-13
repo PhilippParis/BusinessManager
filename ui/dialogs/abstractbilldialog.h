@@ -49,6 +49,7 @@ protected:
 protected:
     Ui::BillDialog *ui;
     Customer::Ptr m_customer;
+    QDate m_date;
 
     BillService::Ptr m_billService;
     CustomerService::Ptr m_customerService;

@@ -40,7 +40,6 @@ private slots:
     void addDiscount();
     void editDiscount();
     void on_btnPreview_clicked();
-    void on_dateEdit_dateChanged(const QDate &date);
 
 private:
     Bill::Ptr toDomainObject();
@@ -51,6 +50,7 @@ private:
     };
     OpenMode m_openMode;
 
+    int m_billNumber;
     int m_id = -1;
     bool m_payed = false;
     Discount::Ptr m_discount;

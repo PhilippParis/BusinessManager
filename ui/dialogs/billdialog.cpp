@@ -5,7 +5,6 @@ BillDialog::BillDialog(QWidget *parent, BillService::Ptr billService, CustomerSe
                        MaterialService::Ptr materialService, TemplateService::Ptr templateService) :
     AbstractBillDialog(parent, billService, customerService, materialService, templateService)
 {
-    connect(ui->dateEdit, SIGNAL(dateChanged(QDate)), SLOT(on_dateEdit_dateChanged(QDate)));
     connect(ui->btnPreview, SIGNAL(clicked(bool)), SLOT(on_btnPreview_clicked()));
 }
 
@@ -18,8 +17,8 @@ void BillDialog::prepareForCreate(Customer::Ptr customer)
 {
     m_openMode = Create;
     m_payed = false;
-    ui->dateEdit->setDate(QDate::currentDate());
-    ui->sbNr->setValue(m_billService->nextBillNumber(QDate::currentDate()));
+    m_date = QDate::currentDate();
+    m_billNumber = m_billService->nextBillNumber(m_date);
     setCustomer(customer);
     connect(ui->btnDiscount, SIGNAL(clicked(bool)), SLOT(addDiscount()));
 }
@@ -29,8 +28,8 @@ void BillDialog::prepareForUpdate(Bill::Ptr bill)
     m_openMode = Update;
     m_id = bill->id();
     m_payed = bill->payed();
-    ui->dateEdit->setDate(bill->date());
-    ui->sbNr->setValue(bill->billNumber());
+    m_date = bill->date();
+    m_billNumber = bill->billNumber();
     m_billItemModel->addAll(bill->items());
     setCustomer(bill->customer());
 
@@ -88,8 +87,8 @@ void BillDialog::editDiscount()
 Bill::Ptr BillDialog::toDomainObject()
 {
     Bill::Ptr bill = std::make_shared<Bill>();
-    bill->setBillNumber(ui->sbNr->value());
-    bill->setDate(ui->dateEdit->date());
+    bill->setBillNumber(m_billNumber);
+    bill->setDate(m_date);
     bill->setId(m_id);
     bill->setCustomer(m_customer);
     bill->setPayed(m_payed);
@@ -103,7 +102,7 @@ Bill::Ptr BillDialog::toDomainObject()
 
 void BillDialog::reject()
 {
-    if (QMessageBox::warning(this, "Cancel Bill?", "Do you really want to cancel?",
+    if (QMessageBox::warning(this, tr("Cancel Bill?"), tr("Do you really want to cancel?"),
                              QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes) {
         QDialog::reject();
     }
@@ -112,9 +111,4 @@ void BillDialog::reject()
 void BillDialog::on_btnPreview_clicked()
 {
     emit print(toDomainObject());
-}
-
-void BillDialog::on_dateEdit_dateChanged(const QDate &date)
-{
-    ui->sbNr->setValue(m_billService->nextBillNumber(date));
 }

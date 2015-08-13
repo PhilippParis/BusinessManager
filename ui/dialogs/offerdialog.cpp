@@ -9,13 +9,12 @@ OfferDialog::OfferDialog(QWidget *parent, BillService::Ptr billService, Customer
     connect(ui->btnPreview, SIGNAL(clicked(bool)), SLOT(on_btnPreview_clicked()));
 
     ui->btnDiscount->setHidden(true);
-    ui->box_nr_date->setHidden(true);
 }
 
 void OfferDialog::prepareForCreate(Customer::Ptr customer)
 {
     m_openMode = Create;
-    ui->dateEdit->setDate(QDate::currentDate());
+    m_date = QDate::currentDate();
     setCustomer(customer);
 }
 
@@ -23,14 +22,14 @@ void OfferDialog::prepareForUpdate(Offer::Ptr offer)
 {
     m_openMode = Update;
     m_id = offer->id();
-    ui->dateEdit->setDate(offer->date());
+    m_date = offer->date();
     m_billItemModel->addAll(offer->items());
     setCustomer(offer->customer());
 }
 
 void OfferDialog::reject()
 {
-    if (QMessageBox::warning(this, "Cancel Offer?", "Do you really want to cancel?",
+    if (QMessageBox::warning(this, tr("Cancel Offer?"), tr("Do you really want to cancel?"),
                              QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes) {
         QDialog::reject();
     }
@@ -48,7 +47,7 @@ void OfferDialog::accept()
             emit offerUpdated(offer);
         }
         QDialog::accept();
-    } catch (ValidationException *e) {
+    } catch (ServiceException *e) {
         QMessageBox::warning(this, "Invalid Data", e->what());
         delete e;
     }
@@ -58,7 +57,7 @@ Offer::Ptr OfferDialog::toDomainObject()
 {
     Offer::Ptr offer = std::make_shared<Offer>();
 
-    offer->setDate(ui->dateEdit->date());
+    offer->setDate(m_date);
     offer->setCustomer(m_customer);
     offer->setItems(m_billItemModel->items());
     offer->setId(m_id);

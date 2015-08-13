@@ -44,7 +44,7 @@ void LetterDialog::accept()
             emit letterUpdated(letter);
         }
         QDialog::accept();
-    } catch (ValidationException *e) {
+    } catch (ServiceException *e) {
         QMessageBox::warning(this, "Invalid Data", e->what());
         delete e;
     }
