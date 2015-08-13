@@ -8,7 +8,7 @@ OfferDialog::OfferDialog(QWidget *parent, BillService::Ptr billService, Customer
 {
     connect(ui->btnPreview, SIGNAL(clicked(bool)), SLOT(on_btnPreview_clicked()));
 
-    ui->btnAddDiscount->setHidden(true);
+    ui->btnDiscount->setHidden(true);
     ui->box_nr_date->setHidden(true);
 }
 
@@ -41,9 +41,11 @@ void OfferDialog::accept()
     Offer::Ptr offer = toDomainObject();
     try {
         if(m_openMode == Create) {
-            m_offerService->offerValidator()->validateForCreate(offer);
+            m_offerService->add(offer);
+            emit offerAdded(offer);
         } else {
-            m_offerService->offerValidator()->validateForUpdate(offer);
+            m_offerService->update(offer);
+            emit offerUpdated(offer);
         }
         QDialog::accept();
     } catch (ValidationException *e) {

@@ -186,7 +186,7 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_3">
      <item>
-      <widget class="QPushButton" name="btnAddDiscount">
+      <widget class="QPushButton" name="btnDiscount">
        <property name="text">
         <string>Add Discount</string>
        </property>

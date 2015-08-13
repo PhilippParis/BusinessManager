@@ -25,6 +25,9 @@ public:
 
     Customer::Ptr selectedCustomer();
 
+signals:
+    void customerAdded(Customer::Ptr customer);
+
 private slots:
     void on_tblCustomers_clicked(const QModelIndex &index);
     void on_leFilter_textChanged(const QString &arg1);

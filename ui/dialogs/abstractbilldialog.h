@@ -32,6 +32,10 @@ public:
 
     void setCustomer(Customer::Ptr customer);
 
+signals:
+    void customerAdded(Customer::Ptr);
+    void templateAdded(Template::Ptr);
+
 private slots:
     void on_btnSelectCustomer_clicked();
     void on_btnAddArticle_clicked();

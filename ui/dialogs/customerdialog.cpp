@@ -61,9 +61,10 @@ void CustomerDialog::accept()
     try {
         if(m_openMode == Create) {
             m_customerService->add(customer);
-            m_id = customer->id();
+            emit customerAdded(customer);
         } else {
             m_customerService->update(customer);
+            emit customerUpdated(customer);
         }
         QDialog::accept();
     } catch (ServiceException *e) {

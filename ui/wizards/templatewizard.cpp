@@ -58,11 +58,15 @@ bool TemplateWizard::onUpdate()
 {
     Template::Ptr templ = toDomainObject();
     try {
-        m_templateService->validator()->validateForUpdate(templ);
+        m_templateService->update(templ);
+        emit templateUpdated(templ);
+        return true;
     } catch (ValidationException *e) {
         QMessageBox::warning(this, tr("Invalid Data"), e->what());
         delete e;
-        return false;
+    } catch (ServiceException *e) {
+        QMessageBox::warning(this, tr("Error"), e->what());
+        delete e;
     }
     return true;
 }
@@ -71,13 +75,18 @@ bool TemplateWizard::onCreate()
 {
     Template::Ptr templ = toDomainObject();
     try {
-        m_templateService->validator()->validateForCreate(templ);
+        m_templateService->add(templ);
+        emit templateAdded(templ);
+        return true;
     } catch (ValidationException *e) {
         QMessageBox::warning(this, tr("Invalid Data"), e->what());
         delete e;
-        return false;
+    } catch (ServiceException *e) {
+        QMessageBox::warning(this, tr("Error"), e->what());
+        delete e;
     }
-    return true;
+
+    return false;
 }
 
 

@@ -65,34 +65,31 @@ Template::Ptr BillItemWizard::getTemplateDomainObject()
 
 bool BillItemWizard::onUpdate()
 {
-    BillItem::Ptr item = getBillItemDomainObject();
-    try {
-        if (ui->gbTemplate->isChecked()) {
-            m_templateService->add(toTemplate());
-        }
-        m_billService->billItemValidator()->validateForCreate(item);
-    } catch (Exception *e) {
-        QMessageBox::warning(this, tr("Invalid Data"), e->what());
-        delete e;
-        return false;
-    }
-    return true;
+    // items are not stored immediately -> item has no ID -> validate for create
+    return onCreate();
 }
 
 bool BillItemWizard::onCreate()
 {
     BillItem::Ptr item = getBillItemDomainObject();
     try {
-        if (ui->gbTemplate->isChecked()) {
-            m_templateService->add(toTemplate());
-        }
         m_billService->billItemValidator()->validateForCreate(item);
-    } catch (Exception *e) {
+        emit itemAdded(item);
+
+        if (ui->gbTemplate->isChecked()) {
+            Template::Ptr templ = toTemplate();
+            m_templateService->add(templ);
+            emit templateAdded(templ);
+        }
+        return true;
+    } catch (ValidationException *e) {
         QMessageBox::warning(this, tr("Invalid Data"), e->what());
         delete e;
-        return false;
+    } catch (ServiceException *e) {
+        QMessageBox::warning(this, tr("Error"), e->what());
+        delete e;
     }
-    return true;
+    return false;
 }
 
 void BillItemWizard::on_BillItemWizard_currentIdChanged(int id)

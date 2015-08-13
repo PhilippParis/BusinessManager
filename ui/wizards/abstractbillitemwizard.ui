@@ -392,6 +392,24 @@
    </layout>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>sbWorkingHours</tabstop>
+  <tabstop>leSearchTemplate</tabstop>
+  <tabstop>tblTemplates</tabstop>
+  <tabstop>tblMaterial</tabstop>
+  <tabstop>btnAddMaterial</tabstop>
+  <tabstop>btnDeleteMaterial</tabstop>
+  <tabstop>textEditArticleDesc</tabstop>
+  <tabstop>sbQuantity</tabstop>
+  <tabstop>leUnit</tabstop>
+  <tabstop>sbTaxRate</tabstop>
+  <tabstop>sbPricePerUnit</tabstop>
+  <tabstop>gbTemplate</tabstop>
+  <tabstop>leTemplateName</tabstop>
+  <tabstop>leTemplateOrg</tabstop>
+  <tabstop>leType</tabstop>
+  <tabstop>leDesc</tabstop>
+ </tabstops>
  <resources>
   <include location="../../resources.qrc"/>
  </resources>

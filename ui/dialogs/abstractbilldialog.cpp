@@ -47,6 +47,7 @@ BillItem::Ptr AbstractBillDialog::selectedBillItem()
 void AbstractBillDialog::on_btnSelectCustomer_clicked()
 {
     CustomerSelectionDialog *dialog = new CustomerSelectionDialog(this, m_customerService);
+    connect(dialog, SIGNAL(customerAdded(Customer::Ptr)), this, SIGNAL(customerAdded(Customer::Ptr)));
 
     if(dialog->exec() == QDialog::Accepted) {
        setCustomer(dialog->selectedCustomer());
@@ -58,12 +59,10 @@ void AbstractBillDialog::on_btnSelectCustomer_clicked()
 void AbstractBillDialog::on_btnAddArticle_clicked()
 {
     BillItemWizard *wizard = new BillItemWizard(this, m_billService, m_materialService, m_templateService);
+    connect(wizard, SIGNAL(templateAdded(Template::Ptr)), this, SIGNAL(templateAdded(Template::Ptr)));
+    connect(wizard, &BillItemWizard::itemAdded, m_billItemModel, &BillItemTableModel::add);
     wizard->prepareForCreate();
-
-    if(wizard->exec() == QWizard::Accepted) {
-        BillItem::Ptr item = wizard->getBillItemDomainObject();
-        m_billItemModel->add(item);
-    }
+    wizard->exec();
 
     delete wizard;
 }
@@ -77,11 +76,9 @@ void AbstractBillDialog::on_btnEditArticle_clicked()
     }
 
     BillItemWizard *wizard = new BillItemWizard(this, m_billService, m_materialService, m_templateService);
+    connect(wizard, &BillItemWizard::itemUpdated, m_billItemModel, &BillItemTableModel::update);
     wizard->prepareForUpdate(selected);
-
-    if(wizard->exec() == QWizard::Accepted) {
-        m_billItemModel->replace(selected, wizard->getBillItemDomainObject());
-    }
+    wizard->exec();
 
     delete wizard;
 }

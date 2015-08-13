@@ -1,10 +1,10 @@
 #include "materialdialog.h"
 #include "ui_materialdialog.h"
 
-MaterialDialog::MaterialDialog(QWidget *parent, Validator<Material::Ptr>::Ptr validator) :
+MaterialDialog::MaterialDialog(QWidget *parent, MaterialService::Ptr service) :
     QDialog(parent),
     ui(new Ui::MaterialDialog),
-    m_validator(validator)
+    m_service(service)
 {
     ui->setupUi(this);
 }
@@ -67,9 +67,11 @@ void MaterialDialog::accept()
     Material::Ptr material = toDomainObject();
     try {
         if(m_openMode == Create) {
-            m_validator->validateForCreate(material);
+            m_service->add(material);
+            emit materialAdded(material);
         } else {
-            m_validator->validateForUpdate(material);
+            m_service->update(material);
+            emit materialUpdated(material);
         }
         QDialog::accept();
     } catch (ValidationException *e) {

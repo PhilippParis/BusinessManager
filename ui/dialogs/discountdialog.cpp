@@ -35,11 +35,8 @@ void DiscountDialog::accept()
 {
     Discount::Ptr discount = toDomainObject();
     try {
-        if(m_openMode == Create) {
-            m_validator->validateForCreate(discount);
-        } else {
-            m_validator->validateForUpdate(discount);
-        }
+        // discount is not stored immediately -> validate for create (also on update)
+        m_validator->validateForCreate(discount);
         QDialog::accept();
     } catch (ValidationException *e) {
         QMessageBox::warning(this, "Invalid Data", e->what());

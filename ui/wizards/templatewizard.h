@@ -16,10 +16,15 @@ public:
 
     void prepareForCreate() override;
     void prepareForUpdate(Template::Ptr item);
-    Template::Ptr toDomainObject();
+
+signals:
+    void templateUpdated(Template::Ptr);
 
 private slots:
     void on_TemplateWizard_currentIdChanged(int id);
+
+private:
+    Template::Ptr toDomainObject();
 
 private:
     bool onUpdate() override;

@@ -4,7 +4,6 @@
 #include <QList>
 
 #include "service/customerservice.h"
-
 #include "persistence/customerdao.h"
 #include "persistence/validation/validator.h"
 

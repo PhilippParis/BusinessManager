@@ -29,6 +29,9 @@ public:
 
     virtual void prepareForCreate();
 
+signals:
+    void templateAdded(Template::Ptr);
+
 private slots:
     void on_textEditArticleDesc_textChanged();
     void accept();

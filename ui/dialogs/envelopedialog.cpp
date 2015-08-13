@@ -64,6 +64,8 @@ Envelope::Ptr EnvelopeDialog::toDomainObject()
 void EnvelopeDialog::on_btnRecipient_clicked()
 {
     CustomerSelectionDialog *dialog = new CustomerSelectionDialog(this, m_customerService);
+    connect(dialog, SIGNAL(customerAdded(Customer::Ptr)), this, SIGNAL(customerAdded(Customer::Ptr)));
+
     if(dialog->exec() == QDialog::Accepted) {
         setCustomer(dialog->selectedCustomer());
     }

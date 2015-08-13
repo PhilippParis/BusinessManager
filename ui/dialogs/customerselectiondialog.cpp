@@ -45,14 +45,16 @@ void CustomerSelectionDialog::on_leFilter_textChanged(const QString &arg1)
 void CustomerSelectionDialog::on_btnAddCustomer_clicked()
 {
     CustomerDialog *dialog = new CustomerDialog(this, m_service);
-    dialog->prepareForCreate();
 
-    if(dialog->exec() == QDialog::Accepted) {
-        Customer::Ptr customer = dialog->toDomainObject();
+    connect(dialog, &CustomerDialog::customerAdded, [=](Customer::Ptr customer) {
         QModelIndex index = m_model->add(customer);
         ui->tblCustomers->setCurrentIndex(m_sortFilterProxyModel->mapFromSource(index));
         ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
-    }
+        emit customerAdded(customer);
+    });
+
+    dialog->prepareForCreate();
+    dialog->exec();
 
     delete dialog;
 }

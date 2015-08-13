@@ -26,13 +26,17 @@ public:
                             MaterialService::Ptr materialService, TemplateService::Ptr templateService);
 
     void prepareForUpdate(BillItem::Ptr item);
-    BillItem::Ptr getBillItemDomainObject();
-    Template::Ptr getTemplateDomainObject();
+
+signals:
+    void itemAdded(BillItem::Ptr);
+    void itemUpdated(BillItem::Ptr);
 
 private slots:
     void on_BillItemWizard_currentIdChanged(int id);
 
 private:
+    BillItem::Ptr getBillItemDomainObject();
+    Template::Ptr getTemplateDomainObject();
     bool onUpdate() override;
     bool onCreate() override;
 

@@ -22,10 +22,15 @@ public:
     void prepareForCreate();
     void prepareForUpdate(Customer::Ptr customer);
 
-    Customer::Ptr toDomainObject();
+signals:
+    void customerAdded(Customer::Ptr);
+    void customerUpdated(Customer::Ptr);
 
 private slots:
     void accept() override;
+
+private:
+    Customer::Ptr toDomainObject();
 
 private:
     enum OpenMode {

@@ -25,6 +25,7 @@ public:
 
 signals:
     void print(Envelope::Ptr);
+    void customerAdded(Customer::Ptr);
 
 private slots:
     void on_btnPrint_clicked();

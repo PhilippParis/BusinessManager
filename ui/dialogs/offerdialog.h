@@ -16,15 +16,19 @@ public:
 
     void prepareForCreate(Customer::Ptr customer);
     void prepareForUpdate(Offer::Ptr offer);
-    Offer::Ptr toDomainObject();
 
 signals:
     void print(Offer::Ptr);
+    void offerAdded(Offer::Ptr);
+    void offerUpdated(Offer::Ptr);
 
 private slots:
     void accept() override;
     void reject() override;
     void on_btnPreview_clicked();
+
+private:
+    Offer::Ptr toDomainObject();
 
 private:
     enum OpenMode {

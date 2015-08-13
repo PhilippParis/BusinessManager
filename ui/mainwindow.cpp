@@ -136,6 +136,22 @@ void MainWindow::initWidgets()
     m_templateTableModel->addAll(m_templateService->getAll());
 }
 
+void MainWindow::printBill(Bill::Ptr bill)
+{
+    QPrinter *printer = new QPrinter(QPrinter::HighResolution);
+    printer->setPageSize(QPrinter::A4);
+    printer->setPageMargins(0.14, 0.14, 0.14, 0.14, QPrinter::Inch);
+
+    QPrintPreviewDialog *dialog = new QPrintPreviewDialog(printer, this);
+
+    connect(dialog, &QPrintPreviewDialog::paintRequested, [=](QPrinter *printer) {
+        m_printService->printBill(printer, bill);
+    });
+
+    dialog->exec();
+    delete dialog;
+}
+
 void MainWindow::printOffer(Offer::Ptr offer)
 {
     QPrinter *printer = new QPrinter(QPrinter::HighResolution);
@@ -244,20 +260,13 @@ void MainWindow::createBill()
 
     BillDialog *dialog = new BillDialog(this, m_billService, m_customerService, m_materialService, m_templateService);
     connect(dialog, SIGNAL(print(Bill::Ptr)), this, SLOT(printBill(Bill::Ptr)));
+    connect(dialog, &BillDialog::billAdded, m_billTableModel, &BillTableModel::add);
+    connect(dialog, &BillDialog::customerAdded, m_customerTableModel, &CustomerTableModel::add);
+    connect(dialog, &BillDialog::templateAdded, m_templateTableModel, &TemplateTableModel::add);
 
     dialog->setDiscountValidator(m_discountValidator);
     dialog->prepareForCreate(customer);
-
-    if(dialog->exec() == QDialog::Accepted) {
-        Bill::Ptr bill = dialog->toDomainObject();
-        try {
-            m_billService->addBill(bill);
-            m_billTableModel->add(bill);
-        } catch (ServiceException *e) {
-            QMessageBox::information(this, tr("Error"), e->what());
-            delete e;
-        }
-    }
+    dialog->exec();
 
     delete dialog;
 }
@@ -265,48 +274,28 @@ void MainWindow::createBill()
 void MainWindow::createCustomer()
 {
     CustomerDialog *dialog = new CustomerDialog(this, m_customerService);
+    connect(dialog, &CustomerDialog::customerAdded, m_customerTableModel, &CustomerTableModel::add);
     dialog->prepareForCreate();
 
-    if(dialog->exec() == QDialog::Accepted) {
-        Customer::Ptr customer = dialog->toDomainObject();
-        m_customerTableModel->add(customer);
-    }
+    dialog->exec();
+    delete dialog;
 }
 
 void MainWindow::createMaterial()
 {
-    MaterialDialog *dialog = new MaterialDialog(this, m_materialService->validator());
+    MaterialDialog *dialog = new MaterialDialog(this, m_materialService);
+    connect(dialog, &MaterialDialog::materialAdded, [=](Material::Ptr m) {m_materialTableModel->add(m, 0.0);});
     dialog->prepareForCreate();
-    if (dialog->exec() == QDialog::Accepted) {
-        Material::Ptr material = dialog->toDomainObject();
-        try {
-            m_materialService->add(material);
-            m_materialTableModel->add(material, 0.0);
-        } catch (ServiceException *e) {
-            QMessageBox::information(this, tr("Error"), e->what());
-            delete e;
-        }
-    }
-
+    dialog->exec();
     delete dialog;
 }
 
 void MainWindow::createTemplate()
 {
     TemplateWizard *wizard = new TemplateWizard(this, m_materialService, m_templateService);
+    connect(wizard, &TemplateWizard::templateAdded, m_templateTableModel, &TemplateTableModel::add);
     wizard->prepareForCreate();
-
-    if (wizard->exec() == QWizard::Accepted) {
-        Template::Ptr templ = wizard->toDomainObject();
-        try {
-            m_templateService->add(templ);
-            m_templateTableModel->add(templ);
-        } catch (ServiceException *e) {
-            QMessageBox::information(this, tr("Error"), e->what());
-            delete e;
-        }
-    }
-
+    wizard->exec();
     delete wizard;
 }
 
@@ -319,20 +308,9 @@ void MainWindow::createOffer()
 
     OfferDialog *dialog = new OfferDialog(this, m_billService, m_customerService, m_materialService, m_templateService, m_offerService);
     connect(dialog, SIGNAL(print(Offer::Ptr)), SLOT(printOffer(Offer::Ptr)));
-
+    connect(dialog, &OfferDialog::offerAdded, m_offerTableModel, &OfferTableModel::add);
     dialog->prepareForCreate(customer);
-
-    if (dialog->exec()) {
-        Offer::Ptr offer = dialog->toDomainObject();
-        try {
-            m_offerService->add(offer);
-            m_offerTableModel->add(offer);
-        } catch (ServiceException *e) {
-            QMessageBox::information(this, tr("Error"), e->what());
-            delete e;
-        }
-    }
-
+    dialog->exec();
     delete dialog;
 }
 
@@ -345,91 +323,50 @@ void MainWindow::createLetter()
 
     LetterDialog *dialog = new LetterDialog(this, m_letterService, m_customerService);
     connect(dialog, SIGNAL(print(Letter::Ptr)), SLOT(printLetter(Letter::Ptr)));
+    connect(dialog, &LetterDialog::letterAdded, m_letterTableModel, &LetterTableModel::add);
+    connect(dialog, &LetterDialog::customerAdded, m_customerTableModel, &CustomerTableModel::add);
     dialog->prepareForCreate(customer);
-
-    if (dialog->exec() == QDialog::Accepted) {
-        Letter::Ptr letter = dialog->toDomainObject();
-        try {
-            m_letterService->add(letter);
-            m_letterTableModel->add(letter);
-        } catch (ServiceException *e) {
-            QMessageBox::information(this, tr("Error"), e->what());
-            delete e;
-        }
-    }
-
+    dialog->exec();
     delete dialog;
 }
 
 void MainWindow::editBill(Bill::Ptr selected)
 {
     BillDialog *dialog = new BillDialog(this, m_billService, m_customerService, m_materialService, m_templateService);
-    connect(dialog, SIGNAL(print(Bill::Ptr)), this, SIGNAL(print(Bill::Ptr)));
-
+    connect(dialog, SIGNAL(print(Bill::Ptr)), this, SLOT(printBill(Bill::Ptr)));
+    connect(dialog, &BillDialog::billUpdated, m_billTableModel, &BillTableModel::update);
+    connect(dialog, &BillDialog::customerAdded, m_customerTableModel, &CustomerTableModel::add);
+    connect(dialog, &BillDialog::templateAdded, m_templateTableModel, &TemplateTableModel::add);
     dialog->setDiscountValidator(m_discountValidator);
     dialog->prepareForUpdate(selected);
-
-    if(dialog->exec() == QDialog::Accepted) {
-        Bill::Ptr bill = dialog->toDomainObject();
-        try {
-            m_billService->updateBill(bill);
-            m_billTableModel->replace(selected, bill);
-        } catch (ServiceException *e) {
-            QMessageBox::information(this, tr("Error"), e->what());
-            delete e;
-        }
-    }
-
+    dialog->exec();
     delete dialog;
 }
 
 void MainWindow::editCustomer(Customer::Ptr selected)
 {
     CustomerDialog *dialog = new CustomerDialog(this, m_customerService);
+    connect(dialog, &CustomerDialog::customerUpdated, m_customerTableModel, &CustomerTableModel::update);
     dialog->prepareForUpdate(selected);
-
-    if(dialog->exec() == QDialog::Accepted) {
-        Customer::Ptr editedCustomer = dialog->toDomainObject();
-        m_customerTableModel->replace(selected, editedCustomer);
-    }
-
+    dialog->exec();
     delete dialog;
 }
 
 void MainWindow::editMaterial(Material::Ptr selected)
 {
-    MaterialDialog *dialog = new MaterialDialog(this, m_materialService->validator());
+    MaterialDialog *dialog = new MaterialDialog(this, m_materialService);
+    connect(dialog, &MaterialDialog::materialUpdated, m_materialTableModel, &MaterialTableModel::update);
     dialog->prepareForUpdate(selected);
-    if (dialog->exec() == QDialog::Accepted) {
-        Material::Ptr material = dialog->toDomainObject();
-        try {
-            m_materialService->update(material);
-            m_materialTableModel->replace(selected, material);
-        } catch (ServiceException *e) {
-            QMessageBox::information(this, tr("Error"), e->what());
-            delete e;
-        }
-    }
-
+    dialog->exec();
     delete dialog;
 }
 
 void MainWindow::editTemplate(Template::Ptr selected)
 {
     TemplateWizard *wizard = new TemplateWizard(this, m_materialService, m_templateService);
+    connect(wizard, &TemplateWizard::templateUpdated, m_templateTableModel, &TemplateTableModel::update);
     wizard->prepareForUpdate(selected);
-
-    if (wizard->exec() == QWizard::Accepted) {
-        Template::Ptr updated = wizard->toDomainObject();
-        try {
-            m_templateService->update(updated);
-            m_templateTableModel->replace(selected, updated);
-        } catch (ServiceException *e) {
-            QMessageBox::information(this, tr("Error"), e->what());
-            delete e;
-        }
-    }
-
+    wizard->exec();
     delete wizard;
 }
 
@@ -437,20 +374,9 @@ void MainWindow::editOffer(Offer::Ptr selected)
 {
     OfferDialog *dialog = new OfferDialog(this, m_billService, m_customerService, m_materialService, m_templateService, m_offerService);
     connect(dialog, SIGNAL(print(Offer::Ptr)), SLOT(printOffer(Offer::Ptr)));
-
+    connect(dialog, &OfferDialog::offerUpdated, m_offerTableModel, &OfferTableModel::update);
     dialog->prepareForUpdate(selected);
-
-    if (dialog->exec()) {
-        Offer::Ptr offer = dialog->toDomainObject();
-        try {
-            m_offerService->update(offer);
-            m_offerTableModel->replace(selected, offer);
-        } catch (ServiceException *e) {
-            QMessageBox::information(this, tr("Error"), e->what());
-            delete e;
-        }
-    }
-
+    dialog->exec();
     delete dialog;
 }
 
@@ -458,19 +384,10 @@ void MainWindow::editLetter(Letter::Ptr selected)
 {
     LetterDialog *dialog = new LetterDialog(this, m_letterService, m_customerService);
     connect(dialog, SIGNAL(print(Letter::Ptr)), SLOT(printLetter(Letter::Ptr)));
+    connect(dialog, &LetterDialog::letterUpdated, m_letterTableModel, &LetterTableModel::update);
+    connect(dialog, &LetterDialog::customerAdded, m_customerTableModel, &CustomerTableModel::add);
     dialog->prepareForUpdate(selected);
-
-    if (dialog->exec() == QDialog::Accepted) {
-        Letter::Ptr letter = dialog->toDomainObject();
-        try {
-            m_letterService->update(letter);
-            m_letterTableModel->replace(selected, letter);
-        } catch (ServiceException *e) {
-            QMessageBox::information(this, tr("Error"), e->what());
-            delete e;
-        }
-    }
-
+    dialog->exec();
     delete dialog;
 }
 
@@ -587,22 +504,6 @@ void MainWindow::openMailClient(Customer::Ptr customer)
     QDesktopServices::openUrl(url);
 }
 
-void MainWindow::printBill(Bill::Ptr bill)
-{
-    QPrinter *printer = new QPrinter(QPrinter::HighResolution);
-    printer->setPageSize(QPrinter::A4);
-    printer->setPageMargins(0.14, 0.14, 0.14, 0.14, QPrinter::Inch);
-
-    QPrintPreviewDialog *dialog = new QPrintPreviewDialog(printer, this);
-
-    connect(dialog, &QPrintPreviewDialog::paintRequested, [=](QPrinter *printer) {
-        m_printService->printBill(printer, bill);
-    });
-
-    dialog->exec();
-    delete dialog;
-}
-
 void MainWindow::loadSettings()
 {
     QSettings settings;
@@ -616,6 +517,8 @@ void MainWindow::loadSettings()
 Customer::Ptr MainWindow::openCustomerSelectionDialog()
 {
     CustomerSelectionDialog *dialog = new CustomerSelectionDialog(this, m_customerService);
+    connect(dialog, &CustomerSelectionDialog::customerAdded, m_customerTableModel, &CustomerTableModel::add);
+
     if (dialog->exec() == QDialog::Accepted) {
         return dialog->selectedCustomer();
     }
@@ -655,6 +558,8 @@ void MainWindow::on_actionPrintEnvelope_triggered()
 
     EnvelopeDialog *dialog = new EnvelopeDialog(this, m_customerService);
     connect(dialog, SIGNAL(print(Envelope::Ptr)), SLOT(printEnvelope(Envelope::Ptr)));
+    connect(dialog, &EnvelopeDialog::customerAdded, m_customerTableModel, &CustomerTableModel::add);
+
     dialog->setCustomer(customer);
     dialog->exec();
 

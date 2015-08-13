@@ -5,7 +5,7 @@
 #include <QMessageBox>
 
 #include "domain/material.h"
-#include "persistence/validation/validator.h"
+#include "service/materialservice.h"
 
 namespace Ui {
 class MaterialDialog;
@@ -16,17 +16,22 @@ class MaterialDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit MaterialDialog(QWidget *parent, Validator<Material::Ptr>::Ptr validator);
+    explicit MaterialDialog(QWidget *parent, MaterialService::Ptr service);
     ~MaterialDialog();
 
     void prepareForCreate();
     void prepareForUpdate(Material::Ptr material);
 
-    Material::Ptr toDomainObject();
+signals:
+    void materialAdded(Material::Ptr);
+    void materialUpdated(Material::Ptr);
 
 private slots:
     void accept() override;
     void on_leUnit_textChanged(const QString &arg1);
+
+private:
+    Material::Ptr toDomainObject();
 
 private:
     enum OpenMode {
@@ -36,7 +41,7 @@ private:
 
     int m_id = -1;
     Ui::MaterialDialog *ui;
-    Validator<Material::Ptr>::Ptr m_validator;
+    MaterialService::Ptr m_service;
 };
 
 #endif // MATERIALDIALOG_H

@@ -6,7 +6,6 @@ BillDialog::BillDialog(QWidget *parent, BillService::Ptr billService, CustomerSe
     AbstractBillDialog(parent, billService, customerService, materialService, templateService)
 {
     connect(ui->dateEdit, SIGNAL(dateChanged(QDate)), SLOT(on_dateEdit_dateChanged(QDate)));
-    connect(ui->btnAddDiscount, SIGNAL(clicked(bool)), SLOT(on_btnAddDiscount_clicked()));
     connect(ui->btnPreview, SIGNAL(clicked(bool)), SLOT(on_btnPreview_clicked()));
 }
 
@@ -22,6 +21,7 @@ void BillDialog::prepareForCreate(Customer::Ptr customer)
     ui->dateEdit->setDate(QDate::currentDate());
     ui->sbNr->setValue(m_billService->nextBillNumber(QDate::currentDate()));
     setCustomer(customer);
+    connect(ui->btnDiscount, SIGNAL(clicked(bool)), SLOT(addDiscount()));
 }
 
 void BillDialog::prepareForUpdate(Bill::Ptr bill)
@@ -36,6 +36,11 @@ void BillDialog::prepareForUpdate(Bill::Ptr bill)
 
     if (!bill->discounts().isEmpty()) {
         m_discount = bill->discounts().first();
+        ui->btnDiscount->setText(tr("Edit Discount"));
+        ui->btnDiscount->setIcon(QIcon(":icon/edit"));
+        connect(ui->btnDiscount, SIGNAL(clicked(bool)), SLOT(editDiscount()));
+    } else {
+        connect(ui->btnDiscount, SIGNAL(clicked(bool)), SLOT(addDiscount()));
     }
 }
 
@@ -44,14 +49,39 @@ void BillDialog::accept()
     Bill::Ptr bill = toDomainObject();
     try {
         if(m_openMode == Create) {
-            m_billService->billValidator()->validateForCreate(bill);
+            m_billService->addBill(bill);
+            emit billAdded(bill);
         } else {
-            m_billService->billValidator()->validateForUpdate(bill);
+            m_billService->updateBill(bill);
+            emit billUpdated(bill);
         }
         QDialog::accept();
-    } catch (ValidationException *e) {
-        QMessageBox::warning(this, "Invalid Data", e->what());
+    } catch (ServiceException *e) {
+        QMessageBox::warning(this, "Error", e->what());
         delete e;
+    }
+}
+
+void BillDialog::addDiscount()
+{
+    DiscountDialog *dialog = new DiscountDialog(this, m_discountValidator);
+    dialog->prepareForCreate();
+    if (dialog->exec() == QDialog::Accepted) {
+        m_discount = dialog->toDomainObject();
+
+        ui->btnDiscount->disconnect(this);
+        ui->btnDiscount->setText(tr("Edit Discount"));
+        ui->btnDiscount->setIcon(QIcon(":icon/edit"));
+        connect(ui->btnDiscount, SIGNAL(clicked(bool)), SLOT(editDiscount()));
+    }
+}
+
+void BillDialog::editDiscount()
+{
+    DiscountDialog *dialog = new DiscountDialog(this, m_discountValidator);
+    dialog->prepareForUpdate(m_discount);
+    if (dialog->exec() == QDialog::Accepted) {
+        m_discount = dialog->toDomainObject();
     }
 }
 
@@ -82,25 +112,6 @@ void BillDialog::reject()
 void BillDialog::on_btnPreview_clicked()
 {
     emit print(toDomainObject());
-}
-
-void BillDialog::on_btnAddDiscount_clicked()
-{
-    DiscountDialog *dialog = new DiscountDialog(this, m_discountValidator);
-    int idBuffer = -1;
-
-    if (m_discount == nullptr) {
-        dialog->prepareForCreate();
-    } else {
-        idBuffer = m_discount->id();
-        m_discount->setId(1);
-        dialog->prepareForUpdate(m_discount);
-    }
-
-    if (dialog->exec() == QDialog::Accepted) {
-        m_discount = dialog->toDomainObject();
-        m_discount->setId(idBuffer);
-    }
 }
 
 void BillDialog::on_dateEdit_dateChanged(const QDate &date)

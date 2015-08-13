@@ -26,10 +26,12 @@ public:
 
     void prepareForCreate(Customer::Ptr customer);
     void prepareForUpdate(Letter::Ptr);
-    Letter::Ptr toDomainObject();
 
 signals:
     void print(Letter::Ptr);
+    void letterAdded(Letter::Ptr);
+    void letterUpdated(Letter::Ptr);
+    void customerAdded(Customer::Ptr);
 
 protected:
     void accept() override;
@@ -48,6 +50,7 @@ private slots:
 
 private:
     void setCustomer(Customer::Ptr customer);
+    Letter::Ptr toDomainObject();
 
 private:
     enum OpenMode {

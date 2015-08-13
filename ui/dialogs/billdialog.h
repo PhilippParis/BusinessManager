@@ -28,17 +28,22 @@ public:
     void setDiscountValidator(Validator<Discount::Ptr>::Ptr validator);
     void prepareForCreate(Customer::Ptr customer);
     void prepareForUpdate(Bill::Ptr bill);
-    Bill::Ptr toDomainObject();
 
 signals:
     void print(Bill::Ptr);
+    void billAdded(Bill::Ptr);
+    void billUpdated(Bill::Ptr);
 
 private slots:
     void reject() override;
     void accept() override;
+    void addDiscount();
+    void editDiscount();
     void on_btnPreview_clicked();
-    void on_btnAddDiscount_clicked();
     void on_dateEdit_dateChanged(const QDate &date);
+
+private:
+    Bill::Ptr toDomainObject();
 
 private:
     enum OpenMode {

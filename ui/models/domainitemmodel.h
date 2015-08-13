@@ -47,7 +47,14 @@ public:
     {
         int row = m_data.indexOf(old);
         m_data.replace(row, updated);
-        emit dataChanged(index(0, row), index(4, row));
+        emit dataChanged(index(0, row), index(columnCount(), row));
+    }
+
+    virtual void update(T item)
+    {
+        int row = indexOf(item);
+        m_data.replace(row, item);
+        emit dataChanged(index(0, row), index(columnCount(), row));
     }
 
     virtual T get(QModelIndex index)

@@ -37,9 +37,11 @@ void LetterDialog::accept()
     Letter::Ptr letter = toDomainObject();
     try {
         if(m_openMode == Create) {
-            m_letterService->validator()->validateForCreate(letter);
+            m_letterService->add(letter);
+            emit letterAdded(letter);
         } else {
-            m_letterService->validator()->validateForUpdate(letter);
+            m_letterService->update(letter);
+            emit letterUpdated(letter);
         }
         QDialog::accept();
     } catch (ValidationException *e) {
@@ -171,6 +173,8 @@ void LetterDialog::on_textEdit_cursorPositionChanged()
 void LetterDialog::on_btnRecipient_clicked()
 {
     CustomerSelectionDialog *dialog = new CustomerSelectionDialog(this, m_customerService);
+    connect(dialog, SIGNAL(customerAdded(Customer::Ptr)), this, SIGNAL(customerAdded(Customer::Ptr)));
+
     if (dialog->exec() == QDialog::Accepted) {
         setCustomer(dialog->selectedCustomer());
     }
