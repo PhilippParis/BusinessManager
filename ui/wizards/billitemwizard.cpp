@@ -68,7 +68,7 @@ bool BillItemWizard::onUpdate()
     BillItem::Ptr item = getBillItemDomainObject();
     try {
         if (ui->gbTemplate->isChecked()) {
-            m_templateService->validator()->validateForCreate(toTemplate());
+            m_templateService->add(toTemplate());
         }
         m_billService->billItemValidator()->validateForCreate(item);
     } catch (Exception *e) {
@@ -84,7 +84,7 @@ bool BillItemWizard::onCreate()
     BillItem::Ptr item = getBillItemDomainObject();
     try {
         if (ui->gbTemplate->isChecked()) {
-            m_templateService->validator()->validateForCreate(toTemplate());
+            m_templateService->add(toTemplate());
         }
         m_billService->billItemValidator()->validateForCreate(item);
     } catch (Exception *e) {
