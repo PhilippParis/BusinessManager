@@ -61,6 +61,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     initWidgets();
     loadSettings();
+
 }
 
 MainWindow::~MainWindow()
@@ -77,6 +78,7 @@ void MainWindow::initWidgets()
 {
     // bill widget
     ui->widgetBills->setBillModel(m_billTableModel);
+    ui->widgetBills->setPrintService(m_printService);
     ui->widgetBills->setDateFilter(m_billService->billDateRange().first, QDate::currentDate());
 
     connect(ui->widgetBills, SIGNAL(remove(Bill::Ptr)), this, SLOT(removeBill(Bill::Ptr)));
@@ -87,6 +89,7 @@ void MainWindow::initWidgets()
 
     // letters widget
     ui->widgetLetters->setLetterModel(m_letterTableModel);
+    ui->widgetLetters->setPrintService(m_printService);
 
     connect(ui->widgetLetters, SIGNAL(edit(Letter::Ptr)), this, SLOT(editLetter(Letter::Ptr)));
     connect(ui->widgetLetters, SIGNAL(remove(Letter::Ptr)), this, SLOT(removeLetter(Letter::Ptr)));
@@ -95,6 +98,7 @@ void MainWindow::initWidgets()
 
     // offers widget
     ui->offersWidget->setOfferModel(m_offerTableModel);
+    ui->offersWidget->setPrintService(m_printService);
 
     connect(ui->offersWidget, SIGNAL(edit(Offer::Ptr)), this, SLOT(editOffer(Offer::Ptr)));
     connect(ui->offersWidget, SIGNAL(remove(Offer::Ptr)), this, SLOT(removeOffer(Offer::Ptr)));

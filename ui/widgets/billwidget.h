@@ -6,11 +6,12 @@
 #include <QCheckBox>
 #include <QMessageBox>
 #include <QFileDialog>
+#include <QPrintPreviewWidget>
 
 #include "service/billservice.h"
 #include "service/customerservice.h"
 #include "service/materialservice.h"
-#include "service/templateservice.h"
+#include "service/printservice.h"
 
 #include "ui/models/billtablemodel.h"
 #include "ui/models/customertablemodel.h"
@@ -31,6 +32,7 @@ public:
 
     void setDateFilter(QDate from, QDate to);
     void setBillModel(BillTableModel *model);
+    void setPrintService(PrintService::Ptr service);
 
 signals:
     void print(Bill::Ptr bill);
@@ -55,9 +57,9 @@ private:
 private:
     Ui::BillWidget *ui;
     BillService::Ptr m_billService;
-
     BillTableModel *m_billModel;
     BillSortFilterProxyModel *m_sortFilterModel;
+    QPrintPreviewWidget *m_printPreviewWidget;
 };
 
 #endif // BILLWIDGET_H

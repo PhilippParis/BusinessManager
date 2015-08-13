@@ -23,6 +23,16 @@ BillWidget::BillWidget(QWidget *parent) :
     connect(ui->dateTo, SIGNAL(dateChanged(QDate)), this, SLOT(updateFilter()));
     connect(ui->leFilter, SIGNAL(textChanged(QString)), this, SLOT(updateFilter()));
     connect(ui->cbOnlyOpen, SIGNAL(clicked(bool)), this, SLOT(updateFilter()));
+
+    QPrinter *printer = new QPrinter(QPrinter::HighResolution);
+    printer->setPageSize(QPrinter::A4);
+    printer->setPageMargins(0.14, 0.14, 0.14, 0.14, QPrinter::Inch);
+    m_printPreviewWidget = new QPrintPreviewWidget(printer, this);
+    m_printPreviewWidget->setFont(QFont("Arial",18,QFont::Bold));
+    m_printPreviewWidget->setMaximumWidth(700);
+    m_printPreviewWidget->setZoomMode(QPrintPreviewWidget::FitToWidth);
+    ui->hLayout_tbl->addWidget(m_printPreviewWidget);
+    connect(ui->tblData, SIGNAL(clicked(QModelIndex)), m_printPreviewWidget, SLOT(updatePreview()));
 }
 
 BillWidget::~BillWidget()
@@ -63,6 +73,17 @@ void BillWidget::setBillModel(BillTableModel *model)
 {
     m_billModel = model;
     m_sortFilterModel->setSourceModel(m_billModel);
+    connect(m_billModel, SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)), m_printPreviewWidget, SLOT(updatePreview()));
+}
+
+void BillWidget::setPrintService(PrintService::Ptr service)
+{
+    connect(m_printPreviewWidget, &QPrintPreviewWidget::paintRequested, [=](QPrinter* printer) {
+        Bill::Ptr bill = selectedBill();
+        if (bill != nullptr) {
+            service->printBill(printer, bill);
+        }
+    });
 }
 
 void BillWidget::on_btnEdit_clicked()

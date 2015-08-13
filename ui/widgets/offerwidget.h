@@ -2,10 +2,12 @@
 #define OFFERWIDGET_H
 
 #include <QWidget>
+#include <QPrintPreviewWidget>
 
-#include "service/offerservice.h"
+#include "service/printservice.h"
 #include "ui/models/offersortfilterproxymodel.h"
 #include "ui/models/offertablemodel.h"
+
 
 namespace Ui {
 class OfferWidget;
@@ -20,6 +22,7 @@ public:
     ~OfferWidget();
 
     void setOfferModel(OfferTableModel *model);
+    void setPrintService(PrintService::Ptr service);
 
 signals:
     void edit(Offer::Ptr);
@@ -42,6 +45,7 @@ private:
     Ui::OfferWidget *ui;
     OfferSortFilterProxyModel *m_sortFilterProxyModel;
     OfferTableModel *m_model;
+    QPrintPreviewWidget *m_printPreviewWidget;
 };
 
 #endif // OFFERWIDGET_H

@@ -2,7 +2,9 @@
 #define LETTERWIDGET_H
 
 #include <QWidget>
+#include <QPrintPreviewWidget>
 
+#include "service/printservice.h"
 #include "ui/models/lettertablemodel.h"
 #include "ui/models/lettersortfilterproxymodel.h"
 
@@ -18,6 +20,7 @@ public:
     explicit LetterWidget(QWidget *parent = 0);
     ~LetterWidget();
     void setLetterModel(LetterTableModel *model);
+    void setPrintService(PrintService::Ptr service);
 
 signals:
     void edit(Letter::Ptr);
@@ -41,6 +44,7 @@ private:
     Ui::LetterWidget *ui;
     LetterTableModel *m_model;
     LetterSortFilterProxyModel *m_sortFilterProxyModel;
+    QPrintPreviewWidget *m_printPreviewWidget;
 
 };
 
