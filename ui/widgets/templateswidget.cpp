@@ -48,20 +48,8 @@ Template::Ptr TemplatesWidget::selectedTemplate()
     return m_model->get(m_sortFilterProxyModel->mapToSource(index));
 }
 
-void TemplatesWidget::setTemplateService(const TemplateService::Ptr &templateService)
-{
-    m_templateService = templateService;
-    update();
-}
-
 void TemplatesWidget::setTemplateModel(TemplateTableModel *model)
 {
     m_model = model;
     m_sortFilterProxyModel->setSourceModel(m_model);
 }
-
-void TemplatesWidget::update()
-{
-    m_model->addAll(m_templateService->getAll());
-}
-

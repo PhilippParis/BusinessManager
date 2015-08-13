@@ -27,12 +27,6 @@ void OfferWidget::setOfferModel(OfferTableModel *model)
     m_sortFilterProxyModel->setSourceModel(m_model);
 }
 
-void OfferWidget::setOfferService(OfferService::Ptr offerService)
-{
-    m_offerService = offerService;
-    m_model->addAll(offerService->getAll());
-}
-
 void OfferWidget::on_leFilter_textChanged(const QString &arg1)
 {
     m_sortFilterProxyModel->setFilterWildcard(arg1);

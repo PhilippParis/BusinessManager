@@ -32,22 +32,10 @@ CustomersWidget::~CustomersWidget()
     delete m_sortFilterModel;
 }
 
-void CustomersWidget::setService(CustomerService::Ptr service)
-{
-    m_service = service;
-    update();
-}
-
 void CustomersWidget::setCustomerModel(CustomerTableModel *model)
 {
     m_model = model;
     m_sortFilterModel->setSourceModel(m_model);
-}
-
-void CustomersWidget::update()
-{
-    m_model->clear();
-    m_model->addAll(m_service->getAll());
 }
 
 void CustomersWidget::selectionChanged(QModelIndex newIndex, QModelIndex prevIndex)

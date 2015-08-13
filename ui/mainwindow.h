@@ -102,10 +102,10 @@ private slots:
     void on_actionPrintEnvelope_triggered();
 
 private:
-    QString getSaveFileName();
     void initWidgets();
     void loadSettings();
     Customer::Ptr openCustomerSelectionDialog();
+    QString getSaveFileName();
 
 private:
     Ui::MainWindow *ui;

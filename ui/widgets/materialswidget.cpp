@@ -22,12 +22,6 @@ MaterialsWidget::~MaterialsWidget()
     delete m_sortFilterProxyModel;
 }
 
-void MaterialsWidget::setMaterialService(MaterialService::Ptr service)
-{
-    m_service = service;
-    update();
-}
-
 void MaterialsWidget::setMaterialModel(MaterialTableModel *model)
 {
     m_model = model;
@@ -39,11 +33,6 @@ Material::Ptr MaterialsWidget::selectedMaterial()
 {
     QModelIndex index = ui->tblMaterials->currentIndex();
     return m_model->get(m_sortFilterProxyModel->mapToSource(index));
-}
-
-void MaterialsWidget::update()
-{
-    m_model->addAll(m_service->getAll());
 }
 
 void MaterialsWidget::on_btnAdd_clicked()

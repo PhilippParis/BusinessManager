@@ -19,8 +19,6 @@ class TemplatesWidget : public QWidget
 public:
     explicit TemplatesWidget(QWidget *parent = 0);
     ~TemplatesWidget();
-
-    void setTemplateService(const TemplateService::Ptr &templateService);
     void setTemplateModel(TemplateTableModel *model);
 
 signals:
@@ -29,7 +27,6 @@ signals:
     void remove(Template::Ptr);
 
 private slots:
-    void update();
     void on_btnAdd_clicked();
     void on_btnEdit_clicked();
     void on_btnDelete_clicked();

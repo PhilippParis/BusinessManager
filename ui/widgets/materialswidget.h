@@ -22,7 +22,6 @@ public:
     explicit MaterialsWidget(QWidget *parent = 0);
     ~MaterialsWidget();
 
-    void setMaterialService(MaterialService::Ptr service);
     void setMaterialModel(MaterialTableModel *model);
     Material::Ptr selectedMaterial();
 
@@ -32,7 +31,6 @@ signals:
     void remove(Material::Ptr);
 
 private slots:
-    void update();
     void on_btnAdd_clicked();
     void on_btnEdit_clicked();
     void on_btnDelete_clicked();
@@ -40,8 +38,6 @@ private slots:
 
 private:
     Ui::MaterialsWidget *ui;
-
-    MaterialService::Ptr m_service;
     MaterialTableModel *m_model;
     MaterialSortFilterProxyModel *m_sortFilterProxyModel;
 };

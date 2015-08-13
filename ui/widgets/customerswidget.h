@@ -24,10 +24,7 @@ class CustomersWidget : public QWidget
 public:
     explicit CustomersWidget(QWidget *parent = 0);
     ~CustomersWidget();
-
-    void setService(CustomerService::Ptr service);
     void setCustomerModel(CustomerTableModel *model);
-
     Customer::Ptr selectedCustomer();
 
 signals:
@@ -37,7 +34,6 @@ signals:
     void sendMail(Customer::Ptr);
 
 private slots:
-    void update();
     void selectionChanged(QModelIndex,QModelIndex);
 
     void on_btnAddCustomer_clicked();
@@ -47,7 +43,6 @@ private slots:
 
 private:
     Ui::CustomersWidget *ui;
-    CustomerService::Ptr m_service;
 
     CustomerTableModel *m_model;
     CustomerSortFilterProxyModel *m_sortFilterModel;

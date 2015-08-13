@@ -29,7 +29,7 @@ public:
     explicit BillWidget(QWidget *parent = 0);
     ~BillWidget();
 
-    void setBillService(const BillService::Ptr &billService);
+    void setDateFilter(QDate from, QDate to);
     void setBillModel(BillTableModel *model);
 
 signals:
@@ -38,9 +38,6 @@ signals:
     void remove(Bill::Ptr bill);
     void saveToFile(Bill::Ptr bill);
     void sendMail(Customer::Ptr);
-
-public slots:
-    void update();
 
 private slots:
     void on_btnEdit_clicked();

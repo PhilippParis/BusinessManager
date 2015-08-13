@@ -50,7 +50,9 @@ MainWindow::MainWindow(QWidget *parent) :
     m_offerTableModel = new OfferTableModel();
     m_letterTableModel = new LetterTableModel();
 
-    m_letterTableModel->addAll(m_letterService->getAll());
+    connect(m_billTableModel, &BillTableModel::billPayedStatusChanged, [=](Bill::Ptr bill) {
+        m_billService->updateBill(bill);
+    });
 
     connect(ui->actionNewBill, SIGNAL(triggered(bool)), SLOT(createBill()));
     connect(ui->actionNewOffer, SIGNAL(triggered(bool)), SLOT(createOffer()));
@@ -69,6 +71,69 @@ MainWindow::~MainWindow()
     delete m_materialTableModel;
     delete m_templateTableModel;
     delete m_offerTableModel;
+}
+
+void MainWindow::initWidgets()
+{
+    // bill widget
+    ui->widgetBills->setBillModel(m_billTableModel);
+    ui->widgetBills->setDateFilter(m_billService->billDateRange().first, QDate::currentDate());
+
+    connect(ui->widgetBills, SIGNAL(remove(Bill::Ptr)), this, SLOT(removeBill(Bill::Ptr)));
+    connect(ui->widgetBills, SIGNAL(edit(Bill::Ptr)), this, SLOT(editBill(Bill::Ptr)));
+    connect(ui->widgetBills, SIGNAL(print(Bill::Ptr)), this, SLOT(printBill(Bill::Ptr)));
+    connect(ui->widgetBills, SIGNAL(saveToFile(Bill::Ptr)), this, SLOT(exportBill(Bill::Ptr)));
+    connect(ui->widgetBills, SIGNAL(sendMail(Customer::Ptr)), this, SLOT(openMailClient(Customer::Ptr)));
+
+    // letters widget
+    ui->widgetLetters->setLetterModel(m_letterTableModel);
+
+    connect(ui->widgetLetters, SIGNAL(edit(Letter::Ptr)), this, SLOT(editLetter(Letter::Ptr)));
+    connect(ui->widgetLetters, SIGNAL(remove(Letter::Ptr)), this, SLOT(removeLetter(Letter::Ptr)));
+    connect(ui->widgetLetters, SIGNAL(print(Letter::Ptr)), this, SLOT(printLetter(Letter::Ptr)));
+    connect(ui->widgetLetters, SIGNAL(saveToFile(Letter::Ptr)), this, SLOT(exportLetter(Letter::Ptr)));
+
+    // offers widget
+    ui->offersWidget->setOfferModel(m_offerTableModel);
+
+    connect(ui->offersWidget, SIGNAL(edit(Offer::Ptr)), this, SLOT(editOffer(Offer::Ptr)));
+    connect(ui->offersWidget, SIGNAL(remove(Offer::Ptr)), this, SLOT(removeOffer(Offer::Ptr)));
+    connect(ui->offersWidget, SIGNAL(print(Offer::Ptr)), this, SLOT(printOffer(Offer::Ptr)));
+    connect(ui->offersWidget, SIGNAL(saveToFile(Offer::Ptr)), this, SLOT(exportOffer(Offer::Ptr)));
+
+    // customer widget
+    ui->widgetCustomers->setCustomerModel(m_customerTableModel);
+
+    connect(ui->widgetCustomers, SIGNAL(create()), this, SLOT(createCustomer()));
+    connect(ui->widgetCustomers, SIGNAL(edit(Customer::Ptr)), this, SLOT(editCustomer(Customer::Ptr)));
+    connect(ui->widgetCustomers, SIGNAL(remove(Customer::Ptr)), this, SLOT(removeCustomer(Customer::Ptr)));
+    connect(ui->widgetCustomers, SIGNAL(sendMail(Customer::Ptr)), this, SLOT(openMailClient(Customer::Ptr)));
+
+    // materials widget
+    ui->materialsWidget->setMaterialModel(m_materialTableModel);
+
+    connect(ui->materialsWidget, SIGNAL(create()), this, SLOT(createMaterial()));
+    connect(ui->materialsWidget, SIGNAL(edit(Material::Ptr)), this, SLOT(editMaterial(Material::Ptr)));
+    connect(ui->materialsWidget, SIGNAL(remove(Material::Ptr)), this, SLOT(removeMaterial(Material::Ptr)));
+
+    // templates widget
+    ui->templatesWidget->setTemplateModel(m_templateTableModel);
+
+    connect(ui->templatesWidget, SIGNAL(create()), this, SLOT(createTemplate()));
+    connect(ui->templatesWidget, SIGNAL(edit(Template::Ptr)), this, SLOT(editTemplate(Template::Ptr)));
+    connect(ui->templatesWidget, SIGNAL(remove(Template::Ptr)), this, SLOT(removeTemplate(Template::Ptr)));
+
+    // statisticsWidget
+    ui->statisticsWidget->setStatisticsService(m_statisticsService);
+    ui->statisticsWidget->setDateFilter(m_billService->billDateRange().first, QDate::currentDate());
+
+    // load data from datasource
+    m_billTableModel->addAll(m_billService->getAllBills());
+    m_offerTableModel->addAll(m_offerService->getAll());
+    m_letterTableModel->addAll(m_letterService->getAll());
+    m_customerTableModel->addAll(m_customerService->getAll());
+    m_materialTableModel->addAll(m_materialService->getAll());
+    m_templateTableModel->addAll(m_templateService->getAll());
 }
 
 void MainWindow::printOffer(Offer::Ptr offer)
@@ -536,70 +601,6 @@ void MainWindow::printBill(Bill::Ptr bill)
 
     dialog->exec();
     delete dialog;
-}
-
-void MainWindow::initWidgets()
-{
-    // bill widget
-    ui->widgetBills->setBillModel(m_billTableModel);
-    ui->widgetBills->setBillService(m_billService);
-
-    connect(ui->widgetBills, SIGNAL(remove(Bill::Ptr)), this, SLOT(removeBill(Bill::Ptr)));
-    connect(ui->widgetBills, SIGNAL(edit(Bill::Ptr)), this, SLOT(editBill(Bill::Ptr)));
-    connect(ui->widgetBills, SIGNAL(print(Bill::Ptr)), this, SLOT(printBill(Bill::Ptr)));
-    connect(ui->widgetBills, SIGNAL(saveToFile(Bill::Ptr)), this, SLOT(exportBill(Bill::Ptr)));
-    connect(ui->widgetBills, SIGNAL(sendMail(Customer::Ptr)), this, SLOT(openMailClient(Customer::Ptr)));
-
-    // letters widget
-    ui->widgetLetters->setLetterModel(m_letterTableModel);
-
-    connect(ui->widgetLetters, SIGNAL(edit(Letter::Ptr)), this, SLOT(editLetter(Letter::Ptr)));
-    connect(ui->widgetLetters, SIGNAL(remove(Letter::Ptr)), this, SLOT(removeLetter(Letter::Ptr)));
-    connect(ui->widgetLetters, SIGNAL(print(Letter::Ptr)), this, SLOT(printLetter(Letter::Ptr)));
-    connect(ui->widgetLetters, SIGNAL(saveToFile(Letter::Ptr)), this, SLOT(exportLetter(Letter::Ptr)));
-
-    // offers widget
-    ui->offersWidget->setOfferModel(m_offerTableModel);
-    ui->offersWidget->setOfferService(m_offerService);
-
-    connect(ui->offersWidget, SIGNAL(edit(Offer::Ptr)), this, SLOT(editOffer(Offer::Ptr)));
-    connect(ui->offersWidget, SIGNAL(remove(Offer::Ptr)), this, SLOT(removeOffer(Offer::Ptr)));
-    connect(ui->offersWidget, SIGNAL(print(Offer::Ptr)), this, SLOT(printOffer(Offer::Ptr)));
-    connect(ui->offersWidget, SIGNAL(saveToFile(Offer::Ptr)), this, SLOT(exportOffer(Offer::Ptr)));
-
-    // customer widget
-    ui->widgetCustomers->setCustomerModel(m_customerTableModel);
-    ui->widgetCustomers->setService(m_customerService);
-
-    connect(ui->widgetCustomers, SIGNAL(create()), this, SLOT(createCustomer()));
-    connect(ui->widgetCustomers, SIGNAL(edit(Customer::Ptr)), this, SLOT(editCustomer(Customer::Ptr)));
-    connect(ui->widgetCustomers, SIGNAL(remove(Customer::Ptr)), this, SLOT(removeCustomer(Customer::Ptr)));
-    connect(ui->widgetCustomers, SIGNAL(sendMail(Customer::Ptr)), this, SLOT(openMailClient(Customer::Ptr)));
-
-    // materials widget
-    ui->materialsWidget->setMaterialModel(m_materialTableModel);
-    ui->materialsWidget->setMaterialService(m_materialService);
-
-    connect(ui->materialsWidget, SIGNAL(create()), this, SLOT(createMaterial()));
-    connect(ui->materialsWidget, SIGNAL(edit(Material::Ptr)), this, SLOT(editMaterial(Material::Ptr)));
-    connect(ui->materialsWidget, SIGNAL(remove(Material::Ptr)), this, SLOT(removeMaterial(Material::Ptr)));
-
-    // templates widget
-    ui->templatesWidget->setTemplateModel(m_templateTableModel);
-    ui->templatesWidget->setTemplateService(m_templateService);
-
-    connect(ui->templatesWidget, SIGNAL(create()), this, SLOT(createTemplate()));
-    connect(ui->templatesWidget, SIGNAL(edit(Template::Ptr)), this, SLOT(editTemplate(Template::Ptr)));
-    connect(ui->templatesWidget, SIGNAL(remove(Template::Ptr)), this, SLOT(removeTemplate(Template::Ptr)));
-
-    // statisticsWidget
-    ui->statisticsWidget->setStatisticsService(m_statisticsService);
-    ui->statisticsWidget->setBillService(m_billService);
-    ui->statisticsWidget->update();
-
-    // other signals
-    connect(this, SIGNAL(dataChanged()), ui->widgetBills, SLOT(update()));
-    connect(this, SIGNAL(dataChanged()), ui->widgetCustomers, SLOT(update()));
 }
 
 void MainWindow::loadSettings()

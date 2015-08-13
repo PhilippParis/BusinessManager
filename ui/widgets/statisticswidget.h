@@ -24,7 +24,7 @@ public:
     ~StatisticsWidget();
 
     void setStatisticsService(StatisticsService::Ptr statisticsService);
-    void setBillService(BillService::Ptr billService);
+    void setDateFilter(QDate from, QDate to);
 
 public slots:
     void update();
@@ -36,7 +36,6 @@ private:
     QwtPlotCurve *m_revenueCurve;
 
     StatisticsService::Ptr m_statisticsService;
-    BillService::Ptr m_billService;
 };
 
 #endif // STATISTICSWIDGET_H

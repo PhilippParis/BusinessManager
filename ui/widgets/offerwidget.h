@@ -20,7 +20,6 @@ public:
     ~OfferWidget();
 
     void setOfferModel(OfferTableModel *model);
-    void setOfferService(OfferService::Ptr offerService);
 
 signals:
     void edit(Offer::Ptr);
@@ -41,7 +40,6 @@ private:
 
 private:
     Ui::OfferWidget *ui;
-    OfferService::Ptr m_offerService;
     OfferSortFilterProxyModel *m_sortFilterProxyModel;
     OfferTableModel *m_model;
 };

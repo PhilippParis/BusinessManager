@@ -36,15 +36,13 @@ StatisticsWidget::~StatisticsWidget()
 void StatisticsWidget::setStatisticsService(StatisticsService::Ptr statisticsService)
 {
     m_statisticsService = statisticsService;
+    update();
 }
 
-void StatisticsWidget::setBillService(BillService::Ptr billService)
+void StatisticsWidget::setDateFilter(QDate from, QDate to)
 {
-    m_billService = billService;
-    QPair<QDate, QDate> dateRange = m_billService->billDateRange();
-
-    ui->dateFrom->setDate(dateRange.first);
-    ui->dateTo->setDate(dateRange.second);
+    ui->dateFrom->setDate(from);
+    ui->dateTo->setDate(to);
 }
 
 void StatisticsWidget::update()

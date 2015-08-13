@@ -30,14 +30,10 @@ BillWidget::~BillWidget()
     delete ui;
 }
 
-void BillWidget::update()
+void BillWidget::setDateFilter(QDate from, QDate to)
 {
-    m_billModel->clear();
-    m_billModel->addAll(m_billService->getAllBills());
-
-    QPair<QDate,QDate> dateRange = m_billService->billDateRange();
-    ui->dateFrom->setDate(dateRange.first);
-    ui->dateTo->setDate(QDate::currentDate());
+    ui->dateFrom->setDate(from);
+    ui->dateTo->setDate(to);
 }
 
 void BillWidget::selectionChanged(QModelIndex newIndex, QModelIndex prevIndex)
@@ -67,21 +63,11 @@ void BillWidget::setBillModel(BillTableModel *model)
 {
     m_billModel = model;
     m_sortFilterModel->setSourceModel(m_billModel);
-
-    connect(m_billModel, &BillTableModel::billPayedStatusChanged, [=](Bill::Ptr bill) {
-        m_billService->updateBill(bill);
-    });
 }
 
 void BillWidget::on_btnEdit_clicked()
 {
     emit edit(selectedBill());
-}
-
-void BillWidget::setBillService(const BillService::Ptr &billService)
-{
-    m_billService = billService;
-    update();
 }
 
 void BillWidget::on_btnPrint_clicked()
