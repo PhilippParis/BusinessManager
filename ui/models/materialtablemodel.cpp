@@ -41,7 +41,7 @@ QVariant MaterialTableModel::data(const QModelIndex &index, int role) const
         case Manufactor:
             return material->manufactor();
         case Price:
-            return QString::number((material->costPerUnit() + material->tax()).value()) + QString::fromUtf8("€");
+            return QString::number(material->costPerUnit().value()) + QString::fromUtf8("€");
         case Quantity:
             return QString::number(m_quantities.value(material, 0.0)) + "  " + material->unit();
         }

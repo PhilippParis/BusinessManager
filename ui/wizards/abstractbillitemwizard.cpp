@@ -93,14 +93,14 @@ void AbstractBillItemWizard::on_btnDeleteMaterial_clicked()
 double AbstractBillItemWizard::updateMaterialCosts()
 {
     QMap<Material::Ptr, double> items = m_materialModel->itemsWithQuantity();
-    Decimal materialCosts = Decimal::fromValue(0.0);
+    m_materialCost = Decimal::fromValue(0.0);
+    m_materialNetCost = Decimal::fromValue(0.0);
 
     QMap<Material::Ptr, double>::iterator it;
     for(it = items.begin(); it != items.end(); ++it) {
-        materialCosts += it.key()->costPerUnit() * it.value();
+        m_materialNetCost += it.key()->netCostPerUnit() * it.value();
+        m_materialCost += it.key()->costPerUnit() * it.value();
     }
-
-    m_materialCost = materialCosts;
 }
 
 void AbstractBillItemWizard::on_tblTemplates_activated(const QModelIndex &index)

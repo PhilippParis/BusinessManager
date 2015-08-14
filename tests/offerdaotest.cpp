@@ -25,7 +25,7 @@ void OfferDAOTest::initTestCase()
     // create dummy valid offer item
     m_validOfferItem = std::make_shared<BillItem>();
     m_validOfferItem->setDescription("item");
-    m_validOfferItem->setMaterialCost(Decimal::fromValue(10.0));
+    m_validOfferItem->setMaterialNetCost(Decimal::fromValue(10.0));
     m_validOfferItem->setPrice(Decimal::fromValue(200.0));
     m_validOfferItem->setQuantity(4.0);
     m_validOfferItem->setUnit("Stk.");

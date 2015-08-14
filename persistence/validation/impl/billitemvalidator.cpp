@@ -45,7 +45,7 @@ void BillItemValidator::validateMandatoryFields(BillItem::Ptr item)
     if (item->wagePerHour() < Decimal::fromValue(0.0)) {
         throw new ValidationException(tr("wage must not be negative"));
     }
-    if (item->materialCost() < Decimal::fromValue(0.0)) {
+    if (item->materialNetCost() < Decimal::fromValue(0.0)) {
         throw new ValidationException(tr("material cost must not be negative"));
     }
     if (item->price() < Decimal::fromValue(0.0)) {

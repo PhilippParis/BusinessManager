@@ -14,6 +14,8 @@ void TemplateDAOTest::initTestCase()
     m_validMaterial = std::make_shared<Material>();
     m_validMaterial->setName("material");
     m_validMaterial->setUnit("unit");
+    m_validMaterial->setCostPerUnit(Decimal::fromValue(5.0));
+    m_validMaterial->setTaxRate(0.2);
 
     m_materialDAO->create(m_validMaterial);
     QVERIFY(m_validMaterial->id() >= 0);
@@ -157,6 +159,8 @@ void TemplateDAOTest::updateTest()
     Material::Ptr material1 = std::make_shared<Material>();
     material1->setName("material1");
     material1->setUnit("unit1");
+    material1->setCostPerUnit(Decimal::fromValue(5.0));
+    material1->setTaxRate(0.2);
 
     m_materialDAO->create(material1);
     QVERIFY(material1->id() >= 0);
@@ -164,6 +168,8 @@ void TemplateDAOTest::updateTest()
     Material::Ptr material2 = std::make_shared<Material>();
     material2->setName("material2");
     material2->setUnit("unit2");
+    material2->setCostPerUnit(Decimal::fromValue(5.0));
+    material2->setTaxRate(0.2);
 
     m_materialDAO->create(material2);
     QVERIFY(material2->id() >= 0);

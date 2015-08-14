@@ -18,11 +18,12 @@ void MaterialDAOTest::insertTest_data()
     QTest::addColumn<QString>("desc");
     QTest::addColumn<bool>("result");
 
-    QTest::newRow("validData_shouldPass") << "Z1" << 1.0 << 2.0 << "name" << "type" << "unit" << "desc" << true;
-    QTest::newRow("negativeCost_shouldFail") << "1" << -1.0 << 2.0 << "name" << "type" << "unit" << "desc" << false;
-    QTest::newRow("negativetax_shouldFail") << "1" << 1.0 << -2.0 << "name" << "type" << "unit" << "desc" << false;
-    QTest::newRow("emptyName_shouldFail") << "1" << 1.0 << 2.0 << "" << "type" << "unit" << "desc" << false;
-    QTest::newRow("emptyUnit_shouldFail") << "1" << 1.0 << 2.0 << "name" << "type" << "" << "desc" << false;
+    QTest::newRow("validData_shouldPass") << "Z1" << 1.0 << 0.2 << "name" << "type" << "unit" << "desc" << true;
+    QTest::newRow("negativeCost_shouldFail") << "1" << -1.0 << 0.2 << "name" << "type" << "unit" << "desc" << false;
+    QTest::newRow("negativetax_shouldFail") << "1" << 1.0 << -0.2 << "name" << "type" << "unit" << "desc" << false;
+    QTest::newRow("taxInvalid_shouldFail") << "1" << 1.0 << 1.1 << "name" << "type" << "unit" << "desc" << false;
+    QTest::newRow("emptyName_shouldFail") << "1" << 1.0 << 0.2 << "" << "type" << "unit" << "desc" << false;
+    QTest::newRow("emptyUnit_shouldFail") << "1" << 1.0 << 0.2 << "name" << "type" << "" << "desc" << false;
 }
 
 void MaterialDAOTest::insertTest()
@@ -39,7 +40,7 @@ void MaterialDAOTest::insertTest()
     Material::Ptr material = std::make_shared<Material>();
     material->setName(name);
     material->setCostPerUnit(Decimal::fromValue(cost));
-    material->setTax(Decimal::fromValue(tax));
+    material->setTaxRate(tax);
     material->setName(name);
     material->setType(type);
     material->setUnit(unit);
@@ -71,11 +72,12 @@ void MaterialDAOTest::updateTest_data()
     QTest::addColumn<QString>("desc");
     QTest::addColumn<bool>("result");
 
-    QTest::newRow("validData_shouldPass") << "Z1" << 1.0 << 2.0 << "name" << "type" << "unit" << "desc" << true;
-    QTest::newRow("negativeCost_shouldFail") << "1" << -1.0 << 2.0 << "name" << "type" << "unit" << "desc" << false;
-    QTest::newRow("negativetax_shouldFail") << "1" << 1.0 << -2.0 << "name" << "type" << "unit" << "desc" << false;
-    QTest::newRow("emptyName_shouldFail") << "1" << 1.0 << 2.0 << "" << "type" << "unit" << "desc" << false;
-    QTest::newRow("emptyUnit_shouldFail") << "1" << 1.0 << 2.0 << "name" << "type" << "" << "desc" << false;
+    QTest::newRow("validData_shouldPass") << "Z1" << 1.0 << 0.2 << "name" << "type" << "unit" << "desc" << true;
+    QTest::newRow("negativeCost_shouldFail") << "1" << -1.0 << 0.2 << "name" << "type" << "unit" << "desc" << false;
+    QTest::newRow("negativetax_shouldFail") << "1" << 1.0 << -0.2 << "name" << "type" << "unit" << "desc" << false;
+    QTest::newRow("taxInvalid_shouldFail") << "1" << 1.0 << 1.1 << "name" << "type" << "unit" << "desc" << false;
+    QTest::newRow("emptyName_shouldFail") << "1" << 1.0 << 0.2 << "" << "type" << "unit" << "desc" << false;
+    QTest::newRow("emptyUnit_shouldFail") << "1" << 1.0 << 0.2 << "name" << "type" << "" << "desc" << false;
 }
 
 void MaterialDAOTest::updateTest()
@@ -92,7 +94,7 @@ void MaterialDAOTest::updateTest()
     Material::Ptr material = std::make_shared<Material>();
     material->setName("name");
     material->setCostPerUnit(Decimal::fromValue(1.0));
-    material->setTax(Decimal::fromValue(2.0));
+    material->setTaxRate(0.2);
     material->setName("name");
     material->setType("type");
     material->setUnit("unit");
@@ -106,7 +108,7 @@ void MaterialDAOTest::updateTest()
 
     material->setName(name);
     material->setCostPerUnit(Decimal::fromValue(cost));
-    material->setTax(Decimal::fromValue(tax));
+    material->setTaxRate(tax);
     material->setName(name);
     material->setType(type);
     material->setUnit(unit);
@@ -130,7 +132,7 @@ void MaterialDAOTest::updateWithInvalidIDTest()
     Material::Ptr material = std::make_shared<Material>();
     material->setName("name");
     material->setCostPerUnit(Decimal::fromValue(1.0));
-    material->setTax(Decimal::fromValue(2.0));
+    material->setTaxRate(0.2);
     material->setName("name");
     material->setType("type");
     material->setUnit("unit");
@@ -161,7 +163,7 @@ void MaterialDAOTest::removeTestWithValidIDShouldPass()
     Material::Ptr material = std::make_shared<Material>();
     material->setName("name");
     material->setCostPerUnit(Decimal::fromValue(1.0));
-    material->setTax(Decimal::fromValue(2.0));
+    material->setTaxRate(0.2);
     material->setName("name");
     material->setType("type");
     material->setUnit("unit");
@@ -210,7 +212,7 @@ void MaterialDAOTest::getAllTest()
     Material::Ptr material = std::make_shared<Material>();
     material->setName("name");
     material->setCostPerUnit(Decimal::fromValue(1.0));
-    material->setTax(Decimal::fromValue(2.0));
+    material->setTaxRate(0.2);
     material->setName("name");
     material->setType("type");
     material->setUnit("unit");

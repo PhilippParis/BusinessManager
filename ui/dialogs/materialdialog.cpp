@@ -39,8 +39,8 @@ void MaterialDialog::prepareForUpdate(Material::Ptr material)
     ui->leUnit->setText(material->unit());
     ui->leType->setText(material->type());
 
-    ui->sbCost->setValue((material->costPerUnit() + material->tax()).value());
-    ui->sbTax->setValue(material->tax().value() / (material->costPerUnit() + material->tax()).value() * 100.0);
+    ui->sbCost->setValue(material->costPerUnit().value());
+    ui->sbTax->setValue(material->taxRate() * 100.0);
 }
 
 Material::Ptr MaterialDialog::toDomainObject()
@@ -54,10 +54,9 @@ Material::Ptr MaterialDialog::toDomainObject()
     material->setUnit(ui->leUnit->text());
     material->setType(ui->leType->text());
 
-    Decimal taxValue = Decimal::fromValue((ui->sbTax->value() / 100.0) * ui->sbCost->value());
-
-    material->setCostPerUnit(Decimal::fromValue(ui->sbCost->value()) - taxValue);
-    material->setTax(taxValue);
+    double taxrate = (double) ui->sbTax->value() / 100.0;
+    material->setCostPerUnit(Decimal::fromValue(ui->sbCost->value()));
+    material->setTaxRate(taxrate);
 
     return material;
 }

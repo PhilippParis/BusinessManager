@@ -93,6 +93,7 @@ void DatabaseSingleton::createTables(QSqlDatabase db)
                     "DESC VARCHAR(200) NOT NULL, "
                     "WORK_HOURS REAL NOT NULL, "
                     "WAGE INTEGER NOT NULL, "
+                    "MATERIAL_NETCOST INTEGER NOT NULL, "
                     "MATERIAL_COST INTEGER NOT NULL, "
                     "MATERIAL_OVERHEAD REAL NOT NULL, "
                     "FACTORY_OVERHEAD REAL NOT NULL, "
@@ -124,7 +125,7 @@ void DatabaseSingleton::createTables(QSqlDatabase db)
                     "TYPE VARCHAR(20) NOT NULL, "
                     "UNIT VARCHAR(20) NOT NULL, "
                     "NR VARCHAR(20) NOT NULL, "
-                    "TAX INTEGER NOT NULL, "
+                    "TAXRATE REAL NOT NULL, "
                     "DELETED INTEGER NOT NULL DEFAULT 0);");
 
    if(!res) {

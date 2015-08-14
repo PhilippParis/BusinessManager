@@ -39,6 +39,16 @@ void BillItem::setMaterialCost(Decimal materialCost)
     m_materialCost = materialCost;
 }
 
+Decimal BillItem::materialNetCost() const
+{
+    return m_materialNetCost;
+}
+
+void BillItem::setMaterialNetCost(Decimal materialCost)
+{
+    m_materialNetCost = materialCost;
+}
+
 Decimal BillItem::wagePerHour() const
 {
     return m_wagePerHour;
@@ -98,7 +108,7 @@ QString BillItem::toString() const
 {
     return "BillItem{id=" + QString::number(m_id) +
            ", desc=" + m_description +
-           ", cost=" + QString::number(m_materialCost.value()) +
+           ", cost=" + QString::number(m_materialNetCost.value()) +
            ", price=" + QString::number(m_price.value()) +
            ", unit=" + m_unit +
            ", quantity=" + QString::number(m_quantity) +
@@ -118,7 +128,7 @@ bool BillItem::equals(const BillItem::Ptr item) const
     if (m_description.compare(item->m_description) != 0) {
         return false;
     }
-    if (m_materialCost != item->m_materialCost) {
+    if (m_materialNetCost != item->m_materialNetCost) {
         return false;
     }
     if (m_price != item->m_price) {

@@ -39,7 +39,7 @@ void TemplateWizard::on_TemplateWizard_currentIdChanged(int id)
         BillItem::Ptr tmp = std::make_shared<BillItem>();
         QSettings settings;
 
-        tmp->setMaterialCost(m_materialCost);
+        tmp->setMaterialNetCost(m_materialCost);
         tmp->setWorkingHours(ui->sbWorkingHours->value());
         tmp->setWagePerHour(Decimal::fromValue(settings.value("financial/wage").toDouble()));
         tmp->setMaterialOverhead(settings.value("financial/materialOverhead").toDouble());

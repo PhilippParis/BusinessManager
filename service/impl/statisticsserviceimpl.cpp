@@ -23,10 +23,9 @@ Statistics::Ptr StatisticsServiceImpl::getStatistics(QDate from, QDate to)
     Decimal overallProfit = Decimal::fromValue(0.0);
 
     for (Bill::Ptr bill : bills) {
-        Decimal preTaxValue = preTax(bill);
-        overallMaterialExpenses += materialExpenses(bill) + preTaxValue;
+        overallMaterialExpenses += materialExpenses(bill);
         overallFactoryExpenses += factoryExpenses(bill);
-        overallPreTax += preTaxValue;
+        overallPreTax += preTax(bill);
         overallSalesTax += salesTax(bill);
         overallRevenue += bill->totalPrice();
 
@@ -55,7 +54,7 @@ Decimal StatisticsServiceImpl::factoryExpenses(Bill::Ptr bill)
 {
     Decimal factory = Decimal::fromValue(0.0);
     for (BillItem::Ptr item : bill->items()) {
-        factory += item->factoryExpenses();
+        factory += item->factoryExpenses() * item->quantity();
     }
 
     return factory;
@@ -65,7 +64,7 @@ Decimal StatisticsServiceImpl::materialExpenses(Bill::Ptr bill)
 {
     Decimal material = Decimal::fromValue(0.0);
     for (BillItem::Ptr item : bill->items()) {
-        material += item->materialExpenses();
+        material += item->materialExpenses() * item->quantity();
     }
 
     return material;
@@ -85,12 +84,7 @@ Decimal StatisticsServiceImpl::preTax(Bill::Ptr bill)
 {
     Decimal tax = Decimal::fromValue(0.0);
     for (BillItem::Ptr item : bill->items()) {
-        QMap<Material::Ptr, double> materials = item->material();
-        QMap<Material::Ptr, double>::iterator it;
-
-        for (it = materials.begin(); it != materials.end(); it++) {
-            tax += it.key()->tax() * it.value();
-        }
+        tax = (item->materialCost() - item->materialNetCost()) * item->quantity();
     }
 
     return tax;

@@ -16,8 +16,10 @@ public:
     int id() const;
     void setId(int id);
 
-    Decimal costPerUnit() const;
+    Decimal netCostPerUnit() const;
+
     void setCostPerUnit(Decimal costPerUnit);
+    Decimal costPerUnit() const;
 
     QString name() const;
     void setName(const QString &name);
@@ -37,13 +39,13 @@ public:
     QString articleNumber() const;
     void setArticleNumber(const QString &articleNumber);
 
-    Decimal tax() const;
-    void setTax(Decimal tax);
+    double taxRate() const;
+    void setTaxRate(double taxRate);
 
 private:
     int m_id = -1;
-    Decimal m_costPerUnit;       // net cost (without tax)
-    Decimal m_tax;               // total costs = m_costPerUnit + m_tax
+    Decimal m_costPerUnit = Decimal::fromValue(-1.0);
+    double m_taxrate = -1.0;
 
     QString m_name;
     QString m_type = "";

@@ -67,7 +67,7 @@ void DBMaterialDAO::create(Material::Ptr item)
     insertQuery.addBindValue(item->type());
     insertQuery.addBindValue(item->unit());
     insertQuery.addBindValue(item->articleNumber());
-    insertQuery.addBindValue(item->tax().cents());
+    insertQuery.addBindValue(item->taxRate());
 
     if (!insertQuery.exec()) {
         qCCritical(lcPersistence) << "DBMaterialDAO::create failed: " + insertQuery.lastError().text();
@@ -95,7 +95,7 @@ void DBMaterialDAO::update(Material::Ptr item)
                         "TYPE = ?, "
                         "UNIT = ?, "
                         "NR = ?, "
-                        "TAX = ? "
+                        "TAXRATE = ? "
                         "WHERE ID = ?;");
 
     updateQuery.addBindValue(item->name());
@@ -104,7 +104,7 @@ void DBMaterialDAO::update(Material::Ptr item)
     updateQuery.addBindValue(item->type());
     updateQuery.addBindValue(item->unit());
     updateQuery.addBindValue(item->articleNumber());
-    updateQuery.addBindValue(item->tax().cents());
+    updateQuery.addBindValue(item->taxRate());
     updateQuery.addBindValue(item->id());
 
     if (!updateQuery.exec()) {
@@ -154,7 +154,7 @@ Material::Ptr DBMaterialDAO::parseMaterial(QSqlRecord record)
     material->setType(record.value("TYPE").toString());
     material->setUnit(record.value("UNIT").toString());
     material->setArticleNumber(record.value("NR").toString());
-    material->setTax(Decimal::fromCents(record.value("TAX").toInt()));
+    material->setTaxRate(record.value("TAXRATE").toDouble());
 
     return material;
 }

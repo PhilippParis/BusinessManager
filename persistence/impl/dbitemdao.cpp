@@ -18,11 +18,12 @@ void DBItemDAO::create(BillItem::Ptr item)
     }
 
     QSqlQuery insertQuery(m_database);
-    insertQuery.prepare("INSERT INTO ITEM VALUES(NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0);");
+    insertQuery.prepare("INSERT INTO ITEM VALUES(NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0);");
 
     insertQuery.addBindValue(item->description());
     insertQuery.addBindValue(item->workingHours());
     insertQuery.addBindValue(item->wagePerHour().cents());
+    insertQuery.addBindValue(item->materialNetCost().cents());
     insertQuery.addBindValue(item->materialCost().cents());
     insertQuery.addBindValue(item->materialOverhead());
     insertQuery.addBindValue(item->factoryOverhead());
@@ -56,7 +57,7 @@ void DBItemDAO::update(BillItem::Ptr item)
     QSqlQuery updateQuery(m_database);
     updateQuery.prepare("UPDATE ITEM SET DESC = ?, "
                            "WORK_HOURS = ?, WAGE = ?, "
-                           "MATERIAL_COST = ?, MATERIAL_OVERHEAD = ?, "
+                           "MATERIAL_NETCOST = ?, MATERIAL_COST = ?, MATERIAL_OVERHEAD = ?, "
                            "FACTORY_OVERHEAD = ?, PROFIT = ?, "
                            "CASHBACK = ?, TAX = ?, "
                            "PRICE = ?, UNIT = ?, "
@@ -66,6 +67,7 @@ void DBItemDAO::update(BillItem::Ptr item)
     updateQuery.addBindValue(item->description());
     updateQuery.addBindValue(item->workingHours());
     updateQuery.addBindValue(item->wagePerHour().cents());
+    updateQuery.addBindValue(item->materialNetCost().cents());
     updateQuery.addBindValue(item->materialCost().cents());
     updateQuery.addBindValue(item->materialOverhead());
     updateQuery.addBindValue(item->factoryOverhead());
@@ -162,6 +164,7 @@ BillItem::Ptr DBItemDAO::parseItem(QSqlRecord record)
 
     item->setId(record.value("ID").toInt());
     item->setDescription(record.value("DESC").toString());
+    item->setMaterialNetCost(Decimal::fromCents(record.value("MATERIAL_NETCOST").toInt()));
     item->setMaterialCost(Decimal::fromCents(record.value("MATERIAL_COST").toInt()));
     item->setMaterialOverhead(record.value("MATERIAL_OVERHEAD").toDouble());
     item->setFactoryOverhead(record.value("FACTORY_OVERHEAD").toDouble());

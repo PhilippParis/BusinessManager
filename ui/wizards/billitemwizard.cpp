@@ -13,9 +13,9 @@ void BillItemWizard::prepareForUpdate(BillItem::Ptr item)
 {
     m_openMode = Update;
 
-    Decimal cost = item->materialCost() + item->wagePerHour() * item->workingHours();
+    Decimal cost = item->materialNetCost() + item->wagePerHour() * item->workingHours();
     m_id = item->id();
-    m_materialCost = item->materialCost();
+    m_materialCost = item->materialNetCost();
 
     ui->sbPricePerUnit->setValue(item->price().value());
     ui->leSearchTemplate->clear();
@@ -38,6 +38,7 @@ BillItem::Ptr BillItemWizard::getBillItemDomainObject()
 
     item->setId(m_id);
     item->setDescription(ui->textEditArticleDesc->toPlainText());
+    item->setMaterialNetCost(m_materialNetCost);
     item->setMaterialCost(m_materialCost);
     item->setPrice(Decimal::fromValue(ui->sbPricePerUnit->value()));
     item->setQuantity(ui->sbQuantity->value());
