@@ -291,6 +291,9 @@ int PrintServiceImpl::printTotalPrice(QPainter *painter, QMap<double, Decimal> t
 
     QMap<double, Decimal>::iterator i;
     for (i = taxes.begin(); i != taxes.end(); i++) {
+        if (i.key() == 0.0) {
+            continue;
+        }
         painter->drawText(LEFT_MARGIN, y, tr("Sales Tax (%1 %):").arg(QString::number(i.key() * 100)));
         QString tax = QString::number(i.value().value(), 'f', 2) + QString::fromUtf8("€");
         painter->drawText(18 * 225 - fm.width(tax), y, tax);

@@ -160,8 +160,12 @@ QMap<double, Decimal> Bill::inTotalPriceIncludedTaxes() const
     for (i = sumPerTaxRate.begin(); i != sumPerTaxRate.end(); ++i) {
         double taxRate = i.key();
         Decimal priceSum = i.value();
+        Decimal taxValue = Decimal::fromValue(0.0);
 
-        Decimal taxValue = (priceSum - (discount * (priceSum / total))) * (taxRate / (1.0 + taxRate));
+        if(priceSum != Decimal::fromValue(0.0)) {
+            taxValue = (priceSum - (discount * (priceSum / total))) * (taxRate / (1.0 + taxRate));
+        }
+
         taxes.insert(taxRate, taxValue);
     }
 
