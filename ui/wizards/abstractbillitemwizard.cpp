@@ -38,7 +38,6 @@ void AbstractBillItemWizard::prepareForCreate()
     m_openMode = Create;
 
     ui->sbPricePerUnit->setValue(0.0);
-    ui->lblCostPerArticle->setText("0.00€");
     ui->leSearchTemplate->clear();
     ui->leTemplateName->clear();
     ui->leTemplateOrg->clear();
@@ -110,6 +109,21 @@ void AbstractBillItemWizard::on_tblTemplates_activated(const QModelIndex &index)
     }
 }
 
+void AbstractBillItemWizard::on_sbPricePerUnit_valueChanged(double value)
+{
+    BillItem::Ptr item = toBillItem();
+
+    QPalette palette;
+    palette.setColor(QPalette::Text, value < item->costs().value() ? Qt::red : Qt::black);
+    ui->sbPricePerUnit->setPalette(palette);
+}
+
+void AbstractBillItemWizard::on_btnAuto_clicked()
+{
+    BillItem::Ptr item = toBillItem();
+    ui->sbPricePerUnit->setValue(item->calculatedPrice().value());
+}
+
 Template::Ptr AbstractBillItemWizard::selectedTemplate()
 {
     QModelIndex index = ui->tblTemplates->currentIndex();
@@ -136,6 +150,7 @@ Template::Ptr AbstractBillItemWizard::toTemplate()
 {
     Template::Ptr templ = std::make_shared<Template>();
 
+    templ->setId(m_id);
     templ->setName(ui->leTemplateName->text());
     templ->setOrganisation(ui->leTemplateOrg->text());
     templ->setItemDesc(ui->textEditArticleDesc->toPlainText());
@@ -148,4 +163,30 @@ Template::Ptr AbstractBillItemWizard::toTemplate()
     templ->setTaxRate(ui->sbTaxRate->value() / 100.0);
 
     return templ;
+}
+
+BillItem::Ptr AbstractBillItemWizard::toBillItem()
+{
+    BillItem::Ptr item = std::make_shared<BillItem>();
+
+    QSettings settings;
+
+    item->setId(m_id);
+    item->setDescription(ui->textEditArticleDesc->toPlainText());
+    item->setMaterialNetCost(m_materialNetCost);
+    item->setMaterialCost(m_materialCost);
+    item->setPrice(Decimal::fromValue(ui->sbPricePerUnit->value()));
+    item->setQuantity(ui->sbQuantity->value());
+    item->setUnit(ui->leUnit->text());
+    item->setWorkingHours(ui->sbWorkingHours->value());
+    item->setMaterial(m_materialModel->itemsWithQuantity());
+
+    item->setWagePerHour(Decimal::fromValue(settings.value("financial/wage").toDouble()));
+    item->setMaterialOverhead(settings.value("financial/materialOverhead").toDouble());
+    item->setFactoryOverhead(settings.value("financial/factoryOverhead").toDouble());
+    item->setProfit(settings.value("financial/profit").toDouble());
+    item->setCashback(settings.value("financial/cashback").toDouble());
+    item->setTaxRate(ui->sbTaxRate->value() / 100.0);
+
+    return item;
 }

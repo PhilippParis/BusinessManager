@@ -6,6 +6,9 @@
 #include <QMessageBox>
 #include <QDebug>
 #include <QSettings>
+#include <QFont>
+
+#include "domain/billitem.h"
 
 #include "service/materialservice.h"
 #include "service/templateservice.h"
@@ -33,21 +36,23 @@ signals:
     void templateAdded(Template::Ptr);
 
 private slots:
-    void on_textEditArticleDesc_textChanged();
     void accept();
+    void on_textEditArticleDesc_textChanged();
     void on_btnAddMaterial_clicked();
     void on_btnDeleteMaterial_clicked();
     void on_tblTemplates_activated(const QModelIndex &index);
+    void on_sbPricePerUnit_valueChanged(double value);
+    void on_btnAuto_clicked();
     double updateMaterialCosts();
 
 private:
     virtual bool onUpdate() = 0;
     virtual bool onCreate() = 0;
-
     Template::Ptr selectedTemplate();
 
 protected:
     Template::Ptr toTemplate();
+    BillItem::Ptr toBillItem();
     void displayTemplateData(Template::Ptr templ);
 
 protected:

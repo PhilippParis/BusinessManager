@@ -26,37 +26,9 @@ void TemplateWizard::prepareForUpdate(Template::Ptr item)
     displayTemplateData(item);
 }
 
-Template::Ptr TemplateWizard::toDomainObject()
-{
-    Template::Ptr templ = toTemplate();
-    templ->setId(m_id);
-    return templ;
-}
-
-void TemplateWizard::on_TemplateWizard_currentIdChanged(int id)
-{
-    if (id == ItemDetailsPage) {
-        BillItem::Ptr tmp = std::make_shared<BillItem>();
-        QSettings settings;
-
-        tmp->setMaterialNetCost(m_materialCost);
-        tmp->setWorkingHours(ui->sbWorkingHours->value());
-        tmp->setWagePerHour(Decimal::fromValue(settings.value("financial/wage").toDouble()));
-        tmp->setMaterialOverhead(settings.value("financial/materialOverhead").toDouble());
-        tmp->setFactoryOverhead(settings.value("financial/factoryOverhead").toDouble());
-        tmp->setProfit(settings.value("financial/profit").toDouble());
-        tmp->setCashback(settings.value("financial/cashback").toDouble());
-        tmp->setTaxRate(ui->sbTaxRate->value() / 100.0);
-
-        ui->lblCostPerArticle->setText(QString::number(tmp->costs().value(), 'f', 2) + QString::fromUtf8("€"));
-        ui->sbPricePerUnit->setValue(tmp->price() < Decimal::fromValue(0.0) ? 0.0 : tmp->price().value());
-        ui->lblCalculatedPrice->setText(QString::number(tmp->calculatedPrice().value(), 'f', 2) + QString::fromUtf8("€"));
-    }
-}
-
 bool TemplateWizard::onUpdate()
 {
-    Template::Ptr templ = toDomainObject();
+    Template::Ptr templ = toTemplate();
     try {
         m_templateService->update(templ);
         emit templateUpdated(templ);
@@ -73,7 +45,7 @@ bool TemplateWizard::onUpdate()
 
 bool TemplateWizard::onCreate()
 {
-    Template::Ptr templ = toDomainObject();
+    Template::Ptr templ = toTemplate();
     try {
         m_templateService->add(templ);
         emit templateAdded(templ);

@@ -20,12 +20,6 @@ public:
 signals:
     void templateUpdated(Template::Ptr);
 
-private slots:
-    void on_TemplateWizard_currentIdChanged(int id);
-
-private:
-    Template::Ptr toDomainObject();
-
 private:
     bool onUpdate() override;
     bool onCreate() override;
