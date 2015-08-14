@@ -5,12 +5,12 @@ Statistics::Statistics()
 
 }
 
-Decimal Statistics::totalRevenue() const
+Decimal Statistics::revenue() const
 {
     return m_totalRevenue;
 }
 
-void Statistics::setTotalRevenue(const Decimal &totalRevenue)
+void Statistics::setRevenue(const Decimal &totalRevenue)
 {
     m_totalRevenue = totalRevenue;
 }
@@ -24,21 +24,21 @@ void Statistics::setMaterialExpenses(const Decimal &materialExpenses)
     m_materialExpenses = materialExpenses;
 }
 
-Decimal Statistics::salesTax() const
+Decimal Statistics::salesTaxExpenses() const
 {
     return m_salesTax;
 }
 
-void Statistics::setSalesTax(const Decimal &salesTax)
+void Statistics::setSalesTaxExpenses(const Decimal &salesTax)
 {
     m_salesTax = salesTax;
 }
-Decimal Statistics::preTax() const
+Decimal Statistics::preTaxRevenue() const
 {
     return m_preTax;
 }
 
-void Statistics::setPreTax(const Decimal &preTax)
+void Statistics::setPreTaxRevenue(const Decimal &preTax)
 {
     m_preTax = preTax;
 }

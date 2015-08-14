@@ -51,11 +51,11 @@ void StatisticsWidget::update()
     m_expensesCurve->setSamples(new QwtPointArrayData(stats->dataPointsDates(), stats->dataPointsExpenses()));
     m_revenueCurve->setSamples(new QwtPointArrayData(stats->dataPointsDates(), stats->dataPointsRevenue()));
 
-    ui->twCalculation->item(0, 0)->setText(QString::number(stats->totalRevenue().value(), 'f', 2) + "€");
+    ui->twCalculation->item(0, 0)->setText(QString::number(stats->revenue().value(), 'f', 2) + "€");
     ui->twCalculation->item(1, 0)->setText("-" + QString::number(stats->materialExpenses().value(), 'f', 2) + "€");
     ui->twCalculation->item(2, 0)->setText("-" + QString::number(stats->factoryExpenses().value(), 'f', 2) + "€");
-    ui->twCalculation->item(3, 0)->setText("-" + QString::number(stats->salesTax().value(), 'f', 2) + "€");
-    ui->twCalculation->item(4, 0)->setText("+" + QString::number(stats->preTax().value(), 'f', 2) + "€");
+    ui->twCalculation->item(3, 0)->setText("-" + QString::number(stats->salesTaxExpenses().value(), 'f', 2) + "€");
+    ui->twCalculation->item(4, 0)->setText("+" + QString::number(stats->preTaxRevenue().value(), 'f', 2) + "€");
     ui->twCalculation->item(5, 0)->setText(QString::number(stats->profit().value(), 'f', 2) + "€");
 
     m_plotWidget->replot();

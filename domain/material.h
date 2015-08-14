@@ -13,33 +13,107 @@ public:
     typedef std::shared_ptr<Material> Ptr;
     Material();
 
+    /**
+     * @return returns the identifier
+     */
     int id() const;
+
+    /**
+     * @brief sets the identifier
+     * @param id identifier
+     */
     void setId(int id);
 
+    /**
+     * @return returns the net costs per unit (cost without tax)
+     */
     Decimal netCostPerUnit() const;
 
+    /**
+     * @brief sets the costs per unit (with tax)
+     * @param costPerUnit cost per unit
+     */
     void setCostPerUnit(Decimal costPerUnit);
+
+    /**
+     * @return returns the costs per unit (with tax)
+     */
     Decimal costPerUnit() const;
 
+    /**
+     * @return returns the name
+     */
     QString name() const;
+
+    /**
+     * @param name sets the name
+     */
     void setName(const QString &name);
 
+    /**
+     * @return returns the type description (can be empty)
+     */
     QString type() const;
+
+    /**
+     * @brief sets the type description
+     * @param type type description
+     */
     void setType(const QString &type);
 
+    /**
+     * @return returns the unit (can be empty)
+     */
     QString unit() const;
+
+    /**
+     * @brief sets the unit
+     * @param unit unit
+     */
     void setUnit(const QString &unit);
 
+    /**
+     * @return returns the manufactor (can be empty)
+     */
     QString manufactor() const;
+
+    /**
+     * @brief sets the manufactor
+     * @param manufactor manufactor
+     */
     void setManufactor(const QString &manufactor);
 
+    /**
+     * @return returns a string representation of this object
+     */
     QString toString() const;
+
+    /**
+     * @param material
+     * @return returns true if this and the parameter are equal
+     */
     bool equals(const Material::Ptr material) const;
 
+    /**
+     * @return returns the article number
+     */
     QString articleNumber() const;
+
+    /**
+     * @brief sets the article number
+     * @param articleNumber article number
+     */
     void setArticleNumber(const QString &articleNumber);
 
+    /**
+     * @return returns the taxRate in percent (between 0 and 1)
+     */
     double taxRate() const;
+
+    /**
+     * @brief sets the taxrate
+     * @param taxRate tax rate (between 0 and 1)
+     */
     void setTaxRate(double taxRate);
 
 private:

@@ -24,6 +24,7 @@ void Envelope::setWithWindow(bool withWindow)
 {
     m_withWindow = withWindow;
 }
+
 int Envelope::orientation() const
 {
     return m_orientation;

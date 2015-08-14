@@ -36,11 +36,11 @@ Statistics::Ptr StatisticsServiceImpl::getStatistics(QDate from, QDate to)
 
     overallProfit = overallRevenue - overallMaterialExpenses - overallFactoryExpenses - overallSalesTax + overallPreTax;
 
-    stats->setPreTax(overallPreTax);
-    stats->setSalesTax(overallSalesTax);
+    stats->setPreTaxRevenue(overallPreTax);
+    stats->setSalesTaxExpenses(overallSalesTax);
     stats->setMaterialExpenses(overallMaterialExpenses);
     stats->setFactoryExpenses(overallFactoryExpenses);
-    stats->setTotalRevenue(overallRevenue);
+    stats->setRevenue(overallRevenue);
     stats->setProfit(overallProfit);
 
     stats->setDataPointsExpenses(expensesDataPoints);
