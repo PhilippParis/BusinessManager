@@ -11,6 +11,12 @@ class StatisticsService
 public:
     typedef std::shared_ptr<StatisticsService> Ptr;
     StatisticsService();
+
+    /**
+     * @param from intervall start
+     * @param to intervall end
+     * @return returns statistics for the specified intervall
+     */
     virtual Statistics::Ptr getStatistics(QDate from, QDate to) = 0;
 };
 
