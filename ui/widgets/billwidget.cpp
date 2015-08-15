@@ -47,6 +47,7 @@ void BillWidget::setDateFilter(QDate from, QDate to)
 
 void BillWidget::selectionChanged(QModelIndex newIndex, QModelIndex prevIndex)
 {
+    Q_UNUSED(prevIndex)
     ui->btnDelete->setEnabled(newIndex.isValid());
     ui->btnEdit->setEnabled(newIndex.isValid());
     ui->btnExport->setEnabled(newIndex.isValid());

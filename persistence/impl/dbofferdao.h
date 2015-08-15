@@ -25,8 +25,8 @@ private:
     Offer::Ptr parseOffer(QSqlRecord record);
 
 private:
-    Validator<Offer::Ptr>::Ptr m_validator;
     QSqlDatabase m_database;
+    Validator<Offer::Ptr>::Ptr m_validator;
     OfferItemDAO::Ptr m_offerItemDAO;
     CustomerDAO::Ptr m_customerDAO;
 };

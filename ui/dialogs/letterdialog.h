@@ -62,8 +62,8 @@ private:
     int m_id = -1;
     QDate m_date;
     Customer::Ptr m_customer;
-    CustomerService::Ptr m_customerService;
     LetterService::Ptr m_letterService;
+    CustomerService::Ptr m_customerService;
 };
 
 #endif // LETTERDIALOG_H

@@ -7,6 +7,7 @@ MaterialTableModel::MaterialTableModel()
 
 int MaterialTableModel::columnCount(const QModelIndex &parent) const
 {
+    Q_UNUSED(parent)
     return 6;
 }
 
@@ -16,6 +17,8 @@ bool MaterialTableModel::setData(const QModelIndex &index, const QVariant &value
         m_quantities.insert(m_data.at(index.row()), value.toDouble());
         emit materialChanged();
     }
+
+    return true;
 }
 
 QVariant MaterialTableModel::data(const QModelIndex &index, int role) const

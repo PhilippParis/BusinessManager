@@ -290,6 +290,7 @@ void MainWindow::createBill()
 
     BillDialog *dialog = new BillDialog(this, m_billService, m_customerService, m_materialService, m_templateService);
     connect(dialog, SIGNAL(print(Bill::Ptr)), this, SLOT(printBill(Bill::Ptr)));
+    connect(dialog, SIGNAL(billAdded(Bill::Ptr)), ui->statisticsWidget, SLOT(update()));
     connect(dialog, &BillDialog::billAdded, m_billTableModel, &BillTableModel::add);
     connect(dialog, &BillDialog::customerAdded, m_customerTableModel, &CustomerTableModel::add);
     connect(dialog, &BillDialog::templateAdded, m_templateTableModel, &TemplateTableModel::add);
@@ -363,6 +364,7 @@ void MainWindow::createLetter()
 void MainWindow::editBill(Bill::Ptr selected)
 {
     BillDialog *dialog = new BillDialog(this, m_billService, m_customerService, m_materialService, m_templateService);
+    connect(dialog, SIGNAL(billUpdated(Bill::Ptr)), ui->statisticsWidget, SLOT(update()));
     connect(dialog, SIGNAL(print(Bill::Ptr)), this, SLOT(printBill(Bill::Ptr)));
     connect(dialog, &BillDialog::billUpdated, m_billTableModel, &BillTableModel::update);
     connect(dialog, &BillDialog::customerAdded, m_customerTableModel, &CustomerTableModel::add);
@@ -432,6 +434,7 @@ void MainWindow::removeBill(Bill::Ptr selected)
         try {
             m_billService->removeBill(selected);
             m_billTableModel->remove(selected);
+            ui->statisticsWidget->update();
         } catch (ServiceException *e) {
             QMessageBox::information(this, tr("Error"), e->what());
             delete e;

@@ -43,7 +43,7 @@ private slots:
     void on_tblTemplates_activated(const QModelIndex &index);
     void on_sbPricePerUnit_valueChanged(double value);
     void on_btnAuto_clicked();
-    double updateMaterialCosts();
+    void updateMaterialCosts();
 
 private:
     virtual bool onUpdate() = 0;

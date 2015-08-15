@@ -89,7 +89,7 @@ void AbstractBillItemWizard::on_btnDeleteMaterial_clicked()
     m_materialModel->remove(m_materialModel->get(ui->tblMaterial->currentIndex()));
 }
 
-double AbstractBillItemWizard::updateMaterialCosts()
+void AbstractBillItemWizard::updateMaterialCosts()
 {
     QMap<Material::Ptr, double> items = m_materialModel->itemsWithQuantity();
     m_materialCost = Decimal::fromValue(0.0);

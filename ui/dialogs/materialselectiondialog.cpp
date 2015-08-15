@@ -41,6 +41,7 @@ double MaterialSelectionDialog::quantity() const
 
 void MaterialSelectionDialog::on_tblMaterials_clicked(const QModelIndex &index)
 {
+    Q_UNUSED(index)
     QString unit = selectedMaterial()->unit();
     ui->sbQuantity->setSuffix(" " + unit);
 }
