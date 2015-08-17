@@ -50,7 +50,3 @@ void AppSettingsWidget::on_btnLetterDir_clicked()
         ui->leLetterDir->setText(dir);
     }
 }
-
-void AppSettingsWidget::loadLanguages()
-{
-}
