@@ -74,7 +74,7 @@
     <message>
         <location filename="ui/wizards/abstractbillitemwizard.ui" line="180"/>
         <source>Quantity</source>
-        <translation>Anzahl</translation>
+        <translation type="unfinished">Menge</translation>
     </message>
     <message>
         <source>Calculated Price:</source>
