@@ -6,7 +6,7 @@ BillItemWizard::BillItemWizard(QWidget *parent, BillService::Ptr billService,
     AbstractBillItemWizard(parent, materialService, templateService),
     m_billService(billService)
 {
-    connect(this, SIGNAL(currentIdChanged(int)), SLOT(on_BillItemWizard_currentIdChanged(int)));
+
 }
 
 void BillItemWizard::prepareForUpdate(BillItem::Ptr item)
