@@ -4,7 +4,7 @@
 TemplateWizard::TemplateWizard(QWidget *parent, MaterialService::Ptr materialService, TemplateService::Ptr templateService) :
     AbstractBillItemWizard(parent, materialService, templateService)
 {
-    connect(this, SIGNAL(currentIdChanged(int)), SLOT(on_TemplateWizard_currentIdChanged(int)));
+
 }
 
 void TemplateWizard::prepareForCreate()

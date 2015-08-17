@@ -29,8 +29,6 @@ private slots:
     void on_tblMaterials_clicked(const QModelIndex &index);
     void on_leFilter_textChanged(const QString &arg1);
 
-    void on_tblMaterials_activated(const QModelIndex &index);
-
 private:
     Ui::MaterialSelectionDialog *ui;
     MaterialTableModel *m_materialModel;

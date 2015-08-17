@@ -32,7 +32,6 @@ void MaterialDialog::prepareForUpdate(Material::Ptr material)
 {
     m_openMode = Update;
     m_id = material->id();
-
     ui->leName->setText(material->name());
     ui->leManufactor->setText(material->manufactor());
     ui->leNr->setText(material->articleNumber());

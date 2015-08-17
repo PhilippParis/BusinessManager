@@ -2,6 +2,7 @@
 #define MATERIALDIALOG_H
 
 #include <QDialog>
+#include <QDebug>
 #include <QMessageBox>
 
 #include "domain/material.h"

@@ -15,7 +15,7 @@ MaterialSelectionDialog::MaterialSelectionDialog(QWidget *parent, MaterialServic
     ui->tblMaterials->setModel(m_sortFilterProxyModel);
 
     // hide quantity column
-    ui->tblMaterials->hideColumn(4);
+    ui->tblMaterials->hideColumn(5);
 
     m_materialModel->addAll(m_service->getAll());
     ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
@@ -41,7 +41,7 @@ double MaterialSelectionDialog::quantity() const
 
 void MaterialSelectionDialog::on_tblMaterials_clicked(const QModelIndex &index)
 {
-    Q_UNUSED(index)
+    ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(index.isValid());
     QString unit = selectedMaterial()->unit();
     ui->sbQuantity->setSuffix(" " + unit);
 }
@@ -49,9 +49,4 @@ void MaterialSelectionDialog::on_tblMaterials_clicked(const QModelIndex &index)
 void MaterialSelectionDialog::on_leFilter_textChanged(const QString &arg1)
 {
     m_sortFilterProxyModel->setFilterWildcard(arg1);
-}
-
-void MaterialSelectionDialog::on_tblMaterials_activated(const QModelIndex &index)
-{
-    ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(index.isValid());
 }

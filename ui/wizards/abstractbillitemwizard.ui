@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>683</width>
-    <height>600</height>
+    <height>622</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -34,6 +34,9 @@
        <widget class="QDoubleSpinBox" name="sbWorkingHours">
         <property name="suffix">
          <string>h</string>
+        </property>
+        <property name="maximum">
+         <double>99999.990000000005239</double>
         </property>
         <property name="singleStep">
          <double>0.500000000000000</double>
@@ -296,7 +299,7 @@
              <double>0.000000000000000</double>
             </property>
             <property name="maximum">
-             <double>9999.989999999999782</double>
+             <double>999999.989999999990687</double>
             </property>
            </widget>
           </item>
