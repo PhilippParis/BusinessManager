@@ -44,53 +44,49 @@
         <translation>Artikel Beschreibung:</translation>
     </message>
     <message>
-        <location filename="ui/wizards/abstractbillitemwizard.ui" line="186"/>
+        <location filename="ui/wizards/abstractbillitemwizard.ui" line="293"/>
         <source>€</source>
         <translation>€</translation>
     </message>
     <message>
-        <location filename="ui/wizards/abstractbillitemwizard.ui" line="199"/>
+        <location filename="ui/wizards/abstractbillitemwizard.ui" line="270"/>
         <source>Price per Unit</source>
         <translation>Stückpreis</translation>
     </message>
     <message>
-        <location filename="ui/wizards/abstractbillitemwizard.ui" line="227"/>
+        <location filename="ui/wizards/abstractbillitemwizard.ui" line="231"/>
         <source>Stk.</source>
         <translation>Stk.</translation>
     </message>
     <message>
-        <location filename="ui/wizards/abstractbillitemwizard.ui" line="234"/>
+        <location filename="ui/wizards/abstractbillitemwizard.ui" line="203"/>
         <source>Unit</source>
         <translation>Einheit</translation>
     </message>
     <message>
-        <location filename="ui/wizards/abstractbillitemwizard.ui" line="244"/>
-        <location filename="ui/wizards/abstractbillitemwizard.ui" line="291"/>
         <source>TextLabel</source>
-        <translation>TextLabel</translation>
+        <translation type="vanished">TextLabel</translation>
     </message>
     <message>
-        <location filename="ui/wizards/abstractbillitemwizard.ui" line="261"/>
         <source>Cost per Unit</source>
-        <translation>Kosten per Stück</translation>
+        <translation type="vanished">Kosten per Stück</translation>
     </message>
     <message>
-        <location filename="ui/wizards/abstractbillitemwizard.ui" line="271"/>
+        <location filename="ui/wizards/abstractbillitemwizard.ui" line="180"/>
         <source>Quantity</source>
         <translation>Anzahl</translation>
     </message>
     <message>
-        <location filename="ui/wizards/abstractbillitemwizard.ui" line="281"/>
         <source>Calculated Price:</source>
-        <translation>Preis:</translation>
+        <translation type="vanished">Preis:</translation>
     </message>
     <message>
-        <location filename="ui/wizards/abstractbillitemwizard.ui" line="301"/>
+        <location filename="ui/wizards/abstractbillitemwizard.ui" line="238"/>
         <source>Tax Rate</source>
         <translation>Steuersatz</translation>
     </message>
     <message>
-        <location filename="ui/wizards/abstractbillitemwizard.ui" line="311"/>
+        <location filename="ui/wizards/abstractbillitemwizard.ui" line="260"/>
         <source>%</source>
         <translation>%</translation>
     </message>
@@ -298,12 +294,14 @@
 <context>
     <name>BillItemWizard</name>
     <message>
-        <location filename="ui/wizards/billitemwizard.cpp" line="86"/>
+        <location filename="ui/wizards/billitemwizard.cpp" line="47"/>
+        <location filename="ui/wizards/billitemwizard.cpp" line="70"/>
         <source>Invalid Data</source>
         <translation>Fehlerhafte Daten</translation>
     </message>
     <message>
-        <location filename="ui/wizards/billitemwizard.cpp" line="89"/>
+        <location filename="ui/wizards/billitemwizard.cpp" line="50"/>
+        <location filename="ui/wizards/billitemwizard.cpp" line="73"/>
         <source>Error</source>
         <translation>Fehler</translation>
     </message>
@@ -762,6 +760,11 @@
         <translation>%</translation>
     </message>
     <message>
+        <location filename="ui/widgets/financialsettingswidget.ui" line="134"/>
+        <source>Pre-Tax eligible:</source>
+        <translation>Vorsteuer berechtigt:</translation>
+    </message>
+    <message>
         <location filename="ui/widgets/financialsettingswidget.ui" line="22"/>
         <source>Legal Domicile:</source>
         <translation>Gerichtsstand:</translation>
@@ -977,77 +980,77 @@
         <translation>Brief</translation>
     </message>
     <message>
-        <location filename="ui/mainwindow.cpp" line="427"/>
+        <location filename="ui/mainwindow.cpp" line="429"/>
         <source>Delete Bill</source>
         <translation>Rechnung Löschen</translation>
     </message>
     <message>
-        <location filename="ui/mainwindow.cpp" line="428"/>
+        <location filename="ui/mainwindow.cpp" line="430"/>
         <source>Are you sure you want to delete the selected Bill?</source>
         <translation>Sind Sie sich sicher, dass sie die ausgewählte Rechnung löschen möchten?</translation>
     </message>
     <message>
-        <location filename="ui/mainwindow.cpp" line="436"/>
-        <location filename="ui/mainwindow.cpp" line="454"/>
-        <location filename="ui/mainwindow.cpp" line="471"/>
-        <location filename="ui/mainwindow.cpp" line="489"/>
-        <location filename="ui/mainwindow.cpp" line="507"/>
-        <location filename="ui/mainwindow.cpp" line="525"/>
+        <location filename="ui/mainwindow.cpp" line="439"/>
+        <location filename="ui/mainwindow.cpp" line="457"/>
+        <location filename="ui/mainwindow.cpp" line="474"/>
+        <location filename="ui/mainwindow.cpp" line="492"/>
+        <location filename="ui/mainwindow.cpp" line="510"/>
+        <location filename="ui/mainwindow.cpp" line="528"/>
         <source>Error</source>
         <translation>Fehler</translation>
     </message>
     <message>
-        <location filename="ui/mainwindow.cpp" line="445"/>
+        <location filename="ui/mainwindow.cpp" line="448"/>
         <source>Delete Customer</source>
         <translation>Kunde löschen</translation>
     </message>
     <message>
-        <location filename="ui/mainwindow.cpp" line="446"/>
+        <location filename="ui/mainwindow.cpp" line="449"/>
         <source>Are you sure you want to delete the selected Customer?</source>
         <translation>Sind Sie sich sicher, dass sie den ausgewählten Kunden löschen möchten?</translation>
     </message>
     <message>
-        <location filename="ui/mainwindow.cpp" line="462"/>
+        <location filename="ui/mainwindow.cpp" line="465"/>
         <source>Delete Material</source>
         <translation>Material löschen</translation>
     </message>
     <message>
-        <location filename="ui/mainwindow.cpp" line="463"/>
+        <location filename="ui/mainwindow.cpp" line="466"/>
         <source>Are you sure you want to delete the selected Material?</source>
         <translation>Sind Sie sich sicher, dass sie das ausgewählte Material löschen möchten?</translation>
     </message>
     <message>
-        <location filename="ui/mainwindow.cpp" line="480"/>
+        <location filename="ui/mainwindow.cpp" line="483"/>
         <source>Delete Template</source>
         <translation>Vorlage löschen</translation>
     </message>
     <message>
-        <location filename="ui/mainwindow.cpp" line="481"/>
+        <location filename="ui/mainwindow.cpp" line="484"/>
         <source>Are you sure you want to delete the selected Template?</source>
         <translation>Sind Sie sich sicher, dass sie die ausgewählte Vorlage löschen möchten?</translation>
     </message>
     <message>
-        <location filename="ui/mainwindow.cpp" line="498"/>
+        <location filename="ui/mainwindow.cpp" line="501"/>
         <source>Delete Offer</source>
         <translation>Angebot löschen</translation>
     </message>
     <message>
-        <location filename="ui/mainwindow.cpp" line="499"/>
+        <location filename="ui/mainwindow.cpp" line="502"/>
         <source>Are you sure you want to delete the selected Offer?</source>
         <translation>Sind Sie sich sicher, dass sie das ausgewählte Angebot löschen möchten?</translation>
     </message>
     <message>
-        <location filename="ui/mainwindow.cpp" line="516"/>
+        <location filename="ui/mainwindow.cpp" line="519"/>
         <source>Delete Letter</source>
         <translation>Brief löschen</translation>
     </message>
     <message>
-        <location filename="ui/mainwindow.cpp" line="517"/>
+        <location filename="ui/mainwindow.cpp" line="520"/>
         <source>Are you sure you want to delete the selected Letter?</source>
         <translation>Sind Sie sich sicher, dass sie den ausgewählten Brief löschen möchten?</translation>
     </message>
     <message>
-        <location filename="ui/mainwindow.cpp" line="601"/>
+        <location filename="ui/mainwindow.cpp" line="604"/>
         <source>Save</source>
         <translation>Speichern</translation>
     </message>
@@ -1126,32 +1129,32 @@
 <context>
     <name>MaterialTableModel</name>
     <message>
-        <location filename="ui/models/materialtablemodel.cpp" line="58"/>
+        <location filename="ui/models/materialtablemodel.cpp" line="61"/>
         <source>Name</source>
         <translation>Name</translation>
     </message>
     <message>
-        <location filename="ui/models/materialtablemodel.cpp" line="60"/>
+        <location filename="ui/models/materialtablemodel.cpp" line="63"/>
         <source>Type</source>
         <translation>Typ</translation>
     </message>
     <message>
-        <location filename="ui/models/materialtablemodel.cpp" line="62"/>
+        <location filename="ui/models/materialtablemodel.cpp" line="65"/>
         <source>Manufactor</source>
         <translation>Hersteller</translation>
     </message>
     <message>
-        <location filename="ui/models/materialtablemodel.cpp" line="64"/>
+        <location filename="ui/models/materialtablemodel.cpp" line="67"/>
         <source>Article Number</source>
         <translation>Artikel-Nummer</translation>
     </message>
     <message>
-        <location filename="ui/models/materialtablemodel.cpp" line="66"/>
+        <location filename="ui/models/materialtablemodel.cpp" line="69"/>
         <source>Price</source>
         <translation>Preis</translation>
     </message>
     <message>
-        <location filename="ui/models/materialtablemodel.cpp" line="68"/>
+        <location filename="ui/models/materialtablemodel.cpp" line="71"/>
         <source>Quantity</source>
         <translation>Menge</translation>
     </message>
@@ -1170,8 +1173,9 @@
     </message>
     <message>
         <location filename="persistence/validation/impl/materialvalidator.cpp" line="47"/>
-        <source>tax must not be negative</source>
-        <translation>&apos;Steuersatz&apos; darf nicht negativ sein</translation>
+        <source>taxrate must be between 0 and 1</source>
+        <oldsource>tax must not be negative</oldsource>
+        <translation>&apos;Steuersatz&apos; muss zwischen 0% und 100% sein</translation>
     </message>
     <message>
         <location filename="persistence/validation/impl/materialvalidator.cpp" line="50"/>
@@ -1325,11 +1329,12 @@
     </message>
     <message>
         <location filename="service/impl/printserviceimpl.cpp" line="282"/>
-        <source>Total Price (incl. tax):</source>
+        <source>Total Price:</source>
+        <oldsource>Total Price (incl. tax):</oldsource>
         <translation>Gesamtsumme:</translation>
     </message>
     <message>
-        <location filename="service/impl/printserviceimpl.cpp" line="294"/>
+        <location filename="service/impl/printserviceimpl.cpp" line="297"/>
         <source>Sales Tax (%1 %):</source>
         <translation>In der Gesamtsumme enthaltene Mwst (%1 %):</translation>
     </message>
@@ -1381,9 +1386,9 @@
     </message>
     <message>
         <location filename="ui/widgets/statisticswidget.ui" line="108"/>
-        <source>Material Overhead:</source>
-        <oldsource>Materialkosten:</oldsource>
-        <translation>Materialgemeinkosten:</translation>
+        <source>Material Costs:</source>
+        <oldsource>Material Overhead:</oldsource>
+        <translation>Materialkosten:</translation>
     </message>
     <message>
         <location filename="ui/widgets/statisticswidget.ui" line="103"/>
@@ -1397,8 +1402,9 @@
     </message>
     <message>
         <location filename="ui/widgets/statisticswidget.ui" line="118"/>
-        <source>Tax Rate:</source>
-        <translation>Steuersatz:</translation>
+        <source>Sales Tax:</source>
+        <oldsource>Tax Rate:</oldsource>
+        <translation>Mwst.:</translation>
     </message>
     <message>
         <location filename="ui/widgets/statisticswidget.ui" line="123"/>
@@ -1506,14 +1512,14 @@
 <context>
     <name>TemplateWizard</name>
     <message>
-        <location filename="ui/wizards/templatewizard.cpp" line="65"/>
-        <location filename="ui/wizards/templatewizard.cpp" line="82"/>
+        <location filename="ui/wizards/templatewizard.cpp" line="37"/>
+        <location filename="ui/wizards/templatewizard.cpp" line="54"/>
         <source>Invalid Data</source>
         <translation>Fehlerhafte Daten</translation>
     </message>
     <message>
-        <location filename="ui/wizards/templatewizard.cpp" line="68"/>
-        <location filename="ui/wizards/templatewizard.cpp" line="85"/>
+        <location filename="ui/wizards/templatewizard.cpp" line="40"/>
+        <location filename="ui/wizards/templatewizard.cpp" line="57"/>
         <source>Error</source>
         <translation>Fehler</translation>
     </message>
