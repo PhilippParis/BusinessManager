@@ -27,6 +27,9 @@ private slots:
     void on_btnLetterDir_clicked();
 
 private:
+    void loadLanguages();
+
+private:
     Ui::AppSettingsWidget *ui;
 };
 

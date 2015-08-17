@@ -30,7 +30,7 @@ QMAKE_CXXFLAGS += -std=c++0x
 TARGET = BusinessManager2
 TEMPLATE = app
 
-TRANSLATIONS = BusinessManager2_de.ts
+TRANSLATIONS = languages/BusinessManager2_de.ts
 
 SOURCES += main.cpp\
         ui/mainwindow.cpp \

@@ -20,6 +20,19 @@ int main(int argc, char *argv[])
         return EXIT_FAILURE;
     }
 
+    QTranslator qtTranslator;
+    qtTranslator.load("qt_" + QLocale::system().name(),
+                      QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+    a.installTranslator(&qtTranslator);
+
+    QString applicationDir = QApplication::applicationDirPath();
+    applicationDir.append("/languages");
+
+    QTranslator translator;
+    translator.load("BusinessManager2_" + QLocale::system().name(), applicationDir);
+
+    a.installTranslator(&translator);
+
     MainWindow w;
     w.showMaximized();
 
