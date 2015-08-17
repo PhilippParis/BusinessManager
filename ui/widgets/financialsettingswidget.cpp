@@ -23,6 +23,8 @@ void FinancialSettingsWidget::loadSettings(QSettings *settings)
     ui->sbProfit->setValue(settings->value("financial/profit").toDouble() * 100.0);
     ui->sbCashback->setValue(settings->value("financial/cashback").toDouble() * 100.0);
     ui->sbTax->setValue(settings->value("financial/tax").toDouble() * 100.0);
+
+    ui->cbPreTaxEligible->setChecked(settings->value("financial/preTaxEligible").toBool());
 }
 
 void FinancialSettingsWidget::writeSettings(QSettings *settings)
@@ -35,4 +37,5 @@ void FinancialSettingsWidget::writeSettings(QSettings *settings)
     settings->setValue("financial/profit", ui->sbProfit->value() / 100.0);
     settings->setValue("financial/cashback", ui->sbCashback->value() / 100.0);
     settings->setValue("financial/tax", ui->sbTax->value() / 100.0);
+    settings->setValue("financial/preTaxEligible", ui->cbPreTaxEligible->isChecked());
 }

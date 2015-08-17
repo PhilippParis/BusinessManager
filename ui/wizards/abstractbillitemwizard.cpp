@@ -100,6 +100,11 @@ void AbstractBillItemWizard::updateMaterialCosts()
         m_materialNetCost += it.key()->netCostPerUnit() * it.value();
         m_materialCost += it.key()->costPerUnit() * it.value();
     }
+
+    QSettings settings;
+    if (!settings.value("financial/preTaxEligible").toBool()) {
+        m_materialNetCost = m_materialCost;
+    }
 }
 
 void AbstractBillItemWizard::on_tblTemplates_activated(const QModelIndex &index)

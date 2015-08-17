@@ -15,6 +15,7 @@ void BillItemWizard::prepareForUpdate(BillItem::Ptr item)
 
     m_id = item->id();
     m_materialCost = item->materialNetCost();
+    m_materialNetCost = item->materialNetCost();
 
     ui->sbPricePerUnit->setValue(item->price().value());
     ui->leSearchTemplate->clear();

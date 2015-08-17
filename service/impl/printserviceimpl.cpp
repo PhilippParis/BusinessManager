@@ -279,7 +279,7 @@ int PrintServiceImpl::printTotalPrice(QPainter *painter, QMap<double, Decimal> t
     painter->setFont(font);
     QFontMetrics fm = painter->fontMetrics();
 
-    painter->drawText(LEFT_MARGIN, y, tr("Total Price (incl. tax):"));
+    painter->drawText(LEFT_MARGIN, y, tr("Total Price:"));
     QString total = QString::number(totalPrice.value(), 'f', 2) + QString::fromUtf8("€");
     painter->drawText(18 * 225 - fm.width(total), y, total);
     y += 120;
