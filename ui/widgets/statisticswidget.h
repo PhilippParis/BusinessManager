@@ -3,10 +3,10 @@
 
 #include <QWidget>
 #include <QDebug>
-#include <qwt/qwt.h>
-#include <qwt/qwt_plot.h>
-#include <qwt/qwt_plot_curve.h>
-#include <qwt/qwt_point_data.h>
+#include <qwt.h>
+#include <qwt_plot.h>
+#include <qwt_plot_curve.h>
+#include <qwt_point_data.h>
 
 #include "service/statisticsservice.h"
 #include "service/billservice.h"

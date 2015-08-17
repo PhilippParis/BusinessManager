@@ -21,6 +21,9 @@ public:
     virtual void addAll(QList<T> items)
     {
         clear();
+        if (items.isEmpty()) {
+            return;
+        }
         beginInsertRows(QModelIndex(), 0, items.size() - 1);
         m_data = items;
         endInsertRows();
@@ -77,6 +80,9 @@ public:
 
     virtual void clear()
     {
+        if (m_data.isEmpty()) {
+            return;
+        }
         beginRemoveRows(QModelIndex(), 0, m_data.size() - 1);
         m_data.clear();
         endRemoveRows();

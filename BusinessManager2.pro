@@ -10,8 +10,19 @@ QT       += testlib
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-INCLUDEPATH +="/usr/include/qwt"
-LIBS += -L/usr/lib -lqwt
+win32 {
+    INCLUDEPATH += C:\Qwt-6.1.2\include
+    DEPENDPATH += C:/Qwt-6.1.2/lib
+    LIBS += -LC:/Qwt-6.1.2/lib
+    CONFIG(debug, debug|release) {
+         LIBS += -lqwtd
+    } else {
+         LIBS += -lqwt
+    }
+} else {
+    INCLUDEPATH += /usr/include/qwt
+    LIBS += -L/usr/lib -lqwt
+}
 
 CONFIG += qwt
 QMAKE_CXXFLAGS += -std=c++0x
