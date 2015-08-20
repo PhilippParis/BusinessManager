@@ -223,7 +223,7 @@ void PrintServiceImpl::printFooter(QPrinter *printer, QPainter *painter, int y)
     y += 200;
 
     if(m_settings.value("docs/show_signature").toBool()) {
-        QPixmap signature = m_settings.value("docs/signature").value<QPixmap>();
+        QPixmap signature = m_settings.value("user/signature").value<QPixmap>();
         if(!signature.isNull()) {
             painter->drawPixmap(LEFT_MARGIN, y, 1000, 633, signature);
         }
@@ -241,7 +241,7 @@ void PrintServiceImpl::printFooter(QPrinter *printer, QPainter *painter, int y)
 
     QString iban = m_settings.value("user/iban").toString();
     QString bic = m_settings.value("user/bic").toString();
-    QString footerLine1 = tr("Banking Account") + "IBAN: " + iban + " BIC: " +
+    QString footerLine1 = tr("Banking Account") + " - IBAN: " + iban + " BIC: " +
             bic + " | " + m_settings.value("financial/legal_domicile").toString();
     painter->drawText(350, 6500, footerLine1);
 
@@ -300,7 +300,7 @@ int PrintServiceImpl::printTotalPrice(QPainter *painter, QMap<double, Decimal> t
         y += 100;
     }
 
-    font.setPointSizeF(1.0 / SCALE);
+    font.setPointSizeF(10.0 / SCALE);
     painter->setFont(font);
 
     return y + 150;
@@ -351,8 +351,8 @@ QPainter* PrintServiceImpl::getPainter(QPrinter *printer)
 
 void PrintServiceImpl::printBar(QPainter *painter)
 {
-    if(m_settings.value("docs/show_bar").toBool() && m_settings.value("print/emptyPaper").toBool()) {
-        painter->setPen(QColor(255,204,102));
+    if(m_settings.value("docs/show_beam").toBool() && m_settings.value("print/emptyPaper").toBool()) {
+        painter->setPen(m_settings.value("docs/color").value<QColor>());
         painter->drawRect(50, 0, 184, 6800);
         painter->setPen(Qt::black);
     }

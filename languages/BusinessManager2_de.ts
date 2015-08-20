@@ -74,7 +74,7 @@
     <message>
         <location filename="ui/wizards/abstractbillitemwizard.ui" line="180"/>
         <source>Quantity</source>
-        <translation type="unfinished">Menge</translation>
+        <translation>Menge</translation>
     </message>
     <message>
         <source>Calculated Price:</source>
@@ -210,7 +210,7 @@
     <message>
         <location filename="ui/models/billitemtablemodel.cpp" line="42"/>
         <source>Quantity</source>
-        <translation>Anzahl</translation>
+        <translation>Menge</translation>
     </message>
     <message>
         <location filename="ui/models/billitemtablemodel.cpp" line="44"/>
@@ -228,7 +228,7 @@
     <message>
         <location filename="persistence/validation/impl/billitemvalidator.cpp" line="40"/>
         <source>description must not be empty</source>
-        <translation>Die Beschreibung darf nicht leer sein</translation>
+        <translation>Die Artikel Beschreibung muss angegeben werden</translation>
     </message>
     <message>
         <location filename="persistence/validation/impl/billitemvalidator.cpp" line="43"/>
@@ -258,7 +258,7 @@
     <message>
         <location filename="persistence/validation/impl/billitemvalidator.cpp" line="58"/>
         <source>quantity must not be negative</source>
-        <translation>Die Anzahl darf nicht negativ sein</translation>
+        <translation>Menge muss größer als 0 sein</translation>
     </message>
     <message>
         <location filename="persistence/validation/impl/billitemvalidator.cpp" line="61"/>

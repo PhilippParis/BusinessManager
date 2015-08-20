@@ -52,9 +52,10 @@ QMap<double, Decimal> Offer::inTotalPriceIncludedTaxes() const
         taxes.insert(taxRate, taxes.value(taxRate, Decimal::fromValue(0.0)) + item->price() * item->quantity());
     }
 
+    // calc tax value
     QMap<double, Decimal>::iterator i;
     for (i = taxes.begin(); i != taxes.end(); i++) {
-        taxes.insert(i.key(), i.value() * i.key());
+        taxes.insert(i.key(), i.value() * (i.key() / (1.0 + i.key())));
     }
 
     return taxes;
