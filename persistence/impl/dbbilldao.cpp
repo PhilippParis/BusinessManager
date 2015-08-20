@@ -208,7 +208,7 @@ Bill::Ptr DBBillDAO::parseBill(QSqlRecord record)
 
     // get items
     QSqlQuery query(m_database);
-    query.prepare("SELECT ID FROM BILL_ITEM WHERE BILL = ?;");
+    query.prepare("SELECT ID FROM BILL_ITEM NATURAL JOIN ITEM WHERE BILL = ? AND DELETED = 0;");
     query.addBindValue(bill->id());
 
     if (!query.exec()) {

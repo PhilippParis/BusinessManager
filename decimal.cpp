@@ -7,12 +7,12 @@ Decimal::Decimal()
 
 Decimal Decimal::fromCents(long long cents)
 {
-    return Decimal(cents);
+    return Decimal(cents * 100.0);
 }
 
 Decimal Decimal::fromValue(double value)
 {
-    return Decimal(value * 100.0);
+    return Decimal(value * 10000.0);
 }
 
 Decimal::Decimal(long cents)
@@ -103,11 +103,11 @@ bool Decimal::operator >=(const Decimal &rhs) const
 
 long long Decimal::cents() const
 {
-    return m_cents;
+    return m_cents / 100.0;
 }
 
 double Decimal::value() const
 {
-    return m_cents / 100.0;
+    return m_cents / 10000.0;
 }
 

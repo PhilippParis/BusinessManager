@@ -11,11 +11,15 @@ bool BillTableModel::setData(const QModelIndex &index, const QVariant &value, in
         Bill::Ptr bill = m_data.at(index.row());
         bill->setPayed(value.toInt() == Qt::Checked);
         emit billPayedStatusChanged(bill);
+        emit dataChanged(index, index);
     }
+
+    return true;
 }
 
 int BillTableModel::columnCount(const QModelIndex &parent) const
 {
+    Q_UNUSED(parent)
     return 6;
 }
 

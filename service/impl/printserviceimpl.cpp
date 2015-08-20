@@ -235,7 +235,7 @@ void PrintServiceImpl::printFooter(QPrinter *printer, QPainter *painter, int y)
     painter->setFont(font);
 
     //footer
-    if(!m_settings.value("docs/show_footer").toBool()) {
+    if(!m_settings.value("docs/show_footer").toBool() || !m_settings.value("print/emptyPaper").toBool()) {
         return;
     }
 
@@ -251,11 +251,9 @@ void PrintServiceImpl::printFooter(QPrinter *printer, QPainter *painter, int y)
     printTextBlock(painter, footer, 350, 6600, Qt::AlignLeft);
 
     // "meisterbetrieb" seal
-    if (m_settings.value("print/emptyPaper").toBool()) {
-        QPixmap seal = QPixmap(":/image/seal");
-        if(!seal.isNull()) {
-            painter->drawPixmap(4250, 6300, 500, 500, seal);
-        }
+    QPixmap seal = QPixmap(":/image/seal");
+    if(!seal.isNull()) {
+        painter->drawPixmap(4250, 6300, 500, 500, seal);
     }
 }
 

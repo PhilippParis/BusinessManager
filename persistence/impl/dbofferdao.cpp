@@ -186,7 +186,7 @@ Offer::Ptr DBOfferDAO::parseOffer(QSqlRecord record)
 
     // get items
     QSqlQuery query(m_database);
-    query.prepare("SELECT ID FROM OFFER_ITEM WHERE OFFER = ?;");
+    query.prepare("SELECT ID FROM OFFER_ITEM NATURAL JOIN ITEM WHERE OFFER = ? AND DELETED = 0;");
     query.addBindValue(offer->id());
 
     if (!query.exec()) {

@@ -34,7 +34,7 @@ private:
     OpenMode m_openMode;
 
     Ui::DiscountDialog *ui;
-    int m_id;
+    int m_id = -1;
     Validator<Discount::Ptr>::Ptr m_validator;
 };
 

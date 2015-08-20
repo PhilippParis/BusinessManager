@@ -144,6 +144,7 @@ void MainWindow::printBill(Bill::Ptr bill)
 {
     QPrinter *printer = new QPrinter(QPrinter::HighResolution);
     printer->setPageSize(QPrinter::A4);
+    printer->setFullPage(true);
     printer->setPageMargins(0.14, 0.14, 0.14, 0.14, QPrinter::Inch);
 
     QPrintPreviewDialog *dialog = new QPrintPreviewDialog(printer, this);
@@ -161,6 +162,7 @@ void MainWindow::printOffer(Offer::Ptr offer)
 {
     QPrinter *printer = new QPrinter(QPrinter::HighResolution);
     printer->setPageSize(QPrinter::A4);
+    printer->setFullPage(true);
     printer->setPageMargins(0.14, 0.14, 0.14, 0.14, QPrinter::Inch);
 
     QPrintPreviewDialog *dialog = new QPrintPreviewDialog(printer, this);
@@ -178,6 +180,7 @@ void MainWindow::printLetter(Letter::Ptr letter)
 {
     QPrinter *printer = new QPrinter(QPrinter::HighResolution);
     printer->setPageSize(QPrinter::A4);
+    printer->setFullPage(true);
     printer->setPageMargins(0.14, 0.14, 0.14, 0.14, QPrinter::Inch);
 
     QPrintPreviewDialog *dialog = new QPrintPreviewDialog(printer, this);
@@ -195,6 +198,7 @@ void MainWindow::printEnvelope(Envelope::Ptr envelope)
 {
     QPrinter *printer = new QPrinter(QPrinter::HighResolution);
 
+    printer->setFullPage(true);
     printer->setPaperSource(QPrinter::Envelope);
     printer->setPageMargins(0.14, 0.14, 0.14, 0.14, QPrinter::Inch);
     printer->setPageSize((QPagedPaintDevice::PageSize) envelope->pageSize());
@@ -226,6 +230,7 @@ void MainWindow::exportBill(Bill::Ptr bill)
 
     QPrinter *printer = new QPrinter(QPrinter::HighResolution);
     printer->setPageSize(QPrinter::A4);
+    printer->setResolution(600);
     printer->setPageMargins(0.14, 0.14, 0.14, 0.14, QPrinter::Inch);
     printer->setOutputFileName(path);
     printer->setOutputFormat(QPrinter::PdfFormat);
@@ -249,10 +254,12 @@ void MainWindow::exportOffer(Offer::Ptr offer)
     }
 
     QPrinter *printer = new QPrinter(QPrinter::HighResolution);
+    printer->setOutputFormat(QPrinter::PdfFormat);
     printer->setPageSize(QPrinter::A4);
+    printer->setFullPage(true);
+    printer->setResolution(600);
     printer->setPageMargins(0.14, 0.14, 0.14, 0.14, QPrinter::Inch);
     printer->setOutputFileName(path);
-    printer->setOutputFormat(QPrinter::PdfFormat);
 
     m_printService->printOffer(printer, offer);
 }
@@ -274,6 +281,7 @@ void MainWindow::exportLetter(Letter::Ptr letter)
 
     QPrinter *printer = new QPrinter(QPrinter::HighResolution);
     printer->setPageSize(QPrinter::A4);
+    printer->setResolution(600);
     printer->setPageMargins(0.14, 0.14, 0.14, 0.14, QPrinter::Inch);
     printer->setOutputFileName(path);
     printer->setOutputFormat(QPrinter::PdfFormat);
@@ -340,6 +348,8 @@ void MainWindow::createOffer()
     OfferDialog *dialog = new OfferDialog(this, m_billService, m_customerService, m_materialService, m_templateService, m_offerService);
     connect(dialog, SIGNAL(print(Offer::Ptr)), SLOT(printOffer(Offer::Ptr)));
     connect(dialog, &OfferDialog::offerAdded, m_offerTableModel, &OfferTableModel::add);
+    connect(dialog, &OfferDialog::customerAdded, m_customerTableModel, &CustomerTableModel::add);
+    connect(dialog, &OfferDialog::templateAdded, m_templateTableModel, &TemplateTableModel::add);
     dialog->prepareForCreate(customer);
     dialog->exec();
     delete dialog;
