@@ -7,6 +7,7 @@ BillItemTableModel::BillItemTableModel()
 
 int BillItemTableModel::columnCount(const QModelIndex &parent) const
 {
+    Q_UNUSED(parent)
     return 4;
 }
 

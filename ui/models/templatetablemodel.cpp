@@ -7,6 +7,7 @@ TemplateTableModel::TemplateTableModel()
 
 int TemplateTableModel::columnCount(const QModelIndex &parent) const
 {
+    Q_UNUSED(parent)
     return 4;
 }
 
