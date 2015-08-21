@@ -59,7 +59,7 @@
      </layout>
     </item>
     <item>
-     <widget class="QLineEdit" name="leSearchTemplate">
+     <widget class="QLineEdit" name="leFilterTemplate">
       <property name="placeholderText">
        <string>find template...</string>
       </property>
@@ -397,7 +397,7 @@
  </widget>
  <tabstops>
   <tabstop>sbWorkingHours</tabstop>
-  <tabstop>leSearchTemplate</tabstop>
+  <tabstop>leFilterTemplate</tabstop>
   <tabstop>tblTemplates</tabstop>
   <tabstop>tblMaterial</tabstop>
   <tabstop>btnAddMaterial</tabstop>

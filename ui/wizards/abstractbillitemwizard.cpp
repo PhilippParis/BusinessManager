@@ -16,14 +16,14 @@ AbstractBillItemWizard::AbstractBillItemWizard(QWidget *parent, MaterialService:
     ui->tblMaterial->setItemDelegateForColumn(5, delegate);
 
     m_templateModel = new TemplateTableModel();
-    m_templateSortFilterProxyModel = new TemplateSortFilterProxyModel();
-    m_templateSortFilterProxyModel->setSourceModel(m_templateModel);
-    ui->tblTemplates->setModel(m_templateSortFilterProxyModel);
-
     m_templateModel->addAll(templateService->getAll());
 
-    ui->sbTaxRate->setValue(settings.value("financial/tax").toDouble() * 100.0);
+    m_templateSortFilterProxyModel = new TemplateSortFilterProxyModel();
+    m_templateSortFilterProxyModel->setSourceModel(m_templateModel);
+    m_templateSortFilterProxyModel->setFilterCaseSensitivity(Qt::CaseInsensitive);
+    ui->tblTemplates->setModel(m_templateSortFilterProxyModel);
 
+    ui->sbTaxRate->setValue(settings.value("financial/tax").toDouble() * 100.0);
     connect(m_materialModel, SIGNAL(materialChanged()), SLOT(updateMaterialCosts()));
 }
 
@@ -38,7 +38,7 @@ void AbstractBillItemWizard::prepareForCreate()
     m_openMode = Create;
 
     ui->sbPricePerUnit->setValue(0.0);
-    ui->leSearchTemplate->clear();
+    ui->leFilterTemplate->clear();
     ui->leTemplateName->clear();
     ui->leTemplateOrg->clear();
     ui->leUnit->clear();
@@ -105,6 +105,11 @@ void AbstractBillItemWizard::updateMaterialCosts()
     if (!settings.value("financial/preTaxEligible").toBool()) {
         m_materialNetCost = m_materialCost;
     }
+}
+
+void AbstractBillItemWizard::on_leFilterTemplate_textChanged(QString text)
+{
+    m_templateSortFilterProxyModel->setFilterWildcard(text);
 }
 
 void AbstractBillItemWizard::on_tblTemplates_activated(const QModelIndex &index)

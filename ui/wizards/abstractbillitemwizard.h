@@ -44,6 +44,7 @@ private slots:
     void on_sbPricePerUnit_valueChanged(double value);
     void on_btnAuto_clicked();
     void updateMaterialCosts();
+    void on_leFilterTemplate_textChanged(QString text);
 
 private:
     virtual bool onUpdate() = 0;

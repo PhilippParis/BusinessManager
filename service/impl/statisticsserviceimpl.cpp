@@ -84,7 +84,7 @@ Decimal StatisticsServiceImpl::preTax(Bill::Ptr bill)
 {
     Decimal tax = Decimal::fromValue(0.0);
     for (BillItem::Ptr item : bill->items()) {
-        tax = (item->materialCost() - item->materialNetCost()) * item->quantity();
+        tax += (item->materialCost() - item->materialNetCost()) * item->quantity();
     }
 
     return tax;

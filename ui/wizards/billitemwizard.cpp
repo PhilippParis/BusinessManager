@@ -18,7 +18,7 @@ void BillItemWizard::prepareForUpdate(BillItem::Ptr item)
     m_materialNetCost = item->materialNetCost();
 
     ui->sbPricePerUnit->setValue(item->price().value());
-    ui->leSearchTemplate->clear();
+    ui->leFilterTemplate->clear();
     ui->leTemplateName->clear();
     ui->leTemplateOrg->clear();
     ui->textEditArticleDesc->setText(item->description());
