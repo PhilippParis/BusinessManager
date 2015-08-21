@@ -1,6 +1,7 @@
 #include "ui/mainwindow.h"
 #include <QApplication>
 
+#ifdef Q_DEBUG
 #include "tests/billitemdaotest.h"
 #include "tests/customerdaotest.h"
 #include "tests/billdaotest.h"
@@ -8,6 +9,7 @@
 #include "tests/templatedaotest.h"
 #include "tests/offerdaotest.h"
 #include "tests/letterdaotest.h"
+#endif
 
 bool execUnitTests();
 
@@ -15,10 +17,15 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
+#ifdef Q_DEBUG
     // exec unit tests
     if(!execUnitTests()) {
         return EXIT_FAILURE;
     }
+#else
+    //disable logging messages
+     QLoggingCategory::setFilterRules(QStringLiteral("*.debug=false"));
+#endif
 
     QTranslator qtTranslator;
     qtTranslator.load("qt_" + QLocale::system().name(),
@@ -39,6 +46,7 @@ int main(int argc, char *argv[])
     return a.exec();
 }
 
+#ifdef Q_DEBUG
 bool execUnitTests()
 {
     bool success = true;
@@ -57,7 +65,8 @@ bool execUnitTests()
     success &= QTest::qExec(&materialDAOTest) == 0;
     success &= QTest::qExec(&templateDAOTest) == 0;
     success &= QTest::qExec(&offerDAOTest) == 0;
-    //success &= QTest::qExec(&letterDAOTest) == 0;
+    success &= QTest::qExec(&letterDAOTest) == 0;
 
     return success;
 }
+#endif

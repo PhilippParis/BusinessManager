@@ -8,6 +8,8 @@ SpinBoxDelegate::SpinBoxDelegate(QObject *parent)
 
 QWidget *SpinBoxDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
+    Q_UNUSED(index)
+    Q_UNUSED(option)
     QDoubleSpinBox *editor = new QDoubleSpinBox(parent);
     editor->setFrame(false);
     editor->setMinimum(0);
@@ -37,6 +39,7 @@ void SpinBoxDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, c
 
 void SpinBoxDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
+    Q_UNUSED(index)
     editor->setGeometry(option.rect);
 }
 

@@ -6,7 +6,10 @@
 
 QT       += core gui
 QT       += sql printsupport
-QT       += testlib
+
+CONFIG (debug, debug|release) {
+    QT += testlib
+}
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -14,11 +17,13 @@ win32 {
     INCLUDEPATH += C:\Qwt-6.1.2\include
     DEPENDPATH += C:/Qwt-6.1.2/lib
     LIBS += -LC:/Qwt-6.1.2/lib
+
     CONFIG(debug, debug|release) {
          LIBS += -lqwtd
     } else {
          LIBS += -lqwt
     }
+
 } else {
     INCLUDEPATH += /usr/include/qwt
     LIBS += -L/usr/lib -lqwt
@@ -54,14 +59,11 @@ SOURCES += main.cpp\
     service/impl/billserviceimpl.cpp \
     service/impl/customerserviceimpl.cpp \
     service/impl/templateserviceimpl.cpp \
-    tests/billitemdaotest.cpp \
     persistence/databasesingleton.cpp \
     persistence/validation/impl/billitemvalidator.cpp \
     persistence/validation/impl/billvalidator.cpp \
     logging.cpp \
     persistence/validation/impl/customervalidator.cpp \
-    tests/customerdaotest.cpp \
-    tests/billdaotest.cpp \
     exception.cpp \
     persistence/validation/validationexception.cpp \
     persistence/persistenceexception.cpp \
@@ -82,7 +84,6 @@ SOURCES += main.cpp\
     persistence/validation/impl/discountvalidator.cpp \
     ui/dialogs/discountdialog.cpp \
     persistence/validation/impl/templatevalidator.cpp \
-    tests/templatedaotest.cpp \
     ui/widgets/templateswidget.cpp \
     ui/models/templatetablemodel.cpp \
     ui/models/templatesortfilterproxymodel.cpp \
@@ -112,7 +113,6 @@ SOURCES += main.cpp\
     ui/widgets/materialswidget.cpp \
     ui/models/materialsortfilterproxymodel.cpp \
     ui/models/materialtablemodel.cpp \
-    tests/materialdaotest.cpp \
     decimal.cpp \
     service/statisticsservice.cpp \
     domain/statistics.cpp \
@@ -129,12 +129,10 @@ SOURCES += main.cpp\
     service/offerservice.cpp \
     service/impl/offerserviceimpl.cpp \
     persistence/validation/impl/offervalidator.cpp \
-    tests/offerdaotest.cpp \
     ui/widgets/offerwidget.cpp \
     ui/models/offertablemodel.cpp \
     ui/models/offersortfilterproxymodel.cpp \
     persistence/impl/dbhtmlfileletterdao.cpp \
-    tests/letterdaotest.cpp \
     persistence/validation/impl/lettervalidator.cpp \
     service/letterservice.cpp \
     service/impl/letterserviceimpl.cpp \
@@ -142,6 +140,16 @@ SOURCES += main.cpp\
     ui/models/lettertablemodel.cpp \
     ui/models/lettersortfilterproxymodel.cpp \
     ui/widgets/appsettingswidget.cpp
+
+CONFIG(debug, debug|release) {
+    SOURCES += tests/customerdaotest.cpp \
+    tests/billdaotest.cpp \
+    tests/letterdaotest.cpp \
+    tests/billitemdaotest.cpp \
+    tests/offerdaotest.cpp \
+    tests/materialdaotest.cpp \
+    tests/templatedaotest.cpp
+}
 
 HEADERS  += ui/mainwindow.h \
     domain/bill.h \
@@ -164,15 +172,12 @@ HEADERS  += ui/mainwindow.h \
     service/impl/billserviceimpl.h \
     service/impl/customerserviceimpl.h \
     service/impl/templateserviceimpl.h \
-    tests/billitemdaotest.h \
     persistence/databasesingleton.h \
     persistence/validation/validator.h \
     persistence/validation/impl/billitemvalidator.h \
     persistence/validation/impl/billvalidator.h \
     logging.h \
     persistence/validation/impl/customervalidator.h \
-    tests/customerdaotest.h \
-    tests/billdaotest.h \
     persistence/persistenceexception.h \
     persistence/validation/validationexception.h \
     exception.h \
@@ -194,7 +199,6 @@ HEADERS  += ui/mainwindow.h \
     persistence/validation/impl/discountvalidator.h \
     ui/dialogs/discountdialog.h \
     persistence/validation/impl/templatevalidator.h \
-    tests/templatedaotest.h \
     ui/widgets/templateswidget.h \
     ui/models/templatetablemodel.h \
     ui/models/templatesortfilterproxymodel.h \
@@ -224,7 +228,6 @@ HEADERS  += ui/mainwindow.h \
     ui/widgets/materialswidget.h \
     ui/models/materialsortfilterproxymodel.h \
     ui/models/materialtablemodel.h \
-    tests/materialdaotest.h \
     decimal.h \
     service/statisticsservice.h \
     domain/statistics.h \
@@ -241,12 +244,10 @@ HEADERS  += ui/mainwindow.h \
     service/offerservice.h \
     service/impl/offerserviceimpl.h \
     persistence/validation/impl/offervalidator.h \
-    tests/offerdaotest.h \
     ui/widgets/offerwidget.h \
     ui/models/offertablemodel.h \
     ui/models/offersortfilterproxymodel.h \
     persistence/impl/dbhtmlfileletterdao.h \
-    tests/letterdaotest.h \
     persistence/validation/impl/lettervalidator.h \
     service/letterservice.h \
     service/impl/letterserviceimpl.h \
@@ -254,6 +255,17 @@ HEADERS  += ui/mainwindow.h \
     ui/models/lettertablemodel.h \
     ui/models/lettersortfilterproxymodel.h \
     ui/widgets/appsettingswidget.h
+
+
+CONFIG(debug, debug|release) {
+    SOURCES += tests/materialdaotest.h \
+    tests/letterdaotest.h \
+    tests/offerdaotest.h \
+    tests/templatedaotest.h \
+    tests/customerdaotest.h \
+    tests/billdaotest.h \
+    tests/billitemdaotest.h
+}
 
 FORMS    += ui/mainwindow.ui \
     ui/widgets/customerswidget.ui \
@@ -280,5 +292,3 @@ FORMS    += ui/mainwindow.ui \
 
 RESOURCES += \
     resources.qrc
-
-DISTFILES +=

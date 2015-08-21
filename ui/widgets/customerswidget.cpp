@@ -40,6 +40,7 @@ void CustomersWidget::setCustomerModel(CustomerTableModel *model)
 
 void CustomersWidget::selectionChanged(QModelIndex newIndex, QModelIndex prevIndex)
 {
+    Q_UNUSED(prevIndex)
     ui->btnEditCustomer->setEnabled(newIndex.isValid());
     ui->btnSendMail->setEnabled(newIndex.isValid() && !selectedCustomer()->mail().isEmpty());
     ui->btnDeleteCustomer->setEnabled(newIndex.isValid());
