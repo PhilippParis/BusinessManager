@@ -144,7 +144,7 @@ void PrintServiceImpl::printBillItemTableHeader(QPainter *painter, int y)
 
     painter->drawText(5 * 225, y, tr("Article"));
     painter->drawText(9.5 * 225, y, tr("Quantity"));
-    painter->drawText(12.5 * 225, y, tr("Price") + "/" + tr("Unit"));
+    painter->drawText(12.5 * 225, y, tr("Price Per Unit"));
     painter->drawText(3700, y, tr("Total Price"));
     painter->drawLine(LEFT_MARGIN, y + 70, RIGHT_MARGIN, y + 70);
 
