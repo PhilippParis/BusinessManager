@@ -16,6 +16,7 @@ bool execUnitTests();
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+    QApplication::setStyle("fusion");
 
 #ifdef Q_DEBUG
     // exec unit tests
