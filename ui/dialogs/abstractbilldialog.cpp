@@ -67,6 +67,7 @@ void AbstractBillDialog::on_btnAddArticle_clicked()
 
     BillItemWizard *wizard = new BillItemWizard(this, m_billService, m_materialService, m_templateService);
     connect(wizard, SIGNAL(templateAdded(Template::Ptr)), this, SIGNAL(templateAdded(Template::Ptr)));
+    connect(wizard, SIGNAL(materialAdded(Material::Ptr)), this, SIGNAL(materialAdded(Material::Ptr)));
     connect(wizard, &BillItemWizard::itemAdded, m_billItemModel, &BillItemTableModel::add);
     wizard->prepareForCreate(templ);
     wizard->exec();

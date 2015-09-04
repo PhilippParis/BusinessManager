@@ -302,6 +302,7 @@ void MainWindow::createBill()
     connect(dialog, &BillDialog::billAdded, m_billTableModel, &BillTableModel::add);
     connect(dialog, &BillDialog::customerAdded, m_customerTableModel, &CustomerTableModel::add);
     connect(dialog, &BillDialog::templateAdded, m_templateTableModel, &TemplateTableModel::add);
+    connect(dialog, &BillDialog::materialAdded, [=](Material::Ptr material) {m_materialTableModel->add(material, 0.0);});
 
     dialog->setDiscountValidator(m_discountValidator);
     dialog->prepareForCreate(customer);
@@ -379,6 +380,7 @@ void MainWindow::editBill(Bill::Ptr selected)
     connect(dialog, &BillDialog::billUpdated, m_billTableModel, &BillTableModel::update);
     connect(dialog, &BillDialog::customerAdded, m_customerTableModel, &CustomerTableModel::add);
     connect(dialog, &BillDialog::templateAdded, m_templateTableModel, &TemplateTableModel::add);
+    connect(dialog, &BillDialog::materialAdded, [=](Material::Ptr material) {m_materialTableModel->add(material, 0.0);});
     dialog->setDiscountValidator(m_discountValidator);
     dialog->prepareForUpdate(selected);
     dialog->exec();

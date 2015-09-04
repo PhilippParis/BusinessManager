@@ -17,7 +17,7 @@ public:
     Qt::ItemFlags flags(const QModelIndex &) const override;
 
     void addAllWithQuantity(QMap<Material::Ptr, double> materials);
-    void add(Material::Ptr material, double quantity);
+    QModelIndex add(Material::Ptr material, double quantity);
 
     void remove(Material::Ptr item) override;
     void replace(Material::Ptr old, Material::Ptr updated) override;

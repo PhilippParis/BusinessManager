@@ -51,3 +51,20 @@ void MaterialSelectionDialog::on_leFilter_textChanged(const QString &arg1)
 {
     m_sortFilterProxyModel->setFilterWildcard(arg1);
 }
+
+void MaterialSelectionDialog::on_btnNew_clicked()
+{
+    MaterialDialog *dialog = new MaterialDialog(this, m_service);
+
+    connect(dialog, &MaterialDialog::materialAdded, [=](Material::Ptr material) {
+        QModelIndex index = m_materialModel->add(material, 0.0);
+        ui->tblMaterials->setCurrentIndex(m_sortFilterProxyModel->mapFromSource(index));
+        ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
+        emit materialAdded(material);
+    });
+
+    dialog->prepareForCreate();
+    dialog->exec();
+
+    delete dialog;
+}

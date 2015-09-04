@@ -34,6 +34,7 @@ public:
 
 signals:
     void templateAdded(Template::Ptr);
+    void materialAdded(Material::Ptr);
 
 private slots:
     void accept();

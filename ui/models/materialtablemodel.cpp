@@ -89,11 +89,12 @@ void MaterialTableModel::addAllWithQuantity(QMap<Material::Ptr, double> material
     emit materialChanged();
 }
 
-void MaterialTableModel::add(Material::Ptr material, double quantity)
+QModelIndex MaterialTableModel::add(Material::Ptr material, double quantity)
 {
     m_quantities.insert(material, quantity);
-    DomainItemModel::add(material);
+    QModelIndex index = DomainItemModel::add(material);
     emit materialChanged();
+    return index;
 }
 
 void MaterialTableModel::remove(Material::Ptr item)

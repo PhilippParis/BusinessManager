@@ -72,6 +72,7 @@ void AbstractBillItemWizard::accept()
 void AbstractBillItemWizard::on_btnAddMaterial_clicked()
 {
     MaterialSelectionDialog *dialog = new MaterialSelectionDialog(this, m_materialService);
+    connect(dialog, SIGNAL(materialAdded(Material::Ptr)), this, SIGNAL(materialAdded(Material::Ptr)));
     if(dialog->exec() == QDialog::Accepted) {
         m_materialModel->add(dialog->selectedMaterial(), dialog->quantity());
     }

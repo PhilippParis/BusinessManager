@@ -36,6 +36,7 @@ public:
 signals:
     void customerAdded(Customer::Ptr);
     void templateAdded(Template::Ptr);
+    void materialAdded(Material::Ptr);
 
 private slots:
     void on_btnSelectCustomer_clicked();

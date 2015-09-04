@@ -10,6 +10,8 @@
 #include "ui/models/materialtablemodel.h"
 #include "ui/models/materialsortfilterproxymodel.h"
 
+#include "ui/dialogs/materialdialog.h"
+
 namespace Ui {
 class MaterialSelectionDialog;
 }
@@ -25,9 +27,13 @@ public:
     Material::Ptr selectedMaterial() const;
     double quantity() const;
 
+signals:
+    void materialAdded(Material::Ptr);
+
 private slots:
     void on_tblMaterials_clicked(const QModelIndex &index);
     void on_leFilter_textChanged(const QString &arg1);
+    void on_btnNew_clicked();
 
 private:
     Ui::MaterialSelectionDialog *ui;
