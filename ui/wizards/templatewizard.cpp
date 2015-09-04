@@ -9,7 +9,7 @@ TemplateWizard::TemplateWizard(QWidget *parent, MaterialService::Ptr materialSer
 
 void TemplateWizard::prepareForCreate()
 {
-    AbstractBillItemWizard::prepareForCreate();
+    AbstractBillItemWizard::prepareForCreate(nullptr);
     ui->sbQuantity->setHidden(true);
     ui->lblQuantity->setHidden(true);
     ui->gbTemplate->setChecked(true);
@@ -22,7 +22,6 @@ void TemplateWizard::prepareForUpdate(Template::Ptr item)
 
     m_openMode = Update;
     m_id = item->id();
-    ui->tblTemplates->setCurrentIndex(m_templateModel->index(m_templateModel->indexOf(item), 0));
     displayTemplateData(item);
 }
 

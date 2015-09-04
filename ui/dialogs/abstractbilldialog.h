@@ -17,6 +17,7 @@
 #include "ui/dialogs/discountdialog.h"
 #include "ui/wizards/billitemwizard.h"
 #include "ui/dialogs/customerselectiondialog.h"
+#include "ui/dialogs/templateselectiondialog.h"
 
 namespace Ui {
 class BillDialog;

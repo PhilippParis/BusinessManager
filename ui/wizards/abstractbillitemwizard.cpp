@@ -15,14 +15,6 @@ AbstractBillItemWizard::AbstractBillItemWizard(QWidget *parent, MaterialService:
     ui->tblMaterial->setModel(m_materialModel);
     ui->tblMaterial->setItemDelegateForColumn(5, delegate);
 
-    m_templateModel = new TemplateTableModel();
-    m_templateModel->addAll(templateService->getAll());
-
-    m_templateSortFilterProxyModel = new TemplateSortFilterProxyModel();
-    m_templateSortFilterProxyModel->setSourceModel(m_templateModel);
-    m_templateSortFilterProxyModel->setFilterCaseSensitivity(Qt::CaseInsensitive);
-    ui->tblTemplates->setModel(m_templateSortFilterProxyModel);
-
     ui->sbTaxRate->setValue(settings.value("financial/tax").toDouble() * 100.0);
     connect(m_materialModel, SIGNAL(materialChanged()), SLOT(updateMaterialCosts()));
 }
@@ -33,18 +25,19 @@ AbstractBillItemWizard::~AbstractBillItemWizard()
     delete m_materialModel;
 }
 
-void AbstractBillItemWizard::prepareForCreate()
+void AbstractBillItemWizard::prepareForCreate(Template::Ptr templ)
 {
     m_openMode = Create;
 
     ui->sbPricePerUnit->setValue(0.0);
-    ui->leFilterTemplate->clear();
     ui->leTemplateName->clear();
     ui->leTemplateOrg->clear();
     ui->leUnit->clear();
     ui->textEditArticleDesc->clear();
     ui->sbQuantity->setValue(0.0);
     ui->sbWorkingHours->setValue(0.0);
+
+    displayTemplateData(templ);
 }
 
 void AbstractBillItemWizard::on_textEditArticleDesc_textChanged()
@@ -107,18 +100,6 @@ void AbstractBillItemWizard::updateMaterialCosts()
     }
 }
 
-void AbstractBillItemWizard::on_leFilterTemplate_textChanged(QString text)
-{
-    m_templateSortFilterProxyModel->setFilterWildcard(text);
-}
-
-void AbstractBillItemWizard::on_tblTemplates_activated(const QModelIndex &index)
-{
-    if(index.isValid()) {
-        displayTemplateData(selectedTemplate());
-    }
-}
-
 void AbstractBillItemWizard::on_sbPricePerUnit_valueChanged(double value)
 {
     BillItem::Ptr item = toBillItem();
@@ -134,14 +115,12 @@ void AbstractBillItemWizard::on_btnAuto_clicked()
     ui->sbPricePerUnit->setValue(item->calculatedPrice().value());
 }
 
-Template::Ptr AbstractBillItemWizard::selectedTemplate()
-{
-    QModelIndex index = ui->tblTemplates->currentIndex();
-    return m_templateModel->get(m_templateSortFilterProxyModel->mapToSource(index));
-}
-
 void AbstractBillItemWizard::displayTemplateData(Template::Ptr item)
 {
+    if (item == nullptr) {
+        return;
+    }
+
     m_materialModel->clear();
     m_materialModel->addAllWithQuantity(item->material());
 

@@ -139,7 +139,8 @@ SOURCES += main.cpp\
     ui/widgets/letterwidget.cpp \
     ui/models/lettertablemodel.cpp \
     ui/models/lettersortfilterproxymodel.cpp \
-    ui/widgets/appsettingswidget.cpp
+    ui/widgets/appsettingswidget.cpp \
+    ui/dialogs/templateselectiondialog.cpp
 
 CONFIG(debug, debug|release) {
     SOURCES += tests/customerdaotest.cpp \
@@ -254,7 +255,8 @@ HEADERS  += ui/mainwindow.h \
     ui/widgets/letterwidget.h \
     ui/models/lettertablemodel.h \
     ui/models/lettersortfilterproxymodel.h \
-    ui/widgets/appsettingswidget.h
+    ui/widgets/appsettingswidget.h \
+    ui/dialogs/templateselectiondialog.h
 
 
 CONFIG(debug, debug|release) {
@@ -288,7 +290,8 @@ FORMS    += ui/mainwindow.ui \
     ui/dialogs/customerselectiondialog.ui \
     ui/widgets/offerwidget.ui \
     ui/widgets/letterwidget.ui \
-    ui/widgets/appsettingswidget.ui
+    ui/widgets/appsettingswidget.ui \
+    ui/dialogs/templateselectiondialog.ui
 
 RESOURCES += \
     resources.qrc

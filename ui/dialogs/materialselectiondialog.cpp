@@ -11,6 +11,7 @@ MaterialSelectionDialog::MaterialSelectionDialog(QWidget *parent, MaterialServic
     m_materialModel = new MaterialTableModel();
     m_sortFilterProxyModel = new MaterialSortFilterProxyModel();
     m_sortFilterProxyModel->setSourceModel(m_materialModel);
+    m_sortFilterProxyModel->setFilterCaseSensitivity(Qt::CaseInsensitive);
 
     ui->tblMaterials->setModel(m_sortFilterProxyModel);
 

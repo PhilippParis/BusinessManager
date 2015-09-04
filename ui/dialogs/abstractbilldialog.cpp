@@ -58,10 +58,17 @@ void AbstractBillDialog::on_btnSelectCustomer_clicked()
 
 void AbstractBillDialog::on_btnAddArticle_clicked()
 {
+    Template::Ptr templ = nullptr;
+    TemplateSelectionDialog *dialog = new TemplateSelectionDialog(this, m_templateService);
+    if (dialog->exec() == QDialog::Accepted) {
+        templ = dialog->selectedTemplate();
+    }
+
+
     BillItemWizard *wizard = new BillItemWizard(this, m_billService, m_materialService, m_templateService);
     connect(wizard, SIGNAL(templateAdded(Template::Ptr)), this, SIGNAL(templateAdded(Template::Ptr)));
     connect(wizard, &BillItemWizard::itemAdded, m_billItemModel, &BillItemTableModel::add);
-    wizard->prepareForCreate();
+    wizard->prepareForCreate(templ);
     wizard->exec();
 
     delete wizard;

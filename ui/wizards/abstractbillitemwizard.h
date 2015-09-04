@@ -30,7 +30,7 @@ public:
     AbstractBillItemWizard(QWidget *parent, MaterialService::Ptr materialService, TemplateService::Ptr templateService);
     ~AbstractBillItemWizard();
 
-    virtual void prepareForCreate();
+    virtual void prepareForCreate(Template::Ptr templ);
 
 signals:
     void templateAdded(Template::Ptr);
@@ -40,16 +40,13 @@ private slots:
     void on_textEditArticleDesc_textChanged();
     void on_btnAddMaterial_clicked();
     void on_btnDeleteMaterial_clicked();
-    void on_tblTemplates_activated(const QModelIndex &index);
     void on_sbPricePerUnit_valueChanged(double value);
     void on_btnAuto_clicked();
     void updateMaterialCosts();
-    void on_leFilterTemplate_textChanged(QString text);
 
 private:
     virtual bool onUpdate() = 0;
     virtual bool onCreate() = 0;
-    Template::Ptr selectedTemplate();
 
 protected:
     Template::Ptr toTemplate();
@@ -72,9 +69,6 @@ protected:
     MaterialService::Ptr m_materialService;
     TemplateService::Ptr m_templateService;
     OpenMode m_openMode;
-
-    TemplateTableModel *m_templateModel;
-    TemplateSortFilterProxyModel *m_templateSortFilterProxyModel;
     MaterialTableModel *m_materialModel;
 
 };

@@ -14,7 +14,7 @@ class TemplateWizard : public AbstractBillItemWizard
 public:
     TemplateWizard(QWidget *parent, MaterialService::Ptr materialService, TemplateService::Ptr templateService);
 
-    void prepareForCreate() override;
+    void prepareForCreate();
     void prepareForUpdate(Template::Ptr item);
 
 signals:
