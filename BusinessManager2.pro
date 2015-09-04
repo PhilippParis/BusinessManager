@@ -37,6 +37,8 @@ TEMPLATE = app
 
 TRANSLATIONS = languages/BusinessManager2_de.ts
 
+RC_FILE = res.rc
+
 SOURCES += main.cpp\
         ui/mainwindow.cpp \
     domain/bill.cpp \

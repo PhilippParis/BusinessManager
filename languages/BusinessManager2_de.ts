@@ -19,47 +19,46 @@
         <translation>h</translation>
     </message>
     <message>
-        <location filename="../ui/wizards/abstractbillitemwizard.ui" line="64"/>
         <source>find template...</source>
-        <translation>Vorlage suchen...</translation>
+        <translation type="vanished">Vorlage suchen...</translation>
     </message>
     <message>
-        <location filename="../ui/wizards/abstractbillitemwizard.ui" line="94"/>
+        <location filename="../ui/wizards/abstractbillitemwizard.ui" line="71"/>
         <source>Material:</source>
         <translation>Material:</translation>
     </message>
     <message>
-        <location filename="../ui/wizards/abstractbillitemwizard.ui" line="119"/>
+        <location filename="../ui/wizards/abstractbillitemwizard.ui" line="96"/>
         <source>Add Material</source>
         <translation>Material hinzufügen</translation>
     </message>
     <message>
-        <location filename="../ui/wizards/abstractbillitemwizard.ui" line="130"/>
+        <location filename="../ui/wizards/abstractbillitemwizard.ui" line="107"/>
         <source>Delete Material</source>
         <translation>Material entfernen</translation>
     </message>
     <message>
-        <location filename="../ui/wizards/abstractbillitemwizard.ui" line="153"/>
+        <location filename="../ui/wizards/abstractbillitemwizard.ui" line="130"/>
         <source>Article Description:</source>
         <translation>Artikel Beschreibung:</translation>
     </message>
     <message>
-        <location filename="../ui/wizards/abstractbillitemwizard.ui" line="296"/>
+        <location filename="../ui/wizards/abstractbillitemwizard.ui" line="273"/>
         <source>€</source>
         <translation>€</translation>
     </message>
     <message>
-        <location filename="../ui/wizards/abstractbillitemwizard.ui" line="273"/>
+        <location filename="../ui/wizards/abstractbillitemwizard.ui" line="250"/>
         <source>Price per Unit</source>
         <translation>Stückpreis</translation>
     </message>
     <message>
-        <location filename="../ui/wizards/abstractbillitemwizard.ui" line="234"/>
+        <location filename="../ui/wizards/abstractbillitemwizard.ui" line="211"/>
         <source>Stk.</source>
         <translation>Stk.</translation>
     </message>
     <message>
-        <location filename="../ui/wizards/abstractbillitemwizard.ui" line="206"/>
+        <location filename="../ui/wizards/abstractbillitemwizard.ui" line="183"/>
         <source>Unit</source>
         <translation>Einheit</translation>
     </message>
@@ -72,7 +71,7 @@
         <translation type="vanished">Kosten per Stück</translation>
     </message>
     <message>
-        <location filename="../ui/wizards/abstractbillitemwizard.ui" line="183"/>
+        <location filename="../ui/wizards/abstractbillitemwizard.ui" line="160"/>
         <source>Quantity</source>
         <translation>Menge</translation>
     </message>
@@ -81,37 +80,37 @@
         <translation type="vanished">Preis:</translation>
     </message>
     <message>
-        <location filename="../ui/wizards/abstractbillitemwizard.ui" line="241"/>
+        <location filename="../ui/wizards/abstractbillitemwizard.ui" line="218"/>
         <source>Tax Rate</source>
         <translation>Steuersatz</translation>
     </message>
     <message>
-        <location filename="../ui/wizards/abstractbillitemwizard.ui" line="263"/>
+        <location filename="../ui/wizards/abstractbillitemwizard.ui" line="240"/>
         <source>%</source>
         <translation>%</translation>
     </message>
     <message>
-        <location filename="../ui/wizards/abstractbillitemwizard.ui" line="339"/>
+        <location filename="../ui/wizards/abstractbillitemwizard.ui" line="316"/>
         <source>Sa&amp;ve as new Template</source>
         <translation>Als neue Vorlage speichern</translation>
     </message>
     <message>
-        <location filename="../ui/wizards/abstractbillitemwizard.ui" line="353"/>
+        <location filename="../ui/wizards/abstractbillitemwizard.ui" line="330"/>
         <source>Name:</source>
         <translation>Name:</translation>
     </message>
     <message>
-        <location filename="../ui/wizards/abstractbillitemwizard.ui" line="363"/>
+        <location filename="../ui/wizards/abstractbillitemwizard.ui" line="340"/>
         <source>Organisation:</source>
         <translation>Verein:</translation>
     </message>
     <message>
-        <location filename="../ui/wizards/abstractbillitemwizard.ui" line="373"/>
+        <location filename="../ui/wizards/abstractbillitemwizard.ui" line="350"/>
         <source>Additional Description:</source>
         <translation>Weitere Info:</translation>
     </message>
     <message>
-        <location filename="../ui/wizards/abstractbillitemwizard.ui" line="386"/>
+        <location filename="../ui/wizards/abstractbillitemwizard.ui" line="363"/>
         <source>Type:</source>
         <translation>Größe:</translation>
     </message>
@@ -203,22 +202,22 @@
 <context>
     <name>BillItemTableModel</name>
     <message>
-        <location filename="../ui/models/billitemtablemodel.cpp" line="40"/>
+        <location filename="../ui/models/billitemtablemodel.cpp" line="41"/>
         <source>Article</source>
         <translation>Artikel</translation>
     </message>
     <message>
-        <location filename="../ui/models/billitemtablemodel.cpp" line="42"/>
+        <location filename="../ui/models/billitemtablemodel.cpp" line="43"/>
         <source>Quantity</source>
         <translation>Menge</translation>
     </message>
     <message>
-        <location filename="../ui/models/billitemtablemodel.cpp" line="44"/>
+        <location filename="../ui/models/billitemtablemodel.cpp" line="45"/>
         <source>Unit Price</source>
         <translation>Stückpreis</translation>
     </message>
     <message>
-        <location filename="../ui/models/billitemtablemodel.cpp" line="46"/>
+        <location filename="../ui/models/billitemtablemodel.cpp" line="47"/>
         <source>Total Price</source>
         <translation>Gesamtpreis</translation>
     </message>
@@ -294,14 +293,14 @@
 <context>
     <name>BillItemWizard</name>
     <message>
-        <location filename="../ui/wizards/billitemwizard.cpp" line="47"/>
-        <location filename="../ui/wizards/billitemwizard.cpp" line="70"/>
+        <location filename="../ui/wizards/billitemwizard.cpp" line="46"/>
+        <location filename="../ui/wizards/billitemwizard.cpp" line="69"/>
         <source>Invalid Data</source>
         <translation>Fehlerhafte Daten</translation>
     </message>
     <message>
-        <location filename="../ui/wizards/billitemwizard.cpp" line="50"/>
-        <location filename="../ui/wizards/billitemwizard.cpp" line="73"/>
+        <location filename="../ui/wizards/billitemwizard.cpp" line="49"/>
+        <location filename="../ui/wizards/billitemwizard.cpp" line="72"/>
         <source>Error</source>
         <translation>Fehler</translation>
     </message>
@@ -980,77 +979,77 @@
         <translation>Brief</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="439"/>
+        <location filename="../ui/mainwindow.cpp" line="441"/>
         <source>Delete Bill</source>
         <translation>Rechnung Löschen</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="440"/>
+        <location filename="../ui/mainwindow.cpp" line="442"/>
         <source>Are you sure you want to delete the selected Bill?</source>
         <translation>Sind Sie sich sicher, dass sie die ausgewählte Rechnung löschen möchten?</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="449"/>
-        <location filename="../ui/mainwindow.cpp" line="467"/>
-        <location filename="../ui/mainwindow.cpp" line="484"/>
-        <location filename="../ui/mainwindow.cpp" line="502"/>
-        <location filename="../ui/mainwindow.cpp" line="520"/>
-        <location filename="../ui/mainwindow.cpp" line="538"/>
+        <location filename="../ui/mainwindow.cpp" line="451"/>
+        <location filename="../ui/mainwindow.cpp" line="469"/>
+        <location filename="../ui/mainwindow.cpp" line="486"/>
+        <location filename="../ui/mainwindow.cpp" line="504"/>
+        <location filename="../ui/mainwindow.cpp" line="522"/>
+        <location filename="../ui/mainwindow.cpp" line="540"/>
         <source>Error</source>
         <translation>Fehler</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="458"/>
+        <location filename="../ui/mainwindow.cpp" line="460"/>
         <source>Delete Customer</source>
         <translation>Kunde löschen</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="459"/>
+        <location filename="../ui/mainwindow.cpp" line="461"/>
         <source>Are you sure you want to delete the selected Customer?</source>
         <translation>Sind Sie sich sicher, dass sie den ausgewählten Kunden löschen möchten?</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="475"/>
+        <location filename="../ui/mainwindow.cpp" line="477"/>
         <source>Delete Material</source>
         <translation>Material löschen</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="476"/>
+        <location filename="../ui/mainwindow.cpp" line="478"/>
         <source>Are you sure you want to delete the selected Material?</source>
         <translation>Sind Sie sich sicher, dass sie das ausgewählte Material löschen möchten?</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="493"/>
+        <location filename="../ui/mainwindow.cpp" line="495"/>
         <source>Delete Template</source>
         <translation>Vorlage löschen</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="494"/>
+        <location filename="../ui/mainwindow.cpp" line="496"/>
         <source>Are you sure you want to delete the selected Template?</source>
         <translation>Sind Sie sich sicher, dass sie die ausgewählte Vorlage löschen möchten?</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="511"/>
+        <location filename="../ui/mainwindow.cpp" line="513"/>
         <source>Delete Offer</source>
         <translation>Angebot löschen</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="512"/>
+        <location filename="../ui/mainwindow.cpp" line="514"/>
         <source>Are you sure you want to delete the selected Offer?</source>
         <translation>Sind Sie sich sicher, dass sie das ausgewählte Angebot löschen möchten?</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="529"/>
+        <location filename="../ui/mainwindow.cpp" line="531"/>
         <source>Delete Letter</source>
         <translation>Brief löschen</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="530"/>
+        <location filename="../ui/mainwindow.cpp" line="532"/>
         <source>Are you sure you want to delete the selected Letter?</source>
         <translation>Sind Sie sich sicher, dass sie den ausgewählten Brief löschen möchten?</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="614"/>
+        <location filename="../ui/mainwindow.cpp" line="616"/>
         <source>Save</source>
         <translation>Speichern</translation>
     </message>
@@ -1116,12 +1115,17 @@
         <translation>Material wählen</translation>
     </message>
     <message>
-        <location filename="../ui/dialogs/materialselectiondialog.ui" line="20"/>
+        <location filename="../ui/dialogs/materialselectiondialog.ui" line="22"/>
         <source>Filter...</source>
         <translation>Filter...</translation>
     </message>
     <message>
-        <location filename="../ui/dialogs/materialselectiondialog.ui" line="61"/>
+        <location filename="../ui/dialogs/materialselectiondialog.ui" line="29"/>
+        <source>New</source>
+        <translation>Neu</translation>
+    </message>
+    <message>
+        <location filename="../ui/dialogs/materialselectiondialog.ui" line="76"/>
         <source>Quantity</source>
         <translation>Menge</translation>
     </message>
@@ -1457,24 +1461,37 @@
     </message>
 </context>
 <context>
+    <name>TemplateSelectionDialog</name>
+    <message>
+        <location filename="../ui/dialogs/templateselectiondialog.ui" line="14"/>
+        <source>Choose Template</source>
+        <translation>Wähle Vorlage</translation>
+    </message>
+    <message>
+        <location filename="../ui/dialogs/templateselectiondialog.cpp" line="19"/>
+        <source>Continue Without Template</source>
+        <translation>Weiter Ohne Vorlage</translation>
+    </message>
+</context>
+<context>
     <name>TemplateTableModel</name>
     <message>
-        <location filename="../ui/models/templatetablemodel.cpp" line="40"/>
+        <location filename="../ui/models/templatetablemodel.cpp" line="41"/>
         <source>Name</source>
         <translation>Name</translation>
     </message>
     <message>
-        <location filename="../ui/models/templatetablemodel.cpp" line="42"/>
+        <location filename="../ui/models/templatetablemodel.cpp" line="43"/>
         <source>Organisation</source>
         <translation>Verein</translation>
     </message>
     <message>
-        <location filename="../ui/models/templatetablemodel.cpp" line="44"/>
+        <location filename="../ui/models/templatetablemodel.cpp" line="45"/>
         <source>Type</source>
         <translation>Typ</translation>
     </message>
     <message>
-        <location filename="../ui/models/templatetablemodel.cpp" line="46"/>
+        <location filename="../ui/models/templatetablemodel.cpp" line="47"/>
         <source>Additional Description</source>
         <translation>Weitere Infos</translation>
     </message>
@@ -1515,14 +1532,14 @@
 <context>
     <name>TemplateWizard</name>
     <message>
-        <location filename="../ui/wizards/templatewizard.cpp" line="37"/>
-        <location filename="../ui/wizards/templatewizard.cpp" line="54"/>
+        <location filename="../ui/wizards/templatewizard.cpp" line="36"/>
+        <location filename="../ui/wizards/templatewizard.cpp" line="53"/>
         <source>Invalid Data</source>
         <translation>Fehlerhafte Daten</translation>
     </message>
     <message>
-        <location filename="../ui/wizards/templatewizard.cpp" line="40"/>
-        <location filename="../ui/wizards/templatewizard.cpp" line="57"/>
+        <location filename="../ui/wizards/templatewizard.cpp" line="39"/>
+        <location filename="../ui/wizards/templatewizard.cpp" line="56"/>
         <source>Error</source>
         <translation>Fehler</translation>
     </message>
