@@ -25,20 +25,21 @@ int main(int argc, char *argv[])
     }
 #else
     //disable logging messages
-     QLoggingCategory::setFilterRules(QStringLiteral("*.debug=false"));
+    QLoggingCategory::setFilterRules(QStringLiteral("*.debug=false"));
 #endif
 
-    QTranslator qtTranslator;
-    qtTranslator.load("qt_" + QLocale::system().name(),
-                      QLibraryInfo::location(QLibraryInfo::TranslationsPath));
-    a.installTranslator(&qtTranslator);
-
     QString applicationDir = QApplication::applicationDirPath();
+    QString lang = QLocale::system().name().split("_").first();
     applicationDir.append("/languages");
 
-    QTranslator translator;
-    translator.load("BusinessManager2_" + QLocale::system().name(), applicationDir);
+    // install translator for qt strings
+    QTranslator qtTranslator;
+    qtTranslator.load("qt_" + lang,applicationDir);
+    a.installTranslator(&qtTranslator);
 
+    // install translator for application strings
+    QTranslator translator;
+    translator.load("BusinessManager2_" + lang, applicationDir);
     a.installTranslator(&translator);
 
     MainWindow w;
