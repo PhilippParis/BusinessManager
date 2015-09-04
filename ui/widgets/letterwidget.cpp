@@ -83,3 +83,8 @@ void LetterWidget::on_tblLetters_clicked(const QModelIndex &index)
     ui->btnPrint->setEnabled(index.isValid());
     ui->btnDelete->setEnabled(index.isValid());
 }
+
+void LetterWidget::on_tblLetters_doubleClicked(const QModelIndex &index)
+{
+    emit print(selectedLetter());
+}

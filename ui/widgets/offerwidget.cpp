@@ -87,3 +87,7 @@ void OfferWidget::on_tblOffers_clicked(const QModelIndex &index)
     ui->btnExport->setEnabled(index.isValid());
 }
 
+void OfferWidget::on_tblOffers_doubleClicked(const QModelIndex &index)
+{
+    emit print(selectedOffer());
+}

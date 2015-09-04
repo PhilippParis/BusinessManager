@@ -38,6 +38,8 @@ private slots:
     void on_tblOffers_clicked(const QModelIndex &index);
     void on_btnExport_clicked();
 
+    void on_tblOffers_doubleClicked(const QModelIndex &index);
+
 private:
     Offer::Ptr selectedOffer();
 

@@ -51,6 +51,8 @@ private slots:
     void selectionChanged(QModelIndex newIndex, QModelIndex prevIndex);
     void updateFilter();
 
+    void on_tblData_doubleClicked(const QModelIndex &index);
+
 private:
     Bill::Ptr selectedBill();
 

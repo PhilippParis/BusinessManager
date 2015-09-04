@@ -110,3 +110,8 @@ void BillWidget::on_btnDelete_clicked()
 {
     emit remove(selectedBill());
 }
+
+void BillWidget::on_tblData_doubleClicked(const QModelIndex &index)
+{
+    emit print(selectedBill());
+}

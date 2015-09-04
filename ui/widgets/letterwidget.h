@@ -37,6 +37,8 @@ private slots:
 
     void on_tblLetters_clicked(const QModelIndex &index);
 
+    void on_tblLetters_doubleClicked(const QModelIndex &index);
+
 private:
     Letter::Ptr selectedLetter();
 
