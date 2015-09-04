@@ -33,6 +33,12 @@ QVariant MaterialTableModel::data(const QModelIndex &index, int role) const
         return material->unit();
     }
 
+    if (role == Qt::FontRole && index.column() == Quantity) {
+        QFont font;
+        font.setBold(true);
+        return font;
+    }
+
     if (role == Qt::DisplayRole) {
         switch (index.column()) {
         case Name:

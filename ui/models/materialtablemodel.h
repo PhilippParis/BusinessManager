@@ -1,8 +1,9 @@
 #ifndef MATERIALTABLEMODEL_H
 #define MATERIALTABLEMODEL_H
 
-#include "ui/models/domainitemmodel.h"
+#include <QFont>
 
+#include "ui/models/domainitemmodel.h"
 #include "domain/material.h"
 
 class MaterialTableModel : public DomainItemModel<Material::Ptr>
