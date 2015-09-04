@@ -22,6 +22,7 @@ void DocumentsSettingsWidget::loadSettings(QSettings *settings)
     ui->lblEnvelopeLogo->setPixmap(settings->value("docs/logo_envelope").value<QPixmap>());
 
     m_color = settings->value("docs/color").value<QColor>();
+    m_logo = settings->value("docs/logo_envelope").value<QPixmap>();
 
     ui->lwPrint->item(LOGO)->setCheckState(settings->value("docs/show_logo").toBool() ? Qt::Checked : Qt::Unchecked);
     ui->lwPrint->item(SENDER)->setCheckState(settings->value("docs/show_sender").toBool() ? Qt::Checked : Qt::Unchecked);
