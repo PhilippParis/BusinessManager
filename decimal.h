@@ -1,6 +1,8 @@
 #ifndef DECIMAL_H
 #define DECIMAL_H
 
+#include "qdecimal/QDecDouble.hh"
+
 class Decimal
 {
 
@@ -31,10 +33,11 @@ public:
     double value() const;
 
 private:
-    Decimal(long cents);
+    Decimal(double value);
+    Decimal(QDecDouble value);
 
 private:
-    long long m_cents = 0.0;
+    QDecDouble m_cents = 0.0;
 };
 
 #endif // DECIMAL_H
