@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui svg
 QT       += sql printsupport
 
 CONFIG (debug, debug|release) {
@@ -27,6 +27,10 @@ win32 {
 } else {
     INCLUDEPATH += /usr/include/qwt
     LIBS += -L/usr/lib -lqwt
+
+    INCLUDEPATH += $$PWD/../qdecimal/src
+    INCLUDEPATH += $$PWD/../qdecimal/decnumber
+    LIBS += -L$$PWD/../qdecimal/lib -lqdecimal
 }
 
 CONFIG += qwt
@@ -142,7 +146,24 @@ SOURCES += main.cpp\
     ui/models/lettertablemodel.cpp \
     ui/models/lettersortfilterproxymodel.cpp \
     ui/widgets/appsettingswidget.cpp \
-    ui/dialogs/templateselectiondialog.cpp
+    ui/dialogs/templateselectiondialog.cpp \
+    qdecimal/QDecContext.cc \
+    qdecimal/QDecDouble.cc \
+    qdecimal/QDecNumber.cc \
+    qdecimal/QDecPacked.cc \
+    qdecimal/QDecQuad.cc \
+    qdecimal/QDecSingle.cc \
+    qdecimal/decBasic.c \
+    qdecimal/decCommon.c \
+    qdecimal/decContext.c \
+    qdecimal/decDouble.c \
+    qdecimal/decimal128.c \
+    qdecimal/decimal32.c \
+    qdecimal/decimal64.c \
+    qdecimal/decNumber.c \
+    qdecimal/decPacked.c \
+    qdecimal/decQuad.c \
+    qdecimal/decSingle.c
 
 CONFIG(debug, debug|release) {
     SOURCES += tests/customerdaotest.cpp \
@@ -258,7 +279,27 @@ HEADERS  += ui/mainwindow.h \
     ui/models/lettertablemodel.h \
     ui/models/lettersortfilterproxymodel.h \
     ui/widgets/appsettingswidget.h \
-    ui/dialogs/templateselectiondialog.h
+    ui/dialogs/templateselectiondialog.h \
+    qdecimal/decContext.h \
+    qdecimal/decDouble.h \
+    qdecimal/decDPD.h \
+    qdecimal/decimal128.h \
+    qdecimal/decimal32.h \
+    qdecimal/decimal64.h \
+    qdecimal/decNumber.h \
+    qdecimal/decNumberLocal.h \
+    qdecimal/decPacked.h \
+    qdecimal/decQuad.h \
+    qdecimal/decSingle.h \
+    qdecimal/Port_stdint.h \
+    qdecimal/QDecContext.hh \
+    qdecimal/QDecDouble.hh \
+    qdecimal/QDecFwd.hh \
+    qdecimal/QDecNumber.hh \
+    qdecimal/QDecPacked.hh \
+    qdecimal/QDecQuad.hh \
+    qdecimal/QDecSingle.hh \
+    qdecimal/VCpp_stdint.h
 
 
 CONFIG(debug, debug|release) {
