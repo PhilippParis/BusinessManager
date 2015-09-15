@@ -108,11 +108,11 @@ bool Decimal::operator >=(const Decimal &rhs) const
 
 long long Decimal::cents() const
 {
-    return (m_cents * 100.0).toDouble();
+    return qRound((m_cents * 100.0).toDouble());
 }
 
 double Decimal::value() const
 {
-    return m_cents.toDouble();
+    return (double)cents() / 100.0;
 }
 

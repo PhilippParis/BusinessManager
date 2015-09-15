@@ -1,7 +1,7 @@
 #include "ui/mainwindow.h"
 #include <QApplication>
 
-#ifdef Q_DEBUG
+#ifdef QT_DEBUG
 #include "tests/billitemdaotest.h"
 #include "tests/customerdaotest.h"
 #include "tests/billdaotest.h"
@@ -9,6 +9,7 @@
 #include "tests/templatedaotest.h"
 #include "tests/offerdaotest.h"
 #include "tests/letterdaotest.h"
+#include "tests/decimaltest.h"
 #endif
 
 bool execUnitTests();
@@ -18,7 +19,7 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     QApplication::setStyle("fusion");
 
-#ifdef Q_DEBUG
+#ifdef QT_DEBUG
     // exec unit tests
     if(!execUnitTests()) {
         return EXIT_FAILURE;
@@ -48,7 +49,7 @@ int main(int argc, char *argv[])
     return a.exec();
 }
 
-#ifdef Q_DEBUG
+#ifdef QT_DEBUG
 bool execUnitTests()
 {
     bool success = true;
@@ -60,6 +61,7 @@ bool execUnitTests()
     TemplateDAOTest templateDAOTest;
     OfferDAOTest offerDAOTest;
     LetterDAOTest letterDAOTest;
+    DecimalTest decimalTest;
 
     success &= QTest::qExec(&billItemDAOTest) == 0;
     success &= QTest::qExec(&customerDAOTest) == 0;
@@ -68,6 +70,7 @@ bool execUnitTests()
     success &= QTest::qExec(&templateDAOTest) == 0;
     success &= QTest::qExec(&offerDAOTest) == 0;
     success &= QTest::qExec(&letterDAOTest) == 0;
+    success &= QTest::qExec(&decimalTest) == 0;
 
     return success;
 }

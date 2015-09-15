@@ -172,7 +172,8 @@ CONFIG(debug, debug|release) {
     tests/billitemdaotest.cpp \
     tests/offerdaotest.cpp \
     tests/materialdaotest.cpp \
-    tests/templatedaotest.cpp
+    tests/templatedaotest.cpp \
+    tests/decimaltest.cpp
 }
 
 HEADERS  += ui/mainwindow.h \
@@ -303,13 +304,14 @@ HEADERS  += ui/mainwindow.h \
 
 
 CONFIG(debug, debug|release) {
-    SOURCES += tests/materialdaotest.h \
+    HEADERS += tests/materialdaotest.h \
     tests/letterdaotest.h \
     tests/offerdaotest.h \
     tests/templatedaotest.h \
     tests/customerdaotest.h \
     tests/billdaotest.h \
-    tests/billitemdaotest.h
+    tests/billitemdaotest.h \
+    tests/decimaltest.h
 }
 
 FORMS    += ui/mainwindow.ui \
